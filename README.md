@@ -5,7 +5,7 @@
 # Project Components
 
 - [ER: Requirements Specification](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2326/-/wikis/er)
-- [EBD: Database Specification]()
+- [EBD: Database Specification](https://git.fe.up.pt/lbaw/lbaw2324/lbaw2326/-/wikis/edb)
 - [EAP: Architecture Specification and Prototype]()
 - [PA: Product and Presentation]()
 
