@@ -1,3 +1,5 @@
+DROP SCHEMA IF EXISTS lbaw2326 CASCADE;
+CREATE SCHEMA IF NOT EXISTS lbaw2326;
 SET search_path TO lbaw2326;
 
 -----------------------------------------
