@@ -14,13 +14,13 @@ DROP TABLE IF EXISTS followed_questions CASCADE;
 
 DROP TABLE IF EXISTS users CASCADE;
 
-DROP TABLE IF EXISTS tag CASCADE;
+DROP TABLE IF EXISTS tags CASCADE;
 
-DROP TABLE IF EXISTS badge CASCADE;
+DROP TABLE IF EXISTS badges CASCADE;
 
-DROP TABLE IF EXISTS question CASCADE;
+DROP TABLE IF EXISTS questions CASCADE;
 
-DROP TABLE IF EXISTS answer CASCADE;
+DROP TABLE IF EXISTS answers CASCADE;
 
 DROP TABLE IF EXISTS comments CASCADE;
 
@@ -30,13 +30,13 @@ DROP TABLE IF EXISTS content_version CASCADE;
 
 DROP TABLE IF EXISTS question_tag CASCADE;
 
-DROP TABLE IF EXISTS annex CASCADE;
+DROP TABLE IF EXISTS annexes CASCADE;
 
-DROP TABLE IF EXISTS vote CASCADE;
+DROP TABLE IF EXISTS votes CASCADE;
 
-DROP TABLE IF EXISTS notification CASCADE;
+DROP TABLE IF EXISTS notifications CASCADE;
 
-DROP TABLE IF EXISTS user_badge CASCADE;
+DROP TABLE IF EXISTS badge_user CASCADE;
 
 DROP TABLE IF EXISTS faq CASCADE;
 
@@ -79,7 +79,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    tag (
+    tags (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL UNIQUE,
         search_tag_name TSVECTOR NOT NULL,
@@ -88,7 +88,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    badge (
+    badges (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL UNIQUE,
         description TEXT NOT NULL UNIQUE,
@@ -96,7 +96,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    question (
+    questions (
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         search_title TSVECTOR NOT NULL,
@@ -104,10 +104,10 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    answer (
+    answers (
         id SERIAL PRIMARY KEY,
         author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL,
-        id_question INTEGER NOT NULL REFERENCES question (id) ON DELETE CASCADE
+        question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE
     );
 
 CREATE TABLE
@@ -117,27 +117,27 @@ CREATE TABLE
         type main_content_type NOT NULL,
         date TIMESTAMP default now () NOT NULL,
         author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL,
-        id_question INTEGER REFERENCES question (id) ON DELETE CASCADE,
-        id_answer INTEGER REFERENCES answer (id) ON DELETE CASCADE,
+        question_id INTEGER REFERENCES questions (id) ON DELETE CASCADE,
+        answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         CHECK (
             (
                 type = 'QUESTION'
-                AND id_question IS NOT NULL
-                AND id_answer IS NULL
+                AND question_id IS NOT NULL
+                AND answer_id IS NULL
             )
             OR (
                 type = 'ANSWER'
-                AND id_question IS NULL
-                AND id_answer IS NOT NULL
+                AND question_id IS NULL
+                AND answer_id IS NOT NULL
             )
         )
     );
 
 CREATE TABLE
     correct_answer (
-        id_question INTEGER NOT NULL REFERENCES question (id) ON DELETE CASCADE,
-        id_answer INTEGER NOT NULL REFERENCES answer (id) ON DELETE CASCADE,
-        PRIMARY KEY (id_question, id_answer)
+        question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
+        answer_id INTEGER NOT NULL REFERENCES answers (id) ON DELETE CASCADE,
+        PRIMARY KEY (question_id, answer_id)
     );
 
 CREATE TABLE
@@ -147,102 +147,102 @@ CREATE TABLE
         search_body TSVECTOR NOT NULL,
         date TIMESTAMP DEFAULT now () NOT NULL,
         type main_content_type NOT NULL,
-        id_question INTEGER REFERENCES question (id) ON DELETE CASCADE,
-        id_answer INTEGER REFERENCES answer (id) ON DELETE CASCADE,
+        question_id INTEGER REFERENCES questions (id) ON DELETE CASCADE,
+        answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         CHECK (
             (
                 type = 'QUESTION'
-                AND id_question IS NOT NULL
-                AND id_answer IS NULL
+                AND question_id IS NOT NULL
+                AND answer_id IS NULL
             )
             OR (
                 type = 'ANSWER'
-                AND id_question IS NULL
-                AND id_answer IS NOT NULL
+                AND question_id IS NULL
+                AND answer_id IS NOT NULL
             )
         )
     );
 
 CREATE TABLE
     question_tag (
-        id_question INTEGER NOT NULL REFERENCES question (id) ON DELETE CASCADE,
-        id_tag INTEGER NOT NULL REFERENCES tag (id), --Temos um trigger para quando se apaga uma tag
-        PRIMARY KEY (id_question, id_tag)
+        question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
+        tag_id INTEGER NOT NULL REFERENCES tags (id), --Temos um trigger para quando se apaga uma tag
+        PRIMARY KEY (question_id, tag_id)
     );
 
 CREATE TABLE
-    annex (
+    annexes (
         id SERIAL PRIMARY KEY,
         type file_type NOT NULL,
         file_path TEXT NOT NULL,
-        id_version INTEGER NOT NULL REFERENCES content_version (id) ON DELETE CASCADE
+        version_id INTEGER NOT NULL REFERENCES content_version (id) ON DELETE CASCADE
     );
 
 CREATE TABLE
-    vote (
+    votes (
         id SERIAL PRIMARY KEY,
         is_upvote BOOLEAN NOT NULL,
         type content_type NOT NULL,
-        id_user INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-        id_question INTEGER REFERENCES question (id) ON DELETE CASCADE,
-        id_answer INTEGER REFERENCES answer (id) ON DELETE CASCADE,
-        id_comment INTEGER REFERENCES comments (id) ON DELETE CASCADE CHECK (
+        user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        question_id INTEGER REFERENCES questions (id) ON DELETE CASCADE,
+        answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
+        comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE CHECK (
             (
                 type = 'QUESTION'
-                AND id_question IS NOT NULL
-                AND id_answer IS NULL
-                AND id_comment IS NULL
+                AND question_id IS NOT NULL
+                AND answer_id IS NULL
+                AND comment_id IS NULL
             )
             OR (
                 type = 'ANSWER'
-                AND id_question IS NULL
-                AND id_answer IS NOT NULL
-                AND id_comment IS NULL
+                AND question_id IS NULL
+                AND answer_id IS NOT NULL
+                AND comment_id IS NULL
             )
             OR (
                 type = 'COMMENT'
-                AND id_question IS NULL
-                AND id_answer IS NULL
-                AND id_comment IS NOT NULL
+                AND question_id IS NULL
+                AND answer_id IS NULL
+                AND comment_id IS NOT NULL
             )
         )
     );
 
 CREATE TABLE
-    user_badge (
-        id_user INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-        id_badge INTEGER NOT NULL REFERENCES badge (id) ON DELETE CASCADE,
+    badge_user (
+        user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        badge_id INTEGER NOT NULL REFERENCES badges (id) ON DELETE CASCADE,
         date DATE DEFAULT now () NOT NULL,
-        PRIMARY KEY (id_user, id_badge)
+        PRIMARY KEY (user_id, badge_id)
     );
 
 CREATE TABLE
-    notification (
+    notifications (
         id SERIAL PRIMARY KEY,
         date TIMESTAMP DEFAULT now () NOT NULL,
         type notification_type NOT NULL,
-        id_answer INTEGER REFERENCES answer (id) ON DELETE CASCADE,
-        id_upvote INTEGER REFERENCES vote (id) ON DELETE CASCADE,
-        id_badge INTEGER REFERENCES badge (id) ON DELETE CASCADE,
-        id_user INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
+        upvote_id INTEGER REFERENCES votes (id) ON DELETE CASCADE,
+        badge_id INTEGER REFERENCES badges (id) ON DELETE CASCADE,
+        user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
         CHECK (
             (
                 type = 'ANSWER'
-                AND id_answer IS NOT NULL
-                AND id_upvote IS NULL
-                AND id_badge IS NULL
+                AND answer_id IS NOT NULL
+                AND upvote_id IS NULL
+                AND badge_id IS NULL
             )
             OR (
                 type = 'UPVOTE'
-                AND id_answer IS NULL
-                AND id_upvote IS NOT NULL
-                AND id_badge IS NULL
+                AND answer_id IS NULL
+                AND upvote_id IS NOT NULL
+                AND badge_id IS NULL
             )
             OR (
                 type = 'BADGE'
-                AND id_answer IS NULL
-                AND id_upvote IS NULL
-                AND id_badge IS NOT NULL
+                AND answer_id IS NULL
+                AND upvote_id IS NULL
+                AND badge_id IS NOT NULL
             )
         )
     );
@@ -256,23 +256,23 @@ CREATE TABLE
 
 CREATE TABLE
     followed_questions (
-        id_user INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-        id_question INTEGER NOT NULL REFERENCES question (id) ON DELETE CASCADE,
-        PRIMARY KEY (id_user, id_question)
+        user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
+        PRIMARY KEY (user_id, question_id)
     );
 
 CREATE TABLE
     followed_tags (
-        id_user INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-        id_tag INTEGER NOT NULL REFERENCES tag (id) ON DELETE CASCADE,
-        PRIMARY KEY (id_user, id_tag)
+        user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        tag_id INTEGER NOT NULL REFERENCES tags (id) ON DELETE CASCADE,
+        PRIMARY KEY (user_id, tag_id)
     );
 
 CREATE TABLE
     followed_users (
-        id_follower INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-        id_followed INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
-        PRIMARY KEY (id_follower, id_followed)
+        follower_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        followed_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+        PRIMARY KEY (follower_id, followed_id)
     );
 
 -----------------------------------------
@@ -293,13 +293,13 @@ DROP INDEX IF EXISTS most_recent_version;
 
 CREATE INDEX most_recent_version ON content_version USING btree (date DESC NULLS LAST);
 
-CREATE INDEX vote_type ON vote USING hash (is_upvote);
+CREATE INDEX vote_type ON votes USING hash (is_upvote);
 
-CREATE INDEX search_tag_name ON tag USING GIN (search_tag_name);
+CREATE INDEX search_tag_name ON tags USING GIN (search_tag_name);
 
-CREATE INDEX search_tag_description ON tag USING GIN (search_tag_description);
+CREATE INDEX search_tag_description ON tags USING GIN (search_tag_description);
 
-CREATE INDEX search_question_title ON question USING GIN (search_title);
+CREATE INDEX search_question_title ON questions USING GIN (search_title);
 
 CREATE INDEX search_question_body ON content_version USING GIST (search_body);
 
@@ -394,24 +394,24 @@ BEGIN
             --Increase score by 1 for an upvote
             UPDATE users
             SET score = score + 1
-            WHERE id = NEW.id_user;
+            WHERE id = NEW.user_id;
         ELSE
             --Decrease score by 1 for a downvote
             UPDATE users
             SET score = score - 1
-            WHERE id = NEW.id_user;
+            WHERE id = NEW.user_id;
         END IF;
     ELSIF TG_OP = 'DELETE' THEN
         IF OLD.is_upvote THEN
             --Decrease score by 1 for a deleted upvote
             UPDATE users
             SET score = score - 1
-            WHERE id = OLD.id_user;
+            WHERE id = OLD.user_id;
         ELSE
             --Increase score by 1 for a deleted downvote
             UPDATE users
             SET score = score + 1
-            WHERE id = OLD.id_user;
+            WHERE id = OLD.user_id;
         END IF;
     END IF;
 
@@ -421,7 +421,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER update_score
-        AFTER INSERT OR DELETE ON vote
+        AFTER INSERT OR DELETE ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE update_score();
 
@@ -433,7 +433,7 @@ DROP FUNCTION IF EXISTS send_answer_notification() CASCADE;
 CREATE FUNCTION send_answer_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-    INSERT INTO notification (date, type, id_answer, id_user)
+    INSERT INTO notifications (date, type, answer_id, user_id)
     VALUES (NOW(), 'ANSWER', NEW.id, NEW.author);
 
     RETURN NULL;
@@ -442,7 +442,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER send_answer_notification
-        AFTER INSERT ON answer
+        AFTER INSERT ON answers
         FOR EACH ROW
         EXECUTE PROCEDURE send_answer_notification();
 
@@ -456,8 +456,8 @@ CREATE FUNCTION send_upvote_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.is_upvote THEN
-        INSERT INTO notification (date, type, id_upvote, id_user)
-        VALUES (NOW(), 'UPVOTE', NEW.id, NEW.id_user);
+        INSERT INTO notifications (date, type, upvote_id, user_id)
+        VALUES (NOW(), 'UPVOTE', NEW.id, NEW.user_id);
     END IF;
 
     RETURN NULL;
@@ -466,21 +466,21 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER send_upvote_notification
-        AFTER INSERT ON vote
+        AFTER INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE send_upvote_notification();
 
 
 -- TRIGGER 05
--- A notification must be sent after a badge is received
+-- A notification must be sent after a badges is received
 
 DROP FUNCTION IF EXISTS send_badge_notification() CASCADE;
 
 CREATE FUNCTION send_badge_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-    INSERT INTO notification (date, type, id_badge, id_user)
-    VALUES (NOW(), 'BADGE', NEW.id_badge, NEW.id_user);
+    INSERT INTO notifications (date, type, badge_id, user_id)
+    VALUES (NOW(), 'BADGE', NEW.badge_id, NEW.user_id);
 
     RETURN NULL;
 END
@@ -488,7 +488,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER send_badge_notification
-        AFTER INSERT ON user_badge
+        AFTER INSERT ON badge_user
         FOR EACH ROW
         EXECUTE PROCEDURE send_badge_notification();
 
@@ -517,7 +517,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_question
-        BEFORE INSERT OR UPDATE ON question
+        BEFORE INSERT OR UPDATE ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_question();
 
@@ -550,7 +550,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_tag
-        BEFORE INSERT OR UPDATE ON tag
+        BEFORE INSERT OR UPDATE ON tags
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_tag();
 
@@ -590,14 +590,14 @@ DECLARE
 BEGIN
     question_id := OLD.id;
     
-    DELETE FROM question_tag WHERE id_tag = question_id;
+    DELETE FROM question_tag WHERE tag_id = question_id;
     
-    FOR question_id IN SELECT DISTINCT id_question FROM question_tag
+    FOR question_id IN SELECT DISTINCT question_id FROM question_tag
     LOOP
-        SELECT COUNT(*) INTO question_count FROM question_tag WHERE id_question = question_id;
+        SELECT COUNT(*) INTO question_count FROM question_tag WHERE question_id = question_id;
         
         IF question_count = 0 THEN
-            DELETE FROM question WHERE id = question_id;
+            DELETE FROM questions WHERE id = question_id;
         END IF;
     END LOOP;
     
@@ -607,7 +607,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER remove_question_no_tag
-        BEFORE DELETE ON tag
+        BEFORE DELETE ON tags
         FOR EACH ROW
         EXECUTE PROCEDURE remove_question_no_tag();
 		
@@ -629,7 +629,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER update_experience_question
-        AFTER INSERT ON question
+        AFTER INSERT ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE update_experience_question();
 
@@ -652,7 +652,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER update_experience_answer
-        AFTER INSERT ON answer
+        AFTER INSERT ON answers
         FOR EACH ROW
         EXECUTE PROCEDURE update_experience_answer();
 
@@ -665,7 +665,7 @@ DROP FUNCTION IF EXISTS verify_annexes() CASCADE;
 CREATE FUNCTION verify_annexes() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-    IF (SELECT COUNT(*) FROM annex WHERE id_version = NEW.id) > 5 THEN
+    IF (SELECT COUNT(*) FROM annexes WHERE version_id = NEW.id) > 5 THEN
         RAISE EXCEPTION 'A content version cannot have more than five annexes.';
     END IF;
 
@@ -687,16 +687,16 @@ DROP FUNCTION IF EXISTS prevent_self_voting() CASCADE;
 CREATE FUNCTION prevent_self_voting() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-    IF NEW.type = 'QUESTION' AND NEW.id_user = (SELECT author FROM question WHERE id = NEW.id_question) THEN
-        RAISE EXCEPTION 'You cannot vote on your own question';
+    IF NEW.type = 'QUESTION' AND NEW.user_id = (SELECT author FROM questions WHERE id = NEW.question_id) THEN
+        RAISE EXCEPTION 'You cannot votes on your own question';
     END IF;
 
-    IF NEW.type = 'ANSWER' AND NEW.id_user = (SELECT author FROM answer WHERE id = NEW.id_answer) THEN
-        RAISE EXCEPTION 'You cannot vote on your own answer';
+    IF NEW.type = 'ANSWER' AND NEW.user_id = (SELECT author FROM answers WHERE id = NEW.answer_id) THEN
+        RAISE EXCEPTION 'You cannot votes on your own answer';
     END IF;
 
-    IF NEW.type = 'COMMENT' AND NEW.id_user = (SELECT author FROM comments WHERE id = NEW.id_comment) THEN
-        RAISE EXCEPTION 'You cannot vote on your own comment';
+    IF NEW.type = 'COMMENT' AND NEW.user_id = (SELECT author FROM comments WHERE id = NEW.comment_id) THEN
+        RAISE EXCEPTION 'You cannot votes on your own comment';
     END IF;
 
   RETURN NEW;
@@ -705,7 +705,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER prevent_self_voting
-        BEFORE INSERT ON vote
+        BEFORE INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE prevent_self_voting();	
 		
@@ -717,7 +717,7 @@ DROP FUNCTION IF EXISTS prevent_self_answering() CASCADE;
 CREATE FUNCTION prevent_self_answering() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-    IF NEW.author = (SELECT author FROM question WHERE id = NEW.id_question) THEN
+    IF NEW.author = (SELECT author FROM questions WHERE id = NEW.question_id) THEN
         RAISE EXCEPTION 'You cannot answer your own question';
     END IF;
 
@@ -727,12 +727,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER prevent_self_answering
-        BEFORE INSERT ON answer
+        BEFORE INSERT ON answers
         FOR EACH ROW
         EXECUTE PROCEDURE prevent_self_answering();
 		
 -- TRIGGER 15
--- A badge should be given when a user asks a question for the first time.
+-- A badges should be given when a user asks a question for the first time.
 
 DROP FUNCTION IF EXISTS badge_first_question() CASCADE;
 
@@ -740,10 +740,10 @@ CREATE FUNCTION badge_first_question() RETURNS TRIGGER AS
 $BODY$
 BEGIN
    IF (SELECT COUNT(*)
-    FROM question
+    FROM questions
     WHERE author = NEW.author) = 1 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = 'First Question'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = 'First Question'));
     END IF;
 
     RETURN NEW;
@@ -752,12 +752,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_first_question
-        AFTER INSERT ON question
+        AFTER INSERT ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE badge_first_question();
 
 -- TRIGGER 16
--- A badge should be given when a user asks 10 questions.
+-- A badges should be given when a user asks 10 questions.
 
 DROP FUNCTION IF EXISTS badge_ten_questions() CASCADE;
 
@@ -765,10 +765,10 @@ CREATE FUNCTION badge_ten_questions() RETURNS TRIGGER AS
 $BODY$
 BEGIN
    IF (SELECT COUNT(*)
-    FROM question
+    FROM questions
     WHERE author = NEW.author) = 1 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '10 Questions'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '10 Questions'));
     END IF;
 
     RETURN NEW;
@@ -777,12 +777,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_ten_questions
-        AFTER INSERT ON question
+        AFTER INSERT ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE badge_ten_questions();
 
 -- TRIGGER 17
--- A badge should be given when a user asks 50 questions.
+-- A badges should be given when a user asks 50 questions.
 
 DROP FUNCTION IF EXISTS badge_fifty_questions() CASCADE;
 
@@ -790,10 +790,10 @@ CREATE FUNCTION badge_fifty_questions() RETURNS TRIGGER AS
 $BODY$
 BEGIN
    IF (SELECT COUNT(*)
-    FROM question
+    FROM questions
     WHERE author = NEW.author) = 50 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '50 Questions'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '50 Questions'));
     END IF;
 
     RETURN NEW;
@@ -802,12 +802,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_fifty_questions
-        AFTER INSERT ON question
+        AFTER INSERT ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE badge_fifty_questions();
 
 -- TRIGGER 18
--- A badge should be given when a user asks 100 questions.
+-- A badges should be given when a user asks 100 questions.
 
 DROP FUNCTION IF EXISTS badge_one_hundred_questions() CASCADE;
 
@@ -815,10 +815,10 @@ CREATE FUNCTION badge_one_hundred_questions() RETURNS TRIGGER AS
 $BODY$
 BEGIN
    IF (SELECT COUNT(*)
-    FROM question
+    FROM questions
     WHERE author = NEW.author) = 100 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '100 Questions'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '100 Questions'));
     END IF;
 
     RETURN NEW;
@@ -827,12 +827,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_one_hundred_questions
-        AFTER INSERT ON question
+        AFTER INSERT ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE badge_one_hundred_questions();
 		
 -- TRIGGER 19
--- A badge should be given when a user answers for the first time.
+-- A badges should be given when a user answers for the first time.
 
 DROP FUNCTION IF EXISTS badge_first_answer() CASCADE;
 
@@ -840,10 +840,10 @@ CREATE FUNCTION badge_first_answer() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF(SELECT COUNT(*)
-    FROM answer
+    FROM answers
     WHERE author = NEW.author) = 1 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = 'First Answer'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = 'First Answer'));
     END IF;
 
     RETURN NEW;
@@ -852,12 +852,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_first_answer
-        AFTER INSERT ON answer
+        AFTER INSERT ON answers
         FOR EACH ROW
         EXECUTE PROCEDURE badge_first_answer();
 
 -- TRIGGER 20
--- A badge should be given when a user answers 10 times.
+-- A badges should be given when a user answers 10 times.
 
 DROP FUNCTION IF EXISTS badge_10_answers() CASCADE;
 
@@ -865,10 +865,10 @@ CREATE FUNCTION badge_10_answers() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF(SELECT COUNT(*)
-    FROM answer
+    FROM answers
     WHERE author = NEW.author) = 10 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '10 Answers'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '10 Answers'));
     END IF;
 
     RETURN NEW;
@@ -877,12 +877,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_10_answers
-        AFTER INSERT ON answer
+        AFTER INSERT ON answers
         FOR EACH ROW
         EXECUTE PROCEDURE badge_10_answers();
 
 -- TRIGGER 21
--- A badge should be given when a user answers 50 times.
+-- A badges should be given when a user answers 50 times.
 
 DROP FUNCTION IF EXISTS badge_50_answers() CASCADE;
 
@@ -890,10 +890,10 @@ CREATE FUNCTION badge_50_answers() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF(SELECT COUNT(*)
-    FROM answer
+    FROM answers
     WHERE author = NEW.author) = 50 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '50 Answers'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '50 Answers'));
     END IF;
 
     RETURN NEW;
@@ -902,12 +902,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_50_answers
-        AFTER INSERT ON answer
+        AFTER INSERT ON answers
         FOR EACH ROW
         EXECUTE PROCEDURE badge_50_answers();
 
 -- TRIGGER 22
--- A badge should be given when a user answers 100 times.
+-- A badges should be given when a user answers 100 times.
 
 DROP FUNCTION IF EXISTS badge_100_answers() CASCADE;
 
@@ -915,10 +915,10 @@ CREATE FUNCTION badge_100_answers() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF(SELECT COUNT(*)
-    FROM answer
+    FROM answers
     WHERE author = NEW.author) = 100 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '100 Answers'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '100 Answers'));
     END IF;
 
     RETURN NEW;
@@ -927,12 +927,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_100_answers
-        AFTER INSERT ON answer
+        AFTER INSERT ON answers
         FOR EACH ROW
         EXECUTE PROCEDURE badge_100_answers();
 
 -- TRIGGER 23
--- A badge should be given when a user comments for the first time.
+-- A badges should be given when a user comments for the first time.
 
 DROP FUNCTION IF EXISTS badge_first_comment() CASCADE;
 
@@ -942,8 +942,8 @@ BEGIN
     IF (SELECT COUNT(*)
     FROM comments
     WHERE author = NEW.author) = 1 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = 'First Comment'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = 'First Comment'));
     END IF;
 
     RETURN NEW;
@@ -958,7 +958,7 @@ CREATE TRIGGER badge_first_comment
 
 
 -- TRIGGER 24
--- A badge should be given when a user comments 10 times.
+-- A badges should be given when a user comments 10 times.
 
 DROP FUNCTION IF EXISTS badge_10_comments() CASCADE;
 
@@ -968,8 +968,8 @@ BEGIN
     IF (SELECT COUNT(*)
     FROM comments
     WHERE author = NEW.author) = 10 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '10 Comments'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '10 Comments'));
     END IF;
 
     RETURN NEW;
@@ -983,7 +983,7 @@ CREATE TRIGGER badge_10_comments
         EXECUTE PROCEDURE badge_10_comments();
     
 -- TRIGGER 25
--- A badge should be given when a user comments 50 times.
+-- A badges should be given when a user comments 50 times.
 
 DROP FUNCTION IF EXISTS badge_50_comments() CASCADE;
 
@@ -993,8 +993,8 @@ BEGIN
     IF (SELECT COUNT(*)
     FROM comments
     WHERE author = NEW.author) = 50 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '50 Comments'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '50 Comments'));
     END IF;
 
     RETURN NEW;
@@ -1009,7 +1009,7 @@ CREATE TRIGGER badge_50_comments
     
     
 -- TRIGGER 26
--- A badge should be given when a user comments 100 times.
+-- A badges should be given when a user comments 100 times.
 
 DROP FUNCTION IF EXISTS badge_100_comments() CASCADE;
 
@@ -1019,8 +1019,8 @@ BEGIN
     IF (SELECT COUNT(*)
     FROM comments
     WHERE author = NEW.author) = 100 THEN
-        INSERT INTO user_badge (id_user, id_badge)
-        VALUES (NEW.author, (SELECT id FROM badge WHERE name = '100 Comments'));
+        INSERT INTO badge_user (user_id, badge_id)
+        VALUES (NEW.author, (SELECT id FROM badges WHERE name = '100 Comments'));
     END IF;
 
     RETURN NEW;
@@ -1034,7 +1034,7 @@ CREATE TRIGGER badge_100_comments
         EXECUTE PROCEDURE badge_100_comments();
 		
 -- TRIGGER 27
--- A badge should be given when a user receives the first upvote.
+-- A badges should be given when a user receives the first upvote.
 
 DROP FUNCTION IF EXISTS badge_first_upvote() CASCADE;
 
@@ -1042,10 +1042,10 @@ CREATE FUNCTION badge_first_upvote() RETURNS TRIGGER AS
 $BODY$
 BEGIN
         IF (SELECT COUNT(*) FROM 
-            vote JOIN question ON vote.id_question = question.id JOIN answer ON vote.id_answer = answer.id JOIN comments ON vote.id_comment = comments.id
-            WHERE vote.id_user = NEW.id_user AND is_upvote = true) = 1 THEN
-            INSERT INTO user_badge (id_user, id_badge)
-            VALUES (NEW.id_user, (SELECT id FROM badge WHERE name = 'First Upvote'));
+            votes JOIN questions ON votes.question_id = question.id JOIN answers ON votes.answer_id = answer.id JOIN comments ON votes.comment_id = comments.id
+            WHERE votes.user_id = NEW.user_id AND is_upvote = true) = 1 THEN
+            INSERT INTO badge_user (user_id, badge_id)
+            VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = 'First Upvote'));
         END IF;
 
     RETURN NEW;
@@ -1054,12 +1054,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_first_upvote
-        AFTER INSERT ON vote
+        AFTER INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE badge_first_upvote();
 		
 -- TRIGGER 28
--- A badge should be given when a user receives the first downvote.
+-- A badges should be given when a user receives the first downvote.
 
 DROP FUNCTION IF EXISTS badge_first_downvote() CASCADE;
 
@@ -1067,10 +1067,10 @@ CREATE FUNCTION badge_first_downvote() RETURNS TRIGGER AS
 $BODY$
 BEGIN
         IF (SELECT COUNT(*) FROM 
-            vote JOIN question ON vote.id_question = question.id JOIN answer ON vote.id_answer = answer.id JOIN comments ON vote.id_comment = comments.id
-            WHERE vote.id_user = NEW.id_user AND is_upvote = false) = 1 THEN
-            INSERT INTO user_badge (id_user, id_badge)
-            VALUES (NEW.id_user, (SELECT id FROM badge WHERE name = 'First Downvote'));
+            votes JOIN questions ON votes.question_id = question.id JOIN answers ON votes.answer_id = answer.id JOIN comments ON votes.comment_id = comments.id
+            WHERE votes.user_id = NEW.user_id AND is_upvote = false) = 1 THEN
+            INSERT INTO badge_user (user_id, badge_id)
+            VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = 'First Downvote'));
         END IF;
 
     RETURN NEW;
@@ -1079,12 +1079,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_first_downvote
-        AFTER INSERT ON vote
+        AFTER INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE badge_first_downvote();
 		
 -- TRIGGER 29
--- A badge should be given when a user reaches 100 score.
+-- A badges should be given when a user reaches 100 score.
 
 DROP FUNCTION IF EXISTS badge_100_score() CASCADE;
 
@@ -1092,10 +1092,10 @@ CREATE FUNCTION badge_100_score() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.is_upvote = true THEN
-        IF (SELECT score FROM users WHERE id = NEW.id_user) = 100 AND
-           (SELECT COUNT(*) FROM user_badge WHERE id_user = NEW.id_user AND id_badge = (SELECT id FROM badge WHERE name = '100 Score')) = 0 THEN
-            INSERT INTO user_badge (id_user, id_badge)
-            VALUES (NEW.id_user, (SELECT id FROM badge WHERE name = '100 Score'));
+        IF (SELECT score FROM users WHERE id = NEW.user_id) = 100 AND
+           (SELECT COUNT(*) FROM badge_user WHERE user_id = NEW.user_id AND badge_id = (SELECT id FROM badges WHERE name = '100 Score')) = 0 THEN
+            INSERT INTO badge_user (user_id, badge_id)
+            VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = '100 Score'));
         END IF;
     END IF;
 
@@ -1105,12 +1105,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_100_score
-        AFTER INSERT ON vote
+        AFTER INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE badge_100_score();
     
 -- TRIGGER 30
--- A badge should be given when a user reaches 1000 score.
+-- A badges should be given when a user reaches 1000 score.
 
 DROP FUNCTION IF EXISTS badge_1000_score() CASCADE;
 
@@ -1118,10 +1118,10 @@ CREATE FUNCTION badge_1000_score() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.is_upvote = true THEN
-        IF (SELECT score FROM users WHERE id = NEW.id_user) = 1000 AND
-           (SELECT COUNT(*) FROM user_badge WHERE id_user = NEW.id_user AND id_badge = (SELECT id FROM badge WHERE name = '1000 Score')) = 0 THEN
-            INSERT INTO user_badge (id_user, id_badge)
-            VALUES (NEW.id_user, (SELECT id FROM badge WHERE name = '1000 Score'));
+        IF (SELECT score FROM users WHERE id = NEW.user_id) = 1000 AND
+           (SELECT COUNT(*) FROM badge_user WHERE user_id = NEW.user_id AND badge_id = (SELECT id FROM badges WHERE name = '1000 Score')) = 0 THEN
+            INSERT INTO badge_user (user_id, badge_id)
+            VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = '1000 Score'));
         END IF;
     END IF;
 
@@ -1131,12 +1131,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_1000_score
-        AFTER INSERT ON vote
+        AFTER INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE badge_1000_score();
 
 -- TRIGGER 31
--- A badge should be given when a user reaches 5000 score.
+-- A badges should be given when a user reaches 5000 score.
 
 DROP FUNCTION IF EXISTS badge_5000_score() CASCADE;
 
@@ -1144,10 +1144,10 @@ CREATE FUNCTION badge_5000_score() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.is_upvote = true THEN
-        IF (SELECT score FROM users WHERE id = NEW.id_user) = 5000 AND
-           (SELECT COUNT(*) FROM user_badge WHERE id_user = NEW.id_user AND id_badge = (SELECT id FROM badge WHERE name = '5000 Score')) = 0 THEN
-            INSERT INTO user_badge (id_user, id_badge)
-            VALUES (NEW.id_user, (SELECT id FROM badge WHERE name = '5000 Score'));
+        IF (SELECT score FROM users WHERE id = NEW.user_id) = 5000 AND
+           (SELECT COUNT(*) FROM badge_user WHERE user_id = NEW.user_id AND badge_id = (SELECT id FROM badges WHERE name = '5000 Score')) = 0 THEN
+            INSERT INTO badge_user (user_id, badge_id)
+            VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = '5000 Score'));
         END IF;
     END IF;
 
@@ -1157,12 +1157,12 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_5000_score
-        AFTER INSERT ON vote
+        AFTER INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE badge_5000_score();
 
 -- TRIGGER 32
--- A badge should be given when a user reaches 10000 score.
+-- A badges should be given when a user reaches 10000 score.
 
 DROP FUNCTION IF EXISTS badge_10000_score() CASCADE;
 
@@ -1170,10 +1170,10 @@ CREATE FUNCTION badge_10000_score() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.is_upvote = true THEN
-        IF (SELECT score FROM users WHERE id = NEW.id_user) = 10000 AND
-           (SELECT COUNT(*) FROM user_badge WHERE id_user = NEW.id_user AND id_badge = (SELECT id FROM badge WHERE name = '10000 Score')) = 0 THEN
-            INSERT INTO user_badge (id_user, id_badge)
-            VALUES (NEW.id_user, (SELECT id FROM badge WHERE name = '10000 Score'));
+        IF (SELECT score FROM users WHERE id = NEW.user_id) = 10000 AND
+           (SELECT COUNT(*) FROM badge_user WHERE user_id = NEW.user_id AND badge_id = (SELECT id FROM badges WHERE name = '10000 Score')) = 0 THEN
+            INSERT INTO badge_user (user_id, badge_id)
+            VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = '10000 Score'));
         END IF;
     END IF;
 
@@ -1183,7 +1183,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER badge_10000_score
-        AFTER INSERT ON vote
+        AFTER INSERT ON votes
         FOR EACH ROW
         EXECUTE PROCEDURE badge_10000_score();
 
@@ -2319,7 +2319,7 @@ VALUES
     );
 
 INSERT INTO
-    tag (name, description)
+    tags (name, description)
 VALUES
     (
         'Budgeting',
@@ -2371,7 +2371,7 @@ VALUES
     );
 
 INSERT INTO
-    badge (name, description, image_path)
+    badges (name, description, image_path)
 VALUES
     (
         'First Question',
@@ -2480,7 +2480,7 @@ VALUES
     );
 
 INSERT INTO
-    question (title, author)
+    questions (title, author)
 VALUES
     ('How to Create a Budget for Living Alone', 3),
     ('Simple Recipes for Beginners', 6),
@@ -2770,7 +2770,7 @@ VALUES
     ('Understanding Sustainable Tech Practices', 48);
 
 INSERT INTO
-    answer (author, id_question)
+    answers (author, question_id)
 VALUES
     (1, 1),
     (2, 1),
@@ -2824,7 +2824,7 @@ VALUES
     (50, 25);
 
 INSERT INTO
-    correct_answer (id_question, id_answer)
+    correct_answer (question_id, answer_id)
 VALUES
     (1, 3),
     (2, 6),
@@ -2939,7 +2939,7 @@ VALUES
     (111, 45);
 
 INSERT INTO
-    content_version (body, type, id_answer, id_question)
+    content_version (body, type, answer_id, question_id)
 VALUES
     (
         'Creating a budget for living alone can be a crucial step towards financial independence. Here are some tips to get you started:',
@@ -3159,7 +3159,7 @@ VALUES
     );
 
 INSERT INTO
-    content_version (body, type, id_question, id_answer)
+    content_version (body, type, question_id, answer_id)
 VALUES
     (
         'Finding affordable textbooks and study resources can significantly impact your budget. Here are some strategies to help you save on educational materials:',
@@ -3355,7 +3355,7 @@ VALUES
     );
 
 INSERT INTO
-    question_tag (id_question, id_tag)
+    question_tag (question_id, tag_id)
 VALUES
     (21, 4),
     (34, 2),
@@ -3427,7 +3427,7 @@ VALUES
 
 -- "Effective Communication in Professional Settings" matches "Smart Tax Planning"
 INSERT INTO
-    annex (type, file_path, id_version)
+    annexes (type, file_path, version_id)
 VALUES
     ('FILE', '/UserFiles/files/file2.txt', 3),
     ('FILE', '/UserFiles/files/file3.pdf', 4),
@@ -3486,7 +3486,7 @@ VALUES
     );
 
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'Great tips for budgeting! This will definitely help me manage my finances better.',
@@ -3561,7 +3561,7 @@ VALUES
 
 -- Comments related to budgeting
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'Great tips for budgeting! I''ll start doing this right away.',
@@ -3636,7 +3636,7 @@ VALUES
 
 -- Comments related to laundry
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'Laundry is a struggle for me. Thanks for the tips!',
@@ -3711,7 +3711,7 @@ VALUES
 
 -- Comments related to time management
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'Time management is a challenge for me. Do you have any techniques for staying focused?',
@@ -3744,7 +3744,7 @@ VALUES
 
 -- Comments related to job searching
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'Job searching is overwhelming. Do you have any advice on tailoring my resume?',
@@ -3777,7 +3777,7 @@ VALUES
 
 -- Comments related to renting an apartment
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'Renting my first apartment is exciting! How do I decide on a comfortable rent range?',
@@ -3810,7 +3810,7 @@ VALUES
 
 -- Comments related to healthcare options
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'I''m new to Portugal and healthcare options here are different. Can you explain?',
@@ -3843,7 +3843,7 @@ VALUES
 
 -- Comments related to insurance options
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'I need insurance but don''t know where to start. What types of insurance should I consider?',
@@ -3876,7 +3876,7 @@ VALUES
 
 -- Comments related to tax filing
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'Tax filing seems complicated. How can I gather all the necessary documents?',
@@ -3909,7 +3909,7 @@ VALUES
 
 -- Comments related to home repairs
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'I don''t know much about home repairs. What are some basic skills every adult should have?',
@@ -3942,7 +3942,7 @@ VALUES
 
 -- Comments related to grocery shopping
 INSERT INTO
-    comments (body, type, author, id_question, id_answer)
+    comments (body, type, author, question_id, answer_id)
 VALUES
     (
         'I''m a student on a tight budget. How can I save money while grocery shopping?',
@@ -3974,7 +3974,7 @@ VALUES
     );
 
 INSERT INTO
-    correct_answer (id_question, id_answer)
+    correct_answer (question_id, answer_id)
 VALUES
     (1, 1),
     (2, 4),
@@ -4000,7 +4000,7 @@ VALUES
     (25, 49);
 
 INSERT INTO
-    user_badge (id_user, id_badge, date)
+    badge_user (user_id, badge_id, date)
 VALUES
     (3, 1, '2023-10-30'),
     (5, 1, '2023-10-19'),
@@ -4034,7 +4034,7 @@ VALUES
     (90, 5, '2022-12-05');
 
 INSERT INTO
-    followed_questions (id_user, id_question)
+    followed_questions (user_id, question_id)
 VALUES
     (5, 54),
     (21, 24),
@@ -4084,7 +4084,7 @@ VALUES
     (23, 74);
 
 INSERT INTO
-    followed_tags (id_user, id_tag)
+    followed_tags (user_id, tag_id)
 VALUES
     (1, 13),
     (1, 14),
@@ -4133,7 +4133,7 @@ VALUES
     (90, 2);
 
 INSERT INTO
-    followed_users (id_follower, id_followed)
+    followed_users (follower_id, followed_id)
 VALUES
     (1, 2),
     (1, 3),
@@ -4181,13 +4181,13 @@ VALUES
     (89, 14);
 
 INSERT INTO
-    vote (
+    votes (
         is_upvote,
         type,
-        id_comment,
-        id_answer,
-        id_question,
-        id_user
+        comment_id,
+        answer_id,
+        question_id,
+        user_id
     )
 VALUES
     (true, 'QUESTION', NULL, NULL, 4, 1),
