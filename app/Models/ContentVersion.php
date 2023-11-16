@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class ContentVersion extends Model
 {
@@ -11,4 +13,29 @@ class ContentVersion extends Model
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
+
+    /**
+     * Get the annexes that the content version refers to.
+     */
+    public function annexes(): HasMany
+    {
+        return $this->hasMany(Annex::class);
+    }
+
+    /**
+     * Get the question that the content version refers to.
+     */
+    public function question(): BelongsTo
+    {
+        return $this->belongsTo(Question::class);
+    }
+
+    /**
+     * Get the answer that the content version refers to.
+     */
+    public function answer(): BelongsTo
+    {
+        return $this->belongsTo(Answer::class);
+    }
+    
 }

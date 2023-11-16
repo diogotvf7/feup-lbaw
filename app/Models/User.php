@@ -7,9 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-
-// Added to define Eloquent relationships.
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -50,10 +49,75 @@ class User extends Authenticatable
     ];
 
     /**
-     * Get the cards for a user.
+     * Get the badges of the user.
      */
-    public function cards(): HasMany
+    public function badges(): BelongsToMany
     {
-        return $this->hasMany(Card::class);
+        return $this->belongsToMany(Badge::class)->withPivot('date');
     }
+
+    /**
+     * Get the votes of the user.
+     */
+    public function votes(): HasMany
+    {
+        return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * Get the tags the user follows.
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class);
+    }
+
+    /**
+     * Get the notifications the user received.
+     */
+    public function notifications(): HasMany
+    {
+        return $this->hasMany(Notification::class);
+    }
+
+    /**
+     * Get the questions made by the user.
+     */
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class);
+    }
+    
+    /**
+     * Get the comments made by the user.
+     */
+    public function comments(): HasMany
+    {
+        return $this->hasMany(Comment::class);
+    }
+
+    /**
+     * Get the answers made by the user.
+     */
+    public function answers(): HasMany
+    {
+        return $this->hasMany(Answer::class);
+    }
+
+    /**
+     * Get the users that the user follows.
+     */
+    public function follows(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followed_users', 'follower_id', 'followed_id');
+    }
+
+    /**
+     * Get the followers of the user.
+     */
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'followed_users', 'followed_id', 'follower_id');
+    }
+
 }

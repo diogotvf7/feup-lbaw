@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Annex extends Model
 {
@@ -11,5 +12,15 @@ class Annex extends Model
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
+
+    protected $table = 'annexes';
+
+    /**
+     * Get the content version of the annex.
+     */
+    public function contentVersion(): BelongsTo
+    {
+        return $this->belongsTo(ContentVersion::class);
+    }
 }
 
