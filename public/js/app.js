@@ -1,4 +1,4 @@
-function addEventListeners() {
+/* function addEventListeners() {
     let itemCheckers = document.querySelectorAll('article.card li.item input[type=checkbox]');
     [].forEach.call(itemCheckers, function(checker) {
       checker.addEventListener('change', sendItemUpdateRequest);
@@ -178,4 +178,4 @@ function addEventListeners() {
   }
   
   addEventListeners();
-  
+   */
