@@ -1,37 +1,47 @@
 @extends('layouts.app')
 
 @section('content')
-<form method="POST" action="{{ route('login') }}">
-    {{ csrf_field() }}
+<nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarColor03">
+            <ul class="navbar-nav me-auto">
+                <li class= "nav-item">
+                    <a href=>Settings</a>
+                </li>
+                <li class= "nav-item">
+                    <a href=>My Questions</a>
+                </li>
+                <li class= "nav-item">
+                    <a href=>My Answers</a>
+                </li>
+                <li class= "nav-item">
+                    <a href=>My Comments</a>
+                </li>
+                <li class= "nav-item">
+                    <a href=>Follwed Questions</a>
+                </li>
+                <li class= "nav-item">
+                    <a href=>Followed Tags</a>
+                </li>
+                <li class= "nav-item">
+                    <a href=>Badges</a>
+                </li>
+            </ul>
+        </div>
+    <div>
+</nav>
 
-    <label for="email">E-mail</label>
-    <input id="email" type="email" name="email" value="{{ old('email') }}" required autofocus>
-    @if ($errors->has('email'))
-        <span class="error">
-          {{ $errors->first('email') }}
-        </span>
-    @endif
+<div>
+    <div class="profile-pic">
+    </div>
+    <h1 class="username"> Username </h1>
+    <div id="additional-info"></div>
+</div>
+<section>
+    <p> Hello </p>
+    <p> Hello again </p>
+    <p> Hello again again </p>
+</section>
 
-    <label for="password" >Password</label>
-    <input id="password" type="password" name="password" required>
-    @if ($errors->has('password'))
-        <span class="error">
-            {{ $errors->first('password') }}
-        </span>
-    @endif
 
-    <label>
-        <input type="checkbox" name="remember" {{ old('remember') ? 'checked' : '' }}> Remember Me
-    </label>
-
-    <button type="submit">
-        Login
-    </button>
-    <a class="button button-outline" href="{{ route('register') }}">Register</a>
-    @if (session('success'))
-        <p class="success">
-            {{ session('success') }}
-        </p>
-    @endif
-</form>
 @endsection
