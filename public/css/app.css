@@ -1,7 +1,8 @@
-/* body {
-    background-color: #ffffff;
-    color: #9b4dca;
-  }
+body {
+    background-color: #c8eaf7;
+    /* color: #9b4dca; */
+ }
+ /*
   main > header {
     display: grid;
     grid-template-columns: 1fr auto auto;
