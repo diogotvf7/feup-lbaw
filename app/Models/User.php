@@ -25,6 +25,7 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'username',
         'email',
         'password',
     ];
@@ -52,8 +53,8 @@ class User extends Authenticatable
     /**
      * Get the cards for a user.
      */
-    public function cards(): HasMany
-    {
-        return $this->hasMany(Card::class);
-    }
+    // public function cards(): HasMany
+    // {
+    //     return $this->hasMany(Card::class);
+    // }
 }
