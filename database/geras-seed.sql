@@ -1042,7 +1042,7 @@ CREATE FUNCTION badge_first_upvote() RETURNS TRIGGER AS
 $BODY$
 BEGIN
         IF (SELECT COUNT(*) FROM 
-            votes JOIN questions ON votes.question_id = question.id JOIN answers ON votes.answer_id = answer.id JOIN comments ON votes.comment_id = comments.id
+            votes JOIN questions ON votes.question_id = questions.id JOIN answers ON votes.answer_id = answers.id JOIN comments ON votes.comment_id = comments.id
             WHERE votes.user_id = NEW.user_id AND is_upvote = true) = 1 THEN
             INSERT INTO badge_user (user_id, badge_id)
             VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = 'First Upvote'));
@@ -1067,7 +1067,7 @@ CREATE FUNCTION badge_first_downvote() RETURNS TRIGGER AS
 $BODY$
 BEGIN
         IF (SELECT COUNT(*) FROM 
-            votes JOIN questions ON votes.question_id = question.id JOIN answers ON votes.answer_id = answer.id JOIN comments ON votes.comment_id = comments.id
+            votes JOIN questions ON votes.question_id = questions.id JOIN answers ON votes.answer_id = answers.id JOIN comments ON votes.comment_id = comments.id
             WHERE votes.user_id = NEW.user_id AND is_upvote = false) = 1 THEN
             INSERT INTO badge_user (user_id, badge_id)
             VALUES (NEW.user_id, (SELECT id FROM badges WHERE name = 'First Downvote'));

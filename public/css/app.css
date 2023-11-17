@@ -1,7 +1,8 @@
 body {
-    background-color: #ffffff;
-    color: #9b4dca;
-  }
+    background-color: #c8eaf7;
+    /* color: #9b4dca; */
+ }
+ /*
   main > header {
     display: grid;
     grid-template-columns: 1fr auto auto;
@@ -140,7 +141,7 @@ body {
    * Override milligram colors
    * Some styles might be missing
    **/
-  button {
+ /*  button {
     background-color: #9b4dca;
     border-color: #9b4dca;
   }
@@ -159,4 +160,4 @@ body {
   input[type=password]:focus {
     border-color: #9b4dca;
   }
-  
+   */
