@@ -28,13 +28,15 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:250',
+            'name' => 'nullable|string|max:250',
+            'username' => 'required|string|min:5|max:30|unique:users',
             'email' => 'required|email|max:250|unique:users',
             'password' => 'required|min:8|confirmed'
         ]);
 
         User::create([
             'name' => $request->name,
+            'username' => $request->username,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ]);
@@ -42,7 +44,9 @@ class RegisterController extends Controller
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
-        return redirect()->route('cards')
+        // TODO: quando tivermos uma págna principal mudar este redirect para:
+        // return redirect()->route('path-da-pagina-principal')
+        return redirect()->intended('/welcome')
             ->withSuccess('You have successfully registered & logged in!');
     }
 }

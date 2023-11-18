@@ -23,6 +23,12 @@ use App\Http\Controllers\UserController;
 // Home
 Route::redirect('/', '/login');
 
+// Main Page (welcome.blade.php)
+Route::get('/welcome', function () {
+    return view('/welcome');
+});
+
+
 // Cards
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');
