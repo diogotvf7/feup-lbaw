@@ -1,6 +1,7 @@
 @extends('layouts.app')
-
+dd($user);
 @section('content')
+
 <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarColor03">
@@ -31,12 +32,12 @@
         <div>
 </nav>
 
-<div class= "main-part d-flex justify-content-evenly align-items-center pt-4">
+<div class= "main-part d-flex justify-content-evenly align-items-baseline pt-4">
     <div class="card text-white bg-info mb-3" style=" width: 20em; max-width: 20em;" >
         <div class="card-body d-flex  align-items-center flex-column">
             <div class="profile-pic">
             </div>
-            <h4 class="username"> Username </h4>
+            <h4 class="username">{{$user->username}} </h4>
             <div id="additional-info">
                 <p>level 6 </p>
                 <p>badges 0 </p>
