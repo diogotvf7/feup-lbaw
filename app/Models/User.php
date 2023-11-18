@@ -86,7 +86,7 @@ class User extends Authenticatable
      */
     public function questions(): HasMany
     {
-        return $this->hasMany(Question::class);
+        return $this->hasMany(Question::class,'author');
     }
     
     /**

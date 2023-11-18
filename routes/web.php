@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -59,3 +60,13 @@ Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
 });
+
+// User
+Route::controller(UserController::class)->group(function () {
+    Route::get('/user/{user}','show')->where('user','[0-9]+')->name('profile');
+}); 
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('/user/{user}','show')->where('user','[0-9]+')->name('profile');
+    Route::get('/user/questions','questions');
+}); 

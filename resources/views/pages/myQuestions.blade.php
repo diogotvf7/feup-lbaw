@@ -1,31 +1,3 @@
-<!--
-@extends('layouts.app')
-
-@section('content')
-<nav id="Nav Bar">
-    <a href=>Settings</a>
-    <a href=>My Questions</a>
-    <a href=>My Answers</a>
-    <a href=>My Comments</a>
-    <a href=>Follwed Questions</a>
-    <a href=>Followed Tags</a>
-    <a href=>Badges</a>
-</nav>
-
-<div>
-    <div class="profile-pic">
-    </div>
-    <h1 class="username"> Username </h1>
-    <div id="additional-info"></div>
-
-</div>
-<section>
-    @each('partials.questionPreview',$question,'question')
-</section> 
-
-
-@endsection -->
-
 @extends('layouts.app')
 
 @section('content')
@@ -75,9 +47,7 @@
 
     <section class="card text-white bg-info mb-3" style="width: 50em;max-width: 60em;">
         <div class="card-body align-items-center flex-column">
-            <p> Hello </p>
-            <p> Hello again </p>
-            <p> Hello again again </p>
+            @each('partials.questionPreview', $questions, 'question')
         </div>
     </section>
 </div>

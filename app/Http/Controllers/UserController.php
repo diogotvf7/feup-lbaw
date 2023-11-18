@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Auth;
+
 class UserController extends Controller
 {
     /**
@@ -76,4 +78,21 @@ class UserController extends Controller
     {
         //
     }
+    
+    
+    public function questions(User $user){
+        if(!Auth::check()){
+            return redirect('/login');
+        }
+        else{
+
+            $questions= Auth::user()->questions()->orderby('id')->get();
+
+           // $this->authorize('questions',Question::class);
+
+            return view('pages.myQuestions',['questions' => $questions]);
+
+        }
+    }
+    
 }

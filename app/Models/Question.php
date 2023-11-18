@@ -37,7 +37,7 @@ class Question extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'author');
     }
 
     /**
@@ -73,12 +73,16 @@ class Question extends Model
     }
 
     /**
-     * Get the body of the question.
+     * Get the most recent version of the question.
      */
     public function updatedVersion(): HasOne
     {
         return $this->contentVersions()->one()->ofMany('date', 'max');
     }
+
+    /**
+     *  Get the oldest verison of a question
+     */
 
     public function firstVersion(): HasOne
     {

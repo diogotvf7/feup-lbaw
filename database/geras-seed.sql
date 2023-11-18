@@ -26,7 +26,7 @@ DROP TABLE IF EXISTS comments CASCADE;
 
 DROP TABLE IF EXISTS correct_answer CASCADE;
 
-DROP TABLE IF EXISTS content_version CASCADE;
+DROP TABLE IF EXISTS content_versions CASCADE;
 
 DROP TABLE IF EXISTS question_tag CASCADE;
 
@@ -141,7 +141,7 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    content_version (
+    content_versions (
         id SERIAL PRIMARY KEY,
         body TEXT NOT NULL,
         search_body TSVECTOR NOT NULL,
@@ -175,7 +175,7 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         type file_type NOT NULL,
         file_path TEXT NOT NULL,
-        version_id INTEGER NOT NULL REFERENCES content_version (id) ON DELETE CASCADE
+        version_id INTEGER NOT NULL REFERENCES content_versions (id) ON DELETE CASCADE
     );
 
 CREATE TABLE
@@ -291,7 +291,7 @@ DROP INDEX IF EXISTS vote_type;
 
 DROP INDEX IF EXISTS most_recent_version;
 
-CREATE INDEX most_recent_version ON content_version USING btree (date DESC NULLS LAST);
+CREATE INDEX most_recent_version ON content_versions USING btree (date DESC NULLS LAST);
 
 CREATE INDEX vote_type ON votes USING hash (is_upvote);
 
@@ -301,7 +301,7 @@ CREATE INDEX search_tag_description ON tags USING GIN (search_tag_description);
 
 CREATE INDEX search_question_title ON questions USING GIN (search_title);
 
-CREATE INDEX search_question_body ON content_version USING GIST (search_body);
+CREATE INDEX search_question_body ON content_versions USING GIST (search_body);
 
 -----------------------------------------
 -- Triggers
@@ -573,7 +573,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_content_version
-        BEFORE INSERT OR UPDATE ON content_version
+        BEFORE INSERT OR UPDATE ON content_versions
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_content_version();
 		
@@ -675,7 +675,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER verify_annexes
-        AFTER INSERT ON content_version
+        AFTER INSERT ON content_versions
         FOR EACH ROW
         EXECUTE PROCEDURE verify_annexes();
 		
@@ -1337,7 +1337,7 @@ VALUES
         'user9@example.com',
         'Benjamin Taylor',
         'btaylor',
-        '$2y$10$5HCN8mzN/F1g9cAhP1GhuHf3KdeKJdizsdQbjq6N3sP9dx0Si54Oi',
+        '$2a$10$9zopfEmCd4thoxw5VPIfROfOdLD1NNbo6Ht9TQO8BU0u2Gp7xOAFO',
         '/userFiles/profilePics/profile9.jpg',
         18,
         220,
@@ -2939,7 +2939,7 @@ VALUES
     (111, 45);
 
 INSERT INTO
-    content_version (body, type, answer_id, question_id)
+    content_versions (body, type, answer_id, question_id)
 VALUES
     (
         'Creating a budget for living alone can be a crucial step towards financial independence. Here are some tips to get you started:',
@@ -3159,7 +3159,7 @@ VALUES
     );
 
 INSERT INTO
-    content_version (body, type, question_id, answer_id)
+    content_versions (body, type, question_id, answer_id)
 VALUES
     (
         'Finding affordable textbooks and study resources can significantly impact your budget. Here are some strategies to help you save on educational materials:',
