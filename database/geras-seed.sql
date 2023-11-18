@@ -100,13 +100,13 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         search_title TSVECTOR NOT NULL,
-        author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL
+        author INTEGER REFERENCES users (id) ON DELETE SET NULL
     );
 
 CREATE TABLE
     answers (
         id SERIAL PRIMARY KEY,
-        author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL,
+        author INTEGER REFERENCES users (id) ON DELETE SET NULL,
         question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE
     );
 
@@ -116,7 +116,7 @@ CREATE TABLE
         body TEXT NOT NULL,
         type main_content_type NOT NULL,
         date TIMESTAMP default now () NOT NULL,
-        author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL,
+        author INTEGER REFERENCES users (id) ON DELETE SET NULL,
         question_id INTEGER REFERENCES questions (id) ON DELETE CASCADE,
         answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         CHECK (

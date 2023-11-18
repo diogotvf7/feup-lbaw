@@ -58,9 +58,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Int $user_id)
     {
-        //
+        $user = User::find($user_id);
+        return view('pages.edit_user', compact('user'));
     }
 
     /**
@@ -68,14 +69,17 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        $user->name = $request->input('name');
+        $user->save();
+        return redirect()->route('users');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Int $user_id)
     {
+        $user = User::find($user_id);
         $user->delete();
         return redirect()->route('users');
     }

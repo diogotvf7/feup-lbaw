@@ -38,6 +38,12 @@
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </form> 
+                            <form action="{{ route('users.edit', $user->id) }}" method="GET">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit User">
+                                    <i class="bi bi-pencil-fill"></i>
+                                </button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach

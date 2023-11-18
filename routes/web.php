@@ -40,12 +40,9 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
     Route::get('/users/{id}', 'show');
     Route::delete('/users/{id}', 'destroy')->name('users.destroy');
+    Route::get('/users/{id}/edit', 'edit')->name('users.edit');
+    Route::put('/users/{id}', 'update')->name('users.update');
 });
-
-// Route::controller(UsersController::class)->group(function () {
-//     Route::get('/admin/users', 'index')->name('admin');
-//     // Route::get('/admin/{id}', 'show');
-// });
 
 // API
 Route::controller(CardController::class)->group(function () {
