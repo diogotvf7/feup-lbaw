@@ -2,6 +2,10 @@ body {
     background-color: #c8eaf7;
     /* color: #9b4dca; */
  }
+
+.error {
+  color: rgb(165, 36, 36); 
+}
  /*
   main > header {
     display: grid;
