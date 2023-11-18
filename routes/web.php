@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswerController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -35,7 +36,6 @@ Route::controller(CardController::class)->group(function () {
     Route::get('/cards/{id}', 'show');
 });
 
-// Cards
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/question/{question}', 'show');
 });
@@ -51,6 +51,10 @@ Route::controller(ItemController::class)->group(function () {
     Route::put('/api/cards/{card_id}', 'create');
     Route::post('/api/item/{id}', 'update');
     Route::delete('/api/item/{id}', 'delete');
+});
+
+Route::controller(AnswerController::class)->group(function () {
+    Route::post('/add-answer', 'store')->name('add-answer');
 });
 
 // Authentication

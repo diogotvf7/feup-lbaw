@@ -6,7 +6,7 @@
     @include('partials.question', ['question' => $question])
 </section>
 <section id="answers">
-    @include('partials.answer', ['answers' => $question->answers])
+    @include('partials.answer', ['question' => $question])
 </section>
 
 @endsection
