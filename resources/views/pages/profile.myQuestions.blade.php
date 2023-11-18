@@ -32,88 +32,54 @@
 <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
     <div class="container-fluid">
         <div class="collapse navbar-collapse" id="navbarColor03">
-            <ul class="navbar-nav me-auto">
-                <li class= "nav-item">
+            <ul class="w-100 mx-auto navbar-nav">
+                <li class="nav-item flex-fill">
                     <a href=>Settings</a>
                 </li>
-                <li class= "nav-item">
-                    <a href=>My Questions</a>
+                <li class="nav-item flex-fill">
+                    <a class="mx-auto" href=>My Questions</a>
                 </li>
-                <li class= "nav-item">
+                <li class="nav-item flex-fill">
                     <a href=>My Answers</a>
                 </li>
-                <li class= "nav-item">
+                <li class="nav-item flex-fill">
                     <a href=>My Comments</a>
                 </li>
-                <li class= "nav-item">
-                    <a href=>Follwed Questions</a>
+                <li class="nav-item flex-fill">
+                    <a href=>Followed Questions</a>
                 </li>
-                <li class= "nav-item">
+                <li class="nav-item flex-fill">
                     <a href=>Followed Tags</a>
                 </li>
-                <li class= "nav-item">
+                <li class="nav-item flex-fill">
                     <a href=>Badges</a>
                 </li>
             </ul>
         </div>
-    <div>
+        <div>
 </nav>
 
-<div>
-    <div class="profile-pic">
+<div class= "main-part d-flex justify-content-between align-items-center">
+    <div class="card text-white bg-info mb-3" style="max-width: 20em;" >
+        <div class="card-body d-flex  align-items-center flex-column">
+            <div class="profile-pic">
+            </div>
+            <h4 class="username"> Username </h4>
+            <div id="additional-info">
+                <p>level 6 </p>
+                <p>badges 0 </p>
+                <p>karma(forgot the name) 0 </p>
+            </div>
+        </div>
     </div>
-    <h1 class="username"> Username </h1>
-    <div id="additional-info"></div>
-</div>
-<section>
-    <p> Hello </p>
-    <p> Hello again </p>
-    <p> Hello again again </p>
-</section>
 
+    <section class="card text-white bg-info mb-3" style="max-width: 60em;">
+        <div class="card-body align-items-center flex-column">
+            <p> Hello </p>
+            <p> Hello again </p>
+            <p> Hello again again </p>
+        </div>
+    </section>
+</div>
 
 @endsection
-
-
-
-<nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarColor03">
-      <ul class="navbar-nav me-auto">
-        <li class="nav-item">
-          <a class="nav-link active" href="#">Home
-            <span class="visually-hidden">(current)</span>
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Features</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Pricing</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">About</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
-          <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-          </div>
-        </li>
-      </ul>
-      <form class="d-flex">
-        <input class="form-control me-sm-2" type="search" placeholder="Search">
-        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
-
