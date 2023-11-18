@@ -1,5 +1,4 @@
 @extends('layouts.app')
-@extends('')
 
 @section('content')
 <div class="col align-middle">
