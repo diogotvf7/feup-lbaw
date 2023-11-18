@@ -59,8 +59,8 @@
         <div>
 </nav>
 
-<div class= "main-part d-flex justify-content-between align-items-center">
-    <div class="card text-white bg-info mb-3" style="max-width: 20em;" >
+<div class= "main-part d-flex justify-content-evenly align-items-center pt-4">
+    <div class="card text-white bg-info mb-3" style=" width: 20em; max-width: 20em;" >
         <div class="card-body d-flex  align-items-center flex-column">
             <div class="profile-pic">
             </div>
@@ -73,7 +73,7 @@
         </div>
     </div>
 
-    <section class="card text-white bg-info mb-3" style="max-width: 60em;">
+    <section class="card text-white bg-info mb-3" style="width: 50em;max-width: 60em;">
         <div class="card-body align-items-center flex-column">
             <p> Hello </p>
             <p> Hello again </p>
