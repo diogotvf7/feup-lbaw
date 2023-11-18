@@ -61,11 +61,7 @@ Route::controller(RegisterController::class)->group(function () {
     Route::post('/register', 'register');
 });
 
-// User
-Route::controller(UserController::class)->group(function () {
-    Route::get('/user/{user}','show')->where('user','[0-9]+')->name('profile');
-}); 
-
+// Userphp
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/{user}','show')->where('user','[0-9]+')->name('profile');
     Route::get('/user/questions','questions');

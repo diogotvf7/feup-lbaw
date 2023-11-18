@@ -73,7 +73,7 @@ class Question extends Model
     }
 
     /**
-     * Get the most recent version of the question.
+     * Get the most recent of the question.
      */
     public function updatedVersion(): HasOne
     {
