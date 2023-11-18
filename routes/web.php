@@ -9,6 +9,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\UserController;
 
+use App\Http\Middleware\AdminMiddleware;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -28,7 +30,6 @@ Route::get('/welcome', function () {
     return view('/welcome');
 });
 
-
 // Cards
 Route::controller(CardController::class)->group(function () {
     Route::get('/cards', 'list')->name('cards');
@@ -36,12 +37,15 @@ Route::controller(CardController::class)->group(function () {
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/users', 'index')->name('users');
+    Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
     Route::get('/users/{id}', 'show');
+    Route::delete('/users/{id}', 'destroy')->name('users.destroy');
 });
 
-Route::controller(AdminController::class)->group(function () {
-});
+// Route::controller(UsersController::class)->group(function () {
+//     Route::get('/admin/users', 'index')->name('admin');
+//     // Route::get('/admin/{id}', 'show');
+// });
 
 // API
 Route::controller(CardController::class)->group(function () {
