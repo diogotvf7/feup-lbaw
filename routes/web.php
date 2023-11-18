@@ -7,6 +7,7 @@ use App\Http\Controllers\ItemController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,13 @@ Route::controller(CardController::class)->group(function () {
     Route::get('/cards/{id}', 'show');
 });
 
+Route::controller(UserController::class)->group(function () {
+    Route::get('/users', 'index')->name('users');
+    Route::get('/users/{id}', 'show');
+});
+
+Route::controller(AdminController::class)->group(function () {
+});
 
 // API
 Route::controller(CardController::class)->group(function () {
