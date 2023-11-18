@@ -30,8 +30,7 @@ class UserController extends Controller
     {
         $user = new User();
 
-        // $user->name = $request->input('name');
-        // $user->name = 'test';
+        $user->name = $request->input('name');
         $user->username = $request->input('username');
         $user->email = $request->input('email');
         $user->password = $request->password('password');

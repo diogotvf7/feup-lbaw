@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@extends('')
 
 @section('content')
 <div class="col align-middle">
@@ -11,7 +12,7 @@
 
             <div class="form-group">
                 <label for="name" class="form-label mt-4">Name</label>
-                <input id="name" type="text" name="name" class="form-control" placeholder="Insert your name (optional)" value="{{ old('name') }}" autofocus>
+                <input id="name" type="text" name="name" class="form-control" placeholder="Enter your name (optional)" value="{{ old('name') }}" autofocus>
             </div>
             @if ($errors->has('name'))
                 <span class="error">
@@ -21,7 +22,7 @@
 
             <div class="form-group">
                 <label for="username" class="form-label mt-4">Username</label>
-                <input id="username" type="text" name="username" class="form-control" placeholder="Insert username" value="{{ old('username') }}" required>
+                <input id="username" type="text" name="username" class="form-control" placeholder="Enter your username" value="{{ old('username') }}" required>
             </div>
             @if ($errors->has('username'))
                 <span class="error">
@@ -30,9 +31,8 @@
             @endif
 
             <div class="form-group">
-                <label for="email" class="form-label mt-4">E-Mail address</label>
-                <input id="email" type="email" name="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" value="{{ old('email') }}" required>
-                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                <label for="email" class="form-label mt-4">E-mail address</label>
+                <input id="email" type="email" name="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required>
                 @if ($errors->has('email'))
                 <span class="error">
                     {{ $errors->first('email') }}
@@ -42,7 +42,7 @@
             
             <div class="form-group">
                 <label for="password" class="form-label mt-4">Password</label>
-                <input id="password" type="password" name="password" class="form-control" placeholder="Password" required>
+                <input id="password" type="password" name="password" class="form-control" placeholder="Enter your password" required>
                 @if ($errors->has('password'))
                 <span class="error">
                     {{ $errors->first('password') }}
@@ -52,7 +52,7 @@
 
             <div class="form-group">
                 <label for="password-confirm" class="form-label mt-4">Confirm Password</label>
-                <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Confirm password" required>
+                <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Confirm your password" required>
             </div>
             
             <div class="form-group pt-3">

@@ -29,7 +29,7 @@ class RegisterController extends Controller
     {
         $request->validate([
             'name' => 'nullable|string|max:250',
-            'username' => 'required|string|max:30|unique:users',
+            'username' => 'required|string|min:5|max:30|unique:users',
             'email' => 'required|email|max:250|unique:users',
             'password' => 'required|min:8|confirmed'
         ]);
@@ -44,7 +44,9 @@ class RegisterController extends Controller
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
-        return redirect()->route('/welcome')
+        // TODO: quando tivermos uma págna principal mudar este redirect para:
+        // return redirect()->route('path-da-pagina-principal')
+        return redirect()->intended('/welcome')
             ->withSuccess('You have successfully registered & logged in!');
     }
 }
