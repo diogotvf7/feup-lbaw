@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\ContentVersion;
 use Illuminate\Http\Request;
 
 class QuestionController extends Controller
@@ -42,9 +43,15 @@ class QuestionController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Question $question)
+    public function edit(Request $request)
     {
-        //
+        $contentversion = new ContentVersion();
+        $contentversion->body = $request->body;
+        $contentversion->type = 'QUESTION';
+        $contentversion->question_id = $request->question_id;
+        $contentversion->save();
+
+        return redirect()->back()->with('success', 'Answer removed successfully!');
     }
 
     /**
@@ -58,8 +65,10 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question)
+    public function destroy(Request $request)
     {
-        //
+        $question = Question::findOrFail($request->question_id);
+        $question->delete();
+        return redirect()->intended('/welcome');
     }
 }

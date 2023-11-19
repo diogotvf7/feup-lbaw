@@ -65,9 +65,15 @@ class AnswerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Answer $answer)
+    public function edit(Request $request)
     {
-        //
+        $contentversion = new ContentVersion();
+        $contentversion->body = $request->body;
+        $contentversion->type = 'ANSWER';
+        $contentversion->answer_id = $request->answer_id;
+        $contentversion->save();
+
+        return redirect()->back()->with('success', 'Answer removed successfully!');
     }
 
     /**
