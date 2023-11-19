@@ -3,10 +3,9 @@
 @section('content')    
     <div class="d-flex flex-column">
         <form class="d-flex m-2 gap-2">
-            <input class="form-control" type="search" placeholder="Search">
+            <input class="form-control" type="search" name="search" placeholder="Search" value="{{ $searchTerm }}">
             <button class="btn btn-secondary text-nowrap" type="submit">Search user</button>
         </form>
-        
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -14,7 +13,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=id&sortDirection={{ ($sortField=='id' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=id&sortDirection={{ ($sortField=='id' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Id &NonBreakingSpace;
                             @if ($sortField == 'id')
                                 @if ($sortDirection == 'asc')
@@ -28,7 +27,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=name&sortDirection={{ ($sortField=='name' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=name&sortDirection={{ ($sortField=='name' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Name &NonBreakingSpace;
                             @if ($sortField == 'name')
                                 @if ($sortDirection == 'asc')
@@ -42,7 +41,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=username&sortDirection={{ ($sortField=='username' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=username&sortDirection={{ ($sortField=='username' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Username &NonBreakingSpace;
                             @if ($sortField == 'username')
                                 @if ($sortDirection == 'asc')
@@ -56,7 +55,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=email&sortDirection={{ ($sortField=='email' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=email&sortDirection={{ ($sortField=='email' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Email &NonBreakingSpace;
                             @if ($sortField == 'email')
                                 @if ($sortDirection == 'asc')
@@ -70,7 +69,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=experience&sortDirection={{ ($sortField=='experience' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=experience&sortDirection={{ ($sortField=='experience' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Experience &NonBreakingSpace;
                             @if ($sortField == 'experience')
                                 @if ($sortDirection == 'asc')
@@ -84,7 +83,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=score&sortDirection={{ ($sortField=='score' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=score&sortDirection={{ ($sortField=='score' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Score &NonBreakingSpace;
                             @if ($sortField == 'score')
                                 @if ($sortDirection == 'asc')
@@ -98,7 +97,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=member_since&sortDirection={{ ($sortField=='member_since' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=member_since&sortDirection={{ ($sortField=='member_since' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Member Since &NonBreakingSpace; 
                             @if ($sortField == 'member_since')
                                 @if ($sortDirection == 'asc')
@@ -112,7 +111,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=is_admin&sortDirection={{ ($sortField=='is_admin' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            href="/admin/users?sortField=is_admin&sortDirection={{ ($sortField=='is_admin' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Status &NonBreakingSpace;
                             @if ($sortField == 'status')
                                 @if ($sortDirection == 'asc')
@@ -160,7 +159,7 @@
         </table>
 
         <div class="d-flex justify-content-center">
-            {{ $users->appends(['sortField' => $sortField, 'sortDirection' => $sortDirection])->links("pagination::bootstrap-4") }}
+            {{ $users->appends(['sortField' => $sortField, 'sortDirection' => $sortDirection, 'search' => $searchTerm])->links("pagination::bootstrap-4") }}        
         </div>
     </div>
 @endsection

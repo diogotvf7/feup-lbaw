@@ -11,17 +11,45 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
+    // public function index(Request $request)
+    // {
+    //     // Get the sorting parameters from the request
+    //     $sortField = $request->input('sortField', 'id'); // Default to 'id' if not provided
+    //     $sortDirection = $request->input('sortDirection', 'asc'); // Default to 'asc' if not provided
+
+    //     // Query the database using Eloquent and paginate the results
+    //     $users = User::orderBy($sortField, $sortDirection)->paginate(10);
+
+    //     // Pass the sorted and paginated users to the view
+    //     return view('pages.admin', compact('users', 'sortField', 'sortDirection'));
+    // }
+
     public function index(Request $request)
     {
-        // Get the sorting parameters from the request
-        $sortField = $request->input('sortField', 'id'); // Default to 'id' if not provided
-        $sortDirection = $request->input('sortDirection', 'asc'); // Default to 'asc' if not provided
+        $query = User::query();
 
-        // Query the database using Eloquent and paginate the results
-        $users = User::orderBy($sortField, $sortDirection)->paginate(10);
+        $sortField = $request->input('sortField', 'id');
+        $sortDirection = $request->input('sortDirection', 'asc');
 
-        // Pass the sorted and paginated users to the view
-        return view('pages.admin', compact('users', 'sortField', 'sortDirection'));
+        $query->orderBy($sortField, $sortDirection);
+
+        $searchTerm = $request->input('search');
+        if ($searchTerm) {
+            $query->where(function ($query) use ($searchTerm) {
+                $query->where('name', 'like', "%$searchTerm%")
+                    ->orWhere('username', 'like', "%$searchTerm%")
+                    ->orWhere('email', 'like', "%$searchTerm%");
+            });
+        }
+
+        $users = $query->paginate(10);
+
+        return view('pages.admin', [
+            'users' => $users,
+            'sortField' => $sortField,
+            'sortDirection' => $sortDirection,
+            'searchTerm' => $searchTerm,
+        ]);
     }
 
 
