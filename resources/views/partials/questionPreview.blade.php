@@ -4,17 +4,19 @@
             <h5>{{$question->user->username}}</h5>
         </header>
         <div class="card-body">
-            <h4 class="card-title">{{$question->title}}</h4>
+            <h4 class="card-title">
+                {{$question->title}}
+            </h4>
             <div class="votes">
                 {{$question->voteBalance()}}
             </div>
             <p class="card-text">
-                {{$question->updatedVersion}}
+                {{$question->updatedVersion->body}}
             </p>
         </div>
 
         <div class="card-footer text-muted">
-            {{ \Carbon\Carbon::parse($question->firstVersion)->diffForHumans() }}
+            {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
         </div>
     </a>
 </article>

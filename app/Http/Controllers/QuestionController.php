@@ -65,7 +65,7 @@ class QuestionController extends Controller
 
     public function top()
     {
-        $questions = Question::withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count')->paginate(20);
+        $questions = Question::withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count')->paginate(10);
         $sortedQuestions = $questions->getCollection()->sortByDesc(function ($question) {
             return $question->upvotes->count() - $question->downvotes->count();
         })->values();

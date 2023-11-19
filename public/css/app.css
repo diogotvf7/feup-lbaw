@@ -7,29 +7,12 @@ body {
   color: rgb(165, 36, 36);
 }
 
-#top-questions .pagination a {
-  display: flex;
-}
-
-#top-questions .pagination a:not([href]) {
-  visibility: hidden;
-  float: left;
-}
-
-#top-questions .pagination>a:not([href]):first-child {
-  visibility: visible;
-}
-
-#top-questions .question-prev {
-  width: 100%;
-}
-
 .question-prev a {
   text-decoration: none;
 }
 
 .votes::after {
-  content: "votes";
+  content: "vote(s)";
 }
 
 .question-prev .card-text {

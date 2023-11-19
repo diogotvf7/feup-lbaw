@@ -97,10 +97,18 @@ class Question extends Model
     }
 
     /**
-     * Get the body of the question.
+     * Get the most recent version of the question.
      */
-    public function body(): HasOne
+    public function updatedVersion(): HasOne
     {
         return $this->contentVersions()->one()->ofMany('date', 'max');
+    }
+
+    /**
+     * Get the first version of the question.
+     */
+    public function firstVersion(): HasOne
+    {
+        return $this->contentVersions()->one()->ofMany('date', 'min');
     }
 }
