@@ -9,7 +9,7 @@
                     ,
                 @endif
             @endforeach
-            | {{ \Carbon\Carbon::parse($question->body->date)->diffForHumans() }}
+            | {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
         </p>
         <p>Made by {{ $question->user->username }}</p>
         @if(auth()->check() && $question->user->id === auth()->user()->id)
@@ -27,12 +27,12 @@
     </div>
 
     <div class="px-4 pt-4">
-        <span class="question-body">{{ $question->body->body }}</span>
+        <span class="question-body">{{ $question->updatedVersion->body }}</span>
         <form method="POST" action="{{ route('update-question') }}">
             {{ csrf_field() }}
             @method('POST')
             <input type="hidden" name="question_id" value="{{ $question->id }}">
-            <input type="text" name="body" class="form-control edit-input d-none" value="{{ $question->body->body }}">
+            <input type="text" name="body" class="form-control edit-input d-none" value="{{ $question->updatedVersion->body }}">
             <button class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
         </form>
     </div>
