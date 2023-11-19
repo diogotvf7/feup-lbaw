@@ -37,7 +37,7 @@ class Question extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author');
     }
 
     /**
@@ -70,6 +70,30 @@ class Question extends Model
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * Get the upvotes of the question.
+     */
+    public function upvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'TRUE');
+    }
+
+    /**
+     * Get the downvotes of the question.
+     */
+    public function downvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'FALSE');
+    }
+
+    /**
+     * Get the difference between number of upvotes and downvotes on the question.
+     */
+    public function voteBalance()
+    {
+        return count($this->upvotes) - count($this->downvotes);
     }
 
     /**
