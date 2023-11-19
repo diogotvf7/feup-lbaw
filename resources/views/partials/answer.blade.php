@@ -11,7 +11,22 @@
     <section id="answers" class="px-4">
         @foreach($question->answers as $answer)
             <div class="card border-primary mb-3">
-                <div class="card-header">{{ $answer->user->username }} | {{ \Carbon\Carbon::parse($answer->body->date)->diffForHumans() }}</div>
+                <div class="card-header d-flex justify-content-between align-items-center">{{ $answer->user->username }} | {{ \Carbon\Carbon::parse($answer->body->date)->diffForHumans() }}
+                @if(auth()->check() && $answer->user->id === auth()->user()->id)
+                <div class="d-flex">    
+                    <form class="px-2" method="POST">
+                        {{ csrf_field() }}
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Edit</button>
+                    </form>
+                    <form class="px-2" method="POST" action="{{ route('destroy-answer') }}">
+                        {{ csrf_field() }}
+                        @method('DELETE')
+                        <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+                        <button class="btn btn-secondary my-2 my-sm-0" type="submit">Delete</button>
+                    </form>
+                </div>
+                @endif
+                </div>
                     <div class="card-body">
                         <p class="card-text">{{ $answer->body->body }}</p>
                         <!--

@@ -55,6 +55,7 @@ Route::controller(ItemController::class)->group(function () {
 
 Route::controller(AnswerController::class)->group(function () {
     Route::post('/add-answer', 'store')->name('add-answer');
+    Route::delete('/destroy-answer', 'destroy')->name('destroy-answer');
 });
 
 // Authentication

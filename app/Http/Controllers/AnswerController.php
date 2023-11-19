@@ -49,7 +49,7 @@ class AnswerController extends Controller
             $contentversion->type = 'ANSWER';
             $contentversion->answer_id = $answer->id;
             $contentversion->save();
-            
+
             return redirect()->back()->with('success', 'Answer added successfully!');
         }
     }
@@ -81,8 +81,10 @@ class AnswerController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Answer $answer)
+    public function destroy(Request $request)
     {
-        //
+        $answer = Answer::findOrFail($request->answer_id);
+        $answer->delete();
+        return redirect()->back()->with('success', 'Answer removed successfully!');
     }
 }
