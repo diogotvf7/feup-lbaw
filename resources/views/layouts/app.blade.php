@@ -50,7 +50,7 @@
                                 </div>
                             </li>
                             @endif
-                            @if (Auth::check() && Auth::user()->is_admin) 
+                            @if (Auth::check() && Auth::user()->type == 'Admin') 
                             <li class="nav-item">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
                                 <div class="dropdown-menu">

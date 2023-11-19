@@ -58,15 +58,6 @@
                 @endif   
             </div>
 
-            <div class="form-group row mt-3">
-                <div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
-                    <input type="checkbox" name="is_admin" class="btn-check" id="admin_check" {{ $user->is_admin ? 'checked' : '' }} autocomplete="off">
-                    <label class="btn {{ $user->is_admin ? 'btn-success' : 'btn-danger' }}" for="admin_check">Admin</label>
-                    <input type="checkbox" name="is_banned" class="btn-check" id="banned_check" {{ $user->is_banned ? 'checked' : '' }} autocomplete="off">
-                    <label class="btn {{ $user->is_banned ? 'btn-success' : 'btn-danger' }}" for="banned_check">Banned</label>
-                </div>
-            </div>
-
             <div class="form-group">
                 <label for="password" class="form-label mt-4">Password</label>
                 <input id="password" type="password" name="password" class="form-control" placeholder="New password">

@@ -111,7 +111,7 @@
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
-                            href="/admin/users?sortField=is_admin&sortDirection={{ ($sortField=='is_admin' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
+                            href="/admin/users?sortField=type&sortDirection={{ ($sortField=='type' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
                             Status &NonBreakingSpace;
                             @if ($sortField == 'status')
                                 @if ($sortDirection == 'asc')
@@ -135,10 +135,8 @@
                         <td>{{ $user->experience }}</td>
                         <td>{{ $user->score }}</td>
                         <td>{{ $user->member_since }}</td>
-                        <td>
-                            {{ $user->is_admin ? 'Admin' : ($user->is_banned ? 'Banned' : 'User') }}
-                        </td>
-                        <td class="">
+                        <td>{{ $user->type }}</td>
+                        <td class="d-flex flex-wrap gap-1">
                             <form class="d-inline-block" action="{{ route('users.destroy', $user->id) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -152,6 +150,24 @@
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
                             </form>
+                            @if ($user->type !== 'Admin') 
+                                <form class="d-inline-block" action="{{ route('user.promote', $user->id) }}" method="POST">
+                                    {{ csrf_field() }}
+                                    {{ method_field('PATCH') }}
+                                    <button type="submit" class="btn btn-success btn-sm" aria-label="Promote User"data-toggle="tooltip" title="Promote {{ $user->username }}">
+                                        <i class="bi bi-caret-up-fill"></i>
+                                    </button>
+                                </form>
+                            @endif
+                            @if ($user->type !== 'Banned') 
+                                <form class="d-inline-block" action="{{ route('user.demote', $user->id) }}" method="POST">
+                                    {{ csrf_field() }}
+                                    {{ method_field('PATCH') }}
+                                    <button type="submit" class="btn btn-danger btn-sm" aria-label="Demote User" data-toggle="tooltip" title="Demote {{ $user->username }}">
+                                        <i class="bi bi-caret-down-fill"></i>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach

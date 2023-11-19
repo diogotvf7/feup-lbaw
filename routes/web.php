@@ -41,8 +41,9 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/{id}', 'show');
     Route::delete('/users/{id}', 'destroy')->name('users.destroy');
     Route::get('/users/{id}/edit', 'edit')->name('users.edit');
-    Route::put('/users/{id}', 'update')->name('users.update');
     Route::patch('/users/{id}', 'update')->name('users.update');
+    Route::patch('/users/{id}/promote', 'promote')->name('user.promote');
+    Route::patch('/users/{id}/demote', 'demote')->name('user.demote');
 });
 
 // API

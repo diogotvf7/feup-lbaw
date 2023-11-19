@@ -76,8 +76,7 @@ class UserController extends Controller
         $user->member_since = now();
         $user->experience = 1;
         $user->score = 0;
-        $user->is_banned = false;
-        $user->is_admin = false;
+        $user->type = 'USER';
 
         $user->save();
         return response()->json($user);
@@ -110,13 +109,33 @@ class UserController extends Controller
         $user->name = $request->input('name');
         $user->username = $request->input('username');
         $user->email = $request->input('email');
-        $user->is_admin = $request->filled('is_admin');
-        $user->is_banned = $request->filled('is_banned');
 
         if ($request->input('password') != null) {
             $user->password = $request->password('password');
         }
        
+        $user->save();
+        return redirect()->route('users');
+    }
+
+    public function promote(Int $user_id)
+    {
+        $user = User::find($user_id);
+        if ($user->type == 'User')
+            $user->type = 'Admin';
+        else if ($user->type == 'Banned')
+            $user->type = 'User';
+        $user->save();
+        return redirect()->route('users');
+    }
+
+    public function demote(Int $user_id)
+    {
+        $user = User::find($user_id);
+        if ($user->type == 'Admin')
+            $user->type = 'User';
+        else if ($user->type == 'User')
+            $user->type = 'Banned';
         $user->save();
         return redirect()->route('users');
     }

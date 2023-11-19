@@ -15,12 +15,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-            // Check if the user is authenticated and has the 'admin' role
-            if (auth()->check() && auth()->user()->is_admin) {
-                return $next($request);
-            }
-    
-            // If not an admin, redirect or respond as needed
-            return redirect('/'); // You can customize the redirect location
+        // Check if the user is authenticated and has the 'admin' role
+        if (auth()->check() && auth()->user()->type == 'Admin') {
+            return $next($request);
+        }
+
+        // If not an admin, redirect or respond as needed
+        return redirect('/'); // You can customize the redirect location
     }
 }
