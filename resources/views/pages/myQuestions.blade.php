@@ -37,7 +37,7 @@ dd($user);
         <div class="card-body d-flex  align-items-center flex-column">
             <div class="profile-pic">
             </div>
-            <h4 class="username">{{$user->username}} </h4>
+            <h4 class="username">{{Auth::user->username}} </h4>
             <div id="additional-info">
                 <p>level 6 </p>
                 <p>badges 0 </p>
