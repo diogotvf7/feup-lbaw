@@ -37,7 +37,11 @@ class Question extends Model
      */
     public function user(): BelongsTo
     {
+<<<<<<< HEAD
         return $this->belongsTo(User::class,'author');
+=======
+        return $this->belongsTo(User::class, 'author');
+>>>>>>> 952f80598d7e962504011d52b66fbf3ab5b0045d
     }
 
     /**
@@ -73,17 +77,51 @@ class Question extends Model
     }
 
     /**
+<<<<<<< HEAD
      * Get the most recent of the question.
      */
+=======
+     * Get the upvotes of the question.
+     */
+    public function upvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'TRUE');
+    }
+
+    /**
+     * Get the downvotes of the question.
+     */
+    public function downvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'FALSE');
+    }
+
+    /**
+     * Get the difference between number of upvotes and downvotes on the question.
+     */
+    public function voteBalance()
+    {
+        return count($this->upvotes) - count($this->downvotes);
+    }
+
+    /**
+     * Get the most recent version of the question.
+     */
+>>>>>>> 952f80598d7e962504011d52b66fbf3ab5b0045d
     public function updatedVersion(): HasOne
     {
         return $this->contentVersions()->one()->ofMany('date', 'max');
     }
 
     /**
+<<<<<<< HEAD
      *  Get the oldest verison of a question
      */
 
+=======
+     * Get the first version of the question.
+     */
+>>>>>>> 952f80598d7e962504011d52b66fbf3ab5b0045d
     public function firstVersion(): HasOne
     {
         return $this->contentVersions()->one()->ofMany('date', 'min');

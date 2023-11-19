@@ -1,12 +1,28 @@
 body {
-    background-color: #c8eaf7;
-    /* color: #9b4dca; */
- }
+  background-color: #c8eaf7;
+  /* color: #9b4dca; */
+}
 
 .error {
-  color: rgb(165, 36, 36); 
+  color: rgb(165, 36, 36);
 }
- /*
+
+.question-prev a {
+  text-decoration: none;
+}
+
+.votes::after {
+  content: "vote(s)";
+}
+
+.question-prev .card-text {
+  overflow: hidden;
+  text-overflow: clip;
+  max-height: 5em;
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
+}
+
+/*
   main > header {
     display: grid;
     grid-template-columns: 1fr auto auto;
@@ -145,7 +161,7 @@ body {
    * Override milligram colors
    * Some styles might be missing
    **/
- /*  button {
+/*  button {
     background-color: #9b4dca;
     border-color: #9b4dca;
   }

@@ -12,9 +12,8 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ url('css/lumen.min.css') }}" rel="stylesheet">
-    <link href="{{ url('css/app.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ url('css/bootstrap/bootstrap.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ url('css/lumen.min.css') }}" rel="stylesheet">
+    <link type="text/css" href="{{ url('css/app.css') }}" rel="stylesheet">
     <script type="text/javascript">
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
@@ -38,7 +37,7 @@
                     <div class="collapse navbar-collapse" id="navbarColor01">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/topQuestions') }}">Top Questions</a>
+                                <a class="nav-link" href="{{ url('/questions/top') }}">Top Questions</a>
                             </li>
                             @if (Auth::check())
                             <li class="nav-item dropdown">

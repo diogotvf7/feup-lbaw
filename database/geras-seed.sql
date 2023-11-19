@@ -1,11 +1,13 @@
 DROP SCHEMA IF EXISTS lbaw2326 CASCADE;
+
 CREATE SCHEMA IF NOT EXISTS lbaw2326;
-SET search_path TO lbaw2326;
+
+SET
+    search_path TO lbaw2326;
 
 -----------------------------------------
 -- Drop old schema
 -----------------------------------------
-
 DROP TABLE IF EXISTS followed_users CASCADE;
 
 DROP TABLE IF EXISTS followed_tags CASCADE;
@@ -278,7 +280,6 @@ CREATE TABLE
 -----------------------------------------
 -- Indexes
 -----------------------------------------
-
 DROP INDEX IF EXISTS search_question_body;
 
 DROP INDEX IF EXISTS search_question_title;
@@ -1219,7 +1220,6 @@ LANGUAGE plpgsql;
 -----------------------------------------
 -- Populate
 -----------------------------------------   
-
 SET
     search_path TO lbaw2326;
 
@@ -3348,10 +3348,454 @@ VALUES
         NULL
     ),
     (
-        'Establish clear objectives, roles, and timelines for the project. Communicate openly with group members and address any conflicts promptly. Use collaborative tools and platforms to streamline the workflow.',
-        'ANSWER',
-        NULL,
-        34
+        'Navigating Public Transportation in Porto can be a convenient way to explore the city. Here are some tips:',
+        'QUESTION',
+        35,
+        NULL
+    ),
+    (
+        'Porto has an extensive public transportation system, including buses, trams, and the metro. Get a rechargeable transportation card for ease of use and savings. Familiarize yourself with routes and schedules for a smooth commute.',
+        'QUESTION',
+        36,
+        NULL
+    ),
+    (
+        'Balancing Social Life and Academics in University is essential for a well-rounded experience. Here are some strategies:',
+        'QUESTION',
+        37,
+        NULL
+    ),
+    (
+        'Create a realistic schedule that includes study time, social activities, and self-care. Join clubs or organizations to meet like-minded individuals. Communicate with peers and professors about any challenges you may face.',
+        'QUESTION',
+        38,
+        NULL
+    ),
+    (
+        'Maximizing Productivity in University Projects: What strategies can help me maximize productivity when working on university projects?',
+        'QUESTION',
+        39,
+        NULL
+    ),
+    (
+        'Strategies for Balancing Work and Studies: How can I effectively manage both my job and university commitments?',
+        'QUESTION',
+        40,
+        NULL
+    ),
+    (
+        'Cooking for One: What are some quick and nutritious recipes suitable for solo dining?',
+        'QUESTION',
+        41,
+        NULL
+    ),
+    (
+        'Finding Affordable and Safe Housing in Porto: What practical tips can help me secure affordable and safe housing in Porto?',
+        'QUESTION',
+        42,
+        NULL
+    ),
+    (
+        'Time Management for Juggling a Job and University: What strategies can I use to balance both work and university studies effectively?',
+        'QUESTION',
+        43,
+        NULL
+    ),
+    (
+        'Networking Events in Porto: Where to Start: What are some effective ways to initiate my networking journey at events in Porto?',
+        'QUESTION',
+        44,
+        NULL
+    ),
+    (
+        'Coping with Stress and Anxiety in University Life: How can I effectively cope with stress and anxiety while navigating university life?',
+        'QUESTION',
+        45,
+        NULL
+    ),
+    (
+        'Understanding Health Insurance Policies in Portugal: What are the key aspects to understand about health insurance policies in Portugal?',
+        'QUESTION',
+        46,
+        NULL
+    ),
+    (
+        'Simple Cleaning Hacks for a Tidy Student Apartment: What are some easy cleaning hacks to maintain a tidy student apartment?',
+        'QUESTION',
+        47,
+        NULL
+    ),
+    (
+        'Budget-Friendly Tips for Grocery Shopping in Porto: How can I save money while grocery shopping in Porto on a budget?',
+        'QUESTION',
+        48,
+        NULL
+    ),
+    (
+        'How to Stay Motivated and Productive During Exams: What strategies can help me stay motivated and productive during exam periods?',
+        'QUESTION',
+        49,
+        NULL
+    ),
+    (
+        'Navigating Public Transportation in Porto: What are the best strategies for navigating public transportation in Porto?',
+        'QUESTION',
+        50,
+        NULL
+    ),
+    (
+        'Balancing Social Life and Academics in University: How can I find the right balance between my social life and academic commitments?',
+        'QUESTION',
+        51,
+        NULL
+    ),
+    (
+        'Cooking Skills: Beyond Instant Noodles: What cooking skills should I develop beyond basic instant noodles?',
+        'QUESTION',
+        52,
+        NULL
+    ),
+    (
+        'Finding Part-Time Jobs for Students in Porto: What are effective ways to find part-time jobs for students in Porto?',
+        'QUESTION',
+        53,
+        NULL
+    ),
+    (
+        'Effective Strategies for Time Management in University: What strategies can I use for effective time management in university?',
+        'QUESTION',
+        54,
+        NULL
+    ),
+    (
+        'How to Choose the Right Health Insurance Plan: What factors should I consider when choosing the right health insurance plan?',
+        'QUESTION',
+        55,
+        NULL
+    ),
+    (
+        'Apartment Hunting Tips: What to Look For: What are some essential tips for apartment hunting, and what should I look for?',
+        'QUESTION',
+        56,
+        NULL
+    ),
+    (
+        'Navigating University Finances: Scholarships and Grants: How can I navigate university finances and explore scholarships and grants?',
+        'QUESTION',
+        57,
+        NULL
+    ),
+    (
+        'Finding Affordable Textbooks and Study Resources: What strategies can I use to find affordable textbooks and study resources?',
+        'QUESTION',
+        58,
+        NULL
+    ),
+    (
+        'Cooking for a Crowd: Easy Recipes for Hosting: What are some easy recipes for cooking for a crowd when hosting?',
+        'QUESTION',
+        59,       
+        NULL
+    ),
+    (
+        'Effective Study Techniques for Retaining Information: What study techniques are effective for retaining information?',
+        'QUESTION',
+        60,
+        NULL
+    ),
+    (
+        'Navigating Public Transportation in Porto: What are the best strategies for navigating public transportation in Porto?',
+        'QUESTION',
+        61,
+        NULL
+    ),
+    (
+        'Balancing Social Life and Academics in University: How can I find the right balance between my social life and academic commitments?',
+        'QUESTION',
+        62,
+        NULL
+    ),
+    (
+        'Cooking Skills: Beyond Instant Noodles: What cooking skills should I develop beyond basic instant noodles?',
+        'QUESTION',
+        63,
+        NULL
+    ),
+    (
+        'Finding Part-Time Jobs for Students in Porto: What are effective ways to find part-time jobs for students in Porto?',
+        'QUESTION',
+        64,
+        NULL
+    ),
+    (
+        'Effective Strategies for Time Management in University: What strategies can I use for effective time management in university?',
+        'QUESTION',
+        65,
+        NULL
+    ),
+    (
+        'How to Choose the Right Health Insurance Plan: What factors should I consider when choosing the right health insurance plan?',
+        'QUESTION',
+        66,
+        NULL
+    ),
+    (
+        'Apartment Hunting Tips: What to Look For: What are some essential tips for apartment hunting, and what should I look for?',
+        'QUESTION',
+        67,
+        NULL
+    ),
+    (
+        'Navigating University Finances: Scholarships and Grants: How can I navigate university finances and explore scholarships and grants?',
+        'QUESTION',
+        68,
+        NULL
+    ),
+    (
+        'Finding Affordable Textbooks and Study Resources: What strategies can I use to find affordable textbooks and study resources?',
+        'QUESTION',
+        69,
+        NULL
+    ),
+    (
+        'Cooking for a Crowd: Easy Recipes for Hosting: What are some easy recipes for cooking for a crowd when hosting?',
+        'QUESTION',
+        70,
+        NULL
+    ),
+    (
+        'Effective Study Techniques for Retaining Information: What study techniques are effective for retaining information?',
+        'QUESTION',
+        71,
+        NULL
+    ),
+    (
+        'Exploring Extracurricular Activities in Porto: How can I explore and get involved in extracurricular activities in Porto?',
+        'QUESTION',
+        72,
+        NULL
+    ),
+    (
+        'Handling Academic Pressure and Burnout: What strategies can I use to handle academic pressure and prevent burnout?',
+        'QUESTION',
+        73,
+        NULL
+    ),
+    (
+        'Understanding Tenant Rights in Porto: What are the tenant rights I should be aware of when living in Porto?',
+        'QUESTION',
+        74,
+        NULL
+    ),
+    (
+        'Budgeting for Student Life: Tips and Tools: How can I effectively budget for my student life using practical tips and tools?',
+        'QUESTION',
+        75,
+        NULL
+    ),
+    (
+        'Staying Active and Healthy in a Busy Student Life: What are some strategies for staying active and healthy amidst a busy student life?',
+        'QUESTION',
+        76,
+        NULL
+    ),
+    (
+        'Finding Reliable Transportation in Porto: What are the reliable transportation options available in Porto?',
+        'QUESTION',
+        77,
+        NULL
+    ),
+    (
+        'Maximizing Productivity in University Projects: What strategies can help me maximize productivity when working on university projects?',
+        'QUESTION',
+        78,
+        NULL
+    ),
+    (
+        'Mastering Time Management for Assignments and Deadlines: How can I master time management for assignments and deadlines in university?',
+        'QUESTION',
+        79,
+        NULL
+    ),
+    (
+        'Navigating Cultural Events and Festivals in Porto: How can I make the most of cultural events and festivals in Porto?',
+        'QUESTION',
+        80,
+        NULL
+    ),
+    (
+        'Healthy Eating on a Student Budget: What are some tips for maintaining a healthy diet on a tight student budget?',
+        'QUESTION',
+        81,
+        NULL
+    ),
+    (
+        'How to Choose a Suitable Study Space: What factors should I consider when choosing a suitable study space?',
+        'QUESTION',
+        82,
+        NULL
+    ),
+    (
+        'Finding Internship Opportunities in Porto: How can I find valuable internship opportunities in Porto?',
+        'QUESTION',
+        83,
+        NULL
+    ),
+    (
+        'Tips for Effective Group Projects in University: What tips can help me excel in group projects at the university level?',
+        'QUESTION',
+        84,
+        NULL
+    ),
+    (
+        'Cooking Skills: From Basics to Gourmet: How can I progress in my cooking skills from basic to gourmet?',
+        'QUESTION',
+        85,
+        NULL
+    ),
+    (
+        'Balancing Work, Studies, and Personal Life: What strategies can I use to balance work, studies, and personal life effectively?',
+        'QUESTION',
+        86,
+        NULL
+    ),
+    (
+        'Networking Strategies for Introverted Students: What networking strategies are effective for introverted students?',
+        'QUESTION',
+        87,
+        NULL
+    ),
+    (
+        'Coping with Homesickness and Adjusting to University Life: How can I cope with homesickness and adjust to university life?',
+        'QUESTION',
+        88,
+        NULL
+    ),
+    (
+        'Understanding Healthcare Services for Students in Porto: What healthcare services are available for students in Porto?',
+        'QUESTION',
+        89,
+        NULL
+    ),
+    (
+        'Quick and Easy Cleaning Hacks for Students: What are some quick and easy cleaning hacks suitable for students?',
+        'QUESTION',
+        90,
+        NULL
+    ),
+    (
+        'Financial Planning for University Students: How can I effectively plan my finances as a university student?',
+        'QUESTION',
+        91,
+        NULL
+    ),
+    (
+        'Exploring Porto: Hidden Gems and Must-Visit Places: What hidden gems and must-visit places should I explore in Porto?',
+        'QUESTION',
+        92,
+        NULL
+    ),
+    (
+        'Mastering Algorithm Design and Optimization: How can I master the design and optimization of algorithms?',
+        'QUESTION',
+        93,
+        NULL
+    ),
+    (
+        'Setting Up a Personal Development Plan: What steps should I take to set up a personal development plan?',
+        'QUESTION',
+        94,
+        NULL
+    ),
+    (
+        'Networking in Tech: Tips for Introverted Engineers: What networking tips are effective for introverted engineers in the tech industry?',
+        'QUESTION',
+        95,
+        NULL
+    ),
+    (
+        'Finding Part-Time Work in the Tech Industry: How can I find part-time work in the tech industry?',
+        'QUESTION',
+        96,
+        NULL
+    ),
+    (
+        'Effective Strategies for Debugging Complex Code: What strategies can help me effectively debug complex code?',
+        'QUESTION',
+        97,
+        NULL
+    ),
+    (
+        'Understanding Intellectual Property in Tech Projects: What do I need to know about intellectual property in tech projects?',
+        'QUESTION',
+        98,
+        NULL
+    ),
+    (
+        'Navigating Work-University-Life Balance in Porto: How can I navigate the balance between work, university, and personal life in Porto?',
+        'QUESTION',
+        99,
+        NULL
+    ),
+    (
+        'Balancing Coding Projects and Personal Time: What strategies can I use to balance coding projects and personal time effectively?',
+        'QUESTION',
+        100,
+        NULL
+    ),
+    (
+        'Budget-Friendly Travel Tips for Students in Porto: What budget-friendly travel tips can I follow as a student in Porto?',
+        'QUESTION',
+        101,
+        NULL
+    ),
+    (
+        'Building Soft Skills for a Successful Tech Career: How can I build soft skills for a successful career in the tech industry?',
+        'QUESTION',
+        102,
+        NULL
+    ),
+    (
+        'Healthy Snacking Habits for Busy Students: What are some healthy snacking habits suitable for busy students?',
+        'QUESTION',
+        103,
+        NULL
+    ),
+    (
+        'Maximizing Productivity in University Projects requires effective planning and execution. Here are some tips:',
+        'QUESTION',
+        104,
+        NULL
+    ),
+    (
+        'Break down larger projects into manageable tasks and set deadlines. Use project management tools to track progress. Collaborate with team members and utilize resources available at your university.',
+        'QUESTION',
+        105,
+        NULL
+    ),
+    (
+        'How to Choose a Suitable Study Space is a common challenge for students. Here are some considerations:',
+        'QUESTION',
+        106,
+        NULL
+    ),
+    (
+        'Find a quiet and comfortable space with minimal distractions. Experiment with different environments to discover what works best for you. Ensure you have all necessary study materials within reach.',
+        'QUESTION',
+        107,
+        NULL
+    ),
+    (
+        'Finding Internship Opportunities in Porto is a crucial step toward gaining real-world experience. Here are some strategies:',
+        'QUESTION',
+        108,
+        NULL
+    ),
+    (
+        'Utilize university career services, attend job fairs, and explore online platforms for internship listings. Tailor your resume and cover letter for each application. Network with professionals in your desired industry.',
+        'QUESTION',
+        109,
+        NULL
     );
 
 INSERT INTO

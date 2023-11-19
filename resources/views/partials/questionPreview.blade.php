@@ -1,20 +1,22 @@
-<article class="question-prev card border-primary mb-3"  data-id="{{$question->id}}" style="max-width: 20rem;">
+<article class="question-prev card border-primary my-4" data-id="{{$question->id}}">
     <a href="/questions/{{ $question->id }}">
         <header class="card-header">
-            <h3>{{$question->user->username}}</h3>
-            <h3>{{$question->firstVersion}}</h3>
+            <h5>{{$question->user->username}}</h5>
         </header>
         <div class="card-body">
-            <h4 class="card-title">{{$question->title}}</h4>
+            <h4 class="card-title">
+                {{$question->title}}
+            </h4>
             <div class="votes">
-                {{$question->votes}}
-            <div>
+                {{$question->voteBalance()}}
+            </div>
             <p class="card-text">
-                {{$question->updatedVersion}}
+                {{$question->updatedVersion->body}}
             </p>
-        <div>
-    <a>
+        </div>
+
+        <div class="card-footer text-muted">
+            {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
+        </div>
+    </a>
 </article>
-
-
-

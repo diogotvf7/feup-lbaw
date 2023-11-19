@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\QuestionController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -26,6 +27,10 @@ Route::redirect('/', '/login');
 // Main Page (welcome.blade.php)
 Route::get('/welcome', function () {
     return view('/welcome');
+});
+
+Route::controller(QuestionController::class)->group(function () {
+    Route::get('/questions/top', 'top')->name('topQuestions');
 });
 
 
