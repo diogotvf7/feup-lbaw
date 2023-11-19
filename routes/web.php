@@ -29,6 +29,10 @@ Route::get('/welcome', function () {
     return view('/welcome');
 });
 
+Route::controller(QuestionController::class)->group(function () {
+    Route::get('/questions/top', 'top')->name('topQuestions');
+});
+
 
 // Cards
 Route::controller(CardController::class)->group(function () {

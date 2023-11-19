@@ -71,4 +71,14 @@ class QuestionController extends Controller
         $question->delete();
         return redirect()->intended('/welcome');
     }
+
+    public function top()
+    {
+        $questions = Question::withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count')->paginate(10);
+        $sortedQuestions = $questions->getCollection()->sortByDesc(function ($question) {
+            return $question->upvotes->count() - $question->downvotes->count();
+        })->values();
+        $questions->setCollection($sortedQuestions);
+        return view('pages.topQuestions', compact('questions'));
+    }
 }
