@@ -90,7 +90,7 @@ class UserController extends Controller
 
            // $this->authorize('questions',Question::class);
 
-            return view('pages.myQuestions',['questions' => $questions]);
+            return view('pages.profile.myQuestions',['questions' => $questions]);
 
         }
     }
