@@ -1,6 +1,3 @@
-// const editPage = document.getElementById('edit-user-page');
-
-
 const currentPath = window.location.pathname;
 const editPage = /^\/users\/[0-9]+\/edit$/.test(currentPath);
 
@@ -31,9 +28,3 @@ if (editPage) {
   toggleCheckboxLabelClass('admin_check');
   toggleCheckboxLabelClass('banned_check');
 }
-
-// var tooltipTriggerList =
-//     [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-// var tooltipList = tooltipTriggerList.map(function(tooltipTriggerEl) {
-//   return new bootstrap.Tooltip(tooltipTriggerEl)
-// });

@@ -44,6 +44,8 @@ Route::controller(UserController::class)->group(function () {
     Route::patch('/users/{id}', 'update')->name('users.update');
     Route::patch('/users/{id}/promote', 'promote')->name('user.promote');
     Route::patch('/users/{id}/demote', 'demote')->name('user.demote');
+    Route::get('/user/create', 'create')->name('user.create');
+    Route::post('/user/store', 'store')->name('user.store');
 });
 
 // API

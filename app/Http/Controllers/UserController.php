@@ -5,25 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    // public function index(Request $request)
-    // {
-    //     // Get the sorting parameters from the request
-    //     $sortField = $request->input('sortField', 'id'); // Default to 'id' if not provided
-    //     $sortDirection = $request->input('sortDirection', 'asc'); // Default to 'asc' if not provided
-
-    //     // Query the database using Eloquent and paginate the results
-    //     $users = User::orderBy($sortField, $sortDirection)->paginate(10);
-
-    //     // Pass the sorted and paginated users to the view
-    //     return view('pages.admin', compact('users', 'sortField', 'sortDirection'));
-    // }
-
     public function index(Request $request)
     {
         $query = User::query();
@@ -58,7 +46,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.create_user');
     }
 
     /**
@@ -66,20 +54,22 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = new User();
+        $request->validate([
+            'name' => 'nullable|string|max:250',
+            'username' => 'required|string|min:5|max:30|unique:users',
+            'email' => 'required|email|max:250|unique:users',
+            'password' => 'required|min:8|confirmed'
+        ]);
 
-        $user->name = $request->input('name');
-        $user->username = $request->input('username');
-        $user->email = $request->input('email');
-        $user->password = $request->password('password');
+        User::create([
+            'name' => $request->name,
+            'username' => $request->username,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'type' => $request->has('is_admin') ? 'Admin' : 'User'
+        ]);
 
-        $user->member_since = now();
-        $user->experience = 1;
-        $user->score = 0;
-        $user->type = 'USER';
-
-        $user->save();
-        return response()->json($user);
+        return redirect()->route('users');
     }
 
     /**
@@ -118,6 +108,9 @@ class UserController extends Controller
         return redirect()->route('users');
     }
 
+    /**
+     * Promote the specified user.
+     */
     public function promote(Int $user_id)
     {
         $user = User::find($user_id);
@@ -126,9 +119,12 @@ class UserController extends Controller
         else if ($user->type == 'Banned')
             $user->type = 'User';
         $user->save();
-        return redirect()->route('users');
+        return redirect()->back();
     }
 
+    /**
+     * Demote the specified user.
+     */
     public function demote(Int $user_id)
     {
         $user = User::find($user_id);
@@ -137,7 +133,7 @@ class UserController extends Controller
         else if ($user->type == 'User')
             $user->type = 'Banned';
         $user->save();
-        return redirect()->route('users');
+        return redirect()->back();
     }
 
     /**
@@ -147,6 +143,6 @@ class UserController extends Controller
     {
         $user = User::find($user_id);
         $user->delete();
-        return redirect()->route('users');
+        return redirect()->back();
     }
 }

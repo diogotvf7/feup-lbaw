@@ -5,11 +5,11 @@
         <form class="d-flex m-2 gap-2">
             <input class="form-control" type="search" name="search" placeholder="Search" value="{{ $searchTerm }}">
             <button class="btn btn-secondary text-nowrap" type="submit">Search user</button>
+            <a class="btn btn-secondary text-nowrap" href="{{ route('user.create') }}">Create user</a>
         </form>
         <table class="table table-hover">
             <thead>
                 <tr>
-                    <!-- <th></th> Column for checkbox -->
                     <th scope="col">
                         <a 
                             class="d-flex text-decoration-none text-reset" 
@@ -154,7 +154,7 @@
                                 <form class="d-inline-block" action="{{ route('user.promote', $user->id) }}" method="POST">
                                     {{ csrf_field() }}
                                     {{ method_field('PATCH') }}
-                                    <button type="submit" class="btn btn-success btn-sm" aria-label="Promote User"data-toggle="tooltip" title="Promote {{ $user->username }}">
+                                    <button type="submit" class="btn btn-success btn-sm" aria-label="Promote User" data-toggle="tooltip" title="Promote {{ $user->username }}" aria-label="Promote {{ $user->username }}" onclick="return confirm('Are you sure you want to promote this user?')" >
                                         <i class="bi bi-caret-up-fill"></i>
                                     </button>
                                 </form>
@@ -163,7 +163,7 @@
                                 <form class="d-inline-block" action="{{ route('user.demote', $user->id) }}" method="POST">
                                     {{ csrf_field() }}
                                     {{ method_field('PATCH') }}
-                                    <button type="submit" class="btn btn-danger btn-sm" aria-label="Demote User" data-toggle="tooltip" title="Demote {{ $user->username }}">
+                                    <button type="submit" class="btn btn-danger btn-sm" aria-label="Demote User" data-toggle="tooltip" title="Demote {{ $user->username }}" aria-label="Demote {{ $user->username }}" onclick="return confirm('Are you sure you want to demote this user?')" >
                                         <i class="bi bi-caret-down-fill"></i>
                                     </button>
                                 </form>
