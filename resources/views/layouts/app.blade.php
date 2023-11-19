@@ -12,8 +12,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link type="text/css" href="{{ url('css/lumen.min.css') }}" rel="stylesheet">
-    <link type="text/css" href="{{ url('css/app.css') }}" rel="stylesheet">
+    <link href="{{ url('css/lumen.min.css') }}" rel="stylesheet">
+    <link href="{{ url('css/app.css') }}" rel="stylesheet">
+    <link href="{{ url('css/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
     <script type="text/javascript">
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
@@ -47,6 +48,16 @@
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ url('/logout') }}">Logout</a>
                                 </div>
+                            </li>
+                            @endif
+                            @if (Auth::check() && Auth::user()->type == 'Admin') 
+                            <li class="nav-item">
+                                <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ url('/admin/users') }}">Users</a>
+                                    <a class="dropdown-item" href="{{ url('/admin/tags') }}">Tags</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ url('/admin/statistics') }}">Statistics</a>
                             </li>
                             @endif
                         </ul>
