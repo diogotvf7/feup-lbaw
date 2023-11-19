@@ -28,7 +28,7 @@
     </script>
     <main>
         <header>
-            <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <nav id="navbar" class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
                     <h1><a class="navbar-brand" href="{{ url('/home') }}">Geras</a></h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">

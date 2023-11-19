@@ -1,3 +1,16 @@
+const currentPath = window.location.pathname;
+const profilePage = /^\/user\/\w+$/.test(currentPath);
+
+if (profilePage) {
+  const navbar = document.getElementById('navbar');
+  navbar.style.borderStyle = "none";
+}
+
+
+
+
+
+
 /* function addEventListeners() {
     let itemCheckers = document.querySelectorAll('article.card li.item input[type=checkbox]');
     [].forEach.call(itemCheckers, function(checker) {
