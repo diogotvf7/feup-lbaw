@@ -11,7 +11,4 @@
         {{ $questions->links() }}
     </div>
 </section>
-
-
-nao :/ n esta tudo
 @endsection 
