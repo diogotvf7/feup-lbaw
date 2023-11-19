@@ -1,7 +1,7 @@
 <article class="question-prev card border-primary my-4" data-id="{{$question->id}}">
     <a href="/questions/{{ $question->id }}">
         <header class="card-header">
-            <h5>{{$question->user->username}}</h5>
+            <h5>{{$question->user->username ?? 'User Removed'}}</h5>
         </header>
         <div class="card-body">
             <h4 class="card-title">

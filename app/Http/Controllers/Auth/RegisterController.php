@@ -46,7 +46,7 @@ class RegisterController extends Controller
         $request->session()->regenerate();
         // TODO: quando tivermos uma págna principal mudar este redirect para:
         // return redirect()->route('path-da-pagina-principal')
-        return redirect()->intended('/welcome')
+        return redirect()->intended('/topQuestions')
             ->withSuccess('You have successfully registered & logged in!');
     }
 }
