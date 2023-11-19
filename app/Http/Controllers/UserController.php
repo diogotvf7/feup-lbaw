@@ -11,11 +11,19 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::paginate(10);
-        return view('pages.admin', compact('users'));
+        // Get the sorting parameters from the request
+        $sortField = $request->input('sortField', 'id'); // Default to 'id' if not provided
+        $sortDirection = $request->input('sortDirection', 'asc'); // Default to 'asc' if not provided
+
+        // Query the database using Eloquent and paginate the results
+        $users = User::orderBy($sortField, $sortDirection)->paginate(10);
+
+        // Pass the sorted and paginated users to the view
+        return view('pages.admin', compact('users', 'sortField', 'sortDirection'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -67,9 +75,20 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, User $user)
+    public function update(Request $request, Int $user_id)
     {
+        $user = User::find($user_id);
+
         $user->name = $request->input('name');
+        $user->username = $request->input('username');
+        $user->email = $request->input('email');
+        $user->is_admin = $request->filled('is_admin');
+        $user->is_banned = $request->filled('is_banned');
+
+        if ($request->input('password') != null) {
+            $user->password = $request->password('password');
+        }
+       
         $user->save();
         return redirect()->route('users');
     }

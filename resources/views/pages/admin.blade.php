@@ -1,19 +1,128 @@
 @extends('layouts.app')
 
 @section('content')    
-    <div>
+    <div class="d-flex flex-column">
+        <form class="d-flex m-2 gap-2">
+            <input class="form-control" type="search" placeholder="Search">
+            <button class="btn btn-secondary text-nowrap" type="submit">Search user</button>
+        </form>
+        
         <table class="table table-hover">
             <thead>
                 <tr>
                     <!-- <th></th> Column for checkbox -->
-                    <th scope="col">Id</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Experience</th>
-                    <th scope="col">Score</th>
-                    <th scope="col">Member Since</th>
-                    <th scope="col">Status</th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=id&sortDirection={{ ($sortField=='id' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Id &NonBreakingSpace;
+                            @if ($sortField == 'id')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=name&sortDirection={{ ($sortField=='name' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Name &NonBreakingSpace;
+                            @if ($sortField == 'name')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=username&sortDirection={{ ($sortField=='username' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Username &NonBreakingSpace;
+                            @if ($sortField == 'username')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=email&sortDirection={{ ($sortField=='email' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Email &NonBreakingSpace;
+                            @if ($sortField == 'email')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=experience&sortDirection={{ ($sortField=='experience' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Experience &NonBreakingSpace;
+                            @if ($sortField == 'experience')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=score&sortDirection={{ ($sortField=='score' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Score &NonBreakingSpace;
+                            @if ($sortField == 'score')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=member_since&sortDirection={{ ($sortField=='member_since' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Member Since &NonBreakingSpace; 
+                            @if ($sortField == 'member_since')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
+                    <th scope="col">
+                        <a 
+                            class="d-flex text-decoration-none text-reset" 
+                            href="/admin/users?sortField=is_admin&sortDirection={{ ($sortField=='is_admin' && $sortDirection=='asc') ? 'desc' : 'asc' }}">
+                            Status &NonBreakingSpace;
+                            @if ($sortField == 'status')
+                                @if ($sortDirection == 'asc')
+                                    <i class="bi bi-caret-down-fill"></i>
+                                @else
+                                    <i class="bi bi-caret-up-fill"></i>
+                                @endif
+                            @endif
+                        </a>
+                    </th>
                     <th scope="col">Actions</th>
                 </tr>
             </thead>
@@ -30,15 +139,15 @@
                         <td>
                             {{ $user->is_admin ? 'Admin' : ($user->is_banned ? 'Banned' : 'User') }}
                         </td>
-                        <td>
-                            <form action="{{ route('users.destroy', $user->id) }}" method="POST">
+                        <td class="">
+                            <form class="d-inline-block" action="{{ route('users.destroy', $user->id) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')" aria-label="Remove User">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </form> 
-                            <form action="{{ route('users.edit', $user->id) }}" method="GET">
+                            <form class="d-inline-block" action="{{ route('users.edit', $user->id) }}" method="GET">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit User">
                                     <i class="bi bi-pencil-fill"></i>
@@ -49,8 +158,9 @@
                 @endforeach
             </tbody>
         </table>
+
         <div class="d-flex justify-content-center">
-            {{ $users->links("pagination::bootstrap-4") }}
+            {{ $users->appends(['sortField' => $sortField, 'sortDirection' => $sortDirection])->links("pagination::bootstrap-4") }}
         </div>
     </div>
 @endsection

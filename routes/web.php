@@ -42,6 +42,7 @@ Route::controller(UserController::class)->group(function () {
     Route::delete('/users/{id}', 'destroy')->name('users.destroy');
     Route::get('/users/{id}/edit', 'edit')->name('users.edit');
     Route::put('/users/{id}', 'update')->name('users.update');
+    Route::patch('/users/{id}', 'update')->name('users.update');
 });
 
 // API
