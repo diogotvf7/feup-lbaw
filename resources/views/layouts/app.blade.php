@@ -38,7 +38,7 @@
                     <div class="collapse navbar-collapse" id="navbarColor01">
                         <ul class="navbar-nav me-auto">
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/topQuestions') }}">Top Questions</a>
+                                <a class="nav-link" href="{{ url('/questions/top') }}">Top Questions</a>
                             </li>
                             @if (Auth::check())
                             <li class="nav-item dropdown">
