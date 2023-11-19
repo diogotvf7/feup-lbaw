@@ -27,10 +27,9 @@ use App\Http\Middleware\AdminMiddleware;
 Route::redirect('/', '/login');
 
 // Main Page (welcome.blade.php)
-Route::get('/welcome', function () {
-    return view('/welcome');
-});
-
+// Route::get('/welcome', function () {
+//     return view('/welcome');
+// });
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/top', 'top')->name('topQuestions');
