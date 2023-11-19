@@ -37,7 +37,7 @@ class Question extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author');
     }
 
     /**
@@ -73,10 +73,42 @@ class Question extends Model
     }
 
     /**
-     * Get the body of the question.
+     * Get the upvotes of the question.
      */
-    public function body(): HasOne
+    public function upvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'TRUE');
+    }
+
+    /**
+     * Get the downvotes of the question.
+     */
+    public function downvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'FALSE');
+    }
+
+    /**
+     * Get the difference between number of upvotes and downvotes on the question.
+     */
+    public function voteBalance()
+    {
+        return count($this->upvotes) - count($this->downvotes);
+    }
+
+    /**
+     * Get the most recent version of the question.
+     */
+    public function updatedVersion(): HasOne
     {
         return $this->contentVersions()->one()->ofMany('date', 'max');
+    }
+
+    /**
+     * Get the first version of the question.
+     */
+    public function firstVersion(): HasOne
+    {
+        return $this->contentVersions()->one()->ofMany('date', 'min');
     }
 }
