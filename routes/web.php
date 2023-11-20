@@ -9,6 +9,9 @@ use App\Http\Controllers\AnswerController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\UserController;
+
+use App\Http\Middleware\AdminMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,14 +28,14 @@ use App\Http\Controllers\Auth\RegisterController;
 Route::redirect('/', '/login');
 
 // Main Page (welcome.blade.php)
-Route::get('/welcome', function () {
-    return view('/welcome');
-});
+// Route::get('/welcome', function () {
+//     return view('/welcome');
+// });
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/top', 'top')->name('topQuestions');
+    Route::get('/questions/{question}', 'show');
 });
-
 
 // Cards
 Route::controller(CardController::class)->group(function () {
@@ -40,10 +43,17 @@ Route::controller(CardController::class)->group(function () {
     Route::get('/cards/{id}', 'show');
 });
 
-Route::controller(QuestionController::class)->group(function () {
-    Route::get('/question/{question}', 'show');
+Route::controller(UserController::class)->group(function () {
+    Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
+    Route::get('/users/{id}', 'show');
+    Route::delete('/users/{id}', 'destroy')->name('users.destroy');
+    Route::get('/users/{id}/edit', 'edit')->name('users.edit')->middleware(AdminMiddleware::class);;
+    Route::patch('/users/{id}', 'update')->name('users.update');
+    Route::patch('/users/{id}/promote', 'promote')->name('user.promote');
+    Route::patch('/users/{id}/demote', 'demote')->name('user.demote');
+    Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
+    Route::post('/user/store', 'store')->name('user.store');
 });
-
 
 // API
 Route::controller(CardController::class)->group(function () {
