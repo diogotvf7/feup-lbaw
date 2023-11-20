@@ -21,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        Paginator::useBootstrap();
         if(env('FORCE_HTTPS',false)) {
             error_log('configuring https');
 
@@ -29,7 +30,5 @@ class AppServiceProvider extends ServiceProvider
             $schema = explode(':', $app_url)[0];
             URL::forceScheme($schema);
         }
-
-        Paginator::useBootstrap();
     }
 }

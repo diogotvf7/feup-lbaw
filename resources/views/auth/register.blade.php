@@ -12,22 +12,22 @@
             <div class="form-group">
                 <label for="name" class="form-label mt-4">Name</label>
                 <input id="name" type="text" name="name" class="form-control" placeholder="Enter your name (optional)" value="{{ old('name') }}" autofocus>
+                @if ($errors->has('name'))
+                    <span class="error">
+                        {{ $errors->first('name') }}
+                    </span>
+                @endif
             </div>
-            @if ($errors->has('name'))
-                <span class="error">
-                    {{ $errors->first('name') }}
-                </span>
-            @endif
 
             <div class="form-group">
                 <label for="username" class="form-label mt-4">Username</label>
                 <input id="username" type="text" name="username" class="form-control" placeholder="Enter your username" value="{{ old('username') }}" required>
+                @if ($errors->has('username'))
+                    <span class="error">
+                        {{ $errors->first('username') }}
+                    </span>
+                @endif
             </div>
-            @if ($errors->has('username'))
-                <span class="error">
-                    {{ $errors->first('username') }}
-                </span>
-            @endif
 
             <div class="form-group">
                 <label for="email" class="form-label mt-4">E-mail address</label>

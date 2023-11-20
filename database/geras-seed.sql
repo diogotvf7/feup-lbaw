@@ -50,6 +50,8 @@ DROP TYPE IF EXISTS content_type CASCADE;
 
 DROP TYPE IF EXISTS main_content_type CASCADE;
 
+DROP TYPE IF EXISTS user_status_type CASCADE;
+
 -----------------------------------------
 -- Types
 -----------------------------------------
@@ -61,6 +63,7 @@ CREATE TYPE content_type AS ENUM ('QUESTION', 'ANSWER', 'COMMENT');
 
 CREATE TYPE main_content_type AS ENUM ('QUESTION', 'ANSWER');
 
+CREATE TYPE user_status_type AS ENUM ('Admin', 'User', 'Banned');
 -----------------------------------------
 -- Tables
 -----------------------------------------
@@ -76,8 +79,7 @@ CREATE TABLE
         experience INTEGER DEFAULT 0,
         score INTEGER DEFAULT 0,
         member_since DATE DEFAULT now (),
-        is_banned BOOLEAN DEFAULT FALSE,
-        is_admin BOOLEAN DEFAULT FALSE
+        type user_status_type DEFAULT 'User'
     );
 
 CREATE TABLE
@@ -102,13 +104,13 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
         search_title TSVECTOR NOT NULL,
-        author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL
+        author INTEGER REFERENCES users (id) ON DELETE SET NULL
     );
 
 CREATE TABLE
     answers (
         id SERIAL PRIMARY KEY,
-        author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL,
+        author INTEGER REFERENCES users (id) ON DELETE SET NULL,
         question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE
     );
 
@@ -118,7 +120,7 @@ CREATE TABLE
         body TEXT NOT NULL,
         type main_content_type NOT NULL,
         date TIMESTAMP default now () NOT NULL,
-        author INTEGER NOT NULL REFERENCES users (id) ON DELETE SET NULL,
+        author INTEGER REFERENCES users (id) ON DELETE SET NULL,
         question_id INTEGER REFERENCES questions (id) ON DELETE CASCADE,
         answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         CHECK (
@@ -1232,8 +1234,7 @@ INSERT INTO
         profile_picture,
         experience,
         score,
-        is_banned,
-        is_admin,
+        type,
         member_since
     )
 VALUES
@@ -1245,8 +1246,7 @@ VALUES
         '/userFiles/profilePics/profile1.jpg',
         10,
         100,
-        false,
-        true,
+        'Admin',
         '2023-10-20'
     ),
     (
@@ -1257,8 +1257,7 @@ VALUES
         '/userFiles/profilePics/profile2.jpg',
         5,
         75,
-        false,
-        true,
+        'Admin',
         '2023-10-15'
     ),
     (
@@ -1269,8 +1268,7 @@ VALUES
         '/userFiles/profilePics/profile3.jpg',
         15,
         200,
-        false,
-        true,
+        'Admin',
         '2023-10-25'
     ),
     (
@@ -1281,8 +1279,7 @@ VALUES
         '/userFiles/profilePics/profile4.jpg',
         20,
         250,
-        false,
-        true,
+        'Admin',
         '2023-10-30'
     ),
     (
@@ -1293,8 +1290,7 @@ VALUES
         '/userFiles/profilePics/profile5.jpg',
         8,
         90,
-        false,
-        true,
+        'Admin',
         '2023-10-17'
     ),
     (
@@ -1305,8 +1301,7 @@ VALUES
         '/userFiles/profilePics/profile6.jpg',
         12,
         150,
-        false,
-        true,
+        'Admin',
         '2023-10-22'
     ),
     (
@@ -1317,8 +1312,7 @@ VALUES
         '/userFiles/profilePics/profile7.jpg',
         25,
         300,
-        false,
-        false,
+        'User',
         '2023-11-01'
     ),
     (
@@ -1329,8 +1323,7 @@ VALUES
         '/userFiles/profilePics/profile8.jpg',
         7,
         80,
-        false,
-        true,
+        'Admin',
         '2023-10-16'
     ),
     (
@@ -1341,8 +1334,7 @@ VALUES
         '/userFiles/profilePics/profile9.jpg',
         18,
         220,
-        false,
-        true,
+        'Admin',
         '2023-10-27'
     ),
     (
@@ -1353,8 +1345,7 @@ VALUES
         '/userFiles/profilePics/profile10.jpg',
         14,
         170,
-        false,
-        true,
+        'Admin',
         '2023-10-23'
     ),
     (
@@ -1365,8 +1356,7 @@ VALUES
         '/userFiles/profilePics/profile11.jpg',
         22,
         270,
-        false,
-        true,
+        'Admin',
         '2023-10-28'
     ),
     (
@@ -1377,8 +1367,7 @@ VALUES
         '/userFiles/profilePics/profile12.jpg',
         30,
         350,
-        false,
-        true,
+        'Admin',
         '2023-11-05'
     ),
     (
@@ -1389,8 +1378,7 @@ VALUES
         '/userFiles/profilePics/profile13.jpg',
         6,
         70,
-        false,
-        true,
+        'Admin',
         '2023-01-15'
     ),
     (
@@ -1401,8 +1389,7 @@ VALUES
         '/userFiles/profilePics/profile14.jpg',
         11,
         130,
-        false,
-        false,
+        'User',
         '2023-02-20'
     ),
     (
@@ -1413,8 +1400,7 @@ VALUES
         '/userFiles/profilePics/profile15.jpg',
         17,
         190,
-        false,
-        false,
+        'User',
         '2023-03-25'
     ),
     (
@@ -1425,8 +1411,7 @@ VALUES
         '/userFiles/profilePics/profile16.jpg',
         13,
         160,
-        false,
-        false,
+        'User',
         '2023-04-30'
     ),
     (
@@ -1437,8 +1422,7 @@ VALUES
         '/userFiles/profilePics/profile18.jpg',
         19,
         230,
-        false,
-        false,
+        'User',
         '2023-06-10'
     ),
     (
@@ -1449,8 +1433,7 @@ VALUES
         '/userFiles/profilePics/profile19.jpg',
         23,
         280,
-        false,
-        false,
+        'User',
         '2023-07-15'
     ),
     (
@@ -1461,8 +1444,7 @@ VALUES
         '/userFiles/profilePics/profile20.jpg',
         16,
         180,
-        false,
-        false,
+        'User',
         '2023-08-20'
     ),
     (
@@ -1473,8 +1455,7 @@ VALUES
         '/userFiles/profilePics/profile22.jpg',
         7,
         80,
-        false,
-        false,
+        'User',
         '2023-10-30'
     ),
     (
@@ -1485,8 +1466,7 @@ VALUES
         '/userFiles/profilePics/profile23.jpg',
         9,
         100,
-        false,
-        false,
+        'User',
         '2021-01-15'
     ),
     (
@@ -1497,8 +1477,7 @@ VALUES
         '/userFiles/profilePics/profile24.jpg',
         14,
         170,
-        false,
-        false,
+        'User',
         '2021-02-20'
     ),
     (
@@ -1509,8 +1488,7 @@ VALUES
         '/userFiles/profilePics/profile25.jpg',
         15,
         180,
-        false,
-        false,
+        'User',
         '2021-03-25'
     ),
     (
@@ -1521,8 +1499,7 @@ VALUES
         '/userFiles/profilePics/profile27.jpg',
         12,
         130,
-        false,
-        true,
+        'Admin',
         '2021-05-06'
     ),
     (
@@ -1533,8 +1510,7 @@ VALUES
         '/userFiles/profilePics/profile28.jpg',
         11,
         120,
-        false,
-        false,
+        'User',
         '2021-06-11'
     ),
     (
@@ -1545,8 +1521,7 @@ VALUES
         '/userFiles/profilePics/profile29.jpg',
         13,
         150,
-        false,
-        false,
+        'User',
         '2021-07-17'
     ),
     (
@@ -1557,8 +1532,7 @@ VALUES
         '/userFiles/profilePics/profile30.jpg',
         16,
         190,
-        false,
-        false,
+        'User',
         '2021-08-22'
     ),
     (
@@ -1569,8 +1543,7 @@ VALUES
         '/userFiles/profilePics/profile32.jpg',
         17,
         200,
-        false,
-        true,
+        'Admin',
         '2021-10-30'
     ),
     (
@@ -1581,8 +1554,7 @@ VALUES
         '/userFiles/profilePics/profile33.jpg',
         17,
         200,
-        false,
-        false,
+        'User',
         '2023-10-01'
     ),
     (
@@ -1593,8 +1565,7 @@ VALUES
         '/userFiles/profilePics/profile34.jpg',
         19,
         220,
-        false,
-        false,
+        'User',
         '2023-10-02'
     ),
     (
@@ -1605,8 +1576,7 @@ VALUES
         '/userFiles/profilePics/profile35.jpg',
         22,
         260,
-        false,
-        false,
+        'User',
         '2023-10-03'
     ),
     (
@@ -1617,8 +1587,7 @@ VALUES
         '/userFiles/profilePics/profile37.jpg',
         25,
         300,
-        false,
-        false,
+        'User',
         '2023-10-05'
     ),
     (
@@ -1629,8 +1598,7 @@ VALUES
         '/userFiles/profilePics/profile38.jpg',
         23,
         270,
-        false,
-        false,
+        'User',
         '2023-10-06'
     ),
     (
@@ -1641,8 +1609,7 @@ VALUES
         '/userFiles/profilePics/profile39.jpg',
         21,
         250,
-        false,
-        false,
+        'User',
         '2023-10-07'
     ),
     (
@@ -1653,8 +1620,7 @@ VALUES
         '/userFiles/profilePics/profile40.jpg',
         8,
         90,
-        false,
-        false,
+        'User',
         '2023-10-08'
     ),
     (
@@ -1665,8 +1631,7 @@ VALUES
         '/userFiles/profilePics/profile42.jpg',
         12,
         120,
-        false,
-        false,
+        'User',
         '2023-10-10'
     ),
     (
@@ -1677,8 +1642,7 @@ VALUES
         '/userFiles/profilePics/profile43.jpg',
         15,
         150,
-        false,
-        false,
+        'User',
         '2023-10-11'
     ),
     (
@@ -1689,8 +1653,7 @@ VALUES
         '/userFiles/profilePics/profile44.jpg',
         9,
         90,
-        false,
-        false,
+        'User',
         '2023-10-12'
     ),
     (
@@ -1701,8 +1664,7 @@ VALUES
         '/userFiles/profilePics/profile46.jpg',
         13,
         130,
-        false,
-        false,
+        'User',
         '2023-10-14'
     ),
     (
@@ -1713,8 +1675,7 @@ VALUES
         '/userFiles/profilePics/profile47.jpg',
         14,
         140,
-        false,
-        false,
+        'User',
         '2023-10-15'
     ),
     (
@@ -1725,8 +1686,7 @@ VALUES
         '/userFiles/profilePics/profile48.jpg',
         7,
         70,
-        false,
-        false,
+        'User',
         '2023-10-16'
     ),
     (
@@ -1737,8 +1697,7 @@ VALUES
         '/userFiles/profilePics/profile50.jpg',
         18,
         180,
-        false,
-        false,
+        'User',
         '2023-10-18'
     ),
     (
@@ -1749,8 +1708,7 @@ VALUES
         '/userFiles/profilePics/profile51.jpg',
         16,
         175,
-        false,
-        false,
+        'User',
         '2022-10-01'
     ),
     (
@@ -1761,8 +1719,7 @@ VALUES
         '/userFiles/profilePics/profile52.jpg',
         15,
         165,
-        false,
-        false,
+        'User',
         '2022-10-02'
     ),
     (
@@ -1773,8 +1730,7 @@ VALUES
         '/userFiles/profilePics/profile53.jpg',
         14,
         155,
-        false,
-        false,
+        'User',
         '2022-10-03'
     ),
     (
@@ -1785,8 +1741,7 @@ VALUES
         '/userFiles/profilePics/profile55.jpg',
         11,
         145,
-        false,
-        false,
+        'User',
         '2022-10-05'
     ),
     (
@@ -1797,8 +1752,7 @@ VALUES
         '/userFiles/profilePics/profile56.jpg',
         18,
         180,
-        false,
-        false,
+        'User',
         '2022-10-06'
     ),
     (
@@ -1809,8 +1763,7 @@ VALUES
         '/userFiles/profilePics/profile57.jpg',
         12,
         150,
-        false,
-        false,
+        'User',
         '2022-10-07'
     ),
     (
@@ -1821,8 +1774,7 @@ VALUES
         '/userFiles/profilePics/profile58.jpg',
         19,
         190,
-        false,
-        false,
+        'User',
         '2022-10-08'
     ),
     (
@@ -1833,8 +1785,7 @@ VALUES
         '/userFiles/profilePics/profile60.jpg',
         10,
         140,
-        false,
-        false,
+        'User',
         '2022-10-10'
     ),
     (
@@ -1845,8 +1796,7 @@ VALUES
         '/userFiles/profilePics/profile61.jpg',
         15,
         170,
-        false,
-        false,
+        'User',
         '2022-10-11'
     ),
     (
@@ -1857,8 +1807,7 @@ VALUES
         '/userFiles/profilePics/profile62.jpg',
         16,
         175,
-        false,
-        false,
+        'User',
         '2022-10-12'
     ),
     (
@@ -1869,8 +1818,7 @@ VALUES
         '/userFiles/profilePics/profile63.jpg',
         14,
         155,
-        'TRUE',
-        false,
+        'Banned',
         '2022-10-13'
     ),
     (
@@ -1881,8 +1829,7 @@ VALUES
         '/userFiles/profilePics/profile64.jpg',
         12,
         145,
-        false,
-        false,
+        'User',
         '2022-10-14'
     ),
     (
@@ -1893,8 +1840,7 @@ VALUES
         '/userFiles/profilePics/profile65.jpg',
         19,
         190,
-        false,
-        false,
+        'User',
         '2022-10-15'
     ),
     (
@@ -1905,8 +1851,7 @@ VALUES
         '/userFiles/profilePics/profile66.jpg',
         13,
         160,
-        false,
-        false,
+        'User',
         '2022-10-16'
     ),
     (
@@ -1917,8 +1862,7 @@ VALUES
         '/userFiles/profilePics/profile67.jpg',
         11,
         140,
-        'TRUE',
-        false,
+        'Banned',
         '2022-10-17'
     ),
     (
@@ -1929,8 +1873,7 @@ VALUES
         '/userFiles/profilePics/profile68.jpg',
         18,
         180,
-        false,
-        false,
+        'User',
         '2022-10-18'
     ),
     (
@@ -1941,8 +1884,7 @@ VALUES
         '/userFiles/profilePics/profile69.jpg',
         15,
         175,
-        false,
-        false,
+        'User',
         '2022-10-19'
     ),
     (
@@ -1953,8 +1895,7 @@ VALUES
         '/userFiles/profilePics/profile70.jpg',
         12,
         160,
-        false,
-        false,
+        'User',
         '2022-10-20'
     ),
     (
@@ -1965,8 +1906,7 @@ VALUES
         '/userFiles/profilePics/profile71.jpg',
         16,
         170,
-        'TRUE',
-        false,
+        'Banned',
         '2022-10-21'
     ),
     (
@@ -1977,8 +1917,7 @@ VALUES
         '/userFiles/profilePics/profile72.jpg',
         17,
         180,
-        false,
-        false,
+        'User',
         '2022-10-22'
     ),
     (
@@ -1989,8 +1928,7 @@ VALUES
         '/userFiles/profilePics/profile73.jpg',
         14,
         165,
-        false,
-        false,
+        'User',
         '2022-10-23'
     ),
     (
@@ -2001,8 +1939,7 @@ VALUES
         '/userFiles/profilePics/profile74.jpg',
         11,
         150,
-        false,
-        false,
+        'User',
         '2022-10-24'
     ),
     (
@@ -2013,8 +1950,7 @@ VALUES
         '/userFiles/profilePics/profile75.jpg',
         19,
         190,
-        'TRUE',
-        false,
+        'Banned',
         '2022-10-25'
     ),
     (
@@ -2025,8 +1961,7 @@ VALUES
         '/userFiles/profilePics/profile76.jpg',
         17,
         175,
-        false,
-        false,
+        'User',
         '2022-10-26'
     ),
     (
@@ -2037,8 +1972,7 @@ VALUES
         '/userFiles/profilePics/profile77.jpg',
         15,
         160,
-        false,
-        false,
+        'User',
         '2022-10-27'
     ),
     (
@@ -2049,8 +1983,7 @@ VALUES
         '/userFiles/profilePics/profile78.jpg',
         13,
         145,
-        false,
-        false,
+        'User',
         '2022-10-28'
     ),
     (
@@ -2061,8 +1994,7 @@ VALUES
         '/userFiles/profilePics/profile79.jpg',
         18,
         185,
-        'TRUE',
-        false,
+        'Banned',
         '2022-10-29'
     ),
     (
@@ -2073,8 +2005,7 @@ VALUES
         '/userFiles/profilePics/profile80.jpg',
         12,
         155,
-        false,
-        false,
+        'User',
         '2022-10-30'
     ),
     (
@@ -2085,8 +2016,7 @@ VALUES
         '/userFiles/profilePics/profile81.jpg',
         19,
         195,
-        false,
-        false,
+        'User',
         '2022-10-31'
     ),
     (
@@ -2097,8 +2027,7 @@ VALUES
         '/userFiles/profilePics/profile82.jpg',
         16,
         170,
-        false,
-        false,
+        'User',
         '2022-11-01'
     ),
     (
@@ -2109,8 +2038,7 @@ VALUES
         '/userFiles/profilePics/profile83.jpg',
         15,
         165,
-        'TRUE',
-        false,
+        'Banned',
         '2022-11-02'
     ),
     (
@@ -2121,8 +2049,7 @@ VALUES
         '/userFiles/profilePics/profile84.jpg',
         13,
         155,
-        false,
-        false,
+        'User',
         '2022-11-03'
     ),
     (
@@ -2133,8 +2060,7 @@ VALUES
         '/userFiles/profilePics/profile85.jpg',
         11,
         150,
-        false,
-        false,
+        'User',
         '2022-11-04'
     ),
     (
@@ -2145,8 +2071,7 @@ VALUES
         '/userFiles/profilePics/profile86.jpg',
         19,
         185,
-        false,
-        false,
+        'User',
         '2022-11-05'
     ),
     (
@@ -2157,8 +2082,7 @@ VALUES
         '/userFiles/profilePics/profile87.jpg',
         17,
         170,
-        'TRUE',
-        false,
+        'Banned',
         '2022-11-06'
     ),
     (
@@ -2169,8 +2093,7 @@ VALUES
         '/userFiles/profilePics/profile88.jpg',
         16,
         165,
-        false,
-        false,
+        'User',
         '2022-11-07'
     ),
     (
@@ -2181,8 +2104,7 @@ VALUES
         '/userFiles/profilePics/profile89.jpg',
         12,
         155,
-        false,
-        false,
+        'User',
         '2022-11-08'
     ),
     (
@@ -2193,8 +2115,7 @@ VALUES
         '/userFiles/profilePics/profile90.jpg',
         11,
         150,
-        false,
-        false,
+        'User',
         '2022-11-09'
     ),
     (
@@ -2205,8 +2126,7 @@ VALUES
         '/userFiles/profilePics/profile91.jpg',
         14,
         160,
-        'TRUE',
-        false,
+        'Banned',
         '2022-11-10'
     ),
     (
@@ -2217,8 +2137,7 @@ VALUES
         '/userFiles/profilePics/profile92.jpg',
         17,
         175,
-        false,
-        false,
+        'User',
         '2022-11-11'
     ),
     (
@@ -2229,8 +2148,7 @@ VALUES
         '/userFiles/profilePics/profile93.jpg',
         15,
         165,
-        false,
-        false,
+        'User',
         '2022-11-12'
     ),
     (
@@ -2241,8 +2159,7 @@ VALUES
         '/userFiles/profilePics/profile94.jpg',
         13,
         155,
-        false,
-        false,
+        'User',
         '2022-11-13'
     ),
     (
@@ -2253,8 +2170,7 @@ VALUES
         '/userFiles/profilePics/profile95.jpg',
         11,
         150,
-        'TRUE',
-        false,
+        'Banned',
         '2022-11-14'
     ),
     (
@@ -2265,8 +2181,7 @@ VALUES
         '/userFiles/profilePics/profile96.jpg',
         12,
         155,
-        false,
-        false,
+        'User',
         '2022-11-15'
     ),
     (
@@ -2277,8 +2192,7 @@ VALUES
         '/userFiles/profilePics/profile97.jpg',
         14,
         160,
-        false,
-        false,
+        'User',
         '2022-11-16'
     ),
     (
@@ -2289,8 +2203,7 @@ VALUES
         '/userFiles/profilePics/profile98.jpg',
         16,
         165,
-        false,
-        false,
+        'User',
         '2022-11-17'
     ),
     (
@@ -2301,8 +2214,7 @@ VALUES
         '/userFiles/profilePics/profile99.jpg',
         18,
         170,
-        'TRUE',
-        false,
+        'Banned',
         '2022-11-18'
     ),
     (
@@ -2313,8 +2225,7 @@ VALUES
         '/userFiles/profilePics/profile100.jpg',
         15,
         165,
-        false,
-        false,
+        'User',
         '2022-11-19'
     );
 
