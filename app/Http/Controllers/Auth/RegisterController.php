@@ -44,9 +44,7 @@ class RegisterController extends Controller
         $credentials = $request->only('email', 'password');
         Auth::attempt($credentials);
         $request->session()->regenerate();
-        // TODO: quando tivermos uma págna principal mudar este redirect para:
-        // return redirect()->route('path-da-pagina-principal')
-        return redirect()->intended('/welcome')
+        return redirect()->route('topQuestions')
             ->withSuccess('You have successfully registered & logged in!');
     }
 }

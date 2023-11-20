@@ -27,6 +27,7 @@ class User extends Authenticatable
         'username',
         'email',
         'password',
+        'type'
     ];
 
     /**
@@ -120,5 +121,4 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'followed_users', 'followed_id', 'follower_id');
     }
-
 }
