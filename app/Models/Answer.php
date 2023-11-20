@@ -58,10 +58,18 @@ class Answer extends Model
     }
 
     /**
-     * Get the body of the answer.
+     * Get the most recent version of the answer.
      */
-    public function body(): HasOne
+    public function updatedVersion(): HasOne
     {
         return $this->contentVersions()->one()->ofMany('date', 'max');
+    }
+
+    /**
+     * Get the first version of the answer.
+     */
+    public function firstVersion(): HasOne
+    {
+        return $this->contentVersions()->one()->ofMany('date', 'min');
     }
 }

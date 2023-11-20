@@ -71,13 +71,20 @@ class AnswerController extends Controller
      */
     public function edit(Request $request)
     {
+        $request->validate([
+            'body' => 'required|string|max:250'
+        ]);
+        
+        $answer = Answer::findOrFail($request->answer_id);
+        $this->authorize('update', $answer);
+
         $contentversion = new ContentVersion();
         $contentversion->body = $request->body;
         $contentversion->type = 'ANSWER';
         $contentversion->answer_id = $request->answer_id;
         $contentversion->save();
 
-        return redirect()->back()->with('success', 'Answer removed successfully!');
+        return redirect()->back()->with('success', 'Answer edited successfully!');
     }
 
     /**
@@ -94,6 +101,7 @@ class AnswerController extends Controller
     public function destroy(Request $request)
     {
         $answer = Answer::findOrFail($request->answer_id);
+        $this->authorize('delete', $answer);
         $answer->delete();
         return redirect()->back()->with('success', 'Answer removed successfully!');
     }

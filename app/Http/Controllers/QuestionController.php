@@ -45,13 +45,20 @@ class QuestionController extends Controller
      */
     public function edit(Request $request)
     {
+        $request->validate([
+            'body' => 'required|string|max:250'
+        ]);
+        
+        $question = Question::findOrFail($request->question_id);
+        $this->authorize('update', $question);
+
         $contentversion = new ContentVersion();
         $contentversion->body = $request->body;
         $contentversion->type = 'QUESTION';
         $contentversion->question_id = $request->question_id;
         $contentversion->save();
 
-        return redirect()->back()->with('success', 'Answer removed successfully!');
+        return redirect()->back()->with('success', 'Question edited successfully!');
     }
 
     /**
@@ -68,8 +75,9 @@ class QuestionController extends Controller
     public function destroy(Request $request)
     {
         $question = Question::findOrFail($request->question_id);
+        $this->authorize('delete', $question);
         $question->delete();
-        return redirect()->intended('/welcome');
+        return redirect()->intended('/questions/top')->with('success', 'Question removed successfully!');
     }
 
     public function top()

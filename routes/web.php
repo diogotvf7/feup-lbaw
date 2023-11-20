@@ -68,14 +68,14 @@ Route::controller(ItemController::class)->group(function () {
 });
 
 Route::controller(AnswerController::class)->group(function () {
-    Route::post('/add-answer', 'store')->name('add-answer');
-    Route::post('/update-answer', 'edit')->name('update-answer');
-    Route::delete('/destroy-answer', 'destroy')->name('destroy-answer');
+    Route::post('/api/answer/create', 'store')->name('answer/create');
+    Route::put('/api/answer/edit', 'edit')->name('answer/edit');
+    Route::delete('/api/answer/delete', 'destroy')->name('answer/delete');
 });
 
 Route::controller(QuestionController::class)->group(function () {
-    Route::post('/update-question', 'edit')->name('update-question');
-    Route::delete('/destroy-question', 'destroy')->name('destroy-question');
+    Route::put('/api/question/edit', 'edit')->name('question/edit');
+    Route::delete('/api/question/delete', 'destroy')->name('question/delete');
 });
 
 // Authentication
