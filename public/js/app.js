@@ -2,16 +2,20 @@ const currentPath = window.location.pathname;
 const editPage = /^\/users\/[0-9]+\/edit$/.test(currentPath);
 const searchPage = /^[/\w, \/]*\/search*$/.test(currentPath);
 
-async function request(input){
- return await fetch('/questions/search?searchTerm=' + input)
+async function request(input) {
+  return await fetch('/questions/search?searchTerm=' + input, {
+    method: "GET",
+    headers: {
+      "X-Requested-With": "XMLHttpRequest",
+    },
+  })
     .then(function (response) {
       // When the page is loaded convert it to text
       return response.text()
     })
     .then(function (html) {
-      document.write(html);
-      document.getElementById('search-bar').value = input;
-      //TODO: Add autofocus on search bar
+      const searchDiv = document.getElementById('search-results');
+      searchDiv.parentElement.innerHTML = html;
     })
     .catch(function (err) {
       console.log('Failed to fetch page: ', err);
@@ -31,7 +35,7 @@ if (editPage) {
 else if (searchPage) {
   const searchBar = document.getElementById('search-bar');
 
-  searchBar.addEventListener('keyup', (e) => {
+  searchBar.addEventListener('input', (e) => {
     let $input = searchBar.value;
     request($input);
   });

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends((($includeAll) ? 'layouts.app' : 'layouts.plain' ))
 
 @section('content')
 
@@ -14,11 +14,11 @@
             <div id="collapseOne" class="w-100 accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                 <div class="accordion-body">
                     @if (count($questions) !== 0)
-                        @each('partials.questionPreview', $questions, 'question') 
+                    @each('partials.questionPreview', $questions, 'question')
                     @else
-                        <p class="m-0">No questions found</p>
+                    <p class="m-0">No questions found</p>
                     @endif
-                    </div>
+                </div>
             </div>
         </div>
     </div>
