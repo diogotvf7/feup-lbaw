@@ -1,5 +1,10 @@
+
+
+
 body {
   background-color: #c8eaf7;
+  min-height: 100vh;
+  margin: 0;
   /* color: #9b4dca; */
 }
 

@@ -27,7 +27,7 @@
 <body>
     <script type="text/javascript" src={{ url('js/bootstrap.bundle.js') }} defer>
     </script>
-    <main>
+    <main style="height: 100vh;">
         <header>
             <nav id="navbar" class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
@@ -72,9 +72,7 @@
                 </div>
             </nav>
         </header>
-        <section id="content">
-            @yield('content')
-        </section>
+        @yield('content')
     </main>
 </body>
 
