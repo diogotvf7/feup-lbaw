@@ -23,110 +23,108 @@
 
 
 
-
+ <!-- if else to make it work -->
 
   <div id="myTabContent" class="tab-content">
-
-    @if(Auth::user()->id === $user->id)
-
     <div class="{{Auth::user()->id === $user-> id ? 'tab-pane fade active show' : 'tab-pane fade' }}" id="informations" role="tabpanel">
-        <div class="card mb-3">
+        <div class="card mb-3" style="width: 35em;">
             <div class="card-body">
                 <h4 class="card-title"> {{$user->username}}</h4>
                 @if($user->name)
                 <h5 class="card-subtitle text-muted">{{($user->name)}}</h5>
                 @endif
             </div>
-            <div class="card-body">
+            <div class="card-body d-flex align-content-around">
                 <p class="card-text">Score: {{$user->score}}</p>
                 <p class="card-text">Level: {{$user->experience}}</p>
             </div>
-            <ul class="list-group list-group-flush" style= "color:blue">
-                <li class="list-group-item">Questions asked: {{count($user->questions)}}</li>
-                <li class="list-group-item">Answers given: {{count($user->answers)}}</li>
-                <li class="list-group-item">Member since: {{$user->member_since}}</li>
+            <ul class="list-group list-group-flush text-primary">
+                <li class="list-group-item d-flex flex-row"> <p class="text-primary"> Questions asked: </p> <p class="pl-3"> {{count($user->questions)}} </p> </li>
+                <li class="list-group-item d-flex flex-row"> <p class="text-primary"> Answers given: </p> <p class="pl-3">{{count($user->answers)}}</p></li>
+                <li class="list-group-item d-flex flex-row"> <p class="text-primary"> Member since: </p> <p class="pl-3">{{$user->member_since}}</p></li>
             </ul>
         </div>
+        <div class="card mb-3" style = "width: 60em;"> 
+            <div class="card-body">
+                <div class="col align-middle">
+                    <div class="row justify-content-center p-3">         
+                        <fieldset>
+                            <legend>
+                                Edit Profile
+                            </legend>
 
-        <div class="col align-middle">
-            <div class="row justify-content-center p-3">
-          
+                            <div class="form-group">
+                                <label for="name" class="form-label mt-4">Name</label>
+                                <div class="input-group">
+                                    <input id="name" type="text" name="name" class="form-control" placeholder="Enter new name (optional)" value="{{ Auth::user()->name }}" autofocus>
+                                    <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field" onclick="resetField('name', '{{ Auth::user()->name }}')">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </div>
+                                @if ($errors->has('name'))
+                                <span class="error">
+                                    {{$errors->first('name')}}
+                                </span>
+                                @endif
+                            </div>
 
-                <fieldset>
-                    <legend>
-                        Edit Profile
-                    </legend>
 
-                    <div class="form-group">
-                        <label for="name" class="form-label mt-4">Name</label>
-                        <div class="input-group">
-                            <input id="name" type="text" name="name" class="form-control" placeholder="Enter new name (optional)" value="{{ Auth::user()->name }}" autofocus>
-                            <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field" onclick="resetField('name', '{{ Auth::user()->name }}')">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                            </button>
+                            <div class="form-group">
+                                <label for="username" class="form-label mt-4">Username</label>
+                                <div class="input-group">
+                                    <input id="username" type="text" name="username" class="form-control" placeholder="Enter new username" value="{{ Auth::user()->username }}" required>
+                                    <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field" onclick="resetField('name', '{{ Auth::user()->name }}')">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </div>
+                                @if ($errors->has('username'))
+                                <span class="error">
+                                    {{ $errors->first('username') }}
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label mt-4">E-mail address</label>
+                                <div class=input-group>
+                                    <input id="email" type="email" name="email" class="form-control" placeholder="Enter new email" value="{{ Auth::user()->email }}" required>
+                                    <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field" onclick="resetField('name', '{{ Auth::user()->name }}')">
+                                        <i class="bi bi-arrow-counterclockwise"></i>
+                                    </button>
+                                </div>
+                                @if ($errors->has('email'))
+                                <span class="error">
+                                    {{ $errors->first('email') }}
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password" class="form-label mt-4">Password</label>
+                                <input id="password" type="password" name="password" class="form-control" placeholder="New password">
+                                @if ($errors->has('password'))
+                                <span class="error">
+                                    {{ $errors->first('password') }}
+                                </span>
+                                @endif
+                            </div>
+
+                            <div class="form-group">
+                                <label for="password-confirm" class="form-label mt-4">Confirm Password</label>
+                                <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Confirm new password">
+                            </div>
+
+                            <div class="form-group pt-3">
+                                <button type="submit" class="btn btn-primary" aria-label="Save Changes">
+                                    <i class="bi bi-check-circle"></i> Save Changes
+                                </button>
+                            </div>
                         </div>
-                        @if ($errors->has('name'))
-                        <span class="error">
-                            {{$errors->first('name')}}
-                        </span>
-                        @endif
                     </div>
-
-
-                    <div class="form-group">
-                        <label for="username" class="form-label mt-4">Username</label>
-                        <div class="input-group">
-                            <input id="username" type="text" name="username" class="form-control" placeholder="Enter new username" value="{{ Auth::user()->username }}" required>
-                            <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field" onclick="resetField('name', '{{ Auth::user()->name }}')">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                            </button>
-                        </div>
-                        @if ($errors->has('username'))
-                        <span class="error">
-                            {{ $errors->first('username') }}
-                        </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="email" class="form-label mt-4">E-mail address</label>
-                        <div class=input-group>
-                            <input id="email" type="email" name="email" class="form-control" placeholder="Enter new email" value="{{ Auth::user()->email }}" required>
-                            <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field" onclick="resetField('name', '{{ Auth::user()->name }}')">
-                                <i class="bi bi-arrow-counterclockwise"></i>
-                            </button>
-                        </div>
-                        @if ($errors->has('email'))
-                        <span class="error">
-                            {{ $errors->first('email') }}
-                        </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password" class="form-label mt-4">Password</label>
-                        <input id="password" type="password" name="password" class="form-control" placeholder="New password">
-                        @if ($errors->has('password'))
-                        <span class="error">
-                            {{ $errors->first('password') }}
-                        </span>
-                        @endif
-                    </div>
-
-                    <div class="form-group">
-                        <label for="password-confirm" class="form-label mt-4">Confirm Password</label>
-                        <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Confirm new password">
-                    </div>
-
-                    <div class="form-group pt-3">
-                        <button type="submit" class="btn btn-primary" aria-label="Save Changes">
-                            <i class="bi bi-check-circle"></i> Save Changes
-                        </button>
-                    </div>
-                </div>
-          </div>
+                </div> 
+            </div>
         </div>
-    @endif
+
 
     <div class="{{Auth::user()->id === $user-> id ? 'tab-pane fade' : 'tab-pane fade active show' }}" id="questions" role="tabpanel">
 
