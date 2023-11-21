@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Answer extends Model
 {
@@ -19,7 +20,7 @@ class Answer extends Model
     /**
      * Get the content versions of the answer.
      */
-    public function contentVersion(): HasMany
+    public function contentVersions(): HasMany
     {
         return $this->hasMany(ContentVersion::class);
     }
@@ -29,7 +30,7 @@ class Answer extends Model
      */
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author');
     }
 
     /**
@@ -54,6 +55,46 @@ class Answer extends Model
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+
+    /**
+     * Get the upvotes of the question.
+     */
+    public function upvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'TRUE');
+    }
+
+    /**
+     * Get the downvotes of the question.
+     */
+    public function downvotes(): HasMany
+    {
+        return $this->hasMany(Vote::class)->where('is_upvote', '=', 'FALSE');
+    }
+
+    /**
+     * Get the difference between number of upvotes and downvotes on the question.
+     */
+    public function voteBalance()
+    {
+        return count($this->upvotes) - count($this->downvotes);
+    }
+
+    /**
+     * Get the most recent version of the answer.
+     */
+    public function updatedVersion(): HasOne
+    {
+        return $this->contentVersions()->one()->ofMany('date', 'max');
+    }
+
+    /**
+     * Get the first version of the answer.
+     */
+    public function firstVersion(): HasOne
+    {
+        return $this->contentVersions()->one()->ofMany('date', 'min');
     }
 
 }

@@ -9,7 +9,6 @@ use App\Http\Controllers\QuestionController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\UserController;
 
 use App\Http\Middleware\AdminMiddleware;
 
@@ -47,6 +46,9 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/users/{id}', 'show');
     Route::delete('/users/{id}', 'destroy')->name('users.destroy');
     Route::get('/users/{id}/edit', 'edit')->name('users.edit')->middleware(AdminMiddleware::class);;
+
+    Route::get('/users/{id}/edit', 'edit')->name('users.edit');
+
     Route::patch('/users/{id}', 'update')->name('users.update');
     Route::patch('/users/{id}/promote', 'promote')->name('user.promote');
     Route::patch('/users/{id}/demote', 'demote')->name('user.demote');
@@ -82,5 +84,4 @@ Route::controller(RegisterController::class)->group(function () {
 // User
 Route::controller(UserController::class)->group(function () {
     Route::get('/user/{user}','show')->where('user','[0-9]+')->name('profile');
-    Route::get('/user/questions','questions');
 }); 

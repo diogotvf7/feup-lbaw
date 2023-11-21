@@ -76,12 +76,13 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display user's profile
      */
     public function show(User $user)
     {
-        //
+        return view('pages.profile',['user'=>$user]);
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -149,20 +150,5 @@ class UserController extends Controller
         return redirect()->back();
     }
     
-    
-    public function questions(User $user){
-        if(!Auth::check()){
-            return redirect('/login');
-        }
-        else{
 
-            $questions= Auth::user()->questions()->orderby('id')->get();
-
-           // $this->authorize('questions',Question::class);
-
-            return view('pages.profile.myQuestions',['questions' => $questions]);
-
-        }
-    }
-    
 }
