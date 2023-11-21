@@ -33,6 +33,8 @@ Route::redirect('/', '/login');
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/top', 'top')->name('topQuestions');
+    Route::get('/questions/search', 'search')->name('search');
+
 });
 
 // Cards

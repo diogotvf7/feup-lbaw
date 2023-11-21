@@ -72,4 +72,10 @@ class QuestionController extends Controller
         $questions->setCollection($sortedQuestions);
         return view('pages.topQuestions', compact('questions'));
     }
+
+    public function search(Request $request)
+    {
+        $questions = Question::select('questions.*')->join('content_versions', 'content_versions.question_id', '=', 'questions.id')->whereRaw("(search_title || search_body) @@ plainto_tsquery(?)", [$request->searchTerm])->orderByRaw("ts_rank(search_title || search_body, plainto_tsquery(?)) DESC", [$request->searchTerm])->get();
+        return view('pages.search', ['questions' => $questions, 'query' => $request->searchTerm])->render();
+    }
 }
