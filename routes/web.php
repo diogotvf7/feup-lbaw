@@ -4,12 +4,12 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\UserController;
 
 use App\Http\Middleware\AdminMiddleware;
 
@@ -45,10 +45,10 @@ Route::controller(CardController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
-    Route::get('/users/{id}', 'show');
+    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
     Route::delete('/users/{id}', 'destroy')->name('users.destroy');
-    Route::get('/users/{id}/edit', 'edit')->name('users.edit')->middleware(AdminMiddleware::class);;
-    Route::patch('/users/{id}', 'update')->name('users.update');
+    Route::get('/users/{id}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
+    Route::patch('/users/{id}/update', 'update')->name('users.update');
     Route::patch('/users/{id}/promote', 'promote')->name('user.promote');
     Route::patch('/users/{id}/demote', 'demote')->name('user.demote');
     Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;

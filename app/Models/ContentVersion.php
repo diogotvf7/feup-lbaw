@@ -15,6 +15,15 @@ class ContentVersion extends Model
     public $timestamps  = false;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'date' => 'datetime',
+    ];
+
+    /**
      * Get the annexes that the content version refers to.
      */
     public function annexes(): HasMany
