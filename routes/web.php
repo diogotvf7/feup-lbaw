@@ -6,6 +6,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\AnswerController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -33,6 +34,7 @@ Route::redirect('/', '/login');
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/top', 'top')->name('topQuestions');
+    Route::get('/questions/{question}', 'show');
 });
 
 // Cards
@@ -65,6 +67,16 @@ Route::controller(ItemController::class)->group(function () {
     Route::delete('/api/item/{id}', 'delete');
 });
 
+Route::controller(AnswerController::class)->group(function () {
+    Route::post('/answer/create', 'store')->name('answer/create');
+    Route::patch('/answer/edit', 'edit')->name('answer/edit');
+    Route::delete('/answer/delete', 'destroy')->name('answer/delete');
+});
+
+Route::controller(QuestionController::class)->group(function () {
+    Route::patch('/question/edit', 'edit')->name('question/edit');
+    Route::delete('/question/delete', 'destroy')->name('question/delete');
+});
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
