@@ -32,7 +32,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
     Route::get('/questions/search', 'search')->name('search');
-    Route::get('/questions/{question}', 'show');
+    Route::get('/questions/{question}', 'show')->name('question.show');
 });
 
 Route::controller(UserController::class)->group(function () {

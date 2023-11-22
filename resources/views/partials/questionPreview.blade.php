@@ -1,29 +1,28 @@
-<article class="question-prev card border-primary my-4" data-id="{{$question->id}}">
+<article class="d-flex">
+    <div class="d-flex flex-column justify-content-center align-content-end text-secondary me-3 text-nowrap text-end">
+        <span>{{ $question->voteBalance() }} votes</span>
+        <span>{{ $question->answers->count() }} answers</span>
+    </div>
 
-    <header class="card-header">
-        @if (Auth::check())
-        <a href="{{route('users.profile', $question->user->id)}}">
-            <h5 style="width: fit-content;">{{$question->user->username ?? 'User Removed'}}</h5>
-        </a>
-        @else
-        <h5 style="width: fit-content;">{{$question->user->username ?? 'User Removed'}}</h5>
-        @endif
-    </header>
-    <a href="/questions/{{ $question->id }}">
-        <div class="card-body">
-            <h4 class="card-title">
-                {{$question->title}}
-            </h4>
-            <div class="votes">
-                {{$question->voteBalance()}}
-            </div>
-            <p class="card-text">
-                {{$question->updatedVersion->body}}
-            </p>
-        </div>
+    <div class="flex-grow-1">
+        <a href="{{route('question.show', $question->id)}}" class="text-decoration-none">{{ $question->title }}</a>
+        <p class="px-3">{{ $question->updatedVersion->body }}</p>
 
-        <div class="card-footer text-muted">
-            {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
+        <div class="d-flex gap-1">
+            @foreach ($question->tags as $tag)
+                <p class="badge badge-primary bg-primary text-decoration-none m-0">{{$tag->name}}</p>
+            @endforeach
         </div>
-    </a>
-</article> 
+    </div>
+
+    <div class="text-nowrap d-flex flex-column justify-content-end align-content-end me-5">
+        <div class="text-secondary">
+            @if (Auth::check())
+                <a href="{{ route('users.profile', $question->user->id) }}" class="text-decoration-none">{{ $question->user->name }}</a>
+            @else
+                <span>{{ $question->user->name }}</span>
+            @endif
+            asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
+        </div>
+    </div>
+</article>
