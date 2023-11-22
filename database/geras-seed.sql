@@ -1334,7 +1334,7 @@ VALUES
         '/userFiles/profilePics/profile9.jpg',
         18,
         220,
-        'Admin',
+        'User',
         '2023-10-27'
     ),
     (
@@ -3888,6 +3888,90 @@ VALUES
         33,
         NULL,
         '2008-06-02 00:45:03'
+    ),
+    (
+        'Seek guidance and find an answer that assists with your inquiries. Explore various resources and seek advice from professionals in the field.',
+        'ANSWER',
+        19,
+        NULL,
+        '2003-02-24 21:44:27'
+    ),
+    (
+        'Discover insights for planning a memorable trip and explore budget-friendly options for accommodations and activities. Research different destinations and seek advice from seasoned travelers.',
+        'ANSWER',
+        34,
+        NULL,
+        '2020-09-15 08:22:11'
+    ),
+    (
+        'Explore strategies for managing personal finances and navigating economic fluctuations. Consider investment opportunities and seek guidance from financial advisors for long-term stability.',
+        'ANSWER',
+        35,
+        NULL,
+        '2019-08-11 14:55:27'
+    ),
+    (
+        'Find ways to optimize travel expenses and plan a cost-effective journey. Utilize travel rewards programs and seek advice from travel enthusiasts for maximizing your travel budget.',
+        'ANSWER',
+        36,
+        NULL,
+        '2023-06-05 09:37:18'
+    ),
+    (
+        'Learn about economic trends and strategies for personal financial growth. Stay informed about market changes and seek advice from economists or financial analysts for informed decisions.',
+        'ANSWER',
+        37,
+        NULL,
+        '2015-11-30 17:48:22'
+    ),
+    (
+        'Plan a budget-friendly trip by researching affordable destinations and exploring discount options for accommodations and transportation. Seek advice from experienced travelers for money-saving tips.',
+        'ANSWER',
+        38,
+        NULL,
+        '2016-04-25 23:10:14'
+    ),
+    (
+        'Understand economic principles and their impact on personal finance. Explore investment opportunities and seek advice from financial experts for making sound financial decisions.',
+        'ANSWER',
+        41,
+        NULL,
+        '2010-04-30 07:12:59'
+    ),
+    (
+        'Prepare for an economical travel experience by budgeting and seeking affordable travel options. Engage with travel communities for advice on cost-effective travel planning.',
+        'ANSWER',
+        42,
+        NULL,
+        '2007-06-20 18:44:05'
+    ),
+    (
+        'Stay updated on economic news and explore strategies for managing personal finances. Seek advice from financial professionals to navigate economic challenges effectively.',
+        'ANSWER',
+        45,
+        NULL,
+        '2014-08-17 10:25:33'
+    ),
+    (
+        'Plan a trip on a tight budget by exploring low-cost travel options and seeking advice from experienced travelers for affordable travel hacks.',
+        'ANSWER',
+        46,
+        NULL,
+        '2018-07-02 16:29:47'
+    ),
+    (
+        'Learn about economic indicators and strategies for personal financial planning. Seek advice from financial advisors to make informed decisions about your financial future.',
+        'ANSWER',
+        49,
+        NULL,
+        '2022-03-28 19:50:10'
+    ),
+    (
+        'Explore budget-friendly travel ideas and seek advice from travel experts for planning an economical yet enjoyable trip.',
+        'ANSWER',
+        50,
+        NULL,
+        '2012-12-09 03:45:22'
     );
 
 
