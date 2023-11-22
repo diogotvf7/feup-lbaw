@@ -80,7 +80,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->authorize('viewAny');
         return view('pages.profile', ['user' => $user]);
     }
 

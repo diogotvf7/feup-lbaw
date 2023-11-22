@@ -1,5 +1,5 @@
 <article class="answer-prev card border-primary my-4" data-id="{{$answer->id}}">
-    <a href="/answers/{{ $answer->id }}">
+    <a href="/questions/{{ $answer->question->id }}" class="text-decoration-none">
         <header class="card-header d-flex  justify-content-between">
             <h5>{{$answer->question->title}}</h5>
             <h5>{{$answer->user->username ?? 'User Removed'}}</h5>
