@@ -41,10 +41,10 @@ Route::controller(UserController::class)->group(function () {
     Route::patch('/admn/users/{user}/demote', 'demote')->name('user.demote');
     Route::get('/admin/users/{user}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
 
-    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
-    Route::delete('/users/{user}/delete', 'destroy')->name('users.destroy');
-    Route::patch('/users/{user}/update', 'update')->name('users.update');
-    Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
+    //Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
+    //Route::delete('/users/{user}/delete', 'destroy')->name('users.destroy');
+    //Route::patch('/users/{user}/update', 'update')->name('users.update');
+    //Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
     Route::post('/user/store', 'store')->name('user.store');
 });
 
@@ -66,12 +66,12 @@ Route::controller(QuestionController::class)->group(function () {
 
 // Authentication
 Route::controller(LoginController::class)->group(function () {
-    Route::get('/login', 'showLoginForm')->name('login');
-    Route::post('/login', 'authenticate');
-    Route::post('/logout', 'logout')->name('logout');
+   // Route::get('/login', 'showLoginForm')->name('login');
+    //Route::post('/login', 'authenticate');
+    //Route::post('/logout', 'logout')->name('logout');
 });
 
 Route::controller(RegisterController::class)->group(function () {
-    Route::get('/register', 'showRegistrationForm')->name('register');
-    Route::post('/register', 'register');
+   // Route::get('/register', 'showRegistrationForm')->name('register');
+    //Route::post('/register', 'register');
 });
