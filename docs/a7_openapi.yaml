@@ -160,12 +160,10 @@ paths:
         '404': 
           description: 'Not Found. User does not exist'
 
-###################
-
   /users/{user}/delete:
     delete:
       operationId: R107
-      summary: 'R107: Delete a user.'
+      summary: 'R107: Delete user.'
       description: 'Deletes a user. Access: ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -232,12 +230,11 @@ paths:
         '302':
           description: 'Ok. User created with success'
 
-DIOGO
   /user/store:
     post:
       operationId: R110
-      summary: 'R110: Store a user.'
-      description: 'Stores a user. Access: ADM'
+      summary: 'R110: User Creation Action.'
+      description: 'Processes the new user creation form submission. Access: ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
 
@@ -247,20 +244,18 @@ DIOGO
         '404':
           description: 'Not Found. User does not exist'
 
-DONE
   /questions:
     get:
       operationId: R201
-      summary: 'R201: View top questions.'
-      description: 'View a list of questions ordered by descending vote balance. Access: VIS'
+      summary: 'R201: View all/top questions.'
+      description: 'View a list of all questions, optionally ordered by descending vote balance. Access: VIS'
       tags:
        - 'M02: Content'
        
       responses:
         '200':
-          description: 'Ok. Show view top questions UI'
+          description: 'Ok. Show view questions UI'
 
-DONE
   /questions/{question}:
     get:
       operationId: R202
@@ -279,15 +274,27 @@ DONE
       responses:
         '200':
           description: 'Ok. Show view question UI'
-        '404': 
+        '404':
           description: 'Not Found. Question does not exist'
 
-  TODO CONFIRMAR CREATE QUESTION
   /questions/create:
-    post: 
+    get:
       operationId: R203
-      summary: 'R203: Create question.'
-      description: 'Create a new question. Access: USR'
+      summary: 'R203: Shows question creation form.'
+      description: 'Shows the form for creating a new question. Access: USR'
+      tags:
+        - 'M02: Content'
+
+      responses:
+        '200':
+          description: 'Ok. Show new question form UI'
+
+
+  /questions/store:
+    post: 
+      operationId: R204
+      summary: 'R204: Question Creation Action.'
+      description: 'Process question creation form submission. Access: USR'
       tags: 
         - 'M02: Content'
 
@@ -302,10 +309,12 @@ DONE
                   type: string
                 body:
                   type: string
+                user_id:
+                  type: integer
               required:
                 - title
                 - body
-
+                - user_id
 
       responses:
         '302':
@@ -316,32 +325,59 @@ DONE
                 type: string
               examples:
                 302:
-                  description: 'Successful creation. Redirect to the new question's page.'
-                  value: '/questions/{newQuestionId}'
+                  description: 'Successful creation. Redirect to questions page.'
+                  value: '/questions'
         '403':
           description: 'Forbidden. User is not logged in and is not allowed to post a question'
 
-Eduardo
-  /questions/edit:
+
+  /questions/update:
     patch:
-      operationId: R204
-      summary: 'R204: Edit question'
-      description: 'Edit an existing question. Access: OWN, ADM'
+      operationId: R205
+      summary: 'R205: Question Edition Action'
+      description: 'Edit an existing question. Access: OWN'
       tags: 
-        - 'M02: Content'    
+        - 'M02: Content'  
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                question_id:
+                  type: integer
+                body:
+                  type: string
+              required:
+                - question_id
+                - body
       
       responses:
-        '200':
-          description: 'Ok. Show editted question page.'
-Eduardo
+        '302':
+          description: 'Success. Redirect to editted question page.'
+
   /questions/delete:
     delete:
-      operationId: R205
-      summary: 'R025: Delete a question.'
+      operationId: R206
+      summary: 'R206: Delete a question.'
       description: 'Delete an existing question. Access: OWN, ADM'
       tags:
         - 'M02: Content'
 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                question_id:
+                  type: integer
+              required:
+                - question_id
+
       responses:
         '302':
           description: 'Redirect after processing the new question information.'
@@ -351,14 +387,12 @@ Eduardo
                 type: string
               examples:
                 302:
-                  description: 'Successful deletion. Redirect to the top questions page.'
-                  value: '/questions'
+                  description: 'Successful deletion. Redirect to the main questions page'
 
-Eduardo
-  /answers/create:
+  /answers/store:
     post:
-      operationId: R206
-      summary: 'R206: Create answer.'
+      operationId: R207
+      summary: 'R207: Create answer.'
       description: 'Create a new answer. Access: USR'
 
       requestBody:
@@ -370,45 +404,113 @@ Eduardo
               properties:
                 body:
                   type: string
+                question_id:
+                  type: integer
               required:
                 - body
-
+                - question_id
 
       responses:
-        '200':
-          'Ok. Show question page where the answer was created'
+        '302':
+          description: 'Success. Answer is created, redirect to question page.'
         '403':
           description: 'Forbidden. User is not logged in and is not allowed to post an answer.'
 
-Eduardo
-  /answers/edit:
+  /answers/update:
     patch:
-      operationId: R207
-      summary: 'R207: Edit answer.'
-      description: 'Edit an existing answer. Access: OWN, ADM'
+      operationId: R208
+      summary: 'R208: Edit answer Action'
+      description: 'Edit an existing answer. Access: OWN'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                answer_id:
+                  type: integer
+              required:
+                - body
+                - answer_id
+                
 
       responses:
-        '200':
-          description: 'Ok. Show the question page of the editted answer.'
+        '302':
+          description: 'Success. Redirect to the question page of the editted answer.'
 
 
-Eduardo
   /answers/delete:
     delete:  
-      operationId: R208
-      summary: '208: Delete answer.'
-      description: 'Deleting an existing answer. Access: OWN, ADM'               
+      operationId: R209
+      summary: '209: Delete answer.'
+      description: 'Deleting an existing answer. Access: OWN, ADM'  
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                answer_id:
+                  type: integer
+              required:
+                - answer_id             
 
       responses:
-        '200':
-          description: 'Ok. Show the question page of the deleted question.'
+        '302':
+          description: 'Success. Show the question page of the deleted question.'
 
 
-Eduardo
+  /api/questions:
+    get:
+      operationId: R210
+      summary: 'R210: Fetch questions data'
+      description: 'Fetches questions according to filters. Access: VIS'
+      tags:
+        - 'M02: Content'
+
+      parameters:
+        - in: query
+          name: filter
+          description: String that contains the type of filter being used
+          schema: 
+            type: string
+          required: false
+        - in: query
+          nameNum: page
+          description: Integer that tells the number of page the suer is reading
+            type: integer
+          required: false
+
+      responses:
+        202: 
+          description: 'Ok. View questions page.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    filter:
+                      type: string
+                    pageNum:
+                      type: integer
+                example:
+                  - filter: "top"
+                    page: 2
+                  - filter: null
+                    page: 1
+
   /admin/users:
     get:
       operationId: R301
-      summary: 'R301: View admin page.'
+      summary: 'R301: View admin page'
       description: 'View table of users of web application with action options. Access: ADM'
       tags:
         - 'M03: User Administration and Static pages'
@@ -417,7 +519,6 @@ Eduardo
         '200':
           description: 'Ok. Show admin page'
 
-Eduardo
   /admin/users/{id}/promote:
     patch:
       operationId: R302
@@ -427,10 +528,9 @@ Eduardo
         - 'M03: User Administration and Static pages'
 
       responses:
-        '200':
-          description: 'Ok. Show admin page'
+        '302':
+          description: 'Success. User is promoted, redirect to /admin/users'
 
-Eduardo
   /admin/users/{id}/demote:
     patch: 
       operationId: R303
@@ -440,105 +540,21 @@ Eduardo
         - 'M03: User Administration and Static pages'
 
       responses:
-        '200':
-          description: 'Ok. Show admin page'
+        '302':
+          description: 'Success. User is demoted, redirect to /admin/users'
 
-Eduardo
+
   /admin/users/{id}/edit:
     get:
       operationId: R304
-      summary: 'R304: Edit an user profile.'
-      description: 'Edit an user`s profile from the table of users. Access: ADM'
+      summary: 'R304: Show user profile edition form'
+      description: 'Show the form for editing a user profile. Access: ADM'
       tags:
         - 'M03: User Administration and Static pages'
     
       responses:
         '200':
           description: 'Ok. Show edit profile page.'
-        '302':
-          description: 'Redirecting you to the admin page.'
-          headers:
-            Location:
-              schema:
-                type: string
-              examples:
-                302:
-                  description: 'Successful edition. Redirect to admin page.'
-                  value: '/admin/users'
+        
 
-
-  /api/works:
-    get:
-      operationId: R202
-      summary: 'R202: Search Works API'
-      description: 'Searches for works and returns the results as JSON. Access: VIS.'
-      tags: 
-        - 'M02: Works'
-
-      parameters:
-        - in: query
-          name: query
-          description: String to use for full-text search
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: item
-          description: Category of the works
-          schema:
-            type: string
-          required: false
-        - in: query
-          name: loaned
-          description: Boolean with the loaned flag value
-          schema:
-            type: boolean
-          required: false
-        - in: query
-          name: owner
-          description: Boolean with the owner flag value
-          schema:
-            type: boolean
-          required: false
-        - in: query
-          name: classification
-          description: Integer corresponding to the work classification
-          schema:
-            type: integer
-          required: false
-
-      responses:
-        '200':
-          description: Success
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: string
-                    title:
-                      type: string
-                    obs:
-                      type: string
-                    year:
-                      type: string
-                    owner:
-                      type: string
-                    type:
-                      type: string
-                example:
-                  - id: 1
-                    title: Rihanna - Unapologetic
-                    obs: Good pop music album.
-                    year: 2012
-                    owner: Joana Lima
-                    type: MP3
-                  - id: 15
-                    title: Mr. Bean
-                    obs: The best comedy movie.
-                    year: 1995
-                    owner: Manuel Teixeira
-                    type: DVD
+                  
