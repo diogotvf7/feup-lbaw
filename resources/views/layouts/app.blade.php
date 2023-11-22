@@ -27,7 +27,7 @@
 <body>
     <script type="text/javascript" src={{ url('js/bootstrap.bundle.js') }} defer>
     </script>
-    <main style="height: 100vh;">
+    <main style="height: 85dvh;">
         <header>
             <nav id="navbar" class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
@@ -54,7 +54,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->username }}</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ url('/profile') }}">View Profile</a>
+                                    <a class="dropdown-item" href="{{ route('users.profile', Auth::user()->id) }}">View Profile</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ url('/logout') }}">Logout</a>
                                 </div>

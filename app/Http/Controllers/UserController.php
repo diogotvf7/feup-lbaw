@@ -80,7 +80,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        return view('pages.profile',['user'=>$user]);
+        return view('pages.profile', ['user' => $user]);
     }
 
 
@@ -90,7 +90,7 @@ class UserController extends Controller
     public function edit(Int $user_id)
     {
         $user = User::find($user_id);
-        return view('pages.edit_user', compact('user'));
+        return view('pages.editUser', compact('user'));
     }
 
     /**
@@ -100,16 +100,29 @@ class UserController extends Controller
     {
         $user = User::find($user_id);
 
+        $this->authorize('update', $user);
+
+        if ($request->name !== $user->name) $request->validate([
+            'name' => 'nullable|string|max:250',
+        ]);
+        if ($request->username !== $user->username) $request->validate([
+            'username' => 'required|string|min:5|max:30|unique:users'
+        ]);
+        if ($request->email !== $user->email) $request->validate([
+            'email' => 'required|email|max:250|unique:users'
+        ]);
+
         $user->name = $request->input('name');
         $user->username = $request->input('username');
         $user->email = $request->input('email');
 
         if ($request->input('password') != null) {
-            $user->password = $request->password('password');
+            $request->validate(['password' => 'required|min:8|confirmed']);
+            $user->password = Hash::make($request->password);
         }
-       
+
         $user->save();
-        return redirect()->route('users');
+        return $request->adminPage ? redirect()->route('users')->with('success', 'Profile edited successfully!') : redirect()->back()->with('success', 'User edited successfully!');
     }
 
     /**
@@ -149,6 +162,4 @@ class UserController extends Controller
         $user->delete();
         return redirect()->back();
     }
-    
-
 }

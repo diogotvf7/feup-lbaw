@@ -43,13 +43,10 @@ Route::controller(CardController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
-    Route::get('/users/{id}', 'show');
+    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
     Route::delete('/users/{id}', 'destroy')->name('users.destroy');
-    Route::get('/users/{id}/edit', 'edit')->name('users.edit')->middleware(AdminMiddleware::class);;
-
-    Route::get('/users/{id}/edit', 'edit')->name('users.edit');
-
-    Route::patch('/users/{id}', 'update')->name('users.update');
+    Route::get('/users/{id}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
+    Route::patch('/users/{id}/update', 'update')->name('users.update');
     Route::patch('/users/{id}/promote', 'promote')->name('user.promote');
     Route::patch('/users/{id}/demote', 'demote')->name('user.demote');
     Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
@@ -80,8 +77,3 @@ Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
 });
-
-// User
-Route::controller(UserController::class)->group(function () {
-    Route::get('/user/{user}','show')->where('user','[0-9]+')->name('profile');
-}); 

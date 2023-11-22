@@ -27,6 +27,10 @@ body {
   -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
 }
 
+#profile {
+  height: 100%;
+}
+
 #profile a.active {
   background-color: #c8eaf7;
 }
@@ -34,6 +38,16 @@ body {
 #profile .nav-link{
   background-color: white;
 } 
+
+#profile #editor-profile{
+  background-color: white;
+  width: 50dvw;
+}
+
+#profile .col {
+  max-width: 50dvw;
+}
+
 /*
   main > header {
     display: grid;

@@ -1,5 +1,5 @@
 const currentPath = window.location.pathname;
-const profilePage = /^\/user\/\w+$/.test(currentPath);
+const profilePage = /^\/users\/\w+$/.test(currentPath);
 const editPage = /^\/users\/[0-9]+\/edit$/.test(currentPath);
 
 
@@ -8,7 +8,7 @@ if (profilePage) {
   navbar.style.borderStyle = "none";
 }
 
-if (editPage) {
+if (editPage || profilePage) {
   /**
    * OnClick function for each input field
    * of the form. It will reset the field
