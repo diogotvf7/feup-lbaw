@@ -13,6 +13,11 @@ class Question extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'title',
+        'author'
+    ];
+
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 

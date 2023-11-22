@@ -31,7 +31,7 @@
         <header>
             <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
-                    <h1><a class="navbar-brand" href="{{ url('/questions') }}">
+                    <h1><a class="navbar-brand" href="{{ url('/questions?filter=top') }}">
                         <img src="{{ asset('images/logo.svg') }}" alt="Geras Logo" width="64" class="m-2">
                     </a></h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">

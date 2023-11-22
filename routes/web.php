@@ -24,7 +24,7 @@ use App\Http\Middleware\AdminMiddleware;
 */
 
 // Home
-Route::redirect('/', '/questions');
+Route::redirect('/', '/questions?filter=top');
 
 // Main Page (welcome.blade.php)
 // Route::get('/welcome', function () {
@@ -33,6 +33,8 @@ Route::redirect('/', '/questions');
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
+    Route::get('/questions/create', 'create')->name('question.create');
+    Route::post('/questions/store', 'store')->name('question.store');
 });
 
 Route::controller(UserController::class)->group(function () {

@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Question;
+use App\Models\ContentVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
+use App\Models\Tag;
 
 class QuestionController extends Controller
 {
@@ -32,10 +33,6 @@ class QuestionController extends Controller
         {
             $query->withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count');
         }
-        // else
-        // {
-        //     $query->
-        // }
 
         $questions = $query->paginate(10);
 
@@ -56,7 +53,10 @@ class QuestionController extends Controller
      */
     public function create()
     {
-        //
+        if (!Auth::check())
+            return redirect()->route('login');
+        $tags = Tag::all();
+        return view('pages.createQuestion', compact('tags'));
     }
 
     /**
@@ -64,7 +64,23 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title' => 'required|string|min:5|max:100',
+            'body' => 'required|string|min:20'
+        ]);
+
+        $question = Question::create([
+            'title' => $request->title,
+            'author' => $request->user_id
+        ]);
+
+        ContentVersion::create([
+            'body' => $request->body,
+            'type' => 'QUESTION',
+            'question_id' => $question->id
+        ]);
+
+        return redirect()->route('questions');
     }
 
     /**

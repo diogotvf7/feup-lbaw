@@ -1,6 +1,7 @@
 const currentPath = window.location.pathname;
 const editPage = /^\/users\/[0-9]+\/edit$/.test(currentPath);
 const questionsPage = /^\/questions(?:\?.*)?$/.test(currentPath);
+const createQuestionPage = /^\/questions\/create$/.test(currentPath);
 
 if (editPage) {
   /**
@@ -125,4 +126,7 @@ else if (questionsPage) {
   }
 
   createScrollObserver();
+}
+
+if (createQuestionPage) {
 }
