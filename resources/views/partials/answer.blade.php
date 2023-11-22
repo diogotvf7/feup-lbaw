@@ -33,7 +33,7 @@
                 <span class="answer-body">{{ $answer->updatedVersion->body }}</span>
                 <form method="POST" action="{{ route('answer/edit') }}">
                     {{ csrf_field() }}
-                    @method('PUT')
+                    @method('PATCH')
                     <input type="hidden" name="answer_id" value="{{ $answer->id }}">
                     <input type="text" name="body" class="form-control edit-input d-none" value="{{ $answer->updatedVersion->body }}">
                     <button class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>

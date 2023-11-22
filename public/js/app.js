@@ -16,11 +16,11 @@ function editAnswer() {
     var editAnswerButtons = document.querySelectorAll('.edit-answer');
     editAnswerButtons.forEach(function(button) {
         button.addEventListener('click', function() {
-            var card = this.closest('.card');
-            var answerBody = card.querySelector('.answer-body');
-            var editInput = card.querySelector('.edit-input');
-            var submitEdit = card.querySelector('.submit-edit');
-            var stopEditing = card.querySelector('.stop-editing');
+            let card = this.closest('.card');
+            let answerBody = card.querySelector('.answer-body');
+            let editInput = card.querySelector('.edit-input');
+            let submitEdit = card.querySelector('.submit-edit');
+            let stopEditing = card.querySelector('.stop-editing');
 
             answerBody.classList.add('d-none');
             editInput.classList.remove('d-none');
@@ -37,11 +37,11 @@ function stopEditingAnswer() {
     var stopEditingButtons = document.querySelectorAll('.stop-editing');
     stopEditingButtons.forEach(function(button) {
         button.addEventListener('click', function() {
-            var card = this.closest('.card');
-            var answerBody = card.querySelector('.answer-body');
-            var editInput = card.querySelector('.edit-input');
-            var submitEdit = card.querySelector('.submit-edit');
-            var editButton = card.querySelector('.edit-answer');
+            let card = this.closest('.card');
+            let answerBody = card.querySelector('.answer-body');
+            let editInput = card.querySelector('.edit-input');
+            let submitEdit = card.querySelector('.submit-edit');
+            let editButton = card.querySelector('.edit-answer');
 
             answerBody.classList.remove('d-none');
             editInput.classList.add('d-none');
@@ -53,14 +53,14 @@ function stopEditingAnswer() {
 }
 
 function editQuestion() {
-  var editQuestionButtons = document.querySelectorAll('.edit-question');
+  let editQuestionButtons = document.querySelectorAll('.edit-question');
   editQuestionButtons.forEach(function(button) {
     button.addEventListener('click', function() {
-      var card = this.closest('.card');
-      var questionBody = card.querySelector('.question-body');
-      var editInput = card.querySelector('.edit-input');
-      var submitEdit = card.querySelector('.submit-edit');
-      var stopEditing = card.querySelector('.stop-editing');
+      let card = this.closest('.card');
+      let questionBody = card.querySelector('.question-body');
+      let editInput = card.querySelector('.edit-input');
+      let submitEdit = card.querySelector('.submit-edit');
+      let stopEditing = card.querySelector('.stop-editing');
 
       questionBody.classList.add('d-none');
       editInput.classList.remove('d-none');
@@ -74,14 +74,14 @@ function editQuestion() {
 }
 
 function stopEditingQuestion() {
-  var stopEditingButtons = document.querySelectorAll('.stop-editing');
+  let stopEditingButtons = document.querySelectorAll('.stop-editing');
   stopEditingButtons.forEach(function(button) {
     button.addEventListener('click', function() {
-      var card = this.closest('.card');
-      var questionBody = card.querySelector('.question-body');
-      var editInput = card.querySelector('.edit-input');
-      var submitEdit = card.querySelector('.submit-edit');
-      var editButton = card.querySelector('.edit-question');
+      let card = this.closest('.card');
+      let questionBody = card.querySelector('.question-body');
+      let editInput = card.querySelector('.edit-input');
+      let submitEdit = card.querySelector('.submit-edit');
+      let editButton = card.querySelector('.edit-question');
 
       questionBody.classList.remove('d-none');
       editInput.classList.add('d-none');
