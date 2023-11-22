@@ -112,8 +112,8 @@
                         <a 
                             class="d-flex text-decoration-none text-reset" 
                             href="/admin/users?sortField=type&sortDirection={{ ($sortField=='type' && $sortDirection=='asc') ? 'desc' : 'asc' }}&search={{ $searchTerm }}">
-                            Status &NonBreakingSpace;
-                            @if ($sortField == 'status')
+                            Type &NonBreakingSpace;
+                            @if ($sortField == 'type')
                                 @if ($sortDirection == 'asc')
                                     <i class="bi bi-caret-down-fill"></i>
                                 @else

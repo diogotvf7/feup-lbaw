@@ -27,19 +27,19 @@
 <body>
     <script type="text/javascript" src={{ url('js/bootstrap.bundle.js') }} defer>
     </script>
-    <main style="height: 85dvh;">
+    <main class="d-flex flex-column vh-100">
+        <!-- <main style="height: 85dvh;"> -->
         <header>
             <nav id="navbar" class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
-                    <h1><a class="navbar-brand" href="{{ url('/home') }}">Geras</a></h1>
+                    <h1><a class="navbar-brand" href="{{ url('/questions?filter=top') }}">
+                            <img src="{{ asset('images/logo.svg') }}" alt="Geras Logo" width="64" class="m-2">
+                        </a></h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarColor01">
                         <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/questions/top') }}">Top Questions</a>
-                            </li>
                             @if (Auth::check() && Auth::user()->type == 'Admin')
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
@@ -62,11 +62,14 @@
                             @endif
                         </ul>
                         <div class="d-flex flex-row" style="max-width: 70%;">
-                            <form class="d-flex">
-                                <input class="form-control me-sm-2" type="search" placeholder="Search">
+                            <form class="d-flex" action="{{ route('search') }}" method="GET">
+                                {{ csrf_field() }}
+                                @method('GET')
+                                <input class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
                                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                             </form>
                         </div>
+
                         @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
                         <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
                         @endif
@@ -74,7 +77,9 @@
                 </div>
             </nav>
         </header>
-        @yield('content')
+        <section id="content">
+            @yield('content')
+        </section>
     </main>
 </body>
 

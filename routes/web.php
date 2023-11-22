@@ -25,22 +25,14 @@ use App\Http\Middleware\AdminMiddleware;
 */
 
 // Home
-Route::redirect('/', '/login');
-
-// Main Page (welcome.blade.php)
-// Route::get('/welcome', function () {
-//     return view('/welcome');
-// });
+Route::redirect('/', '/questions?filter=top');
 
 Route::controller(QuestionController::class)->group(function () {
-    Route::get('/questions/top', 'top')->name('topQuestions');
+    Route::get('/questions', 'index')->name('questions');
+    Route::get('/questions/create', 'create')->name('question.create');
+    Route::post('/questions/store', 'store')->name('question.store');
+    Route::get('/questions/search', 'search')->name('search');
     Route::get('/questions/{question}', 'show');
-});
-
-// Cards
-Route::controller(CardController::class)->group(function () {
-    Route::get('/cards', 'list')->name('cards');
-    Route::get('/cards/{id}', 'show');
 });
 
 Route::controller(UserController::class)->group(function () {
@@ -56,18 +48,6 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/user/store', 'store')->name('user.store');
 });
 
-// API
-Route::controller(CardController::class)->group(function () {
-    Route::put('/api/cards', 'create');
-    Route::delete('/api/cards/{card_id}', 'delete');
-});
-
-Route::controller(ItemController::class)->group(function () {
-    Route::put('/api/cards/{card_id}', 'create');
-    Route::post('/api/item/{id}', 'update');
-    Route::delete('/api/item/{id}', 'delete');
-});
-
 Route::controller(AnswerController::class)->group(function () {
     Route::post('/answers/create', 'store')->name('answer/create');
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
@@ -77,6 +57,11 @@ Route::controller(AnswerController::class)->group(function () {
 Route::controller(QuestionController::class)->group(function () {
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
+});
+
+// API
+Route::controller(QuestionController::class)->group(function () {
+    Route::get('/api/questions', 'fetch');
 });
 
 // Authentication

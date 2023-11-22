@@ -2227,6 +2227,17 @@ VALUES
         165,
         'User',
         '2022-11-19'
+    ),
+    (
+        'admin@sousa.com',
+        'Admin Sousa',
+        'admin',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
+        '/userFiles/profilePics/profile101.jpg',
+        0,
+        0,
+        'Admin',
+        '2023-11-21'
     );
 
 INSERT INTO
@@ -2850,876 +2861,1035 @@ VALUES
     (111, 45);
 
 INSERT INTO
-    content_versions (body, type, answer_id, question_id)
+    content_versions (body, type, question_id, answer_id, date)
 VALUES
     (
         'Creating a budget for living alone can be a crucial step towards financial independence. Here are some tips to get you started:',
         'QUESTION',
-        NULL,
-        1
-    ),
-    (
-        'To create a budget for living alone, start by calculating your monthly income and listing all your expenses. Allocate a portion for rent, utilities, groceries, and savings. Make adjustments as needed to stay within your means.',
-        'ANSWER',
         1,
-        NULL
+        NULL,
+        '2007-06-19 08:33:00'
     ),
     (
         'Cooking doesn''t have to be complicated! Here are some simple and delicious recipes perfect for beginners:',
         'QUESTION',
-        NULL,
-        2
-    ),
-    (
-        'Try making a hearty vegetable stir-fry or a classic spaghetti aglio e olio. These recipes are easy to follow and require minimal ingredients.',
-        'ANSWER',
         2,
-        NULL
+        NULL,
+        '2003-05-15 15:05:43'
     ),
     (
         'Doing laundry may seem daunting, but with the right techniques, you can keep your clothes in great condition. Here are some tips:',
         'QUESTION',
-        NULL,
-        3
-    ),
-    (
-        'Sort your laundry by color and fabric type to prevent color bleeding or fabric damage. Use the right amount of detergent and avoid overloading the machine. Follow garment care labels for best results.',
-        'ANSWER',
         3,
-        NULL
+        NULL,
+        '2005-09-20 16:19:00'
     ),
     (
         'Maintaining a tidy home is essential for a clear mind and productivity. Here are some effective cleaning routines to follow:',
         'QUESTION',
-        NULL,
-        4
-    ),
-    (
-        'Establish a daily routine that includes tasks like making the bed, doing the dishes, and wiping down surfaces. Set aside time for deeper cleaning on a weekly basis, focusing on different areas of your home.',
-        'ANSWER',
         4,
-        NULL
+        NULL,
+        '2002-09-28 13:43:23'
     ),
     (
         'Time management is crucial for productivity in both work and personal life. Here are some techniques to help you make the most of your time:',
         'QUESTION',
-        NULL,
-        5
-    ),
-    (
-        'Consider using techniques like the Pomodoro Technique for focused work sessions, and prioritize tasks based on their importance and deadlines. Set realistic goals and use tools like calendars and to-do lists.',
-        'ANSWER',
         5,
-        NULL
+        NULL,
+        '2017-03-12 15:00:26'
     ),
     (
         'Embarking on a job search can be a daunting task. Here are some strategies to help you navigate the process effectively:',
         'QUESTION',
-        NULL,
-        6
-    ),
-    (
-        'Start by identifying your skills, interests, and career goals. Tailor your resume and cover letter to each job application. Network with professionals in your field and utilize online job boards.',
-        'ANSWER',
         6,
-        NULL
+        NULL,
+        '2009-05-19 14:51:44'
     ),
     (
         'Renting your first apartment is a significant milestone. Here are some essential tips to keep in mind during the process:',
         'QUESTION',
-        NULL,
-        7
-    ),
-    (
-        'Review your budget to determine a comfortable rent range. Research neighborhoods and visit potential apartments. Read and understand the terms of the lease agreement before signing.',
-        'ANSWER',
         7,
-        NULL
+        NULL,
+        '2000-08-02 21:43:01'
     ),
     (
         'Understanding healthcare options in Portugal is crucial for your well-being. Here are some key points to consider:',
         'QUESTION',
-        NULL,
-        8
-    ),
-    (
-        'Portugal offers both public and private healthcare options. Register for the National Health Service (SNS) and consider supplementary private insurance for additional coverage. Familiarize yourself with local clinics and hospitals.',
-        'ANSWER',
         8,
-        NULL
+        NULL,
+        '2011-09-17 16:19:44'
     ),
     (
         'Different types of insurance provide various forms of coverage. Here''s an overview to help you understand your options:',
         'QUESTION',
-        NULL,
-        9
-    ),
-    (
-        'Explore options like health insurance, renters insurance, and car insurance. Understand the premiums, deductibles, and coverage limits associated with each type. Consider consulting with an insurance agent for personalized advice.',
-        'ANSWER',
         9,
-        NULL
+        NULL,
+        '2004-10-21 18:28:46'
     ),
     (
         'Tax filing can be complex, especially for students and young adults. Here are some tips to help you navigate the process:',
         'QUESTION',
-        NULL,
-        10
-    ),
-    (
-        'Gather all necessary documents, including W-2 forms and receipts for deductions. Consider using tax software or consulting a tax professional for guidance. Double-check your return for accuracy before filing.',
-        'ANSWER',
         10,
-        NULL
+        NULL,
+        '2023-03-24 18:18:23'
     ),
     (
         'Knowing basic home repairs is a valuable skill. Here are some essential repairs every adult should know how to do:',
         'QUESTION',
-        NULL,
-        11
-    ),
-    (
-        'Learn how to fix leaky faucets, unclog drains, and patch small holes in walls. Familiarize yourself with the electrical panel and know how to reset a circuit breaker. Keep a basic toolkit handy for minor repairs.',
-        'ANSWER',
         11,
-        NULL
+        NULL,
+        '2017-10-29 08:53:12'
     ),
     (
         'Grocery shopping on a budget is a valuable skill for students. Here are some strategies to help you save money while getting the essentials:',
         'QUESTION',
-        NULL,
-        12
-    ),
-    (
-        'Plan meals ahead of time, create a shopping list, and stick to it. Opt for store brands and generic products, and take advantage of discounts and sales. Consider buying non-perishable items in bulk for additional savings.',
-        'ANSWER',
         12,
-        NULL
+        NULL,
+        '2020-07-13 11:28:18'
     ),
     (
         'Car maintenance is essential for safety and longevity. Here are some basic maintenance tasks every new driver should know:',
         'QUESTION',
-        NULL,
-        13
-    ),
-    (
-        'Learn how to check and change the oil, replace air filters, and monitor tire pressure. Familiarize yourself with the location of essential fluids like coolant and brake fluid. Keep a basic toolkit and emergency supplies in your car.',
-        'ANSWER',
         13,
-        NULL
+        NULL,
+        '2010-06-04 23:05:10'
     ),
     (
         'Building a professional network is crucial for career growth. Here are some tips for students looking to expand their professional connections:',
         'QUESTION',
-        NULL,
-        14
-    ),
-    (
-        'Attend networking events, workshops, and conferences related to your field of interest. Connect with professors, classmates, and professionals on platforms like LinkedIn. Don''t be afraid to reach out and ask for advice or informational interviews.',
-        'ANSWER',
         14,
-        NULL
+        NULL,
+        '2018-11-08 11:46:02'
     ),
     (
         'Taking care of your mental health is just as important as physical health. Here are some strategies to help you manage and prioritize your well-being:',
         'QUESTION',
-        NULL,
-        15
-    ),
-    (
-        'Practice self-care routines, engage in activities you enjoy, and seek support from friends, family, or professionals if needed. Prioritize sleep, exercise, and nutrition to maintain a balanced and healthy lifestyle.',
-        'ANSWER',
         15,
-        NULL
+        NULL,
+        '2006-07-19 00:07:11'
     ),
     (
         'Choosing the right health insurance plan can be overwhelming. Here are some tips to help you make an informed decision:',
         'QUESTION',
-        NULL,
-        16
-    ),
-    (
-        'Consider factors like coverage options, premiums, deductibles, and network of healthcare providers. Evaluate whether the plan meets your specific needs and preferences. Compare multiple options before making a final decision.',
-        'ANSWER',
         16,
-        NULL
+        NULL,
+        '2008-06-28 15:44:34'
     ),
     (
         'Apartment hunting requires careful consideration. Here are some tips to help you find the right place for you:',
         'QUESTION',
-        NULL,
-        17
-    ),
-    (
-        'Determine your budget, preferred location, and essential amenities. Schedule viewings and ask questions about lease terms and policies. Take your time to assess each option before making a decision.',
-        'ANSWER',
         17,
-        NULL
+        NULL,
+        '2013-04-05 23:25:20'
     ),
     (
         'University finances can be a complex aspect to manage. Here are some tips on scholarships and grants to help you navigate this area:',
         'QUESTION',
-        NULL,
-        18
-    ),
-    (
-        'Research and apply for scholarships that match your academic achievements and interests. Check with your university''s financial aid office for available grants and awards. Keep track of deadlines and requirements for each application.',
-        'ANSWER',
         18,
-        NULL
-    );
-
-INSERT INTO
-    content_versions (body, type, question_id, answer_id)
-VALUES
+        NULL,
+        '2006-04-27 10:59:08'
+    ),
     (
         'Finding affordable textbooks and study resources can significantly impact your budget. Here are some strategies to help you save on educational materials:',
         'QUESTION',
         19,
-        NULL
+        NULL,
+        '2020-09-10 09:55:50'
     ),
     (
         'Consider renting, buying used, or using digital versions of textbooks. Explore online resources, open-source textbooks, and library resources for supplementary materials. Collaborate with classmates to share or borrow textbooks.',
         'QUESTION',
         19,
-        NULL
+        NULL,
+        '2006-03-23 06:21:53'
     ),
     (
-        'Cooking for a crowd can be a fun and rewarding experience. Here are some recipes perfect for hosting gatherings:',
-        'ANSWER',
+        'Navigating Portos housing market involves setting a realistic budget, researching neighborhoods, and utilizing online platforms like Idealista. Consultation with local real estate agents and attendance at housing fairs can provide valuable insights into safe and affordable housing options in this vibrant city.',
+        'QUESTION',
+        20,
         NULL,
-        20
-    ),
-    (
-        'Try making a big batch of chili or a hearty vegetable lasagna. These recipes are crowd-pleasers and can be prepared in advance for convenience.',
-        'ANSWER',
-        NULL,
-        20
+        '2005-04-11 06:48:37'
     ),
     (
         'Effective study techniques are essential for retaining information. Here are some strategies to help you study more efficiently:',
         'QUESTION',
         21,
-        NULL
-    ),
-    (
-        'Use active learning techniques like summarizing, questioning, and teaching the material to others. Break study sessions into manageable chunks and take breaks for better retention. Experiment with different study environments to find what works best for you.',
-        'ANSWER',
         NULL,
-        21
+        '2009-03-24 05:00:34'
     ),
     (
         'Exploring extracurricular activities can enrich your university experience. Here are some options to consider:',
         'QUESTION',
         22,
-        NULL
-    ),
-    (
-        'Join clubs, student organizations, or volunteer groups related to your interests. Attend workshops, seminars, and events on campus to broaden your horizons. Don''t be afraid to step out of your comfort zone and try something new.',
-        'ANSWER',
         NULL,
-        22
+        '2016-02-05 09:55:08'
     ),
     (
         'Handling academic pressure and burnout is crucial for your well-being. Here are some strategies to help you manage stress effectively:',
         'QUESTION',
         23,
-        NULL
-    ),
-    (
-        'Practice time management, set realistic goals, and prioritize self-care activities. Seek support from professors, counselors, or support groups if you''re feeling overwhelmed. Remember that it''s okay to ask for help.',
-        'ANSWER',
         NULL,
-        23
+        '2018-11-23 19:11:56'
     ),
     (
         'Understanding tenant rights is important for a positive renting experience. Here are some key rights to be aware of in Porto:',
         'QUESTION',
         24,
-        NULL
-    ),
-    (
-        'Familiarize yourself with laws regarding rent increases, eviction procedures, and required maintenance. Keep records of communication with your landlord and understand your right to privacy within the rented property.',
-        'ANSWER',
         NULL,
-        24
+        '2000-10-01 13:34:47'
     ),
     (
         'Budgeting for student life is a crucial skill. Here are some tips and tools to help you manage your finances effectively:',
         'QUESTION',
         25,
-        NULL
-    ),
-    (
-        'Track your income and expenses using a budgeting app or spreadsheet. Set clear financial goals and allocate funds for essentials, savings, and discretionary spending. Periodically review and adjust your budget as needed.',
-        'ANSWER',
         NULL,
-        25
+        '2011-07-09 00:55:49'
     ),
     (
         'Staying active and healthy while juggling a busy student life is important. Here are some strategies to help you prioritize your well-being:',
         'QUESTION',
         26,
-        NULL
-    ),
-    (
-        'Incorporate physical activity into your routine, even if it''s just a short walk or home workout. Plan balanced meals and stay hydrated to maintain energy levels. Get enough restful sleep to support overall health.',
-        'ANSWER',
         NULL,
-        26
+        '2014-02-11 15:13:22'
     ),
     (
         'Finding reliable transportation in Porto is essential for getting around the city. Here are some options to consider:',
         'QUESTION',
         27,
-        NULL
-    ),
-    (
-        'Explore public transportation, including buses, trams, and the metro system. Consider using a bicycle for short distances, or use ride-sharing services for convenience. Familiarize yourself with local routes and schedules.',
-        'ANSWER',
         NULL,
-        27
+        '2000-04-02 00:30:52'
     ),
     (
         'Maximizing productivity in university projects is crucial for academic success. Here are some strategies to help you work efficiently:',
         'QUESTION',
         28,
-        NULL
-    ),
-    (
-        'Break larger projects into smaller, manageable tasks and set realistic milestones. Use project management tools to track progress and allocate time for revisions and edits. Don''t hesitate to seek guidance or feedback from professors or peers.',
-        'ANSWER',
         NULL,
-        28
+        '2017-01-02 06:38:44'
     ),
     (
         'Mastering time management for assignments and deadlines is crucial for academic success. Here are some techniques to help you stay on track:',
         'QUESTION',
         29,
-        NULL
-    ),
-    (
-        'Use a planner or digital calendar to keep track of assignment due dates and exam schedules. Prioritize tasks based on deadlines and importance. Break down larger assignments into smaller, manageable tasks.',
-        'ANSWER',
         NULL,
-        29
+        '2019-11-29 20:00:06'
     ),
     (
         'Navigating cultural events and festivals in Porto is a great way to experience the local culture. Here are some events to look out for:',
         'QUESTION',
         30,
-        NULL
-    ),
-    (
-        'Attend events like the São João Festival, Fantasporto Film Festival, and NOS Primavera Sound music festival. Explore local museums, art galleries, and theaters for cultural experiences.',
-        'ANSWER',
         NULL,
-        30
+        '2014-11-17 08:33:22'
     ),
     (
         'Maintaining a healthy diet on a student budget is possible with the right strategies. Here are some tips to help you make nutritious choices without breaking the bank:',
         'QUESTION',
         31,
-        NULL
-    ),
-    (
-        'Plan balanced meals that incorporate affordable protein sources like legumes, eggs, and tofu. Buy seasonal fruits and vegetables and consider frozen options for longer shelf life. Opt for store brands and generic products to save money.',
-        'ANSWER',
         NULL,
-        31
+        '2014-08-26 08:05:32'
     ),
     (
         'Choosing a suitable study space can significantly impact your productivity. Here are some tips to help you find the right environment for focused studying:',
         'QUESTION',
         32,
-        NULL
-    ),
-    (
-        'Find a space with good lighting, comfortable seating, and minimal distractions. Experiment with different environments, such as libraries, quiet cafes, or dedicated study rooms. Ensure you have all necessary supplies and resources within reach.',
-        'ANSWER',
         NULL,
-        32
+        '2004-11-04 22:38:11'
     ),
     (
         'Finding internship opportunities in Porto can be a valuable step towards building your career. Here are some strategies to help you secure an internship:',
         'QUESTION',
         33,
-        NULL
-    ),
-    (
-        'Research local companies and organizations in your field of interest. Update your resume and cover letter to highlight relevant skills and experiences. Network with professors, professionals, and alumni for potential leads.',
-        'ANSWER',
         NULL,
-        33
+        '2006-10-13 23:48:08'
     ),
     (
         'Effective group projects require clear communication and collaboration. Here are some tips to ensure success in group assignments at university:',
         'QUESTION',
         34,
-        NULL
+        NULL,
+        '2012-01-09 09:50:33'
     ),
     (
         'Navigating Public Transportation in Porto can be a convenient way to explore the city. Here are some tips:',
         'QUESTION',
         35,
-        NULL
+        NULL,
+        '2020-03-31 17:10:33'
     ),
     (
         'Porto has an extensive public transportation system, including buses, trams, and the metro. Get a rechargeable transportation card for ease of use and savings. Familiarize yourself with routes and schedules for a smooth commute.',
         'QUESTION',
         36,
-        NULL
+        NULL,
+        '2006-06-29 08:31:24'
     ),
     (
         'Balancing Social Life and Academics in University is essential for a well-rounded experience. Here are some strategies:',
         'QUESTION',
         37,
-        NULL
+        NULL,
+        '2021-01-08 14:57:22'
     ),
     (
         'Create a realistic schedule that includes study time, social activities, and self-care. Join clubs or organizations to meet like-minded individuals. Communicate with peers and professors about any challenges you may face.',
         'QUESTION',
         38,
-        NULL
+        NULL,
+        '2022-12-23 20:40:13'
     ),
     (
         'Maximizing Productivity in University Projects: What strategies can help me maximize productivity when working on university projects?',
         'QUESTION',
         39,
-        NULL
+        NULL,
+        '2002-12-20 17:14:18'
     ),
     (
         'Strategies for Balancing Work and Studies: How can I effectively manage both my job and university commitments?',
         'QUESTION',
         40,
-        NULL
+        NULL,
+        '2022-05-30 19:02:59'
     ),
     (
         'Cooking for One: What are some quick and nutritious recipes suitable for solo dining?',
         'QUESTION',
         41,
-        NULL
+        NULL,
+        '2006-03-08 07:19:24'
     ),
     (
         'Finding Affordable and Safe Housing in Porto: What practical tips can help me secure affordable and safe housing in Porto?',
         'QUESTION',
         42,
-        NULL
+        NULL,
+        '2013-02-15 05:06:23'
     ),
     (
         'Time Management for Juggling a Job and University: What strategies can I use to balance both work and university studies effectively?',
         'QUESTION',
         43,
-        NULL
+        NULL,
+        '2017-08-04 23:40:38'
     ),
     (
         'Networking Events in Porto: Where to Start: What are some effective ways to initiate my networking journey at events in Porto?',
         'QUESTION',
         44,
-        NULL
+        NULL,
+        '2011-11-18 03:48:56'
     ),
     (
         'Coping with Stress and Anxiety in University Life: How can I effectively cope with stress and anxiety while navigating university life?',
         'QUESTION',
         45,
-        NULL
+        NULL,
+        '2009-05-11 10:05:56'
     ),
     (
         'Understanding Health Insurance Policies in Portugal: What are the key aspects to understand about health insurance policies in Portugal?',
         'QUESTION',
         46,
-        NULL
+        NULL,
+        '2014-04-14 05:41:31'
     ),
     (
         'Simple Cleaning Hacks for a Tidy Student Apartment: What are some easy cleaning hacks to maintain a tidy student apartment?',
         'QUESTION',
         47,
-        NULL
+        NULL,
+        '2008-10-03 19:48:17'
     ),
     (
         'Budget-Friendly Tips for Grocery Shopping in Porto: How can I save money while grocery shopping in Porto on a budget?',
         'QUESTION',
         48,
-        NULL
+        NULL,
+        '2023-05-18 12:03:01'
     ),
     (
         'How to Stay Motivated and Productive During Exams: What strategies can help me stay motivated and productive during exam periods?',
         'QUESTION',
         49,
-        NULL
+        NULL,
+        '2008-07-15 04:53:25'
     ),
     (
         'Navigating Public Transportation in Porto: What are the best strategies for navigating public transportation in Porto?',
         'QUESTION',
         50,
-        NULL
+        NULL,
+        '2009-12-06 11:35:44'
     ),
     (
         'Balancing Social Life and Academics in University: How can I find the right balance between my social life and academic commitments?',
         'QUESTION',
         51,
-        NULL
+        NULL,
+        '2018-10-08 16:26:17'
     ),
     (
         'Cooking Skills: Beyond Instant Noodles: What cooking skills should I develop beyond basic instant noodles?',
         'QUESTION',
         52,
-        NULL
+        NULL,
+        '2013-11-10 17:07:33'
     ),
     (
         'Finding Part-Time Jobs for Students in Porto: What are effective ways to find part-time jobs for students in Porto?',
         'QUESTION',
         53,
-        NULL
+        NULL,
+        '2008-05-17 01:45:55'
     ),
     (
         'Effective Strategies for Time Management in University: What strategies can I use for effective time management in university?',
         'QUESTION',
         54,
-        NULL
+        NULL,
+        '2008-12-21 21:26:27'
     ),
     (
         'How to Choose the Right Health Insurance Plan: What factors should I consider when choosing the right health insurance plan?',
         'QUESTION',
         55,
-        NULL
+        NULL,
+        '2002-08-30 06:42:51'
     ),
     (
         'Apartment Hunting Tips: What to Look For: What are some essential tips for apartment hunting, and what should I look for?',
         'QUESTION',
         56,
-        NULL
+        NULL,
+        '2016-10-01 12:12:01'
     ),
     (
         'Navigating University Finances: Scholarships and Grants: How can I navigate university finances and explore scholarships and grants?',
         'QUESTION',
         57,
-        NULL
+        NULL,
+        '2006-04-08 00:02:21'
     ),
     (
         'Finding Affordable Textbooks and Study Resources: What strategies can I use to find affordable textbooks and study resources?',
         'QUESTION',
         58,
-        NULL
+        NULL,
+        '2022-03-09 15:47:37'
     ),
     (
         'Cooking for a Crowd: Easy Recipes for Hosting: What are some easy recipes for cooking for a crowd when hosting?',
         'QUESTION',
         59,       
-        NULL
+        NULL,
+        '2005-02-04 10:51:02'
     ),
     (
         'Effective Study Techniques for Retaining Information: What study techniques are effective for retaining information?',
         'QUESTION',
         60,
-        NULL
+        NULL,
+        '2020-11-05 16:09:43'
     ),
     (
         'Navigating Public Transportation in Porto: What are the best strategies for navigating public transportation in Porto?',
         'QUESTION',
         61,
-        NULL
+        NULL,
+        '2013-05-08 12:22:07'
     ),
     (
         'Balancing Social Life and Academics in University: How can I find the right balance between my social life and academic commitments?',
         'QUESTION',
         62,
-        NULL
+        NULL,
+        '2013-10-07 19:54:25'
     ),
     (
         'Cooking Skills: Beyond Instant Noodles: What cooking skills should I develop beyond basic instant noodles?',
         'QUESTION',
         63,
-        NULL
+        NULL,
+        '2003-07-10 13:00:04'
     ),
     (
         'Finding Part-Time Jobs for Students in Porto: What are effective ways to find part-time jobs for students in Porto?',
         'QUESTION',
         64,
-        NULL
+        NULL,
+        '2022-12-22 01:14:46'
     ),
     (
         'Effective Strategies for Time Management in University: What strategies can I use for effective time management in university?',
         'QUESTION',
         65,
-        NULL
+        NULL,
+        '2019-01-13 20:31:22'
     ),
     (
         'How to Choose the Right Health Insurance Plan: What factors should I consider when choosing the right health insurance plan?',
         'QUESTION',
         66,
-        NULL
+        NULL,
+        '2023-01-12 17:20:01'
     ),
     (
         'Apartment Hunting Tips: What to Look For: What are some essential tips for apartment hunting, and what should I look for?',
         'QUESTION',
         67,
-        NULL
+        NULL,
+        '2015-11-20 23:15:05'
     ),
     (
         'Navigating University Finances: Scholarships and Grants: How can I navigate university finances and explore scholarships and grants?',
         'QUESTION',
         68,
-        NULL
+        NULL,
+        '2014-02-17 12:01:43'
     ),
     (
         'Finding Affordable Textbooks and Study Resources: What strategies can I use to find affordable textbooks and study resources?',
         'QUESTION',
         69,
-        NULL
+        NULL,
+        '2014-12-15 12:15:18'
     ),
     (
         'Cooking for a Crowd: Easy Recipes for Hosting: What are some easy recipes for cooking for a crowd when hosting?',
         'QUESTION',
         70,
-        NULL
+        NULL,
+        '2013-06-06 14:38:26'
     ),
     (
         'Effective Study Techniques for Retaining Information: What study techniques are effective for retaining information?',
         'QUESTION',
         71,
-        NULL
+        NULL,
+        '2020-05-11 00:31:14'
     ),
     (
         'Exploring Extracurricular Activities in Porto: How can I explore and get involved in extracurricular activities in Porto?',
         'QUESTION',
         72,
-        NULL
+        NULL,
+        '2000-08-09 22:44:11'
     ),
     (
         'Handling Academic Pressure and Burnout: What strategies can I use to handle academic pressure and prevent burnout?',
         'QUESTION',
         73,
-        NULL
+        NULL,
+        '2008-12-07 11:08:42'
     ),
     (
         'Understanding Tenant Rights in Porto: What are the tenant rights I should be aware of when living in Porto?',
         'QUESTION',
         74,
-        NULL
+        NULL,
+        '2001-08-02 18:50:34'
     ),
     (
         'Budgeting for Student Life: Tips and Tools: How can I effectively budget for my student life using practical tips and tools?',
         'QUESTION',
         75,
-        NULL
+        NULL,
+        '2022-11-23 21:53:04'
     ),
     (
         'Staying Active and Healthy in a Busy Student Life: What are some strategies for staying active and healthy amidst a busy student life?',
         'QUESTION',
         76,
-        NULL
+        NULL,
+        '2019-11-27 06:06:51'
     ),
     (
         'Finding Reliable Transportation in Porto: What are the reliable transportation options available in Porto?',
         'QUESTION',
         77,
-        NULL
+        NULL,
+        '2005-03-17 15:00:11'
     ),
     (
         'Maximizing Productivity in University Projects: What strategies can help me maximize productivity when working on university projects?',
         'QUESTION',
         78,
-        NULL
+        NULL,
+        '2013-09-30 17:15:43'
     ),
     (
         'Mastering Time Management for Assignments and Deadlines: How can I master time management for assignments and deadlines in university?',
         'QUESTION',
         79,
-        NULL
+        NULL,
+        '2000-07-12 20:22:04'
     ),
     (
         'Navigating Cultural Events and Festivals in Porto: How can I make the most of cultural events and festivals in Porto?',
         'QUESTION',
         80,
-        NULL
+        NULL,
+        '2007-02-17 09:13:31'
     ),
     (
         'Healthy Eating on a Student Budget: What are some tips for maintaining a healthy diet on a tight student budget?',
         'QUESTION',
         81,
-        NULL
+        NULL,
+        '2018-03-07 20:38:36'
     ),
     (
         'How to Choose a Suitable Study Space: What factors should I consider when choosing a suitable study space?',
         'QUESTION',
         82,
-        NULL
+        NULL,
+        '2014-06-02 02:42:29'
     ),
     (
         'Finding Internship Opportunities in Porto: How can I find valuable internship opportunities in Porto?',
         'QUESTION',
         83,
-        NULL
+        NULL,
+        '2018-02-20 14:16:02'
     ),
     (
         'Tips for Effective Group Projects in University: What tips can help me excel in group projects at the university level?',
         'QUESTION',
         84,
-        NULL
+        NULL,
+        '2023-08-09 09:59:57'
     ),
     (
         'Cooking Skills: From Basics to Gourmet: How can I progress in my cooking skills from basic to gourmet?',
         'QUESTION',
         85,
-        NULL
+        NULL,
+        '2013-03-09 13:31:21'
     ),
     (
         'Balancing Work, Studies, and Personal Life: What strategies can I use to balance work, studies, and personal life effectively?',
         'QUESTION',
         86,
-        NULL
+        NULL,
+        '2010-03-10 14:47:13'
     ),
     (
         'Networking Strategies for Introverted Students: What networking strategies are effective for introverted students?',
         'QUESTION',
         87,
-        NULL
+        NULL,
+        '2016-01-24 16:04:01'
     ),
     (
         'Coping with Homesickness and Adjusting to University Life: How can I cope with homesickness and adjust to university life?',
         'QUESTION',
         88,
-        NULL
+        NULL,
+        '2009-03-22 01:39:50'
     ),
     (
         'Understanding Healthcare Services for Students in Porto: What healthcare services are available for students in Porto?',
         'QUESTION',
         89,
-        NULL
+        NULL,
+        '2019-10-30 00:59:46'
     ),
     (
         'Quick and Easy Cleaning Hacks for Students: What are some quick and easy cleaning hacks suitable for students?',
         'QUESTION',
         90,
-        NULL
+        NULL,
+        '2014-12-11 07:09:02'
     ),
     (
         'Financial Planning for University Students: How can I effectively plan my finances as a university student?',
         'QUESTION',
         91,
-        NULL
+        NULL,
+        '2021-12-14 19:44:38'
     ),
     (
         'Exploring Porto: Hidden Gems and Must-Visit Places: What hidden gems and must-visit places should I explore in Porto?',
         'QUESTION',
         92,
-        NULL
+        NULL,
+        '2012-10-10 08:45:19'
     ),
     (
         'Mastering Algorithm Design and Optimization: How can I master the design and optimization of algorithms?',
         'QUESTION',
         93,
-        NULL
+        NULL,
+        '2022-07-02 17:56:16'
     ),
     (
         'Setting Up a Personal Development Plan: What steps should I take to set up a personal development plan?',
         'QUESTION',
         94,
-        NULL
+        NULL,
+        '2021-06-11 17:50:17'
     ),
     (
         'Networking in Tech: Tips for Introverted Engineers: What networking tips are effective for introverted engineers in the tech industry?',
         'QUESTION',
         95,
-        NULL
+        NULL,
+        '2004-05-14 17:48:20'
     ),
     (
         'Finding Part-Time Work in the Tech Industry: How can I find part-time work in the tech industry?',
         'QUESTION',
         96,
-        NULL
+        NULL,
+        '2002-01-03 04:38:18'
     ),
     (
         'Effective Strategies for Debugging Complex Code: What strategies can help me effectively debug complex code?',
         'QUESTION',
         97,
-        NULL
+        NULL,
+        '2023-07-25 00:40:08'
     ),
     (
         'Understanding Intellectual Property in Tech Projects: What do I need to know about intellectual property in tech projects?',
         'QUESTION',
         98,
-        NULL
+        NULL,
+        '2017-09-12 12:20:20'
     ),
     (
         'Navigating Work-University-Life Balance in Porto: How can I navigate the balance between work, university, and personal life in Porto?',
         'QUESTION',
         99,
-        NULL
+        NULL,
+        '2018-06-10 17:36:42'
     ),
     (
         'Balancing Coding Projects and Personal Time: What strategies can I use to balance coding projects and personal time effectively?',
         'QUESTION',
         100,
-        NULL
+        NULL,
+        '2022-10-19 20:43:07'
     ),
     (
         'Budget-Friendly Travel Tips for Students in Porto: What budget-friendly travel tips can I follow as a student in Porto?',
         'QUESTION',
         101,
-        NULL
+        NULL,
+        '2014-07-17 11:50:28'
     ),
     (
         'Building Soft Skills for a Successful Tech Career: How can I build soft skills for a successful career in the tech industry?',
         'QUESTION',
         102,
-        NULL
+        NULL,
+        '2006-11-30 13:34:06'
     ),
     (
         'Healthy Snacking Habits for Busy Students: What are some healthy snacking habits suitable for busy students?',
         'QUESTION',
         103,
-        NULL
+        NULL,
+        '2022-10-16 19:48:38'
     ),
     (
         'Maximizing Productivity in University Projects requires effective planning and execution. Here are some tips:',
         'QUESTION',
         104,
-        NULL
+        NULL,
+        '2003-05-04 06:03:51'
     ),
     (
         'Break down larger projects into manageable tasks and set deadlines. Use project management tools to track progress. Collaborate with team members and utilize resources available at your university.',
         'QUESTION',
         105,
-        NULL
+        NULL,
+        '2018-08-21 07:30:29'
     ),
     (
         'How to Choose a Suitable Study Space is a common challenge for students. Here are some considerations:',
         'QUESTION',
         106,
-        NULL
+        NULL,
+        '2003-02-21 07:59:09'
     ),
     (
         'Find a quiet and comfortable space with minimal distractions. Experiment with different environments to discover what works best for you. Ensure you have all necessary study materials within reach.',
         'QUESTION',
         107,
-        NULL
+        NULL,
+        '2007-05-25 17:44:10'
     ),
     (
         'Finding Internship Opportunities in Porto is a crucial step toward gaining real-world experience. Here are some strategies:',
         'QUESTION',
         108,
-        NULL
+        NULL,
+        '2012-09-05 02:53:30'
     ),
     (
         'Utilize university career services, attend job fairs, and explore online platforms for internship listings. Tailor your resume and cover letter for each application. Network with professionals in your desired industry.',
         'QUESTION',
         109,
-        NULL
+        NULL,
+        '2005-06-19 02:09:23'
     ),
     (
-        'I literally have no clue of what Im doing in class. uni started, teachers started speaking about something called Java, now Im two weeks in and literally am looking at the screen without doing anything. What does OOP even mean?',
+        'Mastering Object-Oriented Programming (OOP) requires a deep understanding of its principles, including classes, objects, inheritance, polymorphism, and encapsulation. Practice through coding exercises and real-world projects is essential for honing OOP skills, allowing developers to create efficient and scalable software solutions.',
+        'QUESTION',
+        110,
+        NULL,
+        '2002-11-08 21:16:30'
+    ),
+    (
+        'Achieving a balance between freelancing and university studies demands effective time management and clear communication with clients and professors. Creating a structured schedule, setting realistic goals, and practicing self-care contribute to a sustainable and successful approach, allowing individuals to excel in both arenas.',
         'QUESTION',
         111,
-        NULL
+        NULL,
+        '2005-04-22 07:12:43'
     ),
     (
-        'Im drowning in group projects, literally every week i have to deliver 2 or more things, plus tests, because my teachers dont know the difference between continuous evaluation and making us take a dumb exam. How am I meant to balance my NFTs trading business if I have no free time because of how these teachers handle timelines nowadays?',
+        'Understanding sustainable tech practices involves adopting eco-friendly technologies, considering the environmental impact of tech solutions, and implementing circular economy principles. Staying informed about advancements in sustainable technology and incorporating green development processes are crucial steps toward building a more environmentally conscious tech industry.',
         'QUESTION',
         112,
-        NULL
+        NULL,
+        '2004-11-09 22:47:09'
     );
+
+INSERT INTO
+    content_versions (body, type, answer_id, question_id, date)
+VALUES
+    (
+        'To create a budget for living alone, start by calculating your monthly income and listing all your expenses. Allocate a portion for rent, utilities, groceries, and savings. Make adjustments as needed to stay within your means.',
+        'ANSWER',
+        1,
+        NULL,
+        '2007-12-14 15:47:21'
+    ),
+    (
+        'Try making a hearty vegetable stir-fry or a classic spaghetti aglio e olio. These recipes are easy to follow and require minimal ingredients.',
+        'ANSWER',
+        2,
+        NULL,
+        '2014-03-23 12:43:10'
+    ),
+    (
+        'Sort your laundry by color and fabric type to prevent color bleeding or fabric damage. Use the right amount of detergent and avoid overloading the machine. Follow garment care labels for best results.',
+        'ANSWER',
+        3,
+        NULL,
+        '2001-12-29 18:20:21'
+    ),
+    (
+        'Establish a daily routine that includes tasks like making the bed, doing the dishes, and wiping down surfaces. Set aside time for deeper cleaning on a weekly basis, focusing on different areas of your home.',
+        'ANSWER',
+        4,
+        NULL,
+        '2013-09-01 12:02:16'
+    ),
+    (
+        'Consider using techniques like the Pomodoro Technique for focused work sessions, and prioritize tasks based on their importance and deadlines. Set realistic goals and use tools like calendars and to-do lists.',
+        'ANSWER',
+        5,
+        NULL,
+        '2014-08-21 13:50:41'
+    ),
+    (
+        'Start by identifying your skills, interests, and career goals. Tailor your resume and cover letter to each job application. Network with professionals in your field and utilize online job boards.',
+        'ANSWER',
+        6,
+        NULL,
+        '2013-06-12 05:57:55'
+    ),
+    (
+        'Review your budget to determine a comfortable rent range. Research neighborhoods and visit potential apartments. Read and understand the terms of the lease agreement before signing.',
+        'ANSWER',
+        7,
+        NULL,
+        '2009-11-07 01:54:55'
+    ),
+    (
+        'Portugal offers both public and private healthcare options. Register for the National Health Service (SNS) and consider supplementary private insurance for additional coverage. Familiarize yourself with local clinics and hospitals.',
+        'ANSWER',
+        8,
+        NULL,
+        '2000-08-06 03:18:27'
+    ),
+    (
+        'Explore options like health insurance, renters insurance, and car insurance. Understand the premiums, deductibles, and coverage limits associated with each type. Consider consulting with an insurance agent for personalized advice.',
+        'ANSWER',
+        9,
+        NULL,
+        '2018-12-11 10:11:28'
+    ),
+    (
+        'Gather all necessary documents, including W-2 forms and receipts for deductions. Consider using tax software or consulting a tax professional for guidance. Double-check your return for accuracy before filing.',
+        'ANSWER',
+        10,
+        NULL,
+        '2007-12-25 06:33:48'
+    ),
+    (
+        'Learn how to fix leaky faucets, unclog drains, and patch small holes in walls. Familiarize yourself with the electrical panel and know how to reset a circuit breaker. Keep a basic toolkit handy for minor repairs.',
+        'ANSWER',
+        11,
+        NULL,
+        '2016-09-27 21:03:07'
+    ),
+    (
+        'Plan meals ahead of time, create a shopping list, and stick to it. Opt for store brands and generic products, and take advantage of discounts and sales. Consider buying non-perishable items in bulk for additional savings.',
+        'ANSWER',
+        12,
+        NULL,
+        '2015-05-17 03:35:45'
+    ),
+    (
+        'Learn how to check and change the oil, replace air filters, and monitor tire pressure. Familiarize yourself with the location of essential fluids like coolant and brake fluid. Keep a basic toolkit and emergency supplies in your car.',
+        'ANSWER',
+        13,
+        NULL,
+        '2004-11-24 16:43:03'
+    ),
+    (
+        'Attend networking events, workshops, and conferences related to your field of interest. Connect with professors, classmates, and professionals on platforms like LinkedIn. Don''t be afraid to reach out and ask for advice or informational interviews.',
+        'ANSWER',
+        14,
+        NULL,
+        '2016-07-08 03:10:49'
+    ),
+    (
+        'Practice self-care routines, engage in activities you enjoy, and seek support from friends, family, or professionals if needed. Prioritize sleep, exercise, and nutrition to maintain a balanced and healthy lifestyle.',
+        'ANSWER',
+        15,
+        NULL,
+        '2016-07-11 02:31:41'
+    ),
+    (
+        'Consider factors like coverage options, premiums, deductibles, and network of healthcare providers. Evaluate whether the plan meets your specific needs and preferences. Compare multiple options before making a final decision.',
+        'ANSWER',
+        16,
+        NULL,
+        '2018-01-23 17:53:57'
+    ),
+    (
+        'Determine your budget, preferred location, and essential amenities. Schedule viewings and ask questions about lease terms and policies. Take your time to assess each option before making a decision.',
+        'ANSWER',
+        17,
+        NULL,
+        '2004-05-22 16:09:17'
+    ),
+    (
+        'Research and apply for scholarships that match your academic achievements and interests. Check with your university''s financial aid office for available grants and awards. Keep track of deadlines and requirements for each application.',
+        'ANSWER',
+        18,
+        NULL,
+        '2009-07-21 22:40:33'
+    ),
+    (
+        'Cooking for a crowd can be a fun and rewarding experience. Here are some recipes perfect for hosting gatherings:',
+        'ANSWER',
+        20,
+        NULL,
+        '2016-12-11 17:06:15'
+    ),
+    (
+        'Try making a big batch of chili or a hearty vegetable lasagna. These recipes are crowd-pleasers and can be prepared in advance for convenience.',
+        'ANSWER',
+        20,
+        NULL,
+        '2004-09-10 16:59:02'
+    ),
+    (
+        'Use active learning techniques like summarizing, questioning, and teaching the material to others. Break study sessions into manageable chunks and take breaks for better retention. Experiment with different study environments to find what works best for you.',
+        'ANSWER',
+        21,
+        NULL,
+        '2007-08-15 19:40:02'
+    ),
+    (
+        'Join clubs, student organizations, or volunteer groups related to your interests. Attend workshops, seminars, and events on campus to broaden your horizons. Don''t be afraid to step out of your comfort zone and try something new.',
+        'ANSWER',
+        22,
+        NULL,
+        '2000-01-15 14:14:57'
+    ),
+    (
+        'Practice time management, set realistic goals, and prioritize self-care activities. Seek support from professors, counselors, or support groups if you''re feeling overwhelmed. Remember that it''s okay to ask for help.',
+        'ANSWER',
+        23,
+        NULL,
+        '2007-03-27 09:42:06'
+    ),
+    (
+        'Familiarize yourself with laws regarding rent increases, eviction procedures, and required maintenance. Keep records of communication with your landlord and understand your right to privacy within the rented property.',
+        'ANSWER',
+        24,
+        NULL,
+        '2016-08-21 19:34:01'
+    ),
+    (
+        'Track your income and expenses using a budgeting app or spreadsheet. Set clear financial goals and allocate funds for essentials, savings, and discretionary spending. Periodically review and adjust your budget as needed.',
+        'ANSWER',
+        25,
+        NULL,
+        '2007-08-07 03:36:54'
+    ),
+    (
+        'Incorporate physical activity into your routine, even if it''s just a short walk or home workout. Plan balanced meals and stay hydrated to maintain energy levels. Get enough restful sleep to support overall health.',
+        'ANSWER',
+        26,
+        NULL,
+        '2007-05-15 12:15:34'
+    ),
+    (
+        'Explore public transportation, including buses, trams, and the metro system. Consider using a bicycle for short distances, or use ride-sharing services for convenience. Familiarize yourself with local routes and schedules.',
+        'ANSWER',
+        27,
+        NULL,
+        '2010-07-28 12:23:42'
+    ),
+    (
+        'Break larger projects into smaller, manageable tasks and set realistic milestones. Use project management tools to track progress and allocate time for revisions and edits. Don''t hesitate to seek guidance or feedback from professors or peers.',
+        'ANSWER',
+        28,
+        NULL,
+        '2000-08-28 16:33:30'
+    ),
+    (
+        'Use a planner or digital calendar to keep track of assignment due dates and exam schedules. Prioritize tasks based on deadlines and importance. Break down larger assignments into smaller, manageable tasks.',
+        'ANSWER',
+        29,
+        NULL,
+        '2023-07-01 14:41:26'
+    ),
+    (
+        'Attend events like the São João Festival, Fantasporto Film Festival, and NOS Primavera Sound music festival. Explore local museums, art galleries, and theaters for cultural experiences.',
+        'ANSWER',
+        30,
+        NULL,
+        '2023-07-01 14:41:26'
+    ),
+    (
+        'Plan balanced meals that incorporate affordable protein sources like legumes, eggs, and tofu. Buy seasonal fruits and vegetables and consider frozen options for longer shelf life. Opt for store brands and generic products to save money.',
+        'ANSWER',
+        31,
+        NULL,
+        '2014-07-22 22:45:00'
+    ),
+    (
+        'Find a space with good lighting, comfortable seating, and minimal distractions. Experiment with different environments, such as libraries, quiet cafes, or dedicated study rooms. Ensure you have all necessary supplies and resources within reach.',
+        'ANSWER',
+        32,
+        NULL,
+        '2012-08-03 22:58:14'
+    ),
+    (
+        'Research local companies and organizations in your field of interest. Update your resume and cover letter to highlight relevant skills and experiences. Network with professors, professionals, and alumni for potential leads.',
+        'ANSWER',
+        33,
+        NULL,
+        '2008-06-02 00:45:03'
+    );
+
 
 INSERT INTO
     question_tag (question_id, tag_id)
@@ -4448,7 +4618,21 @@ VALUES
     (81, 41),
     (52, 53),
     (56, 68),
-    (23, 74);
+    (23, 74),
+    (91, 1),
+    (91, 2),
+    (91, 3),
+    (91, 4),
+    (91, 5),
+    (91, 6),
+    (91, 7),
+    (91, 8),
+    (91, 9),
+    (91, 10),
+    (91, 11),
+    (91, 12),
+    (91, 13),
+    (91, 14);
 
 INSERT INTO
     followed_tags (user_id, tag_id)
