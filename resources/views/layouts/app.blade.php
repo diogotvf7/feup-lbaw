@@ -77,9 +77,7 @@
                 </div>
             </nav>
         </header>
-        <section id="content">
             @yield('content')
-        </section>
     </main>
 </body>
 
