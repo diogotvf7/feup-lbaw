@@ -45,12 +45,13 @@ Route::controller(CardController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
+    Route::patch('/admin/users/{id}/promote', 'promote')->name('user.promote');
+    Route::patch('/admn/users/{id}/demote', 'demote')->name('user.demote');
+    Route::get('/admin/users/{id}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
+
     Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
     Route::delete('/users/{id}', 'destroy')->name('users.destroy');
-    Route::get('/users/{id}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
     Route::patch('/users/{id}/update', 'update')->name('users.update');
-    Route::patch('/users/{id}/promote', 'promote')->name('user.promote');
-    Route::patch('/users/{id}/demote', 'demote')->name('user.demote');
     Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
     Route::post('/user/store', 'store')->name('user.store');
 });
@@ -68,14 +69,14 @@ Route::controller(ItemController::class)->group(function () {
 });
 
 Route::controller(AnswerController::class)->group(function () {
-    Route::post('/answer/create', 'store')->name('answer/create');
-    Route::patch('/answer/edit', 'edit')->name('answer/edit');
-    Route::delete('/answer/delete', 'destroy')->name('answer/delete');
+    Route::post('/answers/create', 'store')->name('answer/create');
+    Route::patch('/answers/edit', 'edit')->name('answer/edit');
+    Route::delete('/answers/delete', 'destroy')->name('answer/delete');
 });
 
 Route::controller(QuestionController::class)->group(function () {
-    Route::patch('/question/edit', 'edit')->name('question/edit');
-    Route::delete('/question/delete', 'destroy')->name('question/delete');
+    Route::patch('/questions/edit', 'edit')->name('question/edit');
+    Route::delete('/questions/delete', 'destroy')->name('question/delete');
 });
 
 // Authentication

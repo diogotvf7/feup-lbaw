@@ -1,0 +1,346 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0'
+  title: 'LBAW Geras Web API'
+  description: 'Web Resources Specification (A7) for Geras'
+
+servers:
+- url: http://lbaw2326.lbaw.fe.up.pt
+  description: Production server
+
+tags:
+  - name: 'M01: Authentication and Individual Profile'
+  - name: 'M03: Content'
+  - name: 'M03: User Administration and Static pages'
+
+paths:
+DONE
+  /login:
+    get:
+      operationId: R101
+      summary: 'R101: Login Form'
+      description: 'Show login form. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      responses:
+        '200':
+          description: 'Ok. Show log-in UI'
+    post:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+ 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:          # <!--- form field name
+                  type: string
+                password:    # <!--- form field name
+                  type: string
+              required:
+                - email
+                - password
+ 
+      responses:
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to main questions page.'
+                  value: '/questions/top'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+ 
+ DONE
+  /logout:
+    post:
+      operationId: R103
+      summary: 'R103: Logout Action'
+      description: 'Logout the current authenticated used. Access: USR'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      responses:
+        '302':
+          description: 'Successful logout. Redirect to login form'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+DONE
+  /register:
+    get:
+      operationId: R104
+      summary: 'R104: Register Form'
+      description: 'Provide new user registration form. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      responses:
+        '200':
+          description: 'Ok. Show sign-up UI'
+
+    post:
+      operationId: R105
+      summary: 'R105: Register Action'
+      description: 'Processes the new user registration form submission. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+                - password_confirmation
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to main questions page.'
+                  value: '/questions/top'
+                302Failure:
+                  description: 'Failed authentication. Redirect to register form.'
+                  value: '/register'
+
+DONE
+  /users/{user}:
+    get:
+      operationId: R106
+      summary: 'R106: View user profile.'
+      description: 'Show a user profile. Access: USR'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show view profile UI'
+        '403':
+          description: 'Forbidden. User is not logged in and cannot visit a user profile'
+        '404': 
+          description: 'Not Found. User does not exist'
+
+DONE
+  /questions/top:
+    get:
+      operationId: R201
+      summary: 'R201: View top questions.'
+      description: 'View a list of questions ordered by descending vote balance. Access: VIS'
+      tags:
+       - 'M02: Content'
+       
+      responses:
+        '200':
+          description: 'Ok. Show view top questions UI'
+
+  DONE
+  /questions/{question}:
+    get:
+      operationId: R202
+      summary: 'R202: View question.'
+      description: 'View a questions details. Access: VIS'
+      tags:
+        - 'M02: Content'
+
+      parameters:
+        - in: path
+          name: question
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show view question UI'
+        '404': 
+          description: 'Not Found. Question does not exist'
+
+  TODO CONFIRMAR CREATE QUESTION
+  /question/create:
+    post: 
+      operationId: R203
+      summary: 'R203: Create a question.'
+      description: 'Create a new question. Access: USR'
+      tags: 
+        - 'M02: Content'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+              required:
+                - title
+                - body
+
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new question information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302:
+                  description: 'Successful creation. Redirect to the new question's page.'
+                  value: '/questions/{newQuestionId}'
+        '403':
+          description: 'Forbidden. User is not logged in and is not allowed to post a question'
+
+      
+      
+
+
+Eduardo
+  /admin/users:
+    get:
+      operationId: R301
+      summary: 'R301: View admin page. Access: ADM'
+      description: 'View table of users of web application with action options.'
+      tags:
+        - 'M03: User Administration and Static pages'
+
+      responses:
+        '200':
+          description: 'Ok. Show admin page'
+
+Eduardo
+  /admin/users/{id}/promote:
+    patch:
+      operationId: R302
+      summary: 'R302: Promote an user. Access: ADM'
+      description: 'Promote an user from the table of users.'
+      tags:  
+      
+
+
+
+
+
+
+  /api/works:
+    get:
+      operationId: R202
+      summary: 'R202: Search Works API'
+      description: 'Searches for works and returns the results as JSON. Access: VIS.'
+      tags: 
+        - 'M02: Works'
+
+      parameters:
+        - in: query
+          name: query
+          description: String to use for full-text search
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: item
+          description: Category of the works
+          schema:
+            type: string
+          required: false
+        - in: query
+          name: loaned
+          description: Boolean with the loaned flag value
+          schema:
+            type: boolean
+          required: false
+        - in: query
+          name: owner
+          description: Boolean with the owner flag value
+          schema:
+            type: boolean
+          required: false
+        - in: query
+          name: classification
+          description: Integer corresponding to the work classification
+          schema:
+            type: integer
+          required: false
+
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+                    obs:
+                      type: string
+                    year:
+                      type: string
+                    owner:
+                      type: string
+                    type:
+                      type: string
+                example:
+                  - id: 1
+                    title: Rihanna - Unapologetic
+                    obs: Good pop music album.
+                    year: 2012
+                    owner: Joana Lima
+                    type: MP3
+                  - id: 15
+                    title: Mr. Bean
+                    obs: The best comedy movie.
+                    year: 1995
+                    owner: Manuel Teixeira
+                    type: DVD

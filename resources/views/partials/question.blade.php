@@ -1,8 +1,8 @@
-<div class="px-4 pt-4 pb-2 mb-4 border-bottom border-3 border-secondary">    
-<section id="question" class="card border-secondary mb-3">
-    <div class="card-header d-flex flex-wrap justify-content-between align-items-end px-4 pb-0">
-        <h2>{{ $question->title }}</h2>
-         <!-- <p>
+<div class="px-4 pt-4 pb-2 mb-4 border-bottom border-3 border-secondary">
+    <section id="question" class="card border-secondary mb-3">
+        <div class="card-header d-flex flex-wrap justify-content-between align-items-end px-4 pb-0">
+            <h2>{{ $question->title }}</h2>
+            <!-- <p>
             @foreach($question->tags as $tag)
                 {{ $tag->name }}
                 @if (!$loop->last)
@@ -11,8 +11,8 @@
             @endforeach
             | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
         </p>  -->
-        <p>Made by {{ $question->user->username }} | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}</p>
-        @if(auth()->check() && $question->user->id === auth()->user()->id)
+            <p>Made by {{ $question->user->username }} | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}</p>
+            @if((auth()->check() && $question->user->id === auth()->user()->id) || Auth::user()->type === "Admin")
             <div class="d-flex pb-2">
                 <button class="btn btn-secondary my-2 my-sm-0 edit-question">Edit</button>
                 <button class="btn btn-secondary my-2 my-sm-0 stop-editing d-none">Stop Editing</button>
@@ -23,35 +23,35 @@
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Delete</button>
                 </form>
             </div>
-        @endif
-    </div>
+            @endif
+        </div>
 
-    <div class="px-4 py-4">
-        <span class="question-body">{{ $question->updatedVersion->body }}</span>
-        <form method="POST" action="{{ route('question/edit') }}">
-            {{ csrf_field() }}
-            @method('PATCH')
-            <input type="hidden" name="question_id" value="{{ $question->id }}">
-            <input type="text" name="body" class="form-control edit-input d-none" value="{{ $question->updatedVersion->body }}">
-            <button class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
-        </form>
-    </div>
+        <div class="px-4 py-4">
+            <span class="question-body">{{ $question->updatedVersion->body }}</span>
+            <form method="POST" action="{{ route('question/edit') }}">
+                {{ csrf_field() }}
+                @method('PATCH')
+                <input type="hidden" name="question_id" value="{{ $question->id }}">
+                <input type="text" name="body" class="form-control edit-input d-none" value="{{ $question->updatedVersion->body }}">
+                <button class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
+            </form>
+        </div>
 
-    <div class="card-footer d-flex align-items-center px-0">
-        <p class="px-4 mb-0">{{ $question->answers->count() }} 
-            @if($question->answers->count() === 1)
+        <div class="card-footer d-flex align-items-center px-0">
+            <p class="px-4 mb-0">{{ $question->answers->count() }}
+                @if($question->answers->count() === 1)
                 answer
-            @else
+                @else
                 answers
-            @endif
-        </p>
-        <p class="px-4 mb-0">{{ $question->voteBalance() }} 
-            @if($question->voteBalance() === 1)
+                @endif
+            </p>
+            <p class="px-4 mb-0">{{ $question->voteBalance() }}
+                @if($question->voteBalance() === 1)
                 vote
-            @else
+                @else
                 votes
-            @endif
-        </p>
-    </div>
-</section>
+                @endif
+            </p>
+        </div>
+    </section>
 </div>
