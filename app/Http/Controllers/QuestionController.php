@@ -88,15 +88,28 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        return view('pages.question', ['question' => $question]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Question $question)
+    public function edit(Request $request)
     {
-        //
+        $request->validate([
+            'body' => 'required|string|max:250'
+        ]);
+        
+        $question = Question::findOrFail($request->question_id);
+        $this->authorize('update', $question);
+
+        $contentversion = new ContentVersion();
+        $contentversion->body = $request->body;
+        $contentversion->type = 'QUESTION';
+        $contentversion->question_id = $request->question_id;
+        $contentversion->save();
+
+        return redirect()->back()->with('success', 'Question edited successfully!');
     }
 
     /**
@@ -110,9 +123,12 @@ class QuestionController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Question $question)
+    public function destroy(Request $request)
     {
-        //
+        $question = Question::findOrFail($request->question_id);
+        $this->authorize('delete', $question);
+        $question->delete();
+        return redirect()->intended('/questions/top')->with('success', 'Question removed successfully!');
     }
 
     // public function top()

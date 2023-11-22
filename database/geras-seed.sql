@@ -1330,7 +1330,7 @@ VALUES
         'user9@example.com',
         'Benjamin Taylor',
         'btaylor',
-        '$2y$10$5HCN8mzN/F1g9cAhP1GhuHf3KdeKJdizsdQbjq6N3sP9dx0Si54Oi',
+        '$2a$10$9zopfEmCd4thoxw5VPIfROfOdLD1NNbo6Ht9TQO8BU0u2Gp7xOAFO',
         '/userFiles/profilePics/profile9.jpg',
         18,
         220,

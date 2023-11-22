@@ -1,8 +1,15 @@
 <article class="question-prev card border-primary my-4" data-id="{{$question->id}}">
+
+    <header class="card-header">
+        @if (Auth::check())
+        <a href="{{route('users.profile', $question->user->id)}}">
+            <h5 style="width: fit-content;">{{$question->user->username ?? 'User Removed'}}</h5>
+        </a>
+        @else
+        <h5 style="width: fit-content;">{{$question->user->username ?? 'User Removed'}}</h5>
+        @endif
+    </header>
     <a href="/questions/{{ $question->id }}">
-        <header class="card-header">
-            <h5>{{$question->user->username ?? 'User Removed'}}</h5>
-        </header>
         <div class="card-body">
             <h4 class="card-title">
                 {{$question->title}}

@@ -21,11 +21,21 @@
                 <div class="form-group">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" name="title" class="form-control" placeholder="e.g. How to fix a lamp" required autofocus>
+                    @if ($errors->has('title'))
+                        <span class="error">
+                            {{ $errors->first('title') }}
+                        </span>
+                    @endif
                 </div>
 
                 <div class="form-group">
                     <label for="body" class="form-label">Body</label>
                     <textarea name="body" class="form-control" rows="10" required></textarea>
+                    @if ($errors->has('body'))
+                        <span class="error">
+                            {{ $errors->first('body') }}
+                        </span>
+                    @endif
                 </div>
                 
                 <div class="form-group pt-3">
