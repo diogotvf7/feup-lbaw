@@ -24,7 +24,7 @@ use App\Http\Middleware\AdminMiddleware;
 */
 
 // Home
-Route::redirect('/', '/login');
+Route::redirect('/', '/questions');
 
 // Main Page (welcome.blade.php)
 // Route::get('/welcome', function () {
@@ -32,13 +32,7 @@ Route::redirect('/', '/login');
 // });
 
 Route::controller(QuestionController::class)->group(function () {
-    Route::get('/questions/top', 'top')->name('topQuestions');
-});
-
-// Cards
-Route::controller(CardController::class)->group(function () {
-    Route::get('/cards', 'list')->name('cards');
-    Route::get('/cards/{id}', 'show');
+    Route::get('/questions', 'index')->name('questions');
 });
 
 Route::controller(UserController::class)->group(function () {
@@ -53,16 +47,10 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/user/store', 'store')->name('user.store');
 });
 
-// API
-Route::controller(CardController::class)->group(function () {
-    Route::put('/api/cards', 'create');
-    Route::delete('/api/cards/{card_id}', 'delete');
-});
 
-Route::controller(ItemController::class)->group(function () {
-    Route::put('/api/cards/{card_id}', 'create');
-    Route::post('/api/item/{id}', 'update');
-    Route::delete('/api/item/{id}', 'delete');
+// API
+Route::controller(QuestionController::class)->group(function () {
+    Route::get('/api/questions', 'fetch');
 });
 
 
