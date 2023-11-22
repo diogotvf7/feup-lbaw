@@ -12,7 +12,7 @@
             | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
         </p>  -->
             <p>Made by {{ $question->user->username }} | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}</p>
-            @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
+            @if(auth()->check() && ($question->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
             <div class="d-flex pb-2">
                 @if((auth()->check() && $question->user->id === auth()->user()->id))
                 <button class="btn btn-secondary my-2 my-sm-0 edit-question">Edit</button>

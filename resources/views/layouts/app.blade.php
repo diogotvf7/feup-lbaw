@@ -56,7 +56,7 @@
                                 <div class="dropdown-menu" style="max-width: 20%;">
                                     <a class="dropdown-item" href="{{ route('users.profile', Auth::user()->id) }}">View Profile</a>
                                     <div class="dropdown-divider"></div>
-                                    <form method="POST" action="{{ route('logout') }}">{{ csrf_field() }}<button class="dropdown-item" type="submit">Logout</button>
+                                    <form method="POST" action="{{ route('logout') }}">{{ csrf_field() }}<button class="dropdown-item" type="submit">Logout</button></form>
                                 </div>
                             </li>
                             @endif
@@ -65,7 +65,7 @@
                             <form class="d-flex" action="{{ route('search') }}" method="GET">
                                 {{ csrf_field() }}
                                 @method('GET')
-                                <input class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
+                                <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
                                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                             </form>
                         </div>
