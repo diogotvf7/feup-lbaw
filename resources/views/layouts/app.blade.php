@@ -27,9 +27,9 @@
 <body>
     <script type="text/javascript" src={{ url('js/bootstrap.bundle.js') }} defer>
     </script>
-    <main>
+    <main style="height: 85dvh;">
         <header>
-            <nav class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <nav id="navbar" class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
                     <h1><a class="navbar-brand" href="{{ url('/home') }}">Geras</a></h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->username }}</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ url('/profile') }}">View Profile</a>
+                                    <a class="dropdown-item" href="{{ route('users.profile', Auth::user()->id) }}">View Profile</a>
                                     <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ url('/logout') }}">Logout</a>
                                 </div>
