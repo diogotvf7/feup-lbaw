@@ -34,7 +34,7 @@ else if (questionsPage) {
     loader.remove();
   }
 
-  function createQuestionPreview(question) {
+  function createQuestionPreview(question, authenticated) {
     const questionPreview = document.createElement('article');
 
     questionPreview.classList.add('d-flex');
@@ -68,10 +68,12 @@ else if (questionsPage) {
     tags.classList.add('d-flex', 'gap-1');
 
     question.tags.forEach(tag => {
-      const tagElement = document.createElement('a');
-      tagElement.href = '/questions/tag/' + tag.id;
+      const tagElement = document.createElement('p');
+      // const tagElement = document.createElement('a');
+      // tagElement.href = '/questions/tag/' + tag.id;
       tagElement.classList.add(
-          'badge', 'badge-primary', 'bg-primary', 'text-decoration-none');
+          'badge', 'badge-primary', 'bg-primary', 'text-decoration-none',
+          'm-0' /*remover o m-0*/);
       tagElement.textContent = tag.name;
       tags.appendChild(tagElement);
     });
@@ -83,12 +85,22 @@ else if (questionsPage) {
         'text-nowrap', 'd-flex', 'flex-column', 'justify-content-end',
         'align-content-end', 'me-5');
 
-    const publishedInfo = document.createElement('span');
+    const publishedInfo = document.createElement('div');
     publishedInfo.classList.add('text-secondary');
 
-    publishedInfo.textContent =
-        question.user.username + ' asked ' + question.timeAgo;
+    if (authenticated) {
+      const userLink = document.createElement('a');
+      userLink.href = '/users/' + question.user.id;
+      userLink.classList.add('text-decoration-none');
+      userLink.textContent = question.user.username;
 
+      publishedInfo.innerHTML = '';
+      publishedInfo.appendChild(userLink);
+    } else {
+      publishedInfo.innerHTML = question.user.username;
+    }
+
+    publishedInfo.innerHTML += ' asked ' + question.timeAgo;
     published.appendChild(publishedInfo);
 
     questionPreview.append(info, content, published);
@@ -101,17 +113,19 @@ else if (questionsPage) {
     const request = await fetch(
         '/api/questions?page=' + page++ + '&filter=' + urlParams.get('filter'));
     const response = await request.json();
-    return response.data;
+    return response;
   }
 
   function insertQuestions() {
-    fetchQuestions().then(questions => {
+    fetchQuestions().then(response => {
+      const questions = response.questions.data;
       if (questions.length === 0) {
         noMoreQuestions();
         return;
       }
       questions.forEach(question => {
-        const questionPreview = createQuestionPreview(question);
+        const questionPreview =
+            createQuestionPreview(question, response.authenticated);
         questionsContainer.insertBefore(questionPreview, loader);
         const hr = document.createElement('hr');
         questionsContainer.insertBefore(hr, loader);

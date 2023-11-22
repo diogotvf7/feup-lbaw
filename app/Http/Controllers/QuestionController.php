@@ -44,8 +44,14 @@ class QuestionController extends Controller
             $question->updatedVersion;
             $question->firstVersion;
             $question->timeAgo = \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans();
-            }
-        return $questions;
+        }
+
+        $response = [
+            'authenticated' => Auth::check(),
+            'questions' => $questions,
+        ];
+
+        return $response;
     }
 
     /**
