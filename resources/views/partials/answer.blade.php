@@ -15,10 +15,12 @@
             <div class="card border-primary mb-3">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     {{ $answer->user->username }} | {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }}
-                    @if((auth()->check() && $answer->user->id === auth()->user()->id) || Auth::user()->type === "Admin")
+                    @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
                     <div class="d-flex">
+                        @if((auth()->check() && $question->user->id === auth()->user()->id))
                         <button class="btn btn-secondary my-2 my-sm-0 edit-answer">Edit</button>
                         <button class="btn btn-secondary my-2 my-sm-0 stop-editing d-none">Stop Editing</button>
+                        @endif
                         <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
                             {{ csrf_field() }}
                             @method('DELETE')

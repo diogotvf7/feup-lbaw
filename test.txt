@@ -1,4 +1,11 @@
-DROP SCHEMA IF EXISTS lbaw2326 CASCADE;
+
+   INFO  Seeding database.  
+
+
+   Illuminate\Database\QueryException 
+
+  SQLSTATE[23503]: Foreign key violation: 7 ERROR:  insert or update on table "content_versions" violates foreign key constraint "content_versions_question_id_fkey"
+DETAIL:  Key (question_id)=(113) is not present in table "questions". (Connection: pgsql, SQL: DROP SCHEMA IF EXISTS lbaw2326 CASCADE;
 
 CREATE SCHEMA IF NOT EXISTS lbaw2326;
 
@@ -3719,6 +3726,11 @@ VALUES
         'QUESTION',
         112,
         NULL
+    ),
+    (
+        'So I have an essay due in twenty minutes, and I have no idea how using Tech is sustainable.... should I make my background green? Turn off the fans when my computer is running bigger games? I think I might fail... my lab partner is defnitely screwed. Please help?',        'QUESTION',
+        113,
+        NULL
     );
 
 INSERT INTO
@@ -4606,4 +4618,25 @@ VALUES
     (true, 'ANSWER', NULL, 27, NULL, 47),
     (true, 'ANSWER', NULL, 28, NULL, 48),
     (true, 'ANSWER', NULL, 29, NULL, 49),
-    (true, 'ANSWER', NULL, 30, NULL, 50);
+    (true, 'ANSWER', NULL, 30, NULL, 50);)
+
+  at vendor/laravel/framework/src/Illuminate/Database/Connection.php:801
+    797▕                     $this->getName(), $query, $this->prepareBindings($bindings), $e
+    798▕                 );
+    799▕             }
+    800▕ 
+  ➜ 801▕             throw new QueryException(
+    802▕                 $this->getName(), $query, $this->prepareBindings($bindings), $e
+    803▕             );
+    804▕         }
+    805▕     }
+
+      [2m+7 vendor frames [22m
+
+  8   database/seeders/DatabaseSeeder.php:18
+      Illuminate\Support\Facades\Facade::__callStatic()
+      [2m+22 vendor frames [22m
+
+  31  artisan:37
+      Illuminate\Foundation\Console\Kernel::handle()
+
