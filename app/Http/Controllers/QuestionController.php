@@ -137,13 +137,15 @@ class QuestionController extends Controller
         return redirect()->intended('/questions/top')->with('success', 'Question removed successfully!');
     }
 
-    // public function top()
-    // {
-    //     $questions = Question::withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count')->paginate(10);
-    //     $sortedQuestions = $questions->getCollection()->sortByDesc(function ($question) {
-    //         return $question->upvotes->count() - $question->downvotes->count();
-    //     })->values();
-    //     $questions->setCollection($sortedQuestions);
-    //     return view('pages.topQuestions', compact('questions'));
-    // }
+    public function search(Request $request)
+    {
+        $searchTerm = $request->searchTerm ? ($request->searchTerm . ':*') : '*';
+        $likeSearchTerm = '*' . $request->searchTerm . '*';
+        $questions = Question::select('questions.*')->join('content_versions', 'content_versions.question_id', '=', 'questions.id')->whereRaw("(search_title || search_body) @@ to_tsquery(replace(?, ' ', '<->')) OR (search_title || search_body) @@ to_tsquery(replace(?, ' ', '|'))", [$searchTerm, $searchTerm])->orderByRaw("questions.title ILIKE ? DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '<->'))) DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '|'))) DESC", [$likeSearchTerm, $searchTerm, $searchTerm])->get();
+        
+        if($request->ajax()){
+            return view('pages.search', ['includeAll' => False, 'questions' => $questions, 'query' => $request->searchTerm])->render();
+        }   
+        else return view('pages.search', ['includeAll' => True, 'questions' => $questions, 'query' => $request->searchTerm]);
+    }
 }

@@ -61,18 +61,23 @@
                             </li>
                             @endif
                         </ul>
-                        <form class="d-flex">
-                            <input class="form-control me-sm-2" type="search" placeholder="Search">
+                        <form class="d-flex" action="{{ route('search') }}" method="GET">
+                            {{ csrf_field() }}
+                            @method('GET')
+                            <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
                             <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                         </form>
+
                         @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
-                            <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
+                        <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
                         @endif
                     </div>
                 </div>
             </nav>
         </header>
-        @yield('content')
+        <section id="content">
+            @yield('content')
+        </section>
     </main>
 </body>
 
