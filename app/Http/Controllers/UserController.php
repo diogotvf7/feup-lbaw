@@ -51,6 +51,7 @@ class UserController extends Controller
      */
     public function create()
     {
+        //$this->authorize('create');
         return view('pages.createUser');
     }
 
@@ -82,7 +83,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $this->authorize('viewAny', $user);
+        //$this->authorize('viewAny');
         return view('pages.profile', ['user' => $user]);
     }
 
@@ -90,19 +91,16 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Int $user_id)
+    public function edit(User $user)
     {
-        $user = User::find($user_id);
         return view('pages.editUser', compact('user'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Int $user_id)
+    public function update(Request $request, User $user)
     {
-        $user = User::find($user_id);
-
         $this->authorize('update', $user);
 
         if ($request->name !== $user->name) $request->validate([
@@ -131,9 +129,8 @@ class UserController extends Controller
     /**
      * Promote the specified user.
      */
-    public function promote(Int $user_id)
+    public function promote(User $user)
     {
-        $user = User::find($user_id);
         if ($user->type == 'User')
             $user->type = 'Admin';
         else if ($user->type == 'Banned')
@@ -159,9 +156,8 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Int $user_id)
+    public function destroy(User $user)
     {
-        $user = User::find($user_id);
         $user->delete();
         return redirect()->back();
     }

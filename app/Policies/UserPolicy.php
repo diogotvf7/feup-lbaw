@@ -6,7 +6,6 @@ use App\Models\User;
 use App\Models\Question;
 
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Auth\Access\Response;
 
 class UserPolicy
 {
@@ -27,13 +26,13 @@ class UserPolicy
     //        //
     //    }
 
-    //    /**
-    //     * Determine whether the user can create models.
-    //     */
-    //    public function create(User $user): bool
-    //    {
-    //        //
-    //    }
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
+    {
+        return $user->type === "Admin";
+    }
 
     /**
      * Determine whether the user can update the model.

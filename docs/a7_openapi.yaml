@@ -1,0 +1,560 @@
+openapi: 3.0.0
+
+info:
+  version: '1.0'
+  title: 'LBAW Geras Web API'
+  description: 'Web Resources Specification (A7) for Geras'
+
+servers:
+- url: http://lbaw2326.lbaw.fe.up.pt
+  description: Production server
+
+tags:
+  - name: 'M01: Authentication and Individual Profile'
+  - name: 'M02: Content'
+  - name: 'M03: User Administration and Static pages'
+
+paths:
+  /login:
+    get:
+      operationId: R101
+      summary: 'R101: Login Form'
+      description: 'Show login form. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      responses:
+        '200':
+          description: 'Ok. Show log-in UI'
+    post:
+      operationId: R102
+      summary: 'R102: Login Action'
+      description: 'Processes the login form submission. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+ 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                email:          # <!--- form field name
+                  type: string
+                password:    # <!--- form field name
+                  type: string
+              required:
+                - email
+                - password
+ 
+      responses:
+        '302':
+          description: 'Redirect after processing the login credentials.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to main questions page.'
+                  value: '/questions'
+                302Error:
+                  description: 'Failed authentication. Redirect to login form.'
+                  value: '/login'
+ 
+  /logout:
+    post:
+      operationId: R103
+      summary: 'R103: Logout Action'
+      description: 'Logout the current authenticated used. Access: USR'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      responses:
+        '302':
+          description: 'Successful logout. Redirect to login form'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful logout. Redirect to login form.'
+                  value: '/login'
+
+  /register:
+    get:
+      operationId: R104
+      summary: 'R104: Register Form'
+      description: 'Provide new user registration form. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+      responses:
+        '200':
+          description: 'Ok. Show sign-up UI'
+
+    post:
+      operationId: R105
+      summary: 'R105: Register Action'
+      description: 'Processes the new user registration form submission. Access: VIS'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                username:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+                password_confirmation:
+                  type: string
+              required:
+                - username
+                - email
+                - password
+                - password_confirmation
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to main questions page.'
+                  value: '/questions'
+                302Failure:
+                  description: 'Failed authentication. Redirect to register form.'
+                  value: '/register'
+
+  /users/{user}:
+    get:
+      operationId: R106
+      summary: 'R106: View user profile.'
+      description: 'Show a user profile. Access: USR'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show view profile UI'
+        '403':
+          description: 'Forbidden. User is not logged in and cannot visit a user profile'
+        '404': 
+          description: 'Not Found. User does not exist'
+
+  /users/{user}/delete:
+    delete:
+      operationId: R107
+      summary: 'R107: Delete user.'
+      description: 'Deletes a user. Access: ADM'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. User deleted with success'
+        '403':
+          description: 'Forbidden. User doesn't have permission to delete a user'
+        '404': 
+          description: 'Not Found. User does not exist'
+
+  /users/{user}/update:
+    patch:
+      operationId: R108
+      summary: 'R108: Edit users' information.'
+      description: 'Edits information of a user. Access: OWN, ADM'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new user information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302Success:
+                  description: 'Successful authentication. Redirect to main questions page.'
+                  value: '/questions'
+                302Failure:
+                  description: 'Failed authentication. Redirect to register form.'
+                  value: '/register'
+
+        '403':
+          description: 'Forbidden. User is not logged in or doesn't have permission to edit the users' information'
+        '404': 
+          description: 'Not Found. User does not exist'
+          
+  /user/create:
+    get:
+      operationId: R109
+      summary: 'R109: Shows user creation form.'
+      description: 'Shows the form for creating a new user. Access: ADM'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      responses:
+        '302':
+          description: 'Ok. User created with success'
+
+  /user/store:
+    post:
+      operationId: R110
+      summary: 'R110: User Creation Action.'
+      description: 'Processes the new user creation form submission. Access: ADM'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      responses:
+        '200':
+          description: 'Ok. User stored with success'
+        '404':
+          description: 'Not Found. User does not exist'
+
+  /questions:
+    get:
+      operationId: R201
+      summary: 'R201: View all/top questions.'
+      description: 'View a list of all questions, optionally ordered by descending vote balance. Access: VIS'
+      tags:
+       - 'M02: Content'
+       
+      responses:
+        '200':
+          description: 'Ok. Show view questions UI'
+
+  /questions/{question}:
+    get:
+      operationId: R202
+      summary: 'R202: View question.'
+      description: 'View a questions details. Access: VIS'
+      tags:
+        - 'M02: Content'
+
+      parameters:
+        - in: path
+          name: question
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. Show view question UI'
+        '404':
+          description: 'Not Found. Question does not exist'
+
+  /questions/create:
+    get:
+      operationId: R203
+      summary: 'R203: Shows question creation form.'
+      description: 'Shows the form for creating a new question. Access: USR'
+      tags:
+        - 'M02: Content'
+
+      responses:
+        '200':
+          description: 'Ok. Show new question form UI'
+
+
+  /questions/store:
+    post: 
+      operationId: R204
+      summary: 'R204: Question Creation Action.'
+      description: 'Process question creation form submission. Access: USR'
+      tags: 
+        - 'M02: Content'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                body:
+                  type: string
+                user_id:
+                  type: integer
+              required:
+                - title
+                - body
+                - user_id
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new question information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302:
+                  description: 'Successful creation. Redirect to questions page.'
+                  value: '/questions'
+        '403':
+          description: 'Forbidden. User is not logged in and is not allowed to post a question'
+
+
+  /questions/update:
+    patch:
+      operationId: R205
+      summary: 'R205: Question Edition Action'
+      description: 'Edit an existing question. Access: OWN'
+      tags: 
+        - 'M02: Content'  
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                question_id:
+                  type: integer
+                body:
+                  type: string
+              required:
+                - question_id
+                - body
+      
+      responses:
+        '302':
+          description: 'Success. Redirect to editted question page.'
+
+  /questions/delete:
+    delete:
+      operationId: R206
+      summary: 'R206: Delete a question.'
+      description: 'Delete an existing question. Access: OWN, ADM'
+      tags:
+        - 'M02: Content'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                question_id:
+                  type: integer
+              required:
+                - question_id
+
+      responses:
+        '302':
+          description: 'Redirect after processing the new question information.'
+          headers:
+            Location:
+              schema:
+                type: string
+              examples:
+                302:
+                  description: 'Successful deletion. Redirect to the main questions page'
+
+  /answers/store:
+    post:
+      operationId: R207
+      summary: 'R207: Create answer.'
+      description: 'Create a new answer. Access: USR'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                question_id:
+                  type: integer
+              required:
+                - body
+                - question_id
+
+      responses:
+        '302':
+          description: 'Success. Answer is created, redirect to question page.'
+        '403':
+          description: 'Forbidden. User is not logged in and is not allowed to post an answer.'
+
+  /answers/update:
+    patch:
+      operationId: R208
+      summary: 'R208: Edit answer Action'
+      description: 'Edit an existing answer. Access: OWN'
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                body:
+                  type: string
+                answer_id:
+                  type: integer
+              required:
+                - body
+                - answer_id
+                
+
+      responses:
+        '302':
+          description: 'Success. Redirect to the question page of the editted answer.'
+
+
+  /answers/delete:
+    delete:  
+      operationId: R209
+      summary: '209: Delete answer.'
+      description: 'Deleting an existing answer. Access: OWN, ADM'  
+
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              type: object
+              properties:
+                answer_id:
+                  type: integer
+              required:
+                - answer_id             
+
+      responses:
+        '302':
+          description: 'Success. Show the question page of the deleted question.'
+
+
+  /api/questions:
+    get:
+      operationId: R210
+      summary: 'R210: Fetch questions data'
+      description: 'Fetches questions according to filters. Access: VIS'
+      tags:
+        - 'M02: Content'
+
+      parameters:
+        - in: query
+          name: filter
+          description: String that contains the type of filter being used
+          schema: 
+            type: string
+          required: false
+        - in: query
+          nameNum: page
+          description: Integer that tells the number of page the suer is reading
+            type: integer
+          required: false
+
+      responses:
+        202: 
+          description: 'Ok. View questions page.'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    filter:
+                      type: string
+                    pageNum:
+                      type: integer
+                example:
+                  - filter: "top"
+                    page: 2
+                  - filter: null
+                    page: 1
+
+  /admin/users:
+    get:
+      operationId: R301
+      summary: 'R301: View admin page'
+      description: 'View table of users of web application with action options. Access: ADM'
+      tags:
+        - 'M03: User Administration and Static pages'
+
+      responses:
+        '200':
+          description: 'Ok. Show admin page'
+
+  /admin/users/{id}/promote:
+    patch:
+      operationId: R302
+      summary: 'R302: Promote an user.'
+      description: 'Promote an user from the table of users. Access: ADM'
+      tags:  
+        - 'M03: User Administration and Static pages'
+
+      responses:
+        '302':
+          description: 'Success. User is promoted, redirect to /admin/users'
+
+  /admin/users/{id}/demote:
+    patch: 
+      operationId: R303
+      summary: 'R303: Demote an user.'
+      description: 'Demote an user from the table of users. Access: ADM'
+      tags:
+        - 'M03: User Administration and Static pages'
+
+      responses:
+        '302':
+          description: 'Success. User is demoted, redirect to /admin/users'
+
+
+  /admin/users/{id}/edit:
+    get:
+      operationId: R304
+      summary: 'R304: Show user profile edition form'
+      description: 'Show the form for editing a user profile. Access: ADM'
+      tags:
+        - 'M03: User Administration and Static pages'
+    
+      responses:
+        '200':
+          description: 'Ok. Show edit profile page.'
+        
+
+                  

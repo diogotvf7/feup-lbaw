@@ -45,28 +45,30 @@
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ url('/admin/users') }}">Users</a>
-                                    <!-- <a class="dropdown-item" href="{{ url('/admin/tags') }}">Tags</a>
-                                    <div class="dropdown-divider"></div>
+                                    <!-- <a class="dropdown-item" href="{{ url('/admin/tags') }}">Tags</a> -->
+                                    <!-- <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ url('/admin/statistics') }}">Statistics</a> -->
                             </li>
                             @endif
                             @if (Auth::check())
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->username }}</a>
-                                <div class="dropdown-menu">
+                                <div class="dropdown-menu" style="max-width: 20%;">
                                     <a class="dropdown-item" href="{{ route('users.profile', Auth::user()->id) }}">View Profile</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="{{ url('/logout') }}">Logout</a>
+                                    <form method="POST" action="{{ route('logout') }}">{{ csrf_field() }}<button class="dropdown-item" type="submit">Logout</button></form>
                                 </div>
                             </li>
                             @endif
                         </ul>
-                        <form class="d-flex" action="{{ route('search') }}" method="GET">
-                            {{ csrf_field() }}
-                            @method('GET')
-                            <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
-                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                        </form>
+                        <div class="d-flex flex-row" style="max-width: 70%;">
+                            <form class="d-flex" action="{{ route('search') }}" method="GET">
+                                {{ csrf_field() }}
+                                @method('GET')
+                                <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
+                                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
+                            </form>
+                        </div>
 
                         @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
                         <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
@@ -75,9 +77,7 @@
                 </div>
             </nav>
         </header>
-        <section id="content">
             @yield('content')
-        </section>
     </main>
 </body>
 
