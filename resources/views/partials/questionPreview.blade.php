@@ -26,4 +26,4 @@
             {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
         </div>
     </a>
-</article>
+</article> 

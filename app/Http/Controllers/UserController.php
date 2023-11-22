@@ -26,10 +26,12 @@ class UserController extends Controller
         $searchTerm = $request->input('search');
         if ($searchTerm) {
             $query->where(function ($query) use ($searchTerm) {
+                if (is_numeric($searchTerm)) {
+                    $query->orWhere('id', $searchTerm);
+                }
                 $query->orWhere('name', 'ilike', "%$searchTerm%")
                     ->orWhere('username', 'ilike', "%$searchTerm%")
-                    ->orWhere('email', 'ilike', "%$searchTerm%")
-                    ->orWhere('id', $searchTerm);
+                    ->orWhere('email', 'ilike', "%$searchTerm%");
             });
         }
 
@@ -49,7 +51,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('pages.create_user');
+        return view('pages.createUser');
     }
 
     /**
@@ -80,6 +82,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $this->authorize('viewAny', $user);
         return view('pages.profile', ['user' => $user]);
     }
 

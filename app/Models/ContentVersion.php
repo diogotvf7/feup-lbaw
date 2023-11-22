@@ -11,6 +11,13 @@ class ContentVersion extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'body',
+        'type',
+        'question_id',
+        'answer_id'
+    ];
+
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 

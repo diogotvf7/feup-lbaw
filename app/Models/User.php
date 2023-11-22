@@ -121,4 +121,12 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class, 'followed_users', 'followed_id', 'follower_id');
     }
+
+    /**
+     * Get the questions that the user follows.
+     */
+    public function followedQuestions() : BelongsToMany
+    {
+        return $this->belongsToMany(Question::class, 'followed_questions', 'user_id', 'question_id');
+    }
 }

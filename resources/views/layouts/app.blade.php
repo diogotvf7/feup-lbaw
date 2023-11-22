@@ -27,26 +27,26 @@
 <body>
     <script type="text/javascript" src={{ url('js/bootstrap.bundle.js') }} defer>
     </script>
-    <main style="height: 85dvh;">
+    <main class="d-flex flex-column vh-100">
+        <!-- <main style="height: 85dvh;"> -->
         <header>
             <nav id="navbar" class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
                 <div class="container-fluid">
-                    <h1><a class="navbar-brand" href="{{ url('/home') }}">Geras</a></h1>
+                    <h1><a class="navbar-brand" href="{{ url('/questions?filter=top') }}">
+                            <img src="{{ asset('images/logo.svg') }}" alt="Geras Logo" width="64" class="m-2">
+                        </a></h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarColor01">
                         <ul class="navbar-nav me-auto">
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('/questions/top') }}">Top Questions</a>
-                            </li>
                             @if (Auth::check() && Auth::user()->type == 'Admin')
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Administration</a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="{{ url('/admin/users') }}">Users</a>
-                                    <a class="dropdown-item" href="{{ url('/admin/tags') }}">Tags</a>
-                                    <!-- <div class="dropdown-divider"></div>
+                                    <!-- <a class="dropdown-item" href="{{ url('/admin/tags') }}">Tags</a>
+                                    <div class="dropdown-divider"></div>
                                     <a class="dropdown-item" href="{{ url('/admin/statistics') }}">Statistics</a> -->
                             </li>
                             @endif
