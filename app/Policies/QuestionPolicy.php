@@ -37,7 +37,7 @@ class QuestionPolicy
      */
     public function update(User $user, Question $question): bool
     {
-        return $user->id === $question->author;
+        return $user->type === "Admin" || $user->id === $question->author;
     }
 
     /**
@@ -45,7 +45,7 @@ class QuestionPolicy
      */
     public function delete(User $user, Question $question): bool
     {
-        return $user->id === $question->author;
+        return $user->type === "Admin" || $user->id === $question->author;
     }
 
     /**
