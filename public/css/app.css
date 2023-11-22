@@ -3,8 +3,7 @@
 
 body {
   background-color: #c8eaf7;
-  min-height: 100vh;      /* DELETE ? */
-  margin: 0;              /* DELETE ? */
+
 }
 
 .error {
