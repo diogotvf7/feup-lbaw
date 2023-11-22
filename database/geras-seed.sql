@@ -734,7 +734,7 @@ CREATE TRIGGER prevent_self_answering
         FOR EACH ROW
         EXECUTE PROCEDURE prevent_self_answering();
 		
--- TRIGGER 15
+/* -- TRIGGER 15
 -- A badges should be given when a user asks a question for the first time.
 
 DROP FUNCTION IF EXISTS badge_first_question() CASCADE;
@@ -1136,7 +1136,7 @@ LANGUAGE plpgsql;
 CREATE TRIGGER badge_1000_score
         AFTER INSERT ON votes
         FOR EACH ROW
-        EXECUTE PROCEDURE badge_1000_score();
+        EXECUTE PROCEDURE badge_1000_score(); */
 
 -- TRIGGER 31
 -- A badges should be given when a user reaches 5000 score.

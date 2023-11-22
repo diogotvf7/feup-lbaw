@@ -134,7 +134,7 @@ class QuestionController extends Controller
         $question = Question::findOrFail($request->question_id);
         $this->authorize('delete', $question);
         $question->delete();
-        return redirect()->intended('/questions/top')->with('success', 'Question removed successfully!');
+        return redirect()->intended('questions')->with('success', 'Question removed successfully!');
     }
 
     public function search(Request $request)
