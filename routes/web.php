@@ -45,13 +45,13 @@ Route::controller(CardController::class)->group(function () {
 
 Route::controller(UserController::class)->group(function () {
     Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
-    Route::patch('/admin/users/{id}/promote', 'promote')->name('user.promote');
-    Route::patch('/admn/users/{id}/demote', 'demote')->name('user.demote');
-    Route::get('/admin/users/{id}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
+    Route::patch('/admin/users/{user}/promote', 'promote')->name('user.promote');
+    Route::patch('/admn/users/{user}/demote', 'demote')->name('user.demote');
+    Route::get('/admin/users/{user}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
 
     Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
-    Route::delete('/users/{id}', 'destroy')->name('users.destroy');
-    Route::patch('/users/{id}/update', 'update')->name('users.update');
+    Route::delete('/users/{user}/delete', 'destroy')->name('users.destroy');
+    Route::patch('/users/{user}/update', 'update')->name('users.update');
     Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
     Route::post('/user/store', 'store')->name('user.store');
 });

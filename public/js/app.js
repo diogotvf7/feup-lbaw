@@ -1,6 +1,6 @@
 const currentPath = window.location.pathname;
 const profilePage = /^\/users\/\w+$/.test(currentPath);
-const editPage = /^\/users\/[0-9]+\/edit$/.test(currentPath);
+const editPage = /^\/admin\/users\/[0-9]+\/edit$/.test(currentPath);
 
 
 if (profilePage) {

@@ -11,7 +11,7 @@ servers:
 
 tags:
   - name: 'M01: Authentication and Individual Profile'
-  - name: 'M03: Content'
+  - name: 'M02: Content'
   - name: 'M03: User Administration and Static pages'
 
 paths:
@@ -164,6 +164,84 @@ DONE
         '404': 
           description: 'Not Found. User does not exist'
 
+DIOGO
+  /users/{id}:
+    get:
+      operationId: R107
+      summary: 'R107: Delete a user.'
+      description: 'Deletes a user. Access: USR'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. User deleted with success'
+        '403':
+          description: 'Forbidden. User is not logged in or doesn't have permission to delete a user'
+        '404': 
+          description: 'Not Found. User does not exist'
+
+DIOGO
+  /users/{id}/update:
+    get:
+      operationId: R108
+      summary: 'R108: Edit users' information.'
+      description: 'Edits information of a user. Access: USR'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      parameters:
+        - in: path
+          name: user
+          schema:
+            type: integer
+          required: true
+
+      responses:
+        '200':
+          description: 'Ok. User edited with success'
+        '403':
+          description: 'Forbidden. User is not logged in or doesn't have permission to edit a users' information'
+        '404': 
+          description: 'Not Found. User does not exist'
+          
+DIOGO
+  /user/create:
+    get:
+      operationId: R109
+      summary: 'R109: Create a user.'
+      description: 'Creates a user. Access: ADM'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      responses:
+        '200':
+          description: 'Ok. User created with success'
+        '404': 
+          description: 'Not Found. User does not exist'
+
+DIOGO
+  /user/store:
+    get:
+      operationId: R110
+      summary: 'R110: Stores a user.'
+      description: 'Stores a user. Access: ADM'
+      tags:
+        - 'M01: Authentication and Individual Profile'
+
+      responses:
+        '200':
+          description: 'Ok. User stored with success'
+        '404':
+          description: 'Not Found. User does not exist'
+
 DONE
   /questions/top:
     get:
@@ -262,7 +340,40 @@ Eduardo
       summary: 'R302: Promote an user. Access: ADM'
       description: 'Promote an user from the table of users.'
       tags:  
-      
+        - 'M03: User Administration and Static pages'
+
+      responses:
+        '200':
+          description: 'Ok. Show admin page'
+
+Eduardo
+  /admin/users/{id}/demote:
+    patch: 
+      operationId: R303
+      summary: 'R303: Demote an user. access: ADM'
+      description: 'Demote an user from the table of users.'
+      tags:
+        - 'M03: User Administration and Static pages'
+
+      responses:
+        '200':
+          description: 'Ok. Show admin page'
+
+Eduardo
+  /admin/users/{id}/edit:
+    get:
+      operationId: R304
+      summary: 'R304: Edit an user profile. access: ADM'
+      description: 'Edit an user's profile from the table of users.'
+      tags:
+        - 'M03: User Administration and Stati pages'
+    
+      responses:
+        '200':
+          description: 'Ok. Show admin page'
+
+
+
 
 
 
