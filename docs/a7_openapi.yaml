@@ -140,7 +140,7 @@ paths:
   /users/{user}:
     get:
       operationId: R106
-      summary: 'R106: View user profile.'
+      summary: 'R106: View user profile'
       description: 'Show a user profile. Access: USR'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -163,7 +163,7 @@ paths:
   /users/{user}/delete:
     delete:
       operationId: R107
-      summary: 'R107: Delete user.'
+      summary: 'R107: Delete user'
       description: 'Deletes a user. Access: ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -186,7 +186,7 @@ paths:
   /users/{user}/update:
     patch:
       operationId: R108
-      summary: 'R108: Edit users information.'
+      summary: 'R108: Edit users information'
       description: 'Edits information of a user. Access: OWN, ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -221,7 +221,7 @@ paths:
   /user/create:
     get:
       operationId: R109
-      summary: 'R109: Show user creation form.'
+      summary: 'R109: Show user creation form'
       description: 'Shows the form for creating a new user. Access: ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -233,7 +233,7 @@ paths:
   /user/store:
     post:
       operationId: R110
-      summary: 'R110: User Creation Action.'
+      summary: 'R110: User Creation Action'
       description: 'Processes the new user creation form submission. Access: ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -247,7 +247,7 @@ paths:
   /questions:
     get:
       operationId: R201
-      summary: 'R201: View all/top questions.'
+      summary: 'R201: View all/top questions'
       description: 'View a list of all questions, optionally ordered by descending vote balance. Access: VIS'
       tags:
        - 'M02: Content'
@@ -259,7 +259,7 @@ paths:
   /questions/{question}:
     get:
       operationId: R202
-      summary: 'R202: View question.'
+      summary: 'R202: View question'
       description: 'View a questions details. Access: VIS'
       tags:
         - 'M02: Content'
@@ -280,7 +280,7 @@ paths:
   /questions/create:
     get:
       operationId: R203
-      summary: 'R203: Shows question creation form.'
+      summary: 'R203: Shows question creation form'
       description: 'Shows the form for creating a new question. Access: USR'
       tags:
         - 'M02: Content'
@@ -293,7 +293,7 @@ paths:
   /questions/store:
     post: 
       operationId: R204
-      summary: 'R204: Question Creation Action.'
+      summary: 'R204: Question Creation Action'
       description: 'Process question creation form submission. Access: USR'
       tags: 
         - 'M02: Content'
@@ -361,7 +361,7 @@ paths:
   /questions/delete:
     delete:
       operationId: R206
-      summary: 'R206: Delete a question.'
+      summary: 'R206: Delete a question'
       description: 'Delete an existing question. Access: OWN, ADM'
       tags:
         - 'M02: Content'
@@ -392,8 +392,10 @@ paths:
   /answers/store:
     post:
       operationId: R207
-      summary: 'R207: Create answer.'
+      summary: 'R207: Create answer'
       description: 'Create a new answer. Access: USR'
+      tags:
+        - 'M02: Content'
 
       requestBody:
         required: true
@@ -421,6 +423,8 @@ paths:
       operationId: R208
       summary: 'R208: Edit answer Action'
       description: 'Edit an existing answer. Access: OWN'
+      tags:
+        - 'M02: Content'
 
       requestBody:
         required: true
@@ -446,8 +450,10 @@ paths:
   /answers/delete:
     delete:  
       operationId: R209
-      summary: '209: Delete answer.'
-      description: 'Deleting an existing answer. Access: OWN, ADM'  
+      summary: '209: Delete answer'
+      description: 'Deleting an existing answer. Access: OWN, ADM'
+      tags:
+        - 'M02: Content'
 
       requestBody:
         required: true
@@ -523,7 +529,7 @@ paths:
   /admin/users/{id}/promote:
     patch:
       operationId: R302
-      summary: 'R302: Promote an user.'
+      summary: 'R302: Promote an user'
       description: 'Promote an user from the table of users. Access: ADM'
       tags:  
         - 'M03: User Administration and Static pages'
@@ -535,7 +541,7 @@ paths:
   /admin/users/{id}/demote:
     patch: 
       operationId: R303
-      summary: 'R303: Demote an user.'
+      summary: 'R303: Demote an user'
       description: 'Demote an user from the table of users. Access: ADM'
       tags:
         - 'M03: User Administration and Static pages'
