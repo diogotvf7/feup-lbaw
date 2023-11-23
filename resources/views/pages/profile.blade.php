@@ -41,7 +41,7 @@
                     </div>
                 </div>
 
-                <section class="card mb-3" style="max-height:70vh; overflow: scroll; ">
+                <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if(count($user->questions)=== 0)
                         <h4>User has no questions</h4>
@@ -73,7 +73,7 @@
                     </div>
                 </div>
 
-                <section class="card mb-3" style="max-height:70vh; overflow: scroll; ">
+                <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if (count($user->answers)=== 0)
                         <h4>User has no answers</h4>
