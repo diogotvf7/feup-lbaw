@@ -1,20 +1,21 @@
-<article class="answer-prev card border-primary my-4" data-id="{{$answer->id}}">
-    <a href="/questions/{{ $answer->question->id }}" class="text-decoration-none">
-        <header class="card-header d-flex  justify-content-between">
-            <h5>{{$answer->question->title}}</h5>
-            <h5>{{$answer->user->username ?? 'User Removed'}}</h5>
-        </header>
-        <div class="card-body">
-            <div class="votes">
-                {{$answer->voteBalance()}}
-            </div>
-            <p class="card-text">
-                {{$answer->updatedVersion->body}}
-            </p>
-        </div>
+<article class="d-flex">
+    <div class="d-flex flex-column justify-content-center align-content-end text-secondary me-3 text-nowrap text-end">
+        <span>{{ $answer->voteBalance() }} votes</span>
+    </div>
 
-        <div class="card-footer text-muted">
-            {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }}
+    <div class="flex-grow-1">
+        <a href="{{route('question.show', $answer->question->id)}}" class="text-decoration-none">{{ $answer->question->title }}</a>
+        <p class="px-3">{{ $answer->updatedVersion->body }}</p>
+    </div>
+
+    <div class="text-nowrap d-flex flex-column justify-content-end align-content-end me-5">
+        <div class="text-secondary">
+            @if (Auth::check())
+                <a href="{{ route('users.profile', $answer->user->id) }}" class="text-decoration-none">{{ $answer->user->name }}</a>
+            @else
+                <span>{{ $answer->user->name }}</span>
+            @endif
+            answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }}
         </div>
-    </a>
+    </div>
 </article>

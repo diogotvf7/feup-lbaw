@@ -41,12 +41,17 @@
                     </div>
                 </div>
 
-                <section class="card text-white bg-info mb-3" style="max-height:70vh; overflow: scroll; ">
+                <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if(count($user->questions)=== 0)
                         <h4>User has no questions</h4>
                         @else
-                        @each('partials.questionPreview', $user->questions, 'question')
+                            @foreach ($user->questions as $question)
+                                @include('partials.questionPreview', ['question' => $question])
+                                @if (!$loop->last)
+                                    <hr>
+                                @endif
+                            @endforeach
                         @endif
                     </div>
                 </section>
@@ -68,12 +73,17 @@
                     </div>
                 </div>
 
-                <section class="card text-white bg-info mb-3" style="max-height:70vh; overflow: scroll; ">
+                <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if (count($user->answers)=== 0)
                         <h4>User has no answers</h4>
                         @else
-                        @each('partials.answerPreview', $user->answers, 'answer')
+                            @foreach ($user->answers as $answer)
+                                @include('partials.answerPreview', ['answer' => $answer])
+                                @if (!$loop->last)
+                                    <hr>
+                                @endif
+                            @endforeach
                         @endif
                     </div>
                 </section>
