@@ -179,14 +179,14 @@ paths:
         '200':
           description: 'Ok. User deleted with success'
         '403':
-          description: 'Forbidden. User doesn't have permission to delete a user'
+          description: 'Forbidden. User doesnt have permission to delete a user'
         '404': 
           description: 'Not Found. User does not exist'
 
   /users/{user}/update:
     patch:
       operationId: R108
-      summary: 'R108: Edit users' information.'
+      summary: 'R108: Edit users information.'
       description: 'Edits information of a user. Access: OWN, ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -214,14 +214,14 @@ paths:
                   value: '/register'
 
         '403':
-          description: 'Forbidden. User is not logged in or doesn't have permission to edit the users' information'
+          description: 'Forbidden. User is not logged in or doesnt have permission to edit the users information'
         '404': 
           description: 'Not Found. User does not exist'
           
   /user/create:
     get:
       operationId: R109
-      summary: 'R109: Shows user creation form.'
+      summary: 'R109: Show user creation form.'
       description: 'Shows the form for creating a new user. Access: ADM'
       tags:
         - 'M01: Authentication and Individual Profile'
@@ -483,12 +483,13 @@ paths:
           required: false
         - in: query
           nameNum: page
-          description: Integer that tells the number of page the suer is reading
+          description: Integer that tells the number of page the user is reading
+          schema:
             type: integer
           required: false
 
       responses:
-        202: 
+        '202': 
           description: 'Ok. View questions page.'
           content:
             application/json:
