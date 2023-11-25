@@ -48,7 +48,6 @@ Route::controller(UserController::class)->group(function () {
     Route::patch('/admin/users/{user}/promote', 'promote')->name('user.promote');
     Route::patch('/admn/users/{user}/demote', 'demote')->name('user.demote');
     Route::get('/admin/users/{user}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
-
     Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
     Route::delete('/users/{user}/delete', 'destroy')->name('users.destroy');
     Route::patch('/users/{user}/update', 'update')->name('users.update');

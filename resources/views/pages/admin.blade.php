@@ -137,7 +137,10 @@
                         <td>{{ $user->member_since }}</td>
                         <td>{{ $user->type }}</td>
                         <td class="d-flex flex-wrap gap-1">
-                            <form class="d-inline-block" action="{{ route('users.destroy', $user->id) }}" method="POST">
+                            <a class="btn btn-primary btn-sm" href="{{ route('users.profile', $user->id) }}" aria-label="View User">
+                                <i class="bi bi-eye-fill"></i>
+                            </a>
+                            <form class="d-inline-block" action="{{ route('users.profile', $user->id) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
                                 <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')" aria-label="Remove User">
