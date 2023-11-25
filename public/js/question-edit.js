@@ -6,7 +6,7 @@ function editQuestion() {
       let questionBody = card.querySelector('.question-body');
       let editInput = card.querySelector('.edit-input');
       let submitEdit = card.querySelector('.submit-edit');
-      let stopEditing = card.querySelector('.stop-editing');
+      let stopEditing = card.querySelector('.stop-editing-question');
 
       questionBody.classList.add('d-none');
       editInput.classList.remove('d-none');
@@ -20,7 +20,7 @@ function editQuestion() {
 }
 
 function stopEditingQuestion() {
-  let stopEditingButtons = document.querySelectorAll('.stop-editing');
+  let stopEditingButtons = document.querySelectorAll('.stop-editing-question');
   stopEditingButtons.forEach(function(button) {
     button.addEventListener('click', function() {
       let card = this.closest('.card');

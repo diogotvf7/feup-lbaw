@@ -15,8 +15,8 @@
             @if(auth()->check() && ($question->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
             <div class="d-flex pb-2">
                 @if((auth()->check() && $question->user->id === auth()->user()->id))
-                <button class="btn btn-secondary my-2 my-sm-0 edit-question">Edit</button>
-                <button class="btn btn-secondary my-2 my-sm-0 stop-editing d-none">Stop Editing</button>
+                    <button class="btn btn-secondary my-2 my-sm-0 edit-question">Edit</button>
+                    <button class="btn btn-secondary my-2 my-sm-0 stop-editing-question d-none">Stop Editing</button>
                 @endif
                 <form class="px-2" method="POST" action="{{ route('question/delete') }}" onclick="return confirm('Are you sure you want to delete this question?');">
                     {{ csrf_field() }}
@@ -34,7 +34,7 @@
                 {{ csrf_field() }}
                 @method('PATCH')
                 <input type="hidden" name="question_id" value="{{ $question->id }}">
-                <input type="text" name="body" class="form-control edit-input d-none" value="{{ $question->updatedVersion->body }}">
+                <textarea name="body" class="form-control edit-input d-none" value="{{ $question->updatedVersion->body }}"></textarea>
                 <button class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
             </form>
         </div>
