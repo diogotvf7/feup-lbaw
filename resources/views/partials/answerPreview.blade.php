@@ -11,7 +11,7 @@
     <div class="text-nowrap d-flex flex-column justify-content-end align-content-end me-5">
         <div class="text-secondary">
             @if (Auth::check())
-                <a href="{{ route('users.profile', $answer->user->id) }}" class="text-decoration-none">{{ $answer->user->name }}</a>
+                <a href="{{ route('user.profile', $answer->user->id) }}" class="text-decoration-none">{{ $answer->user->name }}</a>
             @else
                 <span>{{ $answer->user->name }}</span>
             @endif

@@ -19,8 +19,7 @@
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
     </script>
-    <script type="text/javascript" src="{{ url('js/app.js') }}" defer>
-    </script>
+    <script type="module" src="{{ url('js/app.js') }}" defer></script>
 
 </head>
 
@@ -54,7 +53,7 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ Auth::user()->username }}</a>
                                 <div class="dropdown-menu" style="max-width: 20%;">
-                                    <a class="dropdown-item" href="{{ route('users.profile', Auth::user()->id) }}">View Profile</a>
+                                    <a class="dropdown-item" href="{{ route('user.profile', Auth::user()->id) }}">View Profile</a>
                                     <div class="dropdown-divider"></div>
                                     <form method="POST" action="{{ route('logout') }}">{{ csrf_field() }}<button class="dropdown-item" type="submit">Logout</button></form>
                                 </div>

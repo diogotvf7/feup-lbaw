@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
@@ -57,10 +56,19 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile')->middleware(Logged::class);
-    Route::delete('/users/{user}/delete', 'destroy')->name('users.destroy');
-    Route::patch('/users/{user}/update', 'update')->name('users.update');
-    Route::get('/users/{user}/edit', 'edit')->name('users.edit');
+    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('user.profile')->middleware(Logged::class);
+    Route::delete('/users/{user}/delete', 'destroy')->name('user.destroy');
+    Route::patch('/users/{user}/update', 'update')->name('user.update');
+    Route::get('/users/{user}/edit', 'edit')->name('user.edit');
+});
+
+Route::controller(TagController::class)->group(function () {
+    Route::get('/tags', 'index')->name('tags');
+    Route::get('/tags/{tag}', 'show')->name('tag.show');
+    Route::get('/tags/{tag}/edit', 'edit')->name('tag.edit');
+    Route::post('/tags/create', 'store')->name('tag.create');
+    Route::patch('/tags/{tag}/update', 'update')->name('tag.update');
+    Route::delete('/tags/{tag}/delete', 'destroy')->name('tag.delete');
 });
 
 //API
