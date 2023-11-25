@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\Logged;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,16 +44,21 @@ Route::controller(AnswerController::class)->group(function () {
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
 });
 
+Route::middleware(AdminMiddleware::class)->group(function () {
+    Route::get('/admin/users', [UserController::class, 'index']);
+    Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
+    Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
+    Route::get('/admin//user/create', [UserController::class, 'create'])->name('user.create');
+    Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
+
+    Route::get('/admin/tags', [TagsController::class, 'index']);
+});
+
 Route::controller(UserController::class)->group(function () {
-    Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
-    Route::patch('/admin/users/{user}/promote', 'promote')->name('user.promote');
-    Route::patch('/admn/users/{user}/demote', 'demote')->name('user.demote');
-    Route::get('/admin/users/{user}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
-    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
+    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile')->middleware(Logged::class);
     Route::delete('/users/{user}/delete', 'destroy')->name('users.destroy');
     Route::patch('/users/{user}/update', 'update')->name('users.update');
-    Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
-    Route::post('/user/store', 'store')->name('user.store');
+    Route::get('/users/{user}/edit', 'edit')->name('users.edit');
 });
 
 //API

@@ -51,7 +51,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //$this->authorize('create');
         return view('pages.createUser');
     }
 
@@ -83,7 +82,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //$this->authorize('viewAny');
         return view('pages.profile', ['user' => $user]);
     }
 
@@ -93,6 +91,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('selfOrAdmin', $user);
         return view('pages.editUser', compact('user'));
     }
 
@@ -101,7 +100,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->authorize('update', $user);
+        $this->authorize('selfOrAdmin', $user);
 
         if ($request->name !== $user->name) $request->validate([
             'name' => 'nullable|string|max:250',
@@ -158,6 +157,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('selfOrAdmin', $user);
         $user->delete();
         return redirect()->back();
     }

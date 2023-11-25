@@ -9,29 +9,23 @@ use Illuminate\Support\Facades\Auth;
 
 class UserPolicy
 {
-
-    /**
-     * Determine whether the user can view any users.
+    /** 
+     * Determine wether the user is accessing 
+     * something related to himself.
      */
-    public function viewAny(User $user): bool
+    public function self(User $user, User $model): bool
     {
-        return Auth::check();
+        return $user->id === $model->id;
     }
 
-    //    /**
-    //     * Determine whether the user can view the model.
-    //     */
-    //    public function view(User $user, User $model): bool
-    //    {
-    //        //
-    //    }
-
     /**
-     * Determine whether the user can create models.
+     * Determine wether the user is accessing 
+     * something related to himself or if 
+     * the user is an admin.
      */
-    public function create(User $user): bool
+    public function selfOrAdmin(User $user, User $model): bool
     {
-        return $user->type === "Admin";
+        return ($user->type === "Admin" || $user->id === $model->id);
     }
 
     /**
@@ -40,33 +34,5 @@ class UserPolicy
     public function update(User $user, User $model): bool
     {
         return ($user->type === "Admin" || $user->id === $model->id);
-    }
-
-    //    /**
-    //     * Determine whether the user can delete the model.
-    //     */
-    //    public function delete(User $user, User $model): bool
-    //    {
-    //        //
-    //    }
-
-    //    /**
-    //     * Determine whether the user can restore the model.
-    //     */
-    //    public function restore(User $user, User $model): bool
-    //    {
-    //        //
-    //    }
-
-    //    /**
-    //     * Determine whether the user can permanently delete the model.
-    //     */
-    //    public function forceDelete(User $user, User $model): bool
-    //    {
-    //        //
-    //    }
-    public function questions(User $user): bool
-    {
-        return Auth::check();
     }
 }
