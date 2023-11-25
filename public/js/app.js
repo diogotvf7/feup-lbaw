@@ -1,7 +1,8 @@
 const currentPath = window.location.pathname;
 const profilePage = /^\/users\/\w+$/.test(currentPath);
 const editPage = /^\/users\/[0-9]+\/edit$/.test(currentPath);
-const questionsPage = /^\/questions(?:\?.*)?$/.test(currentPath);
+const questionsPage =
+    /^\/questions(?:\/(?:top|followed))?\/?$/.test(currentPath);
 const createQuestionPage = /^\/questions\/create$/.test(currentPath);
 const searchPage = /^[/\w, \/]*\/search*$/.test(currentPath);
 
@@ -138,9 +139,8 @@ else if (questionsPage) {
   }
 
   async function fetchQuestions() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const request = await fetch(
-        '/api/questions?page=' + page++ + '&filter=' + urlParams.get('filter'));
+    const url = new URL(window.location.href);
+    const request = await fetch('/api' + url.pathname + '?page=' + page++);
     const response = await request.json();
     return response;
   }

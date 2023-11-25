@@ -30,6 +30,8 @@ Route::redirect('/', '/questions?filter=top');
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
+    Route::get('/questions/top', 'index')->name('questions.top');
+    Route::get('/questions/followed', 'index')->name('questions.followed')->middleware(Logged::class);
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
     Route::get('/questions/search', 'search')->name('search');
@@ -64,6 +66,8 @@ Route::controller(UserController::class)->group(function () {
 //API
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions', 'fetch');
+    Route::get('/api/questions/top', 'fetch');
+    Route::get('/api/questions/followed', 'fetch');
 });
 
 // Authentication

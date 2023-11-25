@@ -13,14 +13,14 @@ class QuestionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         return view('pages.questions');
     }
 
     public function fetch(Request $request)
     {
-        $type = $request->query('filter');
+        $type = basename(parse_url($request->getRequestUri(), PHP_URL_PATH));
 
         $query = Question::query();
         
