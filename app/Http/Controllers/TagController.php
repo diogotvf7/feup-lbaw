@@ -12,8 +12,17 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::paginate(12);
-        return view('pages.tags', compact('tags'));
+        return view('pages.tags');
+    }
+
+    public function fetch(Request $request)
+    {
+        $tags = Tag::paginate(20);
+        foreach ($tags as $tag) {
+            $tag->questions;
+            $tag->usersThatFollow;
+        }
+        return $tags;
     }
 
     /**

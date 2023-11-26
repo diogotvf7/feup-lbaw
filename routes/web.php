@@ -12,6 +12,7 @@ use App\Http\Controllers\Auth\RegisterController;
 
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\Logged;
+use App\Models\Tag;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,10 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions', 'fetch');
     Route::get('/api/questions/top', 'fetch');
     Route::get('/api/questions/followed', 'fetch');
+});
+
+Route::controller(TagController::class)->group(function () {
+    Route::get('/api/tags', 'fetch');
 });
 
 // Authentication

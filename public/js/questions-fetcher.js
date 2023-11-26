@@ -115,9 +115,9 @@ function handleIntersection(entries) {
   });
 }
 
-function createScrollObserver(loader) {
+function questionScrollObserver(loader) {
   const observer = new IntersectionObserver(handleIntersection);
   observer.observe(loader);
 }
 
-export default createScrollObserver;
+export default questionScrollObserver;

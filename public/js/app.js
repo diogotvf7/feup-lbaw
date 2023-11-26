@@ -1,9 +1,9 @@
 import {editAnswer, stopEditingAnswer} from './answer-edit.js';
 import {editQuestion, stopEditingQuestion} from './question-edit.js';
-import createScrollObserver from './questions-fetcher.js';
+import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
-
+import tagScrollObserver from './tags-fetcher.js';
 
 const currentPath = window.location.pathname;
 
@@ -18,7 +18,12 @@ if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
 // Questions page infinite scroll
 else if (/^\/questions(?:\/(?:top|followed))?\/?$/.test(currentPath)) {
   const loader = document.getElementById('loader');
-  createScrollObserver(loader);
+  questionScrollObserver(loader);
+}
+// Tags page infinite scroll
+else if (/^\/tags\/?$/.test(currentPath)) {
+  const loader = document.getElementById('loader');
+  tagScrollObserver(loader);
 }
 // Edit user profile page
 else if (/^\/users\/[0-9]+\/edit$/.test(currentPath)) {

@@ -1,5 +1,5 @@
 <nav class="sidebar position-relative d-flex flex-column align-items-stretch bg-primary" style="min-width: 250px; max-width: 250px;">
-    <ul class="list-unstyled p-0">
+    <ul class="p-0">
         <li class="py-3 px-5 sidebar-element">
             <a href="{{ route('questions.top') }}" class="nav-link">Top Questions</a>
         </li>
@@ -11,5 +11,9 @@
                 <a href="{{ route('questions.followed') }}" class="nav-link">Followed Questions</a>
             </li>
         @endif
+        <hr>
+        <li class="py-3 px-5 sidebar-element">
+            <a href="{{ route('tags') }}" class="nav-link">Tags</a>
+        </li>
     </ul>
 </nav>
