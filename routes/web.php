@@ -31,6 +31,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
     Route::get('/questions/top', 'index')->name('questions.top');
     Route::get('/questions/followed', 'index')->name('questions.followed')->middleware(LoggedMiddleware::class);
+    Route::get('/questions/tag/{id}', 'index')->where('id', '[0-9]+')->name('questions.tag');
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
     Route::get('/questions/search', 'search')->name('search');
@@ -54,6 +55,9 @@ Route::middleware(AdminMiddleware::class)->group(function () {
 
     Route::get('/admin/tags', [TagController::class, 'list']);
     Route::patch('/tags/{tag}/approve', [TagController::class, 'approve'])->name('tag.approve');
+    Route::delete('/tags/{tag}/delete', [TagController::class, 'destroy'])->name('tag.destroy');
+    Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
+    Route::patch('/tags/{tag}/update', [TagController::class, 'update'])->name('tag.update');
 });
 
 Route::controller(UserController::class)->group(function () {
@@ -66,10 +70,7 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags');
     Route::get('/tags/{tag}', 'show')->name('tag.show');
-    Route::get('/tags/{tag}/edit', 'edit')->name('tag.edit');
     Route::post('/tags/create', 'store')->name('tag.create');
-    Route::patch('/tags/{tag}/update', 'update')->name('tag.update');
-    Route::delete('/tags/{tag}/delete', 'destroy')->name('tag.destroy');
 });
 
 //API
@@ -77,6 +78,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions', 'fetch');
     Route::get('/api/questions/top', 'fetch');
     Route::get('/api/questions/followed', 'fetch');
+    Route::get('/api/questions/tag/{id}', 'fetch')->where('id', '[0-9]+');
 });
 
 Route::controller(TagController::class)->group(function () {

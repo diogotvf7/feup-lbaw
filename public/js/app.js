@@ -16,7 +16,8 @@ if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
   });
 }
 // Questions page infinite scroll
-else if (/^\/questions(?:\/(?:top|followed))?\/?$/.test(currentPath)) {
+else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
+             currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
 }

@@ -5,7 +5,8 @@ function noMoreTags() {
   const text = document.createElement('p');
   text.textContent = 'No more tags to show';
   text.classList.add('text-center', 'text-secondary');
-  tagsContainer.nextElementSibling.appendChild(text);
+  tagsContainer.after(text);
+  // tagsContainer.appendChild(text);
   loader.remove();
 }
 
@@ -19,7 +20,7 @@ function createTagPreview(tag) {
   h2.classList.add('badge', 'bg-primary');
 
   const a = document.createElement('a');
-  a.href = '/tags/' + tag.id;
+  a.href = '/questions/tag/' + tag.id;
   a.classList.add('text-reset', 'text-decoration-none');
   a.textContent = tag.name;
 
@@ -62,6 +63,10 @@ function insertTags() {
       tagsContainer.appendChild(tagPreview);
       const hr = document.createElement('hr');
     });
+    if (tags.length < 30) {
+      noMoreTags();
+      return;
+    }
   });
 }
 

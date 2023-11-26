@@ -51,7 +51,7 @@ class TagController extends Controller
 
     public function fetch(Request $request)
     {
-        $tags = Tag::where('approved', TRUE)->paginate(20);
+        $tags = Tag::where('approved', TRUE)->paginate(30);
         foreach ($tags as $tag) {
             $tag->questions;
             $tag->usersThatFollow;
@@ -96,7 +96,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('pages.editTag', compact('tag'));
     }
 
     /**
@@ -112,6 +112,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+        return redirect()->back();
     }
 }

@@ -43,12 +43,10 @@ function createQuestionPreview(question, authenticated) {
   tags.classList.add('d-flex', 'gap-1');
 
   question.tags.forEach(tag => {
-    const tagElement = document.createElement('p');
-    // const tagElement = document.createElement('a');
-    // tagElement.href = '/questions/tag/' + tag.id;
+    const tagElement = document.createElement('a');
+    tagElement.href = '/questions/tag/' + tag.id;
     tagElement.classList.add(
-        'badge', 'badge-primary', 'bg-primary', 'text-decoration-none',
-        'm-0' /*remover o m-0*/);
+        'badge', 'badge-primary', 'bg-primary', 'text-decoration-none');
     tagElement.textContent = tag.name;
     tags.appendChild(tagElement);
   });
@@ -104,6 +102,9 @@ function insertQuestions() {
       const hr = document.createElement('hr');
       questionsContainer.insertBefore(hr, loader);
     });
+    if (questions.length < 10) {
+      noMoreQuestions();
+    }
   });
 }
 
