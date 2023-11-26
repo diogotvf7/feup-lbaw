@@ -37,6 +37,10 @@ else if (/^\/users\/[0-9]+\/edit$/.test(currentPath)) {
 else if (/^\/users\/\w+$/.test(currentPath)) {
   resetFields(['name', 'username', 'email']);
 }
+// Tag edit page
+else if (/^\/tags\/[0-9]+\/edit$/.test(currentPath)) {
+  resetFields(['name', 'description']);
+}
 // Question editing / Answer editing
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   editAnswer();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
@@ -72,7 +73,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.createTag');
     }
 
     /**
@@ -80,7 +81,22 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $userType = Auth::user()->type;
+        $request->validate([
+            'name' => 'required|string|max:30|unique:tags',
+            'description' => 'required|string|min:10|max:300'
+        ]);
+
+        $tag = Tag::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'approved' => $userType == 'Admin' ? true : false,
+        ]);
+
+        if ($userType == 'Admin')
+            return redirect()->route('admin.tags')->with('success', ['Tag created successfully!', '/questions/tag/' . $tag->id]);
+        if ($userType == 'User')
+            return redirect()->route('questions.top')->with('tag-request', ['Your tag creation was requested.', 'Wait for an admin to approve it.']);
     }
 
     /**
@@ -105,7 +121,7 @@ class TagController extends Controller
     public function update(Request $request, Tag $tag)
     {
         if ($request->name !== $tag->name) $request->validate([
-            'name' => 'nullable|string|max:250|unique:tags',
+            'name' => 'required|string|max:30|unique:tags',
         ]);
         if ($request->username !== $tag->description) $request->validate([
             'description' => 'required|string|min:10|max:300'

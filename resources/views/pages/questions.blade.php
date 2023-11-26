@@ -36,4 +36,11 @@
         </div>
     </section>
 </div>
+@if (session('tag-request')) 
+    <div class="alert alert-dismissible alert-info position-absolute bottom-0 end-0 m-5">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{ session('tag-request')[0] }}</strong> 
+        {{ session('tag-request')[1] }}
+    </div>
+@endif
 @endsection 

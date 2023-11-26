@@ -15,5 +15,11 @@
         <li class="py-3 px-5 sidebar-element">
             <a href="{{ route('tags') }}" class="nav-link">Tags</a>
         </li>
+        @if (Auth::check())
+            <hr>
+            <li class="py-3 px-5 sidebar-element">
+                <a href="{{ route('tag.create') }}" class="nav-link">Create a Tag</a>
+            </li>
+        @endif
     </ul>
 </nav>

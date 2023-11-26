@@ -66,7 +66,7 @@ class UserController extends Controller
             'password' => 'required|min:8|confirmed'
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
@@ -74,7 +74,7 @@ class UserController extends Controller
             'type' => $request->has('is_admin') ? 'Admin' : 'User'
         ]);
 
-        return redirect()->route('users');
+        return redirect()->route('admin.users')->with('success', ['User create successfully!', '/users/' . $user->id]);
     }
 
     /**

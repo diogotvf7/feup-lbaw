@@ -25,7 +25,7 @@ use App\Http\Middleware\LoggedMiddleware;
 */
 
 // Home
-Route::redirect('/', '/questions?filter=top');
+Route::redirect('/', '/questions/top');
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
@@ -70,7 +70,8 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags');
     Route::get('/questions/tag/{tag}', 'show')->name('tag.show');
-    Route::post('/tags/create', 'store')->name('tag.create');
+    Route::get('/tags/create', 'create')->name('tag.create')->middleware(LoggedMiddleware::class);
+    Route::post('/tags/store', 'store')->name('tag.store')->middleware(LoggedMiddleware::class);
 });
 
 //API

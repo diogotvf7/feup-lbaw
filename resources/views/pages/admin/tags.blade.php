@@ -103,31 +103,31 @@
                         <td>{{ $tag->id }}</td>
                         <td>{{ $tag->name }}</td>
                         <td>{{ $tag->description }}</td>
-                        <td>{{ $tag->questions->count() }}</td>
-                        <td>{{ $tag->usersThatFollow->count() }}</td>
+                        <td>{{ $tag->approved ? $tag->questions->count() : '-' }}</td>
+                        <td>{{ $tag->approved ? $tag->usersThatFollow->count() : '-' }}</td>
                         <td class="{{ $tag->approved ? '' : 'text-danger' }}">{{ $tag->approved ? 'Active' : 'Pending Approval' }}</td>
                         <td class="d-flex flex-wrap gap-1">
                             <a class="btn btn-primary btn-sm" href="{{ route('tag.show', $tag->id) }}" aria-label="Browse Tag">
                                 <i class="bi bi-eye-fill"></i>
                             </a>
-                            <form class="d-inline-block" action="{{ route('tag.destroy', $tag->id) }}" method="POST">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this tag?')" aria-label="Delete Tag">
-                                    <i class="bi bi-trash-fill"></i>
-                                </button>
-                            </form> 
                             <form class="d-inline-block" action="{{ route('tag.edit', $tag->id) }}" method="GET">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit Tag">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
                             </form>
+                            <form class="d-inline-block" action="{{ route('tag.destroy', $tag->id) }}" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this tag?')" aria-label="Delete Tag" title="Delete Tag">
+                                    @if ($tag->approved) <i class="bi bi-trash-fill"></i> @else <i class="bi bi-x-square-fill"></i> @endif
+                                </button>
+                            </form> 
                             @if (!$tag->approved) 
                                 <form class="d-inline-block" action="{{ route('tag.approve', $tag->id) }}" method="POST">
                                     {{ csrf_field() }}
                                     {{ method_field('PATCH') }}
-                                    <button type="submit" class="btn btn-success btn-sm" aria-label="Approve Tag" data-toggle="tooltip" title="Appprove {{ $tag->name }}" aria-label="Approve {{ $tag->name }}" onclick="return confirm('Are you sure you want to approve this tag?')" >
+                                    <button type="submit" class="btn btn-success btn-sm" aria-label="Approve Tag" data-toggle="tooltip" title="Approve Tag" aria-label="Approve {{ $tag->name }}" onclick="return confirm('Are you sure you want to approve this tag?')" >
                                         <i class="bi bi-check-square-fill"></i>
                                     </button>
                                 </form>
