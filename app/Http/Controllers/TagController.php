@@ -104,7 +104,18 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        if ($request->name !== $tag->name) $request->validate([
+            'name' => 'nullable|string|max:250|unique:tags',
+        ]);
+        if ($request->username !== $tag->description) $request->validate([
+            'description' => 'required|string|min:10|max:300'
+        ]);
+
+        $tag->name = $request->input('name');
+        $tag->description = $request->input('description');
+
+        $tag->save();
+        return redirect()->route('admin.tags')->with('success', ['Tag edited successfully!', '/questions/tag/' . $tag->id]);
     }
 
     /**
@@ -113,6 +124,6 @@ class TagController extends Controller
     public function destroy(Tag $tag)
     {
         $tag->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', ['Tag deleted successfully!']);
     }
 }

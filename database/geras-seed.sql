@@ -171,7 +171,7 @@ CREATE TABLE
 CREATE TABLE
     question_tag (
         question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
-        tag_id INTEGER NOT NULL REFERENCES tags (id), --Temos um trigger para quando se apaga uma tag
+        tag_id INTEGER NOT NULL REFERENCES tags (id) ON DELETE CASCADE, --Temos um trigger para quando se apaga uma tag
         PRIMARY KEY (question_id, tag_id)
     );
 
@@ -582,40 +582,6 @@ CREATE TRIGGER tsvectors_update_content_version
         EXECUTE PROCEDURE tsvectors_update_content_version();
 		
 -- TRIGGER 09
--- If a question has no tag, it is removed
-
-DROP FUNCTION IF EXISTS remove_question_no_tag() CASCADE; 
-
-CREATE FUNCTION remove_question_no_tag() RETURNS TRIGGER AS
-$BODY$
-DECLARE
-    question_id INT;
-    question_count INT;
-BEGIN
-    question_id := OLD.id;
-    
-    DELETE FROM question_tag WHERE tag_id = question_id;
-    
-    FOR question_id IN SELECT DISTINCT question_id FROM question_tag
-    LOOP
-        SELECT COUNT(*) INTO question_count FROM question_tag WHERE question_id = question_id;
-        
-        IF question_count = 0 THEN
-            DELETE FROM questions WHERE id = question_id;
-        END IF;
-    END LOOP;
-    
-    RETURN OLD;
-END
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER remove_question_no_tag
-        BEFORE DELETE ON tags
-        FOR EACH ROW
-        EXECUTE PROCEDURE remove_question_no_tag();
-		
--- TRIGGER 10
 -- A user gains experience by writing a question
 
 DROP FUNCTION IF EXISTS update_experience_question() CASCADE;
@@ -638,7 +604,7 @@ CREATE TRIGGER update_experience_question
         EXECUTE PROCEDURE update_experience_question();
 
 
--- TRIGGER 11
+-- TRIGGER 10
 -- A user gains experience by writing an answer
 
 DROP FUNCTION IF EXISTS update_experience_answer() CASCADE;
@@ -661,7 +627,7 @@ CREATE TRIGGER update_experience_answer
         EXECUTE PROCEDURE update_experience_answer();
 
 		
--- TRIGGER 12
+-- TRIGGER 11
 -- A content version cannot be related to more than five annexes
 
 DROP FUNCTION IF EXISTS verify_annexes() CASCADE;
@@ -683,7 +649,7 @@ CREATE TRIGGER verify_annexes
         FOR EACH ROW
         EXECUTE PROCEDURE verify_annexes();
 		
--- TRIGGER 13
+-- TRIGGER 12
 -- Prevent self voting
 
 DROP FUNCTION IF EXISTS prevent_self_voting() CASCADE;
@@ -713,7 +679,7 @@ CREATE TRIGGER prevent_self_voting
         FOR EACH ROW
         EXECUTE PROCEDURE prevent_self_voting();	
 		
--- TRIGGER 14
+-- TRIGGER 13
 -- A user can't answer their own questions
 
 DROP FUNCTION IF EXISTS prevent_self_answering() CASCADE;

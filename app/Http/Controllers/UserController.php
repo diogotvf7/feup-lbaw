@@ -14,7 +14,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function list(Request $request)
     {
         $query = User::query();
 
@@ -122,7 +122,9 @@ class UserController extends Controller
         }
 
         $user->save();
-        return $request->adminPage ? redirect()->route('users')->with('success', 'Profile edited successfully!') : redirect()->back()->with('success', 'User edited successfully!');
+        return $request->adminPage 
+            ? redirect()->route('admin.users')->with('success', ['User edited successfully!', '/users/' . $user->id])
+            : redirect()->back()->with('success', ['User edited successfully!', '/users/' . $user->id]);
     }
 
     /**
@@ -135,9 +137,9 @@ class UserController extends Controller
         else if ($user->type == 'Banned')
             $user->type = 'User';
         $user->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', [$user->username . ' promoted successfully!']);
     }
-
+    
     /**
      * Demote the specified user.
      */
@@ -149,7 +151,7 @@ class UserController extends Controller
         else if ($user->type == 'User')
             $user->type = 'Banned';
         $user->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', [$user->username . ' demoted successfully!']);
     }
 
     /**
@@ -159,6 +161,6 @@ class UserController extends Controller
     {
         $this->authorize('selfOrAdmin', $user);
         $user->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', [$user->username . ' deleted successfully!']);
     }
 }

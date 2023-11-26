@@ -181,4 +181,13 @@
             {{ $users->appends(['sortField' => $sortField, 'sortDirection' => $sortDirection, 'search' => $searchTerm])->links("pagination::bootstrap-4") }}        
         </div>
     </div>
+    @if (session('success')) 
+        <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ session('success')[0] }}</strong> 
+            @if (isset(session('success')[1]))
+                <a href="{{ session('success')[1] }}" class="alert-link">Check it here</a>.
+            @endif
+        </div>
+    @endif
 @endsection

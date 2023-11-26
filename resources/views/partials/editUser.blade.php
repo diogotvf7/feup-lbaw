@@ -4,7 +4,7 @@
             {{ csrf_field() }}
             {{ method_field('PATCH') }}
 
-            @if (Route::is('admin.user.edit'))
+            @if (Route::is('user.edit'))
                 <input type="hidden" name="adminPage" value="true"></input>
             @else
                 <input type="hidden" name="adminPage" value=""></input>

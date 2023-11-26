@@ -47,13 +47,13 @@ Route::controller(AnswerController::class)->group(function () {
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
-    Route::get('/admin/users', [UserController::class, 'list']);
+    Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
     Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
     Route::get('/admin//user/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
 
-    Route::get('/admin/tags', [TagController::class, 'list']);
+    Route::get('/admin/tags', [TagController::class, 'list'])->name('admin.tags');
     Route::patch('/tags/{tag}/approve', [TagController::class, 'approve'])->name('tag.approve');
     Route::delete('/tags/{tag}/delete', [TagController::class, 'destroy'])->name('tag.destroy');
     Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
@@ -69,7 +69,7 @@ Route::controller(UserController::class)->group(function () {
 
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags');
-    Route::get('/tags/{tag}', 'show')->name('tag.show');
+    Route::get('/questions/tag/{tag}', 'show')->name('tag.show');
     Route::post('/tags/create', 'store')->name('tag.create');
 });
 

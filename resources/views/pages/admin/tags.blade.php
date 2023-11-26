@@ -1,12 +1,12 @@
 @extends('layouts.app')
-
 @section('content')    
-    <div class="d-flex flex-column">
+    <div class="d-flex flex-column overflow-y-scroll">
         <form class="d-flex m-2 gap-2">
             <input class="form-control" type="search" name="search" placeholder="Search" value="{{ $searchTerm }}">
             <button class="btn btn-secondary text-nowrap" type="submit">Search tag</button>
             <a class="btn btn-secondary text-nowrap" href="{{ route('tag.create') }}">Create tag</a>
         </form>
+
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -142,4 +142,13 @@
             {{ $tags->appends(['sortField' => $sortField, 'sortDirection' => $sortDirection, 'search' => $searchTerm])->links("pagination::bootstrap-4") }}        
         </div>
     </div>
+    @if (session('success')) 
+        <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ session('success')[0] }}</strong> 
+            @if (isset(session('success')[1]))
+                <a href="{{ session('success')[1] }}" class="alert-link">Check it here</a>.
+            @endif
+        </div>
+    @endif
 @endsection
