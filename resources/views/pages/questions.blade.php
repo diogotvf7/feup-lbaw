@@ -43,4 +43,11 @@
         {{ session('tag-request')[1] }}
     </div>
 @endif
+@if (session('question-create')) 
+    <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{ session('question-create')[0] }}</strong> 
+        <a href="{{ session('question-create')[1] }}" class="alert-link">Check it here</a>.
+    </div>
+@endif
 @endsection 

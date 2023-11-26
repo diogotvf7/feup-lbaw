@@ -94,7 +94,7 @@ class QuestionController extends Controller
             'question_id' => $question->id
         ]);
 
-        return redirect()->route('questions');
+        return redirect()->route('questions')->with('question-create', ['Question created successfully!', '/questions/' . $question->id]);
     }
 
     /**
