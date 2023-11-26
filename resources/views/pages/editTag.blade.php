@@ -31,9 +31,7 @@
                 <div id="description" class="form-group">
                     <label for="description" class="form-label mt-4">Description</label>
                     <div class="input-group">
-                        <textarea name="description" class="form-control" placeholder="Enter new description" required>
-                        {{ $tag->description }}
-                        </textarea>
+                        <textarea name="description" class="form-control" placeholder="Enter new description" required>{{ $tag->description }}</textarea>
                         <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field">
                             <i class="bi bi-arrow-counterclockwise"></i>
                         </button>
