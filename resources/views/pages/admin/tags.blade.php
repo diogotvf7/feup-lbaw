@@ -107,9 +107,11 @@
                         <td>{{ $tag->approved ? $tag->usersThatFollow->count() : '-' }}</td>
                         <td class="{{ $tag->approved ? '' : 'text-danger' }}">{{ $tag->approved ? 'Active' : 'Pending Approval' }}</td>
                         <td class="d-flex flex-wrap gap-1">
-                            <a class="btn btn-primary btn-sm" href="{{ route('tag.show', $tag->id) }}" aria-label="Browse Tag">
-                                <i class="bi bi-eye-fill"></i>
-                            </a>
+                            @if ($tag->approved)
+                                <a class="btn btn-primary btn-sm" href="{{ route('tag.show', $tag->id) }}" aria-label="Browse Tag">
+                                    <i class="bi bi-eye-fill"></i>
+                                </a>
+                            @endif
                             <form class="d-inline-block" action="{{ route('tag.edit', $tag->id) }}" method="GET">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit Tag">
