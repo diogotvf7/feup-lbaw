@@ -11,8 +11,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
 use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\Logged;
-use App\Models\Tag;
+use App\Http\Middleware\LoggedMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,7 +30,7 @@ Route::redirect('/', '/questions?filter=top');
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
     Route::get('/questions/top', 'index')->name('questions.top');
-    Route::get('/questions/followed', 'index')->name('questions.followed')->middleware(Logged::class);
+    Route::get('/questions/followed', 'index')->name('questions.followed')->middleware(LoggedMiddleware::class);
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
     Route::get('/questions/search', 'search')->name('search');
@@ -47,17 +46,18 @@ Route::controller(AnswerController::class)->group(function () {
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
-    Route::get('/admin/users', [UserController::class, 'index']);
+    Route::get('/admin/users', [UserController::class, 'list']);
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
     Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
     Route::get('/admin//user/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
 
-    Route::get('/admin/tags', [TagsController::class, 'index']);
+    Route::get('/admin/tags', [TagController::class, 'list']);
+    Route::patch('/tags/{tag}/approve', [TagController::class, 'approve'])->name('tag.approve');
 });
 
 Route::controller(UserController::class)->group(function () {
-    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('user.profile')->middleware(Logged::class);
+    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('user.profile')->middleware(LoggedMiddleware::class);
     Route::delete('/users/{user}/delete', 'destroy')->name('user.destroy');
     Route::patch('/users/{user}/update', 'update')->name('user.update');
     Route::get('/users/{user}/edit', 'edit')->name('user.edit');
@@ -69,7 +69,7 @@ Route::controller(TagController::class)->group(function () {
     Route::get('/tags/{tag}/edit', 'edit')->name('tag.edit');
     Route::post('/tags/create', 'store')->name('tag.create');
     Route::patch('/tags/{tag}/update', 'update')->name('tag.update');
-    Route::delete('/tags/{tag}/delete', 'destroy')->name('tag.delete');
+    Route::delete('/tags/{tag}/delete', 'destroy')->name('tag.destroy');
 });
 
 //API

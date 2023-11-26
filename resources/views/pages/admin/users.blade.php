@@ -143,7 +143,7 @@
                             <form class="d-inline-block" action="{{ route('user.destroy', $user->id) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')" aria-label="Remove User">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')" aria-label="Delete User">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </form> 

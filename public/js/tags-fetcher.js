@@ -58,7 +58,6 @@ function insertTags() {
       return;
     }
     tags.forEach(tag => {
-      console.log(tag);
       const tagPreview = createTagPreview(tag);
       tagsContainer.appendChild(tagPreview);
       const hr = document.createElement('hr');

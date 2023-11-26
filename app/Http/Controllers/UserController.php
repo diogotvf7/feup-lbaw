@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $users = $query->paginate(10);
 
-        return view('pages.admin', [
+        return view('pages.admin.users', [
             'users' => $users,
             'sortField' => $sortField,
             'sortDirection' => $sortDirection,

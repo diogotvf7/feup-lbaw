@@ -16,22 +16,4 @@
         <div id="loader" class="invisible">Loading...</div>
     </section>
 </div>
-@endsection 
-
-
-<?php 
-// <article class="d-flex flex-column justify-content-between tag-preview p-3 m-1 border border-primary-subtle rounded">
-//     <h2 class="badge bg-primary">
-//         <a href="/tags/{{ $tag->id }}" class="text-reset text-decoration-none">{{ $tag->name }}</a>
-//     </h2>
-//     <p>{{ $tag->description }}</p>
-//     <div class="d-flex justify-content-between">
-//         <p>
-//             {{ $tag->questions->count() }} questions
-//         </p>
-//         <p>
-//             {{ $tag->usersThatFollow->count() }} followers
-//         </p>
-//     </div>
-// </article>
-?>
+@endsection

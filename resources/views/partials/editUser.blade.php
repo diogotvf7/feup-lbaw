@@ -4,11 +4,11 @@
             {{ csrf_field() }}
             {{ method_field('PATCH') }}
 
-            <!-- @if (Route::is('admin.user.edit'))
-            <input type="hidden" name="adminPage" value="true"></input>
+            @if (Route::is('admin.user.edit'))
+                <input type="hidden" name="adminPage" value="true"></input>
             @else
-            <input type="hidden" name="adminPage" value=""></input>
-            @endif -->
+                <input type="hidden" name="adminPage" value=""></input>
+            @endif
             <input id="default-name" type="hidden" name="name" value="{{ $user->name }}"></input>
             <input id="default-username" type="hidden" name="username" value="{{ $user->username }}"></input>
             <input id="default-email" type="hidden" name="email" value="{{ $user->email }}"></input>
