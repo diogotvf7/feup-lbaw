@@ -34,7 +34,7 @@
 
                 <div class="form-group pt-3">
                     <button type="submit" class="btn btn-primary" aria-label="Save Changes">
-                        <i class="bi bi-check-circle"></i> Save Changes
+                        <i class="bi bi-check-circle"></i> Create Tag
                     </button>
                 </div>
         </form>
