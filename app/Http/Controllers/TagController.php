@@ -65,7 +65,7 @@ class TagController extends Controller
     {
         $tag->approved = true;
         $tag->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', ['Tag approved successfully!']);
     }
 
     /**
