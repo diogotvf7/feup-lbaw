@@ -11,7 +11,7 @@
                 
                 $uri = explode('/', trim($_SERVER['REQUEST_URI'], '/'));
                 if (count($uri) == 1)
-                    echo '<h1>All Questions</h1>';
+                    echo '<h1>Recent Questions</h1>';
                 else if ($uri[1] == 'top')
                     echo '<h1>Top Questions</h1>';
                 else if ($uri[1] == 'followed')

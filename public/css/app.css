@@ -2,6 +2,40 @@ body {
   background-color: #c8eaf7;
 }
 
+/* Edit question form */
+.form-control-plaintext {
+  background-color: inherit;
+  border: none;
+  box-shadow: none;
+  resize: none;
+}
+
+.form-control-plaintext:focus {
+  box-shadow: none;
+  background-color: inherit;
+}
+/* ------------------ */
+
+/*     Vote Button    */
+.question-button {
+  aspect-ratio: 1 / 1;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid;
+  background-color: transparent;
+}
+
+.question-button:hover, .question-button.on {
+  color: #f48024;
+  border-color: #f48024;
+}
+
+.question-button.on:hover, .question-button {
+  color: #687074;
+  border-color: #687074;
+}
+/* ------------------ */
+
 #tags-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -16,29 +50,12 @@ body {
   text-overflow: ellipsis;
 }
 
-@media (max-width: 600px) {
-  .grid-container {
-    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
-  }
-}
-
 .error {
   color: rgb(165, 36, 36);
 }
 
-.question-prev a {
-  text-decoration: none;
-}
-
 .votes::after {
   content: "vote(s)";
-}
-
-.question-prev .card-text {
-  overflow: hidden;
-  text-overflow: clip;
-  max-height: 5em;
-  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
 }
 
 .sidebar {

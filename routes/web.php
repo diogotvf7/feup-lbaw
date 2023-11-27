@@ -38,12 +38,16 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/{question}', 'show')->name('question.show');
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
+    Route::patch('/questions/upvote', 'upvote')->name('question.upvote');
+    Route::patch('/questions/downvote', 'downvote')->name('question.downvote');
 });
 
 Route::controller(AnswerController::class)->group(function () {
     Route::post('/answers/create', 'store')->name('answer/create');
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
+    Route::patch('/answer/upvote', 'upvote')->name('answer.upvote');
+    Route::patch('/answer/downvote', 'downvote')->name('answer.downvote');
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {

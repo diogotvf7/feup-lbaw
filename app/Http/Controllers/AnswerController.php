@@ -35,7 +35,7 @@ class AnswerController extends Controller
             return redirect('/login');
         } else {
             $request->validate([
-                'body' => 'required|string|max:250'
+                'body' => 'required|string|min:50|max:30000'
             ]);
             
             $user = Auth::user();
@@ -72,7 +72,7 @@ class AnswerController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'body' => 'required|string|max:250'
+            'body' => 'required|string|min:50|max:30000'
         ]);
         
         $answer = Answer::findOrFail($request->answer_id);

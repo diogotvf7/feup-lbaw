@@ -1,59 +1,78 @@
-<div class="px-4 pt-4 pb-2 mb-4 border-bottom border-3 border-secondary">
-    <section id="question" class="card border-secondary mb-3">
-        <div class="card-header d-flex flex-wrap justify-content-between align-items-end px-4 pb-0">
-            <h2>{{ $question->title }}</h2>
-            <!-- <p>
-            @foreach($question->tags as $tag)
-                {{ $tag->name }}
-                @if (!$loop->last)
-                    ,
+<section class="">
+    <header class="d-flex justify-content-between align-items-center">
+        <hgroup>
+            <h1>
+                {{ $question->title }}
+            </h1>
+            <div class="d-flex gap-5">
+                <p>
+                    Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by 
+                    @if(auth()->check() && ($question->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
+                    <a class="text-decoration-none" href="/users/{{ $question->user->id }}">{{ $question->user->username }}</a>
+                    @else
+                    {{ $question->user->username }}
+                    @endif
+                </p>
+                @if ($question->contentVersions()->count() > 1)
+                <p>
+                    Last Edited {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
+                </p>
                 @endif
-            @endforeach
-            | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
-        </p>  -->
-            <p>Made by {{ $question->user->username }} | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}</p>
-            @if(auth()->check() && ($question->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
-            <div class="d-flex pb-2">
-                @if((auth()->check() && $question->user->id === auth()->user()->id))
-                    <button class="btn btn-secondary my-2 my-sm-0 edit-question">Edit</button>
-                    <button class="btn btn-secondary my-2 my-sm-0 stop-editing-question d-none">Stop Editing</button>
+            </div>
+        </hgroup>
+        <div class="d-flex">
+            @if (auth()->check())
+                @if (auth()->user()->id === $question->user->id)
+                <button id="edit-question" class="btn btn-secondary my-2 my-sm-0">Edit</button>
                 @endif
+                @if (auth()->user()->id === $question->user->id || auth()->user()->type === "Admin")
                 <form class="px-2" method="POST" action="{{ route('question/delete') }}" onclick="return confirm('Are you sure you want to delete this question?');">
                     {{ csrf_field() }}
                     @method('DELETE')
                     <input type="hidden" name="question_id" value="{{ $question->id }}">
                     <button class="btn btn-secondary my-2 my-sm-0" type="submit">Delete</button>
                 </form>
-            </div>
+                @endif
             @endif
         </div>
-
-        <div class="px-4 py-4">
-            <span class="question-body">{{ $question->updatedVersion->body }}</span>
-            <form method="POST" action="{{ route('question/edit') }}">
-                {{ csrf_field() }}
-                @method('PATCH')
-                <input type="hidden" name="question_id" value="{{ $question->id }}">
-                <textarea name="body" class="form-control edit-input d-none" value="{{ $question->updatedVersion->body }}"></textarea>
-                <button class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
-            </form>
+    </header>
+    <hr>
+    <div class="d-flex gap-3 my-3">
+        <div class="d-flex flex-column align-items-center">
+            <button class="question-button" style="border-radius: 2em"><i class="bi bi-caret-up-fill"></i></button>
+            <p class="px-4 mb-0">{{ $question->voteBalance() }}</p>
+            <button class="question-button" style="border-radius: 2em"><i class="bi bi-caret-down-fill"></i></button>
+            <button class="question-button my-2" style="border-radius: 2em"><i class="bi bi-bookmark"></i></button>
         </div>
-
-        <div class="card-footer d-flex align-items-center px-0">
-            <p class="px-4 mb-0">{{ $question->answers->count() }}
-                @if($question->answers->count() === 1)
-                answer
-                @else
-                answers
-                @endif
-            </p>
-            <p class="px-4 mb-0">{{ $question->voteBalance() }}
-                @if($question->voteBalance() === 1)
-                vote
-                @else
-                votes
-                @endif
-            </p>
+        <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
+            {{ csrf_field() }}
+            @method('PATCH')
+            <input type="hidden" name="question_id" value="{{ $question->id }}">
+            <textarea id="question-input" name="body" class="form-control form-control-plaintext" readonly>{{ $question->updatedVersion->body }}</textarea>
+            <div>
+                <button id="cancel-edit-question" class="btn btn-secondary mt-2 d-none" type="button">Cancel</button>
+                <button id="submit-edit-question" class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
+            </div>
+        </form>
+    </div>
+    <footer class="d-flex justify-content-between align-items-center pb-2">
+        <h3>
+            {{ $question->answers->count() }}
+            @if ($question->answers->count() != 1)
+            answers
+            @else
+            answer
+            @endif
+        </h3>
+        <div class="d-flex gap-2 align-items-center">
+            <p class="text-nowrap m-0">Sorted by:</p>
+            <label for="questions-sort" class="form-label mt-4"></label>
+            <select class="form-select" id="questions-sort" value="score">
+                <option value="score">Highest score (default)</option>
+                <option value="modified">Date modified (newest first)</option>
+                <option value="created">Date created (oldest first)</option>
+            </select>
         </div>
-    </section>
-</div>
+    </footer>
+</section>
+<hr class="m-0">

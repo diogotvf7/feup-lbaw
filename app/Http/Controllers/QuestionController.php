@@ -79,8 +79,8 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|min:5|max:100',
-            'body' => 'required|string|min:20'
+            'title' => 'required|string|min:5|max:150',
+            'body' => 'required|string|min:50|max:30000'
         ]);
 
         $question = Question::create([
@@ -111,7 +111,7 @@ class QuestionController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'body' => 'required|string|max:250'
+            'body' => 'required|string|min:50|max:30000'
         ]);
         
         $question = Question::findOrFail($request->question_id);
