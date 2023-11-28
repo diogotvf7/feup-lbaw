@@ -39,16 +39,16 @@
     <hr>
     <div class="d-flex gap-3 my-3">
         <div class="d-flex flex-column align-items-center">
-            <button class="question-button" style="border-radius: 2em"><i class="bi bi-caret-up-fill"></i></button>
+            <button class="vote-button" style="border-radius: 2em"><i class="bi bi-caret-up-fill"></i></button>
             <p class="px-4 mb-0">{{ $question->voteBalance() }}</p>
-            <button class="question-button" style="border-radius: 2em"><i class="bi bi-caret-down-fill"></i></button>
-            <button class="question-button my-2" style="border-radius: 2em"><i class="bi bi-bookmark"></i></button>
+            <button class="vote-button" style="border-radius: 2em"><i class="bi bi-caret-down-fill"></i></button>
+            <button class="vote-button my-2" style="border-radius: 2em"><i class="bi bi-bookmark"></i></button>
         </div>
         <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}
             @method('PATCH')
             <input type="hidden" name="question_id" value="{{ $question->id }}">
-            <textarea id="question-input" name="body" class="form-control form-control-plaintext" readonly>{{ $question->updatedVersion->body }}</textarea>
+            <textarea id="question-input" name="body" class="form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $question->updatedVersion->body }}</textarea>
             <div>
                 <button id="cancel-edit-question" class="btn btn-secondary mt-2 d-none" type="button">Cancel</button>
                 <button id="submit-edit-question" class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
@@ -66,13 +66,12 @@
         </h3>
         <div class="d-flex gap-2 align-items-center">
             <p class="text-nowrap m-0">Sorted by:</p>
-            <label for="questions-sort" class="form-label mt-4"></label>
-            <select class="form-select" id="questions-sort" value="score">
-                <option value="score">Highest score (default)</option>
-                <option value="modified">Date modified (newest first)</option>
-                <option value="created">Date created (oldest first)</option>
+            <label for="answers-sort" class="form-label mt-4"></label>
+            <select id="answers-sort" class="form-select" value="score">
+                <option value="votes">Highest score (default)</option>
+                <option value="newest">Date modified (newest first)</option>
+                <option value="oldest">Date created (oldest first)</option>
             </select>
         </div>
     </footer>
 </section>
-<hr class="m-0">

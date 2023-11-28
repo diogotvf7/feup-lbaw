@@ -1,6 +1,7 @@
 function editQuestion() {
   const editButton = document.getElementById('edit-question');
   const cancelEditButton = document.getElementById('cancel-edit-question');
+  if (!editButton || !cancelEditButton) return;
   const submitEditButton = document.getElementById('submit-edit-question');
   const questionInput = document.getElementById('question-input');
   questionInput.style.height =
@@ -16,13 +17,6 @@ function editQuestion() {
     questionInput.classList.remove('form-control-plaintext');
     questionInput.focus();
   });
-}
-
-function stopEditingQuestion() {
-  const editButton = document.getElementById('edit-question');
-  const cancelEditButton = document.getElementById('cancel-edit-question');
-  const submitEditButton = document.getElementById('submit-edit-question');
-  const questionInput = document.getElementById('question-input');
 
   cancelEditButton.addEventListener('click', function() {
     editButton.classList.remove('d-none');
@@ -33,4 +27,4 @@ function stopEditingQuestion() {
   });
 }
 
-export {editQuestion, stopEditingQuestion};
+export default editQuestion;

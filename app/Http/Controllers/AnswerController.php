@@ -13,9 +13,31 @@ class AnswerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $question = Question::findOrFail($request->question_id);
+        $answers = $question->answers;
+
+        switch ($request->sort) {
+            case 'oldest':
+                $answers = $answers->sortBy('created_at');
+                break;
+            case 'votes':
+                $answers = $answers->sortByDesc('vote_balance');
+                break;
+            case 'newest':
+                $answers = $answers->sortByDesc('updated_at');
+                break;
+            default:
+                $answers = $answers->sortByDesc('created_at');
+                break;
+        }
+    
+        $answersViews = [];
+        foreach ($answers as $answer) {
+            $answersViews[] = view('partials.answer', ['answer' => $answer])->render();
+        }
+        return response()->json(['answers' => $answersViews]);
     }
 
     /**
@@ -35,7 +57,7 @@ class AnswerController extends Controller
             return redirect('/login');
         } else {
             $request->validate([
-                'body' => 'required|string|min:50|max:30000'
+                'body' => 'required|string|min:20|max:30000'
             ]);
             
             $user = Auth::user();
@@ -63,7 +85,7 @@ class AnswerController extends Controller
      */
     public function show(Answer $answer)
     {
-        //
+        return view('partials.answer');
     }
 
     /**
@@ -72,7 +94,7 @@ class AnswerController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'body' => 'required|string|min:50|max:30000'
+            'body' => 'required|string|min:20|max:30000'
         ]);
         
         $answer = Answer::findOrFail($request->answer_id);

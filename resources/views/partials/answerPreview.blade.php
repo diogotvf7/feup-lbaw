@@ -1,6 +1,6 @@
 <article class="d-flex">
     <div class="d-flex flex-column justify-content-center align-content-end text-secondary me-3 text-nowrap text-end">
-        <span>{{ $answer->voteBalance() }} votes</span>
+        <span>{{ $answer->vote_balance }} votes</span>
     </div>
 
     <div class="flex-grow-1">

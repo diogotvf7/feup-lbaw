@@ -17,7 +17,7 @@ body {
 /* ------------------ */
 
 /*     Vote Button    */
-.question-button {
+.vote-button {
   aspect-ratio: 1 / 1;
   height: 30px;
   border-radius: 50%;
@@ -25,12 +25,12 @@ body {
   background-color: transparent;
 }
 
-.question-button:hover, .question-button.on {
+.vote-button:hover, .vote-button.on {
   color: #f48024;
   border-color: #f48024;
 }
 
-.question-button.on:hover, .question-button {
+.vote-button.on:hover, .vote-button {
   color: #687074;
   border-color: #687074;
 }

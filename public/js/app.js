@@ -1,5 +1,7 @@
-import {editAnswer, stopEditingAnswer} from './answer-edit.js';
-import {editQuestion, stopEditingQuestion} from './question-edit.js';
+// import {editAnswer, stopEditingAnswer} from './answer-edit.js';
+// import editAnswer from './answer-edit.js';
+import loadAnswers from './answers-loader.js';
+import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
@@ -41,10 +43,10 @@ else if (/^\/users\/\w+$/.test(currentPath)) {
 else if (/^\/tags\/[0-9]+\/edit$/.test(currentPath)) {
   resetFields(['name', 'description']);
 }
-// Question editing / Answer editing
+// Question editing / Answer editing / Answer loading
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
-  editAnswer();
-  stopEditingAnswer();
   editQuestion();
-  stopEditingQuestion();
+  await loadAnswers();
+  const answersSort = document.getElementById('answers-sort');
+  answersSort.addEventListener('change', loadAnswers);
 }

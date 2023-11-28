@@ -84,6 +84,11 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions/top', 'fetch');
     Route::get('/api/questions/followed', 'fetch');
     Route::get('/api/questions/tag/{id}', 'fetch')->where('id', '[0-9]+');
+    Route::get('/api/questions/{id}/answers', 'fetch')->where('id', '[0-9]+');
+});
+
+Route::controller(AnswerController::class)->group(function () {
+    Route::get('/api/answers', 'index');
 });
 
 Route::controller(TagController::class)->group(function () {
