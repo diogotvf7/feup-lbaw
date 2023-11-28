@@ -3926,6 +3926,20 @@ VALUES
         '2016-04-25 23:10:14'
     ),
     (
+        'Plan a budget-friendly trip by researching affordable destinations and exploring discount options for accommodations and transportation. Seek advice from experienced travelers for money-saving tips.',
+        'ANSWER',
+        39,
+        NULL,
+        '2011-04-25 23:10:14'
+    ),
+    (
+        'Plan a budget-friendly trip by researching affordable destinations and exploring discount options for accommodations and transportation. Seek advice from experienced travelers for money-saving tips.',
+        'ANSWER',
+        40,
+        NULL,
+        '2016-07-21 03:10:14'
+    ),
+    (
         'Understand economic principles and their impact on personal finance. Explore investment opportunities and seek advice from financial experts for making sound financial decisions.',
         'ANSWER',
         41,
@@ -3936,6 +3950,20 @@ VALUES
         'Prepare for an economical travel experience by budgeting and seeking affordable travel options. Engage with travel communities for advice on cost-effective travel planning.',
         'ANSWER',
         42,
+        NULL,
+        '2007-06-20 18:44:05'
+    ),
+    (
+        'Prepare for an economical travel experience by budgeting and seeking affordable travel options. Engage with travel communities for advice on cost-effective travel planning.',
+        'ANSWER',
+        43,
+        NULL,
+        '2007-06-20 18:44:05'
+    ),
+    (
+        'Prepare for an economical travel experience by budgeting and seeking affordable travel options. Engage with travel communities for advice on cost-effective travel planning.',
+        'ANSWER',
+        44,
         NULL,
         '2007-06-20 18:44:05'
     ),

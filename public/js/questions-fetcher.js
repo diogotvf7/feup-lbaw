@@ -37,6 +37,7 @@ function createQuestionPreview(question, authenticated) {
   title.textContent = question.title;
 
   const body = document.createElement('p');
+  body.classList.add('preview-body', 'px-3', 'text-wrap', 'text-break');
   body.textContent = question.updated_version.body;
 
   const tags = document.createElement('div');

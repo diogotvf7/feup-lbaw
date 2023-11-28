@@ -6,7 +6,7 @@
             </h1>
             <div class="d-flex gap-5">
                 <p>
-                    Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by 
+                    Asked {{ \Carbon\Carbon::parse($question->created_at)->diffForHumans() }} by 
                     @if(auth()->check() && ($question->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
                     <a class="text-decoration-none" href="/users/{{ $question->user->id }}">{{ $question->user->username }}</a>
                     @else
@@ -15,7 +15,7 @@
                 </p>
                 @if ($question->contentVersions()->count() > 1)
                 <p>
-                    Last Edited {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
+                    Last Edited {{ \Carbon\Carbon::parse($question->updated_at)->diffForHumans() }}
                 </p>
                 @endif
             </div>
