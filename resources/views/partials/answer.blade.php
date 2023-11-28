@@ -17,7 +17,7 @@
         </form>
         <div class="d-flex justify-content-end gap-5 align-content-end py-2">
             <p class="m-0">
-                Asked {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
+                Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
                 @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
                 <a class="text-decoration-none" href="/users/{{ $answer->user->id }}">{{ $answer->user->username }}</a>
                 @else
