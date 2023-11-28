@@ -7,7 +7,6 @@ use App\Models\ContentVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
-use App\Models\User;
 
 class QuestionController extends Controller
 {

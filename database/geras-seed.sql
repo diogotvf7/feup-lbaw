@@ -3982,6 +3982,20 @@ VALUES
         '2018-07-02 16:29:47'
     ),
     (
+        'Plan a trip on a tight budget by exploring low-cost travel options and seeking advice from experienced travelers for affordable travel hacks.',
+        'ANSWER',
+        47,
+        NULL,
+        '2018-07-02 16:29:47'
+    ),
+    (
+        'Plan a trip on a tight budget by exploring low-cost travel options and seeking advice from experienced travelers for affordable travel hacks.',
+        'ANSWER',
+        48,
+        NULL,
+        '2018-07-02 16:29:47'
+    ),
+    (
         'Learn about economic indicators and strategies for personal financial planning. Seek advice from financial advisors to make informed decisions about your financial future.',
         'ANSWER',
         49,
