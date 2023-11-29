@@ -63,4 +63,12 @@ class QuestionPolicy
     {
         //
     }
+
+    public function vote(User $user, Question $question): Response
+    {
+        if ($user->id === $question->author) {
+            return Response::deny('You cannot vote your own question!');
+        }
+        return Response::allow();
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\ContentVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Tag;
+use App\Models\User;
 
 class QuestionController extends Controller
 {
@@ -102,7 +103,10 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        return view('pages.question', ['question' => $question]);
+        $currentUser = User::find(Auth::user()->id);
+        $vote = $currentUser->voted('question', $question->id);
+        $follow = $currentUser->followsQuestion($question->id);
+        return view('pages.question', ['question' => $question, 'vote' => $vote, 'follow' => $follow]);
     }
 
     /**
@@ -155,5 +159,43 @@ class QuestionController extends Controller
             return view('pages.search', ['includeAll' => False, 'questions' => $questions, 'query' => $request->searchTerm])->render();
         }   
         else return view('pages.search', ['includeAll' => True, 'questions' => $questions, 'query' => $request->searchTerm]);
+    }
+
+    public function upvote($id)
+    {        
+        $user = User::findOrFail(Auth::user()->id);
+        $question = Question::findOrFail($id);
+
+        if ($user->upvoted($question->id)) {
+            $user->votes()->where('is_upvote', true)->delete();            
+        }
+
+        $this->authorize('vote', $question);
+        $question->votes()->create([
+            'is_upvote' => true,
+            'type' => 'QUESTION',
+            'user_id' => $user->id,
+        ]);
+
+        $user->votes()->where('is_upvote', false)->delete();
+    }
+
+    public function downvote($id)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $question = Question::findOrFail($id);
+
+        if ($user->downvoted($question->id)) {
+            $user->votes()->where('is_upvote', false)->delete();            
+        }
+
+        $this->authorize('vote', $question);
+        $question->votes()->create([
+            'is_upvote' => false,
+            'type' => 'QUESTION',
+            'user_id' => $user->id,
+        ]);
+
+        $user->votes()->where('is_upvote', true)->delete();
     }
 }

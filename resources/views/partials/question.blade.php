@@ -22,9 +22,7 @@
         </hgroup>
         <div class="d-flex">
             @if (auth()->check())
-                @if (auth()->user()->id === $question->user->id)
                 <button id="edit-question" class="btn btn-secondary my-2 my-sm-0">Edit</button>
-                @endif
                 @if (auth()->user()->id === $question->user->id || auth()->user()->type === "Admin")
                 <form class="px-2" method="POST" action="{{ route('question/delete') }}" onclick="return confirm('Are you sure you want to delete this question?');">
                     {{ csrf_field() }}
@@ -38,11 +36,15 @@
     </header>
     <hr>
     <div class="d-flex gap-3 my-3">
-        <div class="d-flex flex-column align-items-center">
-            <button class="vote-button" style="border-radius: 2em"><i class="bi bi-caret-up-fill"></i></button>
-            <p class="px-4 mb-0">{{ $question->voteBalance() }}</p>
-            <button class="vote-button" style="border-radius: 2em"><i class="bi bi-caret-down-fill"></i></button>
-            <button class="vote-button my-2" style="border-radius: 2em"><i class="bi bi-bookmark"></i></button>
+        <div class="question-interactions d-flex flex-column align-items-center">
+            <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+            <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
+            <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+            @if ($follow)
+                <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
+            @else 
+                <button class="vote-button my-2"><i class="bi bi-bookmark"></i></button>
+            @endif
         </div>
         <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}

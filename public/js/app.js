@@ -1,11 +1,11 @@
-// import {editAnswer, stopEditingAnswer} from './answer-edit.js';
-// import editAnswer from './answer-edit.js';
 import loadAnswers from './answers-loader.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
+import enableVote from './vote.js';
+
 
 const currentPath = window.location.pathname;
 
@@ -49,4 +49,5 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   await loadAnswers();
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
+  enableVote();
 }

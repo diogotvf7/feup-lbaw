@@ -4910,4 +4910,7 @@ VALUES
     (true, 'ANSWER', NULL, 27, NULL, 47),
     (true, 'ANSWER', NULL, 28, NULL, 48),
     (true, 'ANSWER', NULL, 29, NULL, 49),
-    (true, 'ANSWER', NULL, 30, NULL, 50);
+    (true, 'ANSWER', NULL, 30, NULL, 50),
+    (true, 'QUESTION', NULL, NULL, 6, 91),
+    (true, 'ANSWER', NULL, 11, NULL, 91),
+    (false, 'ANSWER', NULL, 12, NULL, 91);

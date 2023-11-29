@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Answer;
 use App\Models\ContentVersion;
 use App\Models\Question;
@@ -34,8 +35,10 @@ class AnswerController extends Controller
         }
     
         $answersViews = [];
+        $currentUser = User::find(Auth::user()->id);
         foreach ($answers as $answer) {
-            $answersViews[] = view('partials.answer', ['answer' => $answer])->render();
+            $vote = $currentUser->voted('answer', $answer->id);
+            $answersViews[] = view('partials.answer', ['answer' => $answer, 'vote' => $vote])->render();
         }
         return response()->json(['answers' => $answersViews]);
     }
