@@ -1,5 +1,3 @@
-import sendAjaxRequest from './ajax.js';
-
 const questionInteractions =
     document.querySelectorAll('.question-interactions');
 const answerInteractions = document.querySelectorAll('.answer-interactions');
@@ -12,24 +10,19 @@ const answerInteractions = document.querySelectorAll('.answer-interactions');
  * @param {*} voteCount the vote count element
  */
 async function voteQuestion(vote, questionId, voteCount) {
-  const response = sendAjaxRequest(
-      'PATCH', `/question/${vote}/${questionId}`, null, (response) => {
-        if (response.status !== 200) {
-          console.log(response);
-
-          // save response content to a variable
-          const error = response.responseText;
-
-          return;
-        } else if (response.status === 200) {
-          console.log(response);
-
-          // save response content to a variable
-          const success = response.responseText;
-          console.log(success);
-        }
-        // console.log(response);
-        voteCount.textContent = response.voteBalance;
+  return await fetch(`/question/${vote}/${questionId}`, {
+           method: 'PATCH',
+           headers: {
+             'X-Requested-With': 'XMLHttpRequest',
+             'X-CSRF-TOKEN':
+                 document.querySelector('meta[name="csrf-token"]').content
+           },
+         })
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(json) {
+        voteCount.textContent = json.voteBalance;
       });
 }
 
@@ -45,32 +38,26 @@ async function enableVote() {
         voteQuestion('upvote', questionId, voteCount);
         upvote.classList.remove('on');
         upvote.classList.add('off');
-        voteCount.textContent = parseInt(voteCount.textContent) - 1;
       } else {
         voteQuestion('upvote', questionId, voteCount);
         upvote.classList.remove('off');
         upvote.classList.add('on');
         downvote.classList.remove('on');
         downvote.classList.add('off');
-        voteCount.textContent = parseInt(voteCount.textContent) + 1 +
-            downvote.classList.contains('on');
       }
     });
 
     downvote.addEventListener('click', () => {
       if (downvote.classList.contains('on')) {
-        voteQuestion('downvote', questionId);
+        voteQuestion('downvote', questionId, voteCount);
         downvote.classList.remove('on');
         downvote.classList.add('off');
-        voteCount.textContent = parseInt(voteCount.textContent) + 1;
       } else {
-        voteQuestion('downvote', questionId);
+        voteQuestion('downvote', questionId, voteCount);
         downvote.classList.remove('off');
         downvote.classList.add('on');
         upvote.classList.remove('on');
         upvote.classList.add('off');
-        voteCount.textContent = parseInt(voteCount.textContent) - 1 -
-            upvote.classList.contains('on');
       }
     });
   });

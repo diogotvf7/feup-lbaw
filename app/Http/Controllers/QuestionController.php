@@ -170,43 +170,49 @@ class QuestionController extends Controller
         $user = User::findOrFail(Auth::user()->id);
 
         if ($user->upvoted($question->id)) {
-            $user->votes()->where('question_id', $question->id)->delete();
-            // detach($question->id, ['is_upvote' => true]);            
+            Vote::where([
+                ['user_id', $user->id],
+                ['question_id', $question->id],
+                ])->delete();
+        } else {
+            if ($user->downvoted($question->id))
+                Vote::where([
+                    ['user_id', $user->id],
+                    ['question_id', $question->id],
+                    ])->delete();
+            Vote::create([
+                'is_upvote' => true,
+                'type' => 'QUESTION',
+                'user_id' => $user->id,
+                'question_id' => $question->id,
+            ]);
         }
-
-        Vote::create([
-            'is_upvote' => true,
-            'type' => 'QUESTION',
-            'user_id' => $user->id,
-            'question_id' => $question->id,
-        ]);
-
-        
-        $user->votes()->where([
-            ['is_upvote', false],
-            ['question_id', $question->id]
-            ])->delete();
-            
         return ['voteBalance' => $question->voteBalance()];
-        // $user->votes()->detach($question->id, ['is_upvote' => false]);
     }
 
-    public function downvote($id)
+    public function downvote(Question $question)
     {
-        $question = Question::findOrFail($id);
         $this->authorize('vote', $question);
         $user = User::findOrFail(Auth::user()->id);
 
         if ($user->downvoted($question->id)) {
-            $user->votes()->where('is_upvote', false)->delete();            
-        }
-
-        $question->votes()->create([
-            'is_upvote' => false,
-            'type' => 'QUESTION',
-            'user_id' => $user->id,
-        ]);
-
-        $user->votes()->where('is_upvote', true)->delete();
+            Vote::where([
+                ['user_id', $user->id],
+                ['question_id', $question->id],
+                ])->delete();
+        } else {
+            if ($user->upvoted($question->id))
+                Vote::where([
+                    ['user_id', $user->id],
+                    ['question_id', $question->id],
+                    ])->delete();
+            Vote::create([
+                'is_upvote' => false,
+                'type' => 'QUESTION',
+                'user_id' => $user->id,
+                'question_id' => $question->id,
+            ]);
+        }    
+        return ['voteBalance' => $question->voteBalance()];
     }
 }
