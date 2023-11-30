@@ -46,8 +46,8 @@ Route::controller(AnswerController::class)->group(function () {
     Route::post('/answers/create', 'store')->name('answer/create');
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
-    Route::patch('/answer/upvote/{id}', 'upvote')->where('id', '[0-9]+')->middleware(LoggedMiddleware::class);
-    Route::patch('/answer/downvote/{id}', 'downvote')->where('id', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/answer/upvote/{answer}', 'upvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
