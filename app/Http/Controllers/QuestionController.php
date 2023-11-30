@@ -198,4 +198,20 @@ class QuestionController extends Controller
 
         $user->votes()->where('is_upvote', true)->delete();
     }
+
+    public function follow($id)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $question = Question::findOrFail($id);
+
+        if ($user->followsQuestion($question->id)){
+            $user->followedQuestions()->where('question_id',$question)->delete();
+        }
+        else{
+            $this->authorize('follow',$question);
+            $user->followedQuestions()->create([
+                'question_id' => $question->id,
+            ]);
+        }
+    }
 }

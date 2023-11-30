@@ -40,17 +40,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
     Route::patch('/question/upvote/{id}', 'upvote')->where('id', '[0-9]+');
     Route::patch('/question/downvote/{id}', 'downvote')->where('id', '[0-9]+');
-});
-
-Route::controller(AnswerController::class)->group(function () {
-    Route::post('/answers/create', 'store')->name('answer/create');
-    Route::patch('/answers/edit', 'edit')->name('answer/edit');
-    Route::delete('/answers/delete', 'destroy')->name('answer/delete');
-    Route::patch('/answer/upvote/{id}', 'upvote')->where('id', '[0-9]+');
-    Route::patch('/answer/downvote/{id}', 'downvote')->where('id', '[0-9]+');
-});
-
-Route::middleware(AdminMiddleware::class)->group(function () {
+    Route::patch('/question/follow/{id}', 'follow')->where('id', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
     Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
