@@ -133,17 +133,23 @@ class User extends Authenticatable
     /**
      * Return true if the user upvoted the question with the given id.
      */
-    public function upvoted($question_id) : string
+    public function upvoted($content_type, $content_id) : string
     {
-        return $this->votes()->where('question_id', $question_id)->where('is_upvote', true)->exists();
+        return $this->votes()
+            ->where('is_upvote', true)
+            ->where($content_type . '_id', $content_id)
+            ->exists();
     }
 
     /**
      * Return true if the user downvoted the question with the given id.
      */
-    public function downvoted($question_id) : string
+    public function downvoted($content_type, $content_id) : string
     {
-        return $this->votes()->where('question_id', $question_id)->where('is_upvote', false)->exists();
+        return $this->votes()
+            ->where($content_type . '_id', $content_id)
+            ->where('is_upvote', false)
+            ->exists();
     }
 
     public function voted($type, $content_id) : string

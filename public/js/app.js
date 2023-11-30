@@ -49,5 +49,8 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   await loadAnswers();
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
-  enableVote();
+  const questionInteractions =
+      document.querySelectorAll('.question-interactions');
+  const answerInteractions = document.querySelectorAll('.answer-interactions');
+  enableVote(questionInteractions, answerInteractions);
 }

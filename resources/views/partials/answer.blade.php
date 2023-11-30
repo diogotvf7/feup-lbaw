@@ -1,8 +1,8 @@
 <article class="answer d-flex gap-3">
-    <div class="answer-interactions d-flex flex-column align-items-center py-3">
-        <button class="vote-button {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
-        <p class="px-4 mb-0">{{ $answer->vote_balance }}</p>
-        <button class="vote-button {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+    <div class="answer-interactions d-flex flex-column align-items-center py-3" data-id="{{ $answer->id }}">
+        <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+        <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
+        <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
     </div>
     <div class="flex-grow-1 pt-3">
         <form method="POST" action="{{ route('answer/edit') }}">

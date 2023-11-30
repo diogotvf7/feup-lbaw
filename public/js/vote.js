@@ -1,10 +1,3 @@
-const questionInteractions =
-    document.querySelectorAll('.question-interactions');
-const answerInteractions = document.querySelectorAll('.answer-interactions');
-
-console.log(questionInteractions);
-console.log(answerInteractions);
-
 /**
  * Send a patch request to /question/upvote or /question/downvote
  * with the questionId and 'upvote' or 'downvote' on the request
@@ -46,7 +39,7 @@ async function voteAnswer(vote, answerId, voteCount) {
       });
 }
 
-async function enableVote() {
+async function enableVote(questionInteractions, answerInteractions) {
   questionInteractions.forEach((interaction) => {
     const questionId = new URL(window.location.href).pathname.split('/').pop();
     const upvote = interaction.querySelector('.upvote');
@@ -82,40 +75,40 @@ async function enableVote() {
     });
   });
 
-  // answerInteractions.forEach((interaction) => {
-  //   const answerId = new URL(window.location.href).pathname.split('/').pop();
-  //   const upvote = interaction.querySelector('.upvote');
-  //   const downvote = interaction.querySelector('.downvote');
-  //   const voteCount = interaction.querySelector('.vote-count');
+  answerInteractions.forEach((interaction) => {
+    const answerId = interaction.dataset.id;
+    const upvote = interaction.querySelector('.upvote');
+    const downvote = interaction.querySelector('.downvote');
+    const voteCount = interaction.querySelector('.vote-count');
 
-  //   upvote.addEventListener('click', () => {
-  //     if (upvote.classList.contains('on')) {
-  //       voteAnswer('upvote', answerId, voteCount);
-  //       upvote.classList.remove('on');
-  //       upvote.classList.add('off');
-  //     } else {
-  //       voteAnswer('upvote', answerId, voteCount);
-  //       upvote.classList.remove('off');
-  //       upvote.classList.add('on');
-  //       downvote.classList.remove('on');
-  //       downvote.classList.add('off');
-  //     }
-  //   });
+    upvote.addEventListener('click', () => {
+      if (upvote.classList.contains('on')) {
+        voteAnswer('upvote', answerId, voteCount);
+        upvote.classList.remove('on');
+        upvote.classList.add('off');
+      } else {
+        voteAnswer('upvote', answerId, voteCount);
+        upvote.classList.remove('off');
+        upvote.classList.add('on');
+        downvote.classList.remove('on');
+        downvote.classList.add('off');
+      }
+    });
 
-  //   downvote.addEventListener('click', () => {
-  //     if (downvote.classList.contains('on')) {
-  //       voteAnswer('downvote', answerId, voteCount);
-  //       downvote.classList.remove('on');
-  //       downvote.classList.add('off');
-  //     } else {
-  //       voteAnswer('downvote', answerId, voteCount);
-  //       downvote.classList.remove('off');
-  //       downvote.classList.add('on');
-  //       upvote.classList.remove('on');
-  //       upvote.classList.add('off');
-  //     }
-  //   });
-  // });
+    downvote.addEventListener('click', () => {
+      if (downvote.classList.contains('on')) {
+        voteAnswer('downvote', answerId, voteCount);
+        downvote.classList.remove('on');
+        downvote.classList.add('off');
+      } else {
+        voteAnswer('downvote', answerId, voteCount);
+        downvote.classList.remove('off');
+        downvote.classList.add('on');
+        upvote.classList.remove('on');
+        upvote.classList.add('off');
+      }
+    });
+  });
 }
 
 export default enableVote;

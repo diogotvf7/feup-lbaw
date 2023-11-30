@@ -169,13 +169,13 @@ class QuestionController extends Controller
         $this->authorize('vote', $question);
         $user = User::findOrFail(Auth::user()->id);
 
-        if ($user->upvoted($question->id)) {
+        if ($user->upvoted('question', $question->id)) {
             Vote::where([
                 ['user_id', $user->id],
                 ['question_id', $question->id],
                 ])->delete();
         } else {
-            if ($user->downvoted($question->id))
+            if ($user->downvoted('question', $question->id))
                 Vote::where([
                     ['user_id', $user->id],
                     ['question_id', $question->id],
@@ -195,13 +195,13 @@ class QuestionController extends Controller
         $this->authorize('vote', $question);
         $user = User::findOrFail(Auth::user()->id);
 
-        if ($user->downvoted($question->id)) {
+        if ($user->downvoted('question', $question->id)) {
             Vote::where([
                 ['user_id', $user->id],
                 ['question_id', $question->id],
                 ])->delete();
         } else {
-            if ($user->upvoted($question->id))
+            if ($user->upvoted('question', $question->id))
                 Vote::where([
                     ['user_id', $user->id],
                     ['question_id', $question->id],
