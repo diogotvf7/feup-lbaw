@@ -11,8 +11,26 @@ const answerInteractions = document.querySelectorAll('.answer-interactions');
  * @param {*} vote if vote is 1, upvote, if -1, downvote
  * @param {*} voteCount the vote count element
  */
-async function voteQuestion(vote, questionId) {
-  const response = sendAjaxRequest('PATCH', `/question/${vote}/${questionId}`);
+async function voteQuestion(vote, questionId, voteCount) {
+  const response = sendAjaxRequest(
+      'PATCH', `/question/${vote}/${questionId}`, null, (response) => {
+        if (response.status !== 200) {
+          console.log(response);
+
+          // save response content to a variable
+          const error = response.responseText;
+
+          return;
+        } else if (response.status === 200) {
+          console.log(response);
+
+          // save response content to a variable
+          const success = response.responseText;
+          console.log(success);
+        }
+        // console.log(response);
+        voteCount.textContent = response.voteBalance;
+      });
 }
 
 async function enableVote() {
@@ -24,12 +42,12 @@ async function enableVote() {
 
     upvote.addEventListener('click', () => {
       if (upvote.classList.contains('on')) {
-        voteQuestion('upvote', questionId);
+        voteQuestion('upvote', questionId, voteCount);
         upvote.classList.remove('on');
         upvote.classList.add('off');
         voteCount.textContent = parseInt(voteCount.textContent) - 1;
       } else {
-        voteQuestion('upvote', questionId);
+        voteQuestion('upvote', questionId, voteCount);
         upvote.classList.remove('off');
         upvote.classList.add('on');
         downvote.classList.remove('on');

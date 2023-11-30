@@ -35,9 +35,9 @@ class AnswerController extends Controller
         }
     
         $answersViews = [];
-        $currentUser = User::find(Auth::user()->id);
+        // $currentUser = User::find(Auth::user());
         foreach ($answers as $answer) {
-            $vote = $currentUser->voted('answer', $answer->id);
+            $vote = $request->user() ? $request->user()->voted('answer', $answer->id) : null;
             $answersViews[] = view('partials.answer', ['answer' => $answer, 'vote' => $vote])->render();
         }
         return response()->json(['answers' => $answersViews]);

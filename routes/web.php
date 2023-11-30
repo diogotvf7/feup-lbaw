@@ -38,16 +38,16 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/{question}', 'show')->name('question.show');
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
-    Route::patch('/question/upvote/{id}', 'upvote')->where('id', '[0-9]+');
-    Route::patch('/question/downvote/{id}', 'downvote')->where('id', '[0-9]+');
+    Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/question/downvote/{question}', 'downvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::controller(AnswerController::class)->group(function () {
     Route::post('/answers/create', 'store')->name('answer/create');
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
-    Route::patch('/answer/upvote/{id}', 'upvote')->where('id', '[0-9]+');
-    Route::patch('/answer/downvote/{id}', 'downvote')->where('id', '[0-9]+');
+    Route::patch('/answer/upvote/{id}', 'upvote')->where('id', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/answer/downvote/{id}', 'downvote')->where('id', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {

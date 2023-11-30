@@ -16,8 +16,9 @@ class Vote extends Model
     protected $fillable = [
         'is_upvote',
         'user_id',
-        'content_id',
-        'content_type',
+        'question_id',
+        'answer_id',
+        'comment_id',
         'type'
     ];
 

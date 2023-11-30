@@ -43,7 +43,7 @@
             @if ($follow)
                 <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
             @else 
-                <button class="vote-button my-2"><i class="bi bi-bookmark"></i></button>
+                <button class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
             @endif
         </div>
         <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
