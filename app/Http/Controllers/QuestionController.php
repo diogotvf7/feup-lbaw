@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
+use App\Models\Vote;
+use App\Models\User;
 use App\Models\Question;
 use App\Models\ContentVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Tag;
-use App\Models\User;
 
 class QuestionController extends Controller
 {
@@ -103,6 +104,8 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
+        if (!Auth::check()) 
+            return view('pages.question', ['question' => $question, 'vote' => '', 'follow' => '']);
         $currentUser = User::find(Auth::user()->id);
         $vote = $currentUser->voted('question', $question->id);
         $follow = $currentUser->followsQuestion($question->id);
@@ -161,35 +164,43 @@ class QuestionController extends Controller
         else return view('pages.search', ['includeAll' => True, 'questions' => $questions, 'query' => $request->searchTerm]);
     }
 
-    public function upvote($id)
+    public function upvote(Question $question)
     {        
+        $this->authorize('vote', $question);
         $user = User::findOrFail(Auth::user()->id);
-        $question = Question::findOrFail($id);
 
         if ($user->upvoted($question->id)) {
-            $user->votes()->where('is_upvote', true)->delete();            
+            $user->votes()->where('question_id', $question->id)->delete();
+            // detach($question->id, ['is_upvote' => true]);            
         }
 
-        $this->authorize('vote', $question);
-        $question->votes()->create([
+        Vote::create([
             'is_upvote' => true,
             'type' => 'QUESTION',
             'user_id' => $user->id,
+            'question_id' => $question->id,
         ]);
 
-        $user->votes()->where('is_upvote', false)->delete();
+        
+        $user->votes()->where([
+            ['is_upvote', false],
+            ['question_id', $question->id]
+            ])->delete();
+            
+        return ['voteBalance' => $question->voteBalance()];
+        // $user->votes()->detach($question->id, ['is_upvote' => false]);
     }
 
     public function downvote($id)
     {
-        $user = User::findOrFail(Auth::user()->id);
         $question = Question::findOrFail($id);
+        $this->authorize('vote', $question);
+        $user = User::findOrFail(Auth::user()->id);
 
         if ($user->downvoted($question->id)) {
             $user->votes()->where('is_upvote', false)->delete();            
         }
 
-        $this->authorize('vote', $question);
         $question->votes()->create([
             'is_upvote' => false,
             'type' => 'QUESTION',
