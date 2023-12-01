@@ -74,7 +74,10 @@ function createQuestionPreview(question, authenticated) {
     publishedInfo.innerHTML = question.user.username;
   }
 
-  publishedInfo.innerHTML += ' asked ' + question.timeAgo;
+  publishedInfo.innerHTML += ' asked ' + question.created +
+      ((question.created !== question.updated) ?
+           ' (updated ' + question.updated + ')' :
+           '');
   published.appendChild(publishedInfo);
 
   questionPreview.append(info, content, published);

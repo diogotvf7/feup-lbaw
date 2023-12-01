@@ -4,9 +4,8 @@ let page = 1;
 function noMoreTags() {
   const text = document.createElement('p');
   text.textContent = 'No more tags to show';
-  text.classList.add('text-center', 'text-secondary');
+  text.classList.add('text-center', 'text-secondary', 'mt-3');
   tagsContainer.after(text);
-  // tagsContainer.appendChild(text);
   loader.remove();
 }
 

@@ -20,7 +20,7 @@
                     $tag = Tag::find($uri[2]);
                     if ($tag) {
                         echo '<div>';
-                            echo '<h1>Questions Tagged [' . $tag->name . ']</h1>';
+                            echo '<h1>Questions Tagged <span class="badge bg-primary mx-2">' . $tag->name . '</span></h1>';
                             echo '<p class="px-3 my-0">' . $tag->description . '</p>';
                         echo '</div>';
                     } else {

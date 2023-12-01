@@ -22,6 +22,9 @@
                     <span>{{ $question->user->name }}</span>
                 @endif
                 asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
+                @if ($question->firstVersion->date != $question->updatedVersion->date)
+                    , updated {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
+                @endif
             </div>
         </div>
     </div>

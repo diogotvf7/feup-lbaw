@@ -4,7 +4,7 @@
             <a href="{{ route('questions.top') }}" class="nav-link">Top Questions</a>
         </li>
         <li class="py-3 px-5 sidebar-element">
-            <a href="{{ route('questions') }}" class="nav-link">All Questions</a>
+            <a href="{{ route('questions') }}" class="nav-link">Recent Questions</a>
         </li>
         @if (Auth::check())
             <li class="py-3 px-5 sidebar-element">

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Question;
 use App\Models\ContentVersion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
@@ -25,23 +26,42 @@ class QuestionController extends Controller
         $path = $request->path();
         $path_segments = explode('/', trim($path, '/'));
 
-        $query = Question::query();
+        $query = Question::query()
+        ->select('questions.*')
+        ->leftJoin('content_versions', function ($join) {
+            $join->on('content_versions.question_id', '=', 'questions.id')
+                ->where('content_versions.id', '=', function ($sub_query) {
+                    $sub_query->select('id')
+                        ->from('content_versions')
+                        ->whereColumn('question_id', 'questions.id')
+                        ->orderByDesc('date')
+                        ->limit(1);
+                });
+        });
+
         if (isset($path_segments[2])) {
             if ($path_segments[2] == 'followed') 
             {
                 $query->join('followed_questions', 'questions.id', '=', 'followed_questions.question_id')
-                    ->where('user_id', $request->user()->id);
+                    ->where('user_id', $request->user()->id)
+                    ->orderBy('content_versions.date', 'desc');
             }
             else if ($path_segments[2] == 'top') 
             {
-                $query->withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count');
+                $query->withCount('upvotes', 'downvotes')
+                    ->orderBy('upvotes_count', 'desc')
+                    ->orderBy('downvotes_count');
             }
             else if ($path_segments[2] == 'tag')
             {
                 $query->whereHas('tags', function ($sub_query) use ($path_segments) {
                     $sub_query->where('tags.id', $path_segments[3]);
-                })->get();
+                })
+                ->orderBy('content_versions.date', 'desc')
+                ->get();
             }
+        } else {
+            $query->orderBy('content_versions.date', 'desc');
         }
 
         $questions = $query->paginate(10);
@@ -53,7 +73,8 @@ class QuestionController extends Controller
             $question->answers;
             $question->updatedVersion;
             $question->firstVersion;
-            $question->timeAgo = \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans();
+            $question->created = \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans();
+            $question->updated = \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans();
         }
 
         $response = [
