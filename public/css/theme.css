@@ -39,7 +39,7 @@
     --bs-gray-800: #333;
     --bs-gray-900: #222;
     --bs-primary: #ce1238;
-    --bs-secondary: #ed3156;
+    --bs-secondary: #a30f2c;
     --bs-success: #28b62c;
     --bs-info: #75caeb;
     --bs-warning: #ff851b;
@@ -47,7 +47,7 @@
     --bs-light: #f6f6f6;
     --bs-dark: #555;
     --bs-primary-rgb: 206, 18, 56;
-    --bs-secondary-rgb: 237, 49, 86;
+    --bs-secondary-rgb: 163, 15, 44;
     --bs-success-rgb: 40, 182, 44;
     --bs-info-rgb: 117, 202, 235;
     --bs-warning-rgb: 255, 133, 27;
@@ -13907,7 +13907,7 @@ fieldset:disabled .btn {
 }
 
 .navbar.bg-primary {
-    border-color: #bc1033
+    border-color: #a30f2c
 }
 
 .navbar.bg-secondary {

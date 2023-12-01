@@ -8,8 +8,8 @@
   --primary: #ce1238;
   --primary-rgb: 206, 18, 56;
 
-  --secondary: #ed3156;
-  --secondary-rgb: 237, 49, 86;
+  --secondary: #a30f2c;
+  --secondary-rgb: 163, 15, 44;
 
   --accent: #4d9d7a;
   --accent-rgb: 77, 157, 122;
@@ -78,7 +78,7 @@
 .vote-button.on, .vote-button.off:hover {
   border: none;
   color: white;
-  background-color: #bc1033;
+  background-color: var(--primary);
 }
 
 .vote-button.on:hover, .vote-button.off {
@@ -104,10 +104,6 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-}
-
-.error {
-  color: rgb(165, 36, 36);
 }
 
 .votes::after {
