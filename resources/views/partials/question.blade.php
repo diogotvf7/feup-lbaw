@@ -1,7 +1,7 @@
-<section class="">
+<section>
     <header class="d-flex justify-content-between align-items-center">
         <hgroup>
-            <h1>
+            <h1 class="text-wrap text-break me-3">
                 {{ $question->title }}
             </h1>
             <div class="d-flex gap-5">
@@ -22,7 +22,9 @@
         </hgroup>
         <div class="d-flex">
             @if (auth()->check())
-                <button id="edit-question" class="btn btn-secondary my-2 my-sm-0">Edit</button>
+                @if ($question->user->id === auth()->user()->id)
+                    <button id="edit-question" class="btn btn-secondary my-2 my-sm-0">Edit</button>
+                @endif
                 @if (auth()->user()->id === $question->user->id || auth()->user()->type === "Admin")
                 <form class="px-2" method="POST" action="{{ route('question/delete') }}" onclick="return confirm('Are you sure you want to delete this question?');">
                     {{ csrf_field() }}
@@ -37,13 +39,15 @@
     <hr>
     <div class="d-flex gap-3 my-3">
         <div class="question-interactions d-flex flex-column align-items-center">
-            <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
-            <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
-            <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
-            @if ($follow)
-                <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
-            @else 
-                <button class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
+            @if (auth()->user()->id !== $question->user->id)
+                <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+                <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
+                <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+                @if ($follow)
+                    <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
+                @else 
+                    <button class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
+                @endif
             @endif
         </div>
         <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
@@ -51,6 +55,11 @@
             @method('PATCH')
             <input type="hidden" name="question_id" value="{{ $question->id }}">
             <textarea id="question-input" name="body" class="form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $question->updatedVersion->body }}</textarea>
+            @if ($errors->has('body'))
+                <span class="error">
+                    {{ $errors->first('body') }}
+                </span>
+            @endif
             <div>
                 <button id="cancel-edit-question" class="btn btn-secondary mt-2 d-none" type="button">Cancel</button>
                 <button id="submit-edit-question" class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>

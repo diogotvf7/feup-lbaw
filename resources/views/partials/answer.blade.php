@@ -1,8 +1,10 @@
 <article class="answer d-flex gap-3">
     <div class="answer-interactions d-flex flex-column align-items-center py-3" data-id="{{ $answer->id }}">
-        <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
-        <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
-        <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+        @if (auth()->user()->id !== $answer->user->id)
+            <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+            <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
+            <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+        @endif
     </div>
     <div class="flex-grow-1 pt-3">
         <form method="POST" action="{{ route('answer/edit') }}">
@@ -10,6 +12,11 @@
             @method('PATCH')
             <input type="hidden" name="answer_id" value="{{ $answer->id }}">
             <textarea name="body" class="answer-input form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $answer->updatedVersion->body }}</textarea>
+            @if ($errors->has('body'))
+                <span class="error">
+                    {{ $errors->first('body') }}
+                </span>
+            @endif
             <div>
                 <button class="cancel-edit-answer btn btn-secondary btn-sm mt-2 d-none" type="button">Cancel</button>
                 <button class="submit-edit-answer btn btn-primary btn-sm mt-2 d-none submit-edit" type="submit">Submit</button>

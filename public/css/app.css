@@ -33,7 +33,7 @@
   display: block !important;
 }
 
-/*      Sidebar        */
+/*      Sidebar       */
 .sidebar {
   border-right: 1px solid var(--separator);
 }
@@ -45,6 +45,15 @@
 .sidebar-element:hover {
   background-color: var(--emphasis);
   color: white;
+}
+/* ------------------ */
+
+/*      Sidebar       */
+#back-top {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: none;
 }
 /* ------------------ */
 
@@ -115,15 +124,32 @@
 /* ------------------ */
 
 /*    Profile Page   */
-/* #profile {
-  height: 100%;
-} */
+@media screen and (max-width: 768px) {
+  
+  #profile #editor-profile {
+    width: 100%;
+  }
 
-#profile #editor-profile {
-  width: 50dvw;
+  #profile .col {
+    max-width: 100%;
+  }
+
+  #profile .row {
+    flex-direction: column;
+  }
+
+  #profile .row .col {
+    max-width: 100%;
+  }
 }
 
-#profile .col {
-  max-width: 50dvw;
+@media screen and (min-width: 768px) {
+  #profile #editor-profile {
+    width: 50dvw;
+  }
+
+  #profile .col {
+    max-width: 50dvw;
+  }
 }
 /* ------------------ */

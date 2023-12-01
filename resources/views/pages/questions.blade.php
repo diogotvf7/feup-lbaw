@@ -4,7 +4,7 @@
 @section('content')
 <div class="d-flex flex-fill overflow-hidden">
     @include('layouts.sidebar')
-    <section class="overflow-y-scroll w-100 p-3">
+    <section class="scroll-container overflow-y-scroll w-100 p-3">
         <header class="d-flex justify-content-between align-items-center p-3">
             <?php
                 use App\Models\Tag;
@@ -50,4 +50,7 @@
         <a href="{{ session('question-create')[1] }}" class="alert-link">Check it here</a>.
     </div>
 @endif
+<button type="button" class="btn btn-primary rounded" id="back-top">
+    <i class="bi bi-arrow-up"></i>
+</button>
 @endsection 

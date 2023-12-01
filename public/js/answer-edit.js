@@ -6,6 +6,7 @@ function editAnswer() {
     const cancelEditButton = answer.querySelector('.cancel-edit-answer');
     const submitEditButton = answer.querySelector('.submit-edit-answer');
     const answerInput = answer.querySelector('.answer-input');
+    const end = answerInput.value.length;
     answerInput.style.height =
         (answerInput.scrollHeight > answerInput.clientHeight) ?
         (answerInput.scrollHeight) + 'px' :
@@ -18,6 +19,7 @@ function editAnswer() {
       submitEditButton.classList.remove('d-none');
       answerInput.removeAttribute('readonly');
       answerInput.classList.remove('form-control-plaintext');
+      answerInput.setSelectionRange(end, end);
       answerInput.focus();
     });
 

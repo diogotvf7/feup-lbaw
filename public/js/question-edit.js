@@ -4,6 +4,7 @@ function editQuestion() {
   if (!editButton || !cancelEditButton) return;
   const submitEditButton = document.getElementById('submit-edit-question');
   const questionInput = document.getElementById('question-input');
+  const end = questionInput.value.length;
   questionInput.style.height =
       (questionInput.scrollHeight > questionInput.clientHeight) ?
       (questionInput.scrollHeight) + 'px' :
@@ -15,6 +16,7 @@ function editQuestion() {
     submitEditButton.classList.remove('d-none');
     questionInput.removeAttribute('readonly');
     questionInput.classList.remove('form-control-plaintext');
+    questionInput.setSelectionRange(end, end);
     questionInput.focus();
   });
 

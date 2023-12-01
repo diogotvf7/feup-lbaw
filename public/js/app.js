@@ -1,4 +1,5 @@
 import './theme-toggler.js';
+import './scroll-top.js';
 
 import loadAnswers from './answers-loader.js';
 import editQuestion from './question-edit.js';

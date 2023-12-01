@@ -32,7 +32,7 @@ function createQuestionPreview(question, authenticated) {
   content.classList.add('flex-grow-1');
 
   const title = document.createElement('a');
-  title.classList = 'text-decoration-none';
+  title.classList.add('text-decoration-none', 'text-wrap', 'text-break');
   title.href = '/questions/' + question.id
   title.textContent = question.title;
 
