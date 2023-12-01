@@ -1,3 +1,5 @@
+import './theme-toggler.js';
+
 import loadAnswers from './answers-loader.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';

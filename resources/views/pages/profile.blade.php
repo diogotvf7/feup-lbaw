@@ -4,7 +4,7 @@
 
 <section id="profile">
 
-    <ul class="nav nav-tabs flex-d" style="background-color: var(--bs-blue);" role="tablist">
+    <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" data-bs-toggle="tab" href="#informations" aria-selected=true role="tab">Information</a>
         </li>

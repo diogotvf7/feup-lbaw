@@ -1,6 +1,46 @@
-body {
-  background-color: #c8eaf7;
+:root {
+  --text: #021713;
+  --text-rgb: 2, 23, 19;
+
+  --background: #f1fefb;
+  --background-rgb: 241, 254, 251;
+
+  --primary: #ce1238;
+  --primary-rgb: 206, 18, 56;
+
+  --secondary: #ed3156;
+  --secondary-rgb: 237, 49, 86;
+
+  --accent: #4d9d7a;
+  --accent-rgb: 77, 157, 122;
+
+  --emphasis: #6da6b3;
+  --emphasis-rgb: 109, 166, 179;
+
+  --separator: #dedee6;
+  --separator-rgb: rgb(222, 226, 230);
 }
+
+
+[data-bs-theme='light'] .d-block-light,
+[data-bs-theme='dark'] .d-block-dark {
+  display: block !important;
+}
+
+/*      Sidebar        */
+.sidebar {
+  border-right: 1px solid var(--separator);
+}
+
+.sidebar-element {
+  transition: color .3s ease-in-out,background-color .3s ease-in-out,border-color .3s ease-in-out;
+}
+
+.sidebar-element:hover {
+  background-color: var(--emphasis);
+  color: white;
+}
+/* ------------------ */
 
 /* Edit question form */
 .preview-body {
@@ -38,7 +78,7 @@ body {
 .vote-button.on, .vote-button.off:hover {
   border: none;
   color: white;
-  background-color: #1a8ab7;
+  background-color: #bc1033;
 }
 
 .vote-button.on:hover, .vote-button.off {
@@ -74,20 +114,6 @@ body {
   content: "vote(s)";
 }
 
-.sidebar {
-  border-right: 4px solid #137ea7;
-}
-
-.sidebar-element {
-  color: rgba(255, 255, 255, 0.55);
-	transition: color .3s ease-in-out,background-color .3s ease-in-out,border-color .3s ease-in-out;
-}
-
-.sidebar-element:hover {
-  background-color: #4da8cc;
-  color: white;
-}
-
 .delete-tag {
   all: unset;
   color: rgb(255, 60, 60);
@@ -97,11 +123,7 @@ body {
   height: 100%;
 }
 
-#profile a.active {
-  background-color: #c8eaf7;
-}
-
-#profile .nav-link{
+#profile .nav-link {
   background-color: white;
 } 
 
