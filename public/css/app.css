@@ -92,6 +92,7 @@
 }
 /* ------------------ */
 
+/*    Tag Container   */
 #tags-container {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -105,29 +106,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+/* ------------------ */
 
-.votes::after {
-  content: "vote(s)";
-}
-
-.delete-tag {
-  all: unset;
-  color: rgb(255, 60, 60);
-}
-
-#profile {
+/*    Profile Page   */
+/* #profile {
   height: 100%;
-}
+} */
 
-#profile .nav-link {
-  background-color: white;
-} 
-
-#profile #editor-profile{
-  background-color: white;
+#profile #editor-profile {
   width: 50dvw;
 }
 
 #profile .col {
   max-width: 50dvw;
 }
+/* ------------------ */

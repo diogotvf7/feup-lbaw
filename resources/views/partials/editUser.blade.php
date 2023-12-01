@@ -1,6 +1,6 @@
 <div class="col align-middle">
     <div class="row justify-content-center p-3">
-        <form id="editor-profile" method="POST" action="{{ route('user.update', $user->id) }}" class="col-4 border border-primary border-2 rounded p-3">
+        <form id="editor-profile" method="POST" action="{{ route('user.update', $user->id) }}" class="col-4 border border-2 rounded p-3">
             {{ csrf_field() }}
             {{ method_field('PATCH') }}
 

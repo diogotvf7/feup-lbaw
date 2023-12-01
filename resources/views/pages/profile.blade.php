@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section id="profile">
+<section id="profile" style="overflow: scroll;">
 
     <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
         <li class="nav-item" role="presentation">
@@ -16,9 +16,9 @@
         </li>
     </ul>
 
-    <div id="myTabContent" class="tab-content" class="d-flex flex-row align-items-center" style="height: 100%;">
-        <div class="tab-pane fade active show" id="informations" role="tabpanel" style="height: 100%;">
-            <div class="d-flex justify-content-around align-items-center" style="height: 100%;">
+    <div id="myTabContent" class="tab-content" class="d-flex flex-row align-items-center">
+        <div class="tab-pane fade active show" id="informations" role="tabpanel">
+            <div class="d-flex justify-content-around align-items-center">
                 @include('partials.profileCard')
                 @if (Auth::user()->id === $user->id)
                         @include('partials.editUser')
@@ -26,11 +26,11 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="questions" role="tabpanel">
+        <div class="tab-pane fade" id="questions" role="tabpanel" class="d-flex flex-column">
 
             <div class="body d-flex flex-column justify-content-evenly align-items-center pt-4">
-                <div class="card text-white bg-info mb-3" style=" width: 20em; max-width: 20em;">
-                    <div class="card-body d-flex  align-items-center flex-column">
+                <div class="card mb-3 w-25">
+                    <div class="card-body d-flex align-items-center flex-column">
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} </h4>
@@ -41,8 +41,8 @@
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
-                    <div class="card-body align-items-center flex-column">
+                <section class="card mb-3 w-75" style="overflow: scroll;">
+                    <div class="card-body">
                         @if(count($user->questions)=== 0)
                         <h4>User has no questions</h4>
                         @else
@@ -61,8 +61,8 @@
         <div class="tab-pane fade" id="answers" role="tabpanel">
 
             <div class="body d-flex flex-column justify-content-evenly align-items-center pt-4">
-                <div class="card text-white bg-info mb-3" style=" width: 20em; max-width: 20em;">
-                    <div class="card-body d-flex  align-items-center flex-column">
+                <div class="card mb-3 w-25">
+                    <div class="card-body d-flex align-items-center flex-column">
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} </h4>
