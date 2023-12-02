@@ -39,7 +39,7 @@
     <hr>
     <div class="d-flex gap-3 my-3">
         <div class="question-interactions d-flex flex-column align-items-center">
-            @if (auth()->user()->id !== $question->user->id)
+            @if (auth()->check() && auth()->user()->id !== $question->user->id)
                 <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
                 <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
                 <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
