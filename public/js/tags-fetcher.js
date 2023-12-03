@@ -18,7 +18,7 @@ function createTagPreview(tag) {
   const a = document.createElement('a');
   a.href = '/questions/tag/' + tag.id;
   a.classList.add(
-      'badge', 'bg-primary', 'text-reset', 'text-decoration-none', 'mb-3');
+      'badge', 'bg-primary', 'text-white', 'text-decoration-none', 'mb-3');
   a.textContent = tag.name;
 
   // const h2 = document.createElement('h2');
