@@ -21,12 +21,6 @@ function createTagPreview(tag) {
       'badge', 'bg-primary', 'text-white', 'text-decoration-none', 'mb-3');
   a.textContent = tag.name;
 
-  // const h2 = document.createElement('h2');
-  // h2.classList.add('badge', 'bg-primary');
-  // h2.textContent = tag.name;
-
-  // a.appendChild(h2);
-
   const description = document.createElement('p');
   description.textContent = tag.description;
 

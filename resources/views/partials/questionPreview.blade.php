@@ -4,7 +4,7 @@
         <span>{{ $question->answers->count() }} answers</span>
     </div>
 
-    <div class="flex-grow-1 d-flex flex-column justify-content-between align-items-stretch text-secondary text-nowrap gap-2 me-5">
+    <div class="flex-grow-1 d-flex flex-column justify-content-between align-items-stretch gap-2 me-5">
         <div class="flex-grow-1">
             <a href="{{route('question.show', $question->id)}}" class="text-decoration-none text-wrap text-break">{{ $question->title }}</a>
             <p class="preview-body text-wrap text-break">{{ $question->updatedVersion->body }}</p>
@@ -15,7 +15,7 @@
                     <p class="badge badge-primary bg-primary text-decoration-none m-0">{{$tag->name}}</p>
                 @endforeach
             </div>
-            <div class="align-self-end text-wrap text-break">
+            <div class="align-self-end text-secondary text-wrap text-break">
                 @if (Auth::check())
                     <a href="{{ route('user.profile', $question->user->id) }}" class="text-decoration-none">{{ $question->user->name }}</a>
                 @else

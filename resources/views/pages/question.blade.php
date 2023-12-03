@@ -12,7 +12,7 @@
         <form id="answer-form" class="d-flex flex-column gap-3 mt-3" method="POST" action="{{ route('answer/create') }}">
             {{ csrf_field() }}
             <input type="hidden" name="question_id" value="{{ $question->id }}">
-            <textarea id="answer-input" name="body" class="form-control" placeholder="Write your answer here..." required></textarea>
+            <textarea id="answer-input" name="body" class="form-control" placeholder="Write your answer here..." minlength="20" maxlength="30000"></textarea>
             <button id="submit-answer" class="btn btn-primary" type="submit">Submit</button>
         </form>
         @endif
