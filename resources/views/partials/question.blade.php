@@ -38,18 +38,20 @@
     </header>
     <hr>
     <div class="d-flex gap-3 my-3">
-        <div class="question-interactions d-flex flex-column align-items-center">
-            @if (auth()->check() && auth()->user()->id !== $question->user->id)
-                <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
-                <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
-                <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
-                @if ($follow)
-                    <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
-                @else 
-                    <button class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
+        @if (auth()->check())
+            <div class="question-interactions d-flex flex-column align-items-center">
+                @if (auth()->user()->id !== $question->user->id)
+                    <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+                    <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
+                    <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+                    @if ($follow)
+                        <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
+                    @else 
+                        <button class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
+                    @endif
                 @endif
-            @endif
-        </div>
+            </div>
+        @endif
         <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}
             @method('PATCH')
