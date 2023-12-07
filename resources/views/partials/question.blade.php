@@ -14,10 +14,8 @@
             <p>Made by {{ $question->user->username }} | {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}</p>
             @if(auth()->check() && ($question->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
             <div class="d-flex pb-2">
-                @if((auth()->check() && $question->user->id === auth()->user()->id))
                 <button class="btn btn-secondary my-2 my-sm-0 edit-question">Edit</button>
                 <button class="btn btn-secondary my-2 my-sm-0 stop-editing d-none">Stop Editing</button>
-                @endif
                 <form class="px-2" method="POST" action="{{ route('question/delete') }}" onclick="return confirm('Are you sure you want to delete this question?');">
                     {{ csrf_field() }}
                     @method('DELETE')

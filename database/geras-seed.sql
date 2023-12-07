@@ -552,9 +552,11 @@ CREATE FUNCTION tsvectors_update_content_version() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.search_body = setweight(to_tsvector('english', NEW.body), 'B');
+        UPDATE questions
+        SET search = setweight(to_tsvector('english', NEW.body), 'B') || setweight(to_tsvector('english', title), 'A')
+        WHERE id = NEW.question_id;
     END IF;
-    
+
     RETURN NEW;
 END
 $BODY$
