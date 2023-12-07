@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Answer;
 use App\Models\ContentVersion;
 use App\Models\Question;
@@ -53,6 +54,7 @@ class AnswerController extends Controller
             $contentversion->type = 'ANSWER';
             $contentversion->answer_id = $answer->id;
             $contentversion->save();
+
     
             return redirect()->back()->with('success', 'Answer added successfully!');
         }
@@ -104,5 +106,12 @@ class AnswerController extends Controller
         $this->authorize('delete', $answer);
         $answer->delete();
         return redirect()->back()->with('success', 'Answer removed successfully!');
+    }
+
+    public function answerEvent(Request $request)
+    {
+        $user = User::findOrFail($request->user_id);
+        $question = Question::findOrFail($request->question_id);
+        event(new Answer($user->username, $question->title));
     }
 }

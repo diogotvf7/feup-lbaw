@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
 use App\Models\Question;
 use App\Models\ContentVersion;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Tag;
 
 class QuestionController extends Controller
 {
