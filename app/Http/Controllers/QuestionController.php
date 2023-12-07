@@ -117,6 +117,12 @@ class QuestionController extends Controller
             'question_id' => $question->id
         ]);
 
+        $tags = json_decode($request->tags[0]);
+
+        foreach ($tags as $tag) {
+            $question->tags()->attach($tag->value);
+        }
+
         return redirect('/questions/' . $question->id)->with('question-create', ['Question created successfully!']);
     }
 

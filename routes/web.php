@@ -93,6 +93,7 @@ Route::controller(AnswerController::class)->group(function () {
 
 Route::controller(TagController::class)->group(function () {
     Route::get('/api/tags', 'fetch');
+    Route::get('/api/tags/all', 'fetchAll');
 });
 
 // Authentication

@@ -1,5 +1,6 @@
 import './theme-toggler.js';
 import './scroll-top.js';
+import './add-tags.js';
 
 import loadAnswers from './answers-loader.js';
 import editQuestion from './question-edit.js';
@@ -8,7 +9,6 @@ import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
 import enableVote from './vote.js';
-
 
 const currentPath = window.location.pathname;
 
@@ -57,3 +57,6 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const answerInteractions = document.querySelectorAll('.answer-interactions');
   enableVote(questionInteractions, answerInteractions);
 }
+// // Create Question page
+// else if (/^\/questions\/create$/.test(currentPath)) {
+// }

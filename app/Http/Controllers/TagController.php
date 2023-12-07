@@ -60,6 +60,10 @@ class TagController extends Controller
         return $tags;
     }
 
+    public function fetchAll(Request $request)
+    {
+        return Tag::where('approved', TRUE)->get();
+    }
 
     public function approve(Tag $tag) 
     {

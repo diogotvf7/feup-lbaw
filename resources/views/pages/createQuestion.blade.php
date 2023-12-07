@@ -37,10 +37,15 @@
                         </span>
                     @endif
                 </div>
+
+                <div class="form-group">
+                    <label for="tags" class="form-label">Tags</label>
+                    <input id="tag-input" type="text" name="tags" class="form-control">
+                </div>
                 
                 <div class="form-group pt-3">
                     <button type="submit" class="btn btn-primary">
-                    Submit Question
+                        Submit Question
                     </button>
                 </div>
             </fieldset>
