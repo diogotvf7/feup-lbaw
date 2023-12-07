@@ -13,13 +13,12 @@
                 <div id="collapseOne" class="w-100 accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                     <div class="accordion-body">
                         @if (count($questions) !== 0)
-
-                            @foreach ($questions as $question)
-                                @include('partials.questionPreview', ['question' => $question])
-                                @if (!$loop->last)
-                                    <hr>
-                                @endif
-                            @endforeach
+                        @foreach ($questions as $question)
+                            @include('partials.questionPreview', ['question' => $question])
+                            @if (!$loop->last)
+                            <hr>
+                            @endif
+                        @endforeach
                         @else
                         <p class="m-0">No questions found</p>
                         @endif
