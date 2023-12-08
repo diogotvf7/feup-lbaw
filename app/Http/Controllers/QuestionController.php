@@ -16,9 +16,41 @@ class QuestionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.questions');
+        $path = $request->path();
+        $path_segments = explode('/', trim($path, '/'));
+        $title = '';
+        
+        if (isset($path_segments[1])) {
+            if ($path_segments[1] == 'followed') 
+            {
+                $title = '<h1>Followed Question</h1>';
+            }
+            else if ($path_segments[1] == 'top') 
+            {
+                $title = '<h1>Top Questions</h1>';
+            }
+            else if ($path_segments[1] == 'tag')
+            {
+                $tag = Tag::findOrFail($path_segments[2]);
+                if (!$tag->approved) 
+                    return redirect()->intended('questions');
+                $title = '
+                <div>
+                    <h1 class="d-flex flex-wrap gap-3">
+                        Questions Tagged <span class="badge bg-primary">' . $tag->name . '</span>
+                    </h1>
+                    <p>'
+                       . $tag->description .
+                    '</p>
+                </div>
+                ';
+            }
+        } else {
+            $title = '<h1>Recent Questions</h1>';
+        }
+        return view('pages.questions', ['title' => $title]);
     }
 
     public function fetch(Request $request)
@@ -117,7 +149,7 @@ class QuestionController extends Controller
             'question_id' => $question->id
         ]);
 
-        $tags = json_decode($request->tags[0]);
+        $tags = json_decode($request->tags);
 
         foreach ($tags as $tag) {
             $question->tags()->attach($tag->value);

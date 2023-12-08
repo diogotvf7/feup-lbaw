@@ -62,7 +62,9 @@ class TagController extends Controller
 
     public function fetchAll(Request $request)
     {
-        return Tag::where('approved', TRUE)->get();
+        return Tag::where('approved', TRUE)
+            ->orWhere('creator', Auth::user()->id)
+            ->get();
     }
 
     public function approve(Tag $tag) 
@@ -86,21 +88,28 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $userType = Auth::user()->type;
-        $request->validate([
-            'name' => 'required|string|max:30|unique:tags',
-            'description' => 'required|string|min:10|max:300'
-        ]);
+
+        if (Tag::where('name', $request->name)->exists())
+            return response()->json(['error' => 'Tag already exists'], 409);
 
         $tag = Tag::create([
             'name' => $request->name,
             'description' => $request->description,
             'approved' => $userType == 'Admin' ? true : false,
+            'creator' => Auth::user()->id
         ]);
 
-        if ($userType == 'Admin')
-            return redirect()->route('admin.tags')->with('success', ['Tag created successfully!', '/questions/tag/' . $tag->id]);
-        if ($userType == 'User')
-            return redirect()->route('questions.top')->with('tag-request', ['Your tag creation was requested.', 'Wait for an admin to approve it.']);
+        return $tag;
+
+        $url = parse_url($_SERVER['HTTP_REFERER']);
+        switch ($url['path']) {
+            case '/questions/create':
+                return json_encode($tag);
+            case '/admin/tags':
+                return redirect()->back()->with('success', ['Tag created successfully!', '/questions/tag/' . $tag->id]);
+            default:
+                return redirect()->back();                
+        }    
     }
 
     /**

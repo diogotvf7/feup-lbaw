@@ -44,6 +44,7 @@ function createQuestionPreview(question, authenticated) {
   tags.classList.add('d-flex', 'gap-1');
 
   question.tags.forEach(tag => {
+    if (!tag.approved) return;
     const tagElement = document.createElement('a');
     tagElement.href = '/questions/tag/' + tag.id;
     tagElement.classList.add(

@@ -1,7 +1,7 @@
 import './theme-toggler.js';
 import './scroll-top.js';
-import './add-tags.js';
 
+import enableTagModal from './add-tags.js';
 import loadAnswers from './answers-loader.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
@@ -33,9 +33,6 @@ else if (/^\/tags\/?$/.test(currentPath)) {
 }
 // Edit user profile page
 else if (/^\/users\/[0-9]+\/edit$/.test(currentPath)) {
-  const navbar = document.getElementById('navbar');
-  navbar.style.borderStyle = 'none';
-
   resetFields(['name', 'username', 'email']);
 }
 // User profile page
@@ -57,6 +54,7 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const answerInteractions = document.querySelectorAll('.answer-interactions');
   enableVote(questionInteractions, answerInteractions);
 }
-// // Create Question page
-// else if (/^\/questions\/create$/.test(currentPath)) {
-// }
+// Create Question page
+else if (/^\/questions\/create$/.test(currentPath)) {
+  enableTagModal();
+}

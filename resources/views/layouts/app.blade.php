@@ -16,6 +16,8 @@
     <link href="{{ url('css/app.css') }}" rel="stylesheet">
     <link href="{{ url('css/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
+    <script type="text/javascript" src="{{ url('js/bootstrap.bundle.js') }}" defer>
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
@@ -29,8 +31,6 @@
 </head>
 
 <body>
-    <script type="text/javascript" src="{{ url('js/bootstrap.bundle.js') }}" defer>
-    </script>
     <main class="d-flex flex-column vh-100">
         <!-- <main style="height: 85dvh;"> -->
         <header>
@@ -66,7 +66,7 @@
                             @endif
                         </ul>
                         
-                        <button id="theme-toggle" class="btn btn-primary me-3" type="button">
+                        <button id="theme-toggle" class="btn btn-link me-3 text-white" type="button">
                             <i class="bi bi-brightness-high-fill d-block-light d-none"></i>
                             <i class="bi bi-moon-stars-fill d-block-dark d-none"></i>
                         </button>

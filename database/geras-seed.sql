@@ -89,6 +89,7 @@ CREATE TABLE
         search_tag_name TSVECTOR NOT NULL,
         description TEXT NOT NULL,
         approved BOOLEAN DEFAULT FALSE,
+        creator INTEGER REFERENCES users (id) ON DELETE SET NULL,
         search_tag_description TSVECTOR NOT NULL
     );
 
@@ -2208,82 +2209,97 @@ VALUES
     );
 
 INSERT INTO
-    tags (name, description, approved)
+    tags (name, description, approved, creator)
 VALUES
     (
         'Budgeting',
         'Managing personal finances and budgeting',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Cooking', 
         'Learning to cook and preparing meals',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Laundry', 
         'Doing laundry and clothing care',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Cleaning', 
         'House cleaning and maintenance',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Time Management',
         'Effective time management and productivity',
-        TRUE
+        TRUE,
+        91
     ),
     (
         'Job Search',
         'Searching for jobs and career development',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Renting',
         'Renting apartments and property management',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Healthcare',
         'Managing healthcare and medical appointments',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Insurance',
         'Understanding and managing insurance policies',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Taxes', 
         'Filing taxes and tax planning',
-        TRUE
+        TRUE, 
+        NULL
     ),
     (
         'Home Repairs',
         'DIY home repairs and maintenance',
-        TRUE
+        TRUE, 
+        NULL
     ),
     (
         'Grocery Shopping',
         'Effective grocery shopping and meal planning',
-        TRUE
+        TRUE,
+        91
     ),
     (
         'Car Maintenance',
         'Maintaining and repairing your vehicle',
-        FALSE
+        FALSE, 
+        91
     ),
     (
         'Networking',
         'Building professional networks and connections',
-        FALSE
+        FALSE,
+        91
     ),
     (
         'Mental Health',
         'Managing mental health and self-care',
-        FALSE
+        FALSE,
+        91
     );
 
 INSERT INTO
