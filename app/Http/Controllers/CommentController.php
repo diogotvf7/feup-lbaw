@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comment;
+use App\Models\Answer;
+use App\Models\Question;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -10,9 +12,16 @@ class CommentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function fetch(Request $request)
     {
-        //
+        $answer = Answer::findOrFail($request->id);
+        $comments = $answer->comments;
+        $commentsViews = [];
+        // $currentUser = User::find(Auth::user());
+        foreach ($comments as $comment) {
+            $commentsViews[] = view('partials.comment', ['comment' => $comment])->render();
+        }
+        return response()->json(['comments' => $commentsViews]);
     }
 
     /**

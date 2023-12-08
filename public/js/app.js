@@ -1,6 +1,3 @@
-import './theme-toggler.js';
-import './scroll-top.js';
-
 import loadAnswers from './answers-loader.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
@@ -55,5 +52,5 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const questionInteractions =
       document.querySelectorAll('.question-interactions');
   const answerInteractions = document.querySelectorAll('.answer-interactions');
-  enableVote(questionInteractions, answerInteractions);
+  //enableVote(questionInteractions, answerInteractions);
 }
