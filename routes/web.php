@@ -99,7 +99,8 @@ Route::controller(AnswerController::class)->group(function () {
 });
 
 Route::controller(CommentController::class)->group(function () {
-    Route::get('/api/answers/{id}/comments', 'fetch')->where('id', '[0-9]+');
+    Route::get('/api/questions/{question_id}/comments', 'fetch')->where('question_id', '[0-9]+');
+    Route::get('/api/answers/{answer_id}/comments', 'fetch')->where('answer_id', '[0-9]+');
 });
 
 Route::controller(TagController::class)->group(function () {

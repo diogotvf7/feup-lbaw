@@ -16,8 +16,9 @@ class CommentController extends Controller
      */
     public function fetch(Request $request)
     {
-        $answer = Answer::findOrFail($request->id);
-        $comments = $answer->comments;
+        if ($request->answer_id === NULL) $content = Question::findOrFail($request->question_id);
+        else $content = Answer::findOrFail($request->answer_id);
+        $comments = $content->comments;
         $commentsViews = [];
         // $currentUser = User::find(Auth::user());
         foreach ($comments as $comment) {
@@ -50,14 +51,21 @@ class CommentController extends Controller
             
             $comment = new Comment();
             $comment->body = $request->body;
-            $comment->type = 'ANSWER';
             $comment->author = $user->id;
-            $comment->answer_id = $request->answer_id;
 
+            if ($request->answer_id === NULL) {
+                $comment->type = 'QUESTION';
+                $comment->question_id = $request->question_id;
+            }
+            else {                
+                $comment->type = 'ANSWER';
+                $comment->answer_id = $request->answer_id;
+            }
+    
             //$this->authorize('create', $comment);
 
             $comment->save();
-    
+
             return redirect()->back()->with('success', 'Comment added successfully!');
         }
     }

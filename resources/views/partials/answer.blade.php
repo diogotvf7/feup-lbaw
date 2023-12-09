@@ -36,7 +36,7 @@
                 </p>
                 @if ($answer->comments->count() > 0)
                 <div class="px-2">
-                    <button class="show-comments btn btn-secondary btn-sm my-2 my-sm-0" data-id="{{ $answer->id }}">Show comments</button>
+                    <button class="show-comments btn btn-secondary btn-sm my-2 my-sm-0" data-answer-id="{{ $answer->id }}">Show comments</button>
                 </div>
                 @endif
             </div>
@@ -68,14 +68,15 @@
                 </div>
             </div>
         </div>
-        <hr class="m-0 ms-4 d-none" id="comments-div">
-        <section class="ms-4" id="comments-container" data-id="{{ $answer->id }}">
+        <section class="ms-4" id="comments-container" data-answer-id="{{ $answer->id }}">
         </section>
     </div>
 </article>
+@if (Auth()->check())
 <form id="comment-form" class="d-flex gap-3 align-items-end my-2" method="POST" action="{{ route('comment/create') }}">
     {{ csrf_field() }}
     <input type="hidden" name="answer_id" value="{{ $answer->id }}">
     <textarea id="comment-input" name="body" class="form-control" placeholder="Write your comment here..." maxlength="30000" rows="1"></textarea>
     <button id="submit-comment" class="btn btn-primary" type="submit">Submit</button>
 </form>
+@endif

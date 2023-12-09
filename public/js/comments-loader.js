@@ -1,40 +1,57 @@
 function showComments() {
-  const answers = document.querySelectorAll('.show-comments');
+  const comments = document.querySelectorAll('.show-comments');
 
-  answers.forEach(showCommentsButton => {
+  comments.forEach(showCommentsButton => {
     showCommentsButton.addEventListener('click', async function(e) {
-      const answerId = e.target.dataset.id;
-      const commentsContainer = document.querySelector(`#comments-container[data-id="${answerId}"]`);
-      const commentsDiv = document.querySelector('#comments-div');
+      let id;
+      let commentsContainer;
+      if (e.target.dataset.questionId) {
+        id = e.target.dataset.questionId;
+        commentsContainer = document.querySelector(`#comments-container[data-question-id="${id}"]`);
+      } else if (e.target.dataset.answerId) {
+        id = e.target.dataset.answerId;
+        commentsContainer = document.querySelector(`#comments-container[data-answer-id="${id}"]`);
+      } else {
+        console.error('Could not find ID for comments.');
+        return;
+      }
 
       if (!commentsContainer) {
-        console.error(`Comments container for answer ID ${answerId} not found.`);
+        console.error(`Comments container for ID ${id} not found.`);
         return;
       }
 
       if (commentsContainer.style.display === 'none') {
-        await loadComments(answerId, commentsContainer);
+        await loadComments(id, commentsContainer);
         commentsContainer.style.display = 'block';
         e.target.textContent = 'Hide Comments';
-        commentsDiv.classList.remove('d-none');
       } else {
         commentsContainer.innerHTML = '';
         commentsContainer.style.display = 'none';
         e.target.textContent = 'Show Comments';
-        commentsDiv.classList.add('d-none');
       }
     });
   });
 }
 
-async function fetchComments(id) {
-  const request = await fetch('/api/answers/' + id + '/comments');
+async function fetchComments(id, isQuestion) {
+  let endpoint = '/api/';
+  if (isQuestion) {
+    endpoint += 'questions/';
+  } else {
+    endpoint += 'answers/';
+  }
+  const request = await fetch(endpoint + id + '/comments');
   const response = await request.json();
   return response.comments;
 }
 
 async function loadComments(id, commentsContainer) {
-  const comments = await fetchComments(id);
+  let isQuestion = false;
+  if (commentsContainer.dataset.questionId) {
+    isQuestion = true;
+  }
+  const comments = await fetchComments(id, isQuestion);
   const commentsHTML = comments.map(comment => comment + '<hr class="m-0">').join('');
   commentsContainer.innerHTML = commentsHTML;
 }
