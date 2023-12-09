@@ -5,7 +5,7 @@
         <form class="d-flex m-2 gap-2">
             <input class="form-control" type="search" name="search" placeholder="Search" value="{{ $searchTerm }}">
             <button class="btn btn-secondary text-nowrap" type="submit">Search user</button>
-            <a class="btn btn-secondary text-nowrap" href="{{ route('user.create') }}">Create user</a>
+            <button id="open-modal" type="button" class="btn btn-secondary text-nowrap">Create user</button>
         </form>
         <table class="table table-hover">
             <thead>
@@ -190,4 +190,7 @@
             @endif
         </div>
     @endif
+
+@include('partials.createUser')
+
 @endsection

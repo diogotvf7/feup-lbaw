@@ -47,7 +47,7 @@ function suggestionItemTemplate(tagData) {
           class='tagify__dropdown__item ${tagData.class ? tagData.class : ''}'
           tabindex="0"
           role="option">
-          <p class="m-0">${tagData.name}${
+          <p class="tagify-text m-0">${tagData.name}${
       tagData.approved ? '' : ' <small>(Pending approval)</small>'}</p>
       </div>
   `
@@ -136,17 +136,12 @@ export default function enableTagModal() {
   });
 
   document.querySelectorAll('.close-modal').forEach(element => {
-    element.onclick =
-        function() {
-          create_tag_modal.style.display = 'none';
-          edit_tag_modal.style.display = 'none';
-        }
+    element.onclick = closeModals;
   });
 
   window.onclick = function(event) {
     if (event.target == create_tag_modal) {
-      create_tag_modal.style.display = 'none';
-      edit_tag_modal.style.display = 'none';
+      closeModals();
     }
   };
 
@@ -176,38 +171,44 @@ export default function enableTagModal() {
     tag_description.value = '';
   };
 
-  document.getElementById('update-tag').onclick = function() {
-    let tag_id = document.querySelector('#edit-tag .id');
-    let tag_name = document.querySelector('#edit-tag .name input');
-    let tag_description =
-        document.querySelector('#edit-tag .description textarea');
+  if (document.getElementById('update-tag') != null)
+    document.getElementById('update-tag').onclick = function() {
+      let tag_id = document.querySelector('#edit-tag .id');
+      let tag_name = document.querySelector('#edit-tag .name input');
+      let tag_description =
+          document.querySelector('#edit-tag .description textarea');
 
-    if (tag_name.value.length == 0) {
-      displayError('The Tag name is mandatory.', tag_name);
-      return;
-    } else {
-      displayError('', tag_name);
-    }
-    if (tag_description.value.length < 10 ||
-        tag_description.value.length > 300) {
-      displayError(
-          'Tag description must be between 10 and 300 characters long.',
-          tag_description);
-      return;
-    } else {
-      displayError('', tag_description);
-    }
+      if (tag_name.value.length == 0) {
+        displayError('The Tag name is mandatory.', tag_name);
+        return;
+      } else {
+        displayError('', tag_name);
+      }
+      if (tag_description.value.length < 10 ||
+          tag_description.value.length > 300) {
+        displayError(
+            'Tag description must be between 10 and 300 characters long.',
+            tag_description);
+        return;
+      } else {
+        displayError('', tag_description);
+      }
 
-    update(tag_id.value, tag_name.value, tag_description.value);
+      update(tag_id.value, tag_name.value, tag_description.value);
 
-    tag_id.value = '';
-    tag_name.value = '';
-    tag_description.value = '';
-  };
+      tag_id.value = '';
+      tag_name.value = '';
+      tag_description.value = '';
+    };
 }
 
 function displayError(error, input) {
   const errorElement = input.parentElement.nextElementSibling;
   errorElement.classList.add('text-danger');
   errorElement.textContent = error;
+}
+
+function closeModals() {
+  if (create_tag_modal) create_tag_modal.style.display = 'none';
+  if (edit_tag_modal) edit_tag_modal.style.display = 'none';
 }

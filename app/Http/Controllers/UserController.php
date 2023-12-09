@@ -59,13 +59,11 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'nullable|string|max:250',
-            'username' => 'required|string|min:5|max:30|unique:users',
-            'email' => 'required|email|max:250|unique:users',
-            'password' => 'required|min:8|confirmed'
-        ]);
-
+        if (User::where('username', $request->username)->exists())
+            return response()->json(['error' => 'username'], 409);
+        if (User::where('email', $request->email)->exists())
+            return response()->json(['error' => 'email'], 409);
+  
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
@@ -74,7 +72,7 @@ class UserController extends Controller
             'type' => $request->has('is_admin') ? 'Admin' : 'User'
         ]);
 
-        return redirect()->route('admin.users')->with('success', ['User create successfully!', '/users/' . $user->id]);
+        return json_encode($user);
     }
 
     /**

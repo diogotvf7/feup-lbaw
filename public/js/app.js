@@ -2,6 +2,7 @@ import './theme-toggler.js';
 import './scroll-top.js';
 
 import enableTagModal from './add-tags.js';
+import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
@@ -63,4 +64,9 @@ else if (/^\/questions\/create$/.test(currentPath)) {
 // Admin tags page
 else if (/^\/admin\/tags/.test(currentPath)) {
   enableTagModal();
+}
+// Admin users page
+else if (/^\/admin\/users/.test(currentPath)) {
+  enableUserModal();
+  // resetFields(['#editor-profile #name', '#editor-profile #username']);
 }

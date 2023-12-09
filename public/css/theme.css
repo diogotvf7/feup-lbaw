@@ -6211,7 +6211,7 @@ fieldset:disabled .btn {
     word-wrap: break-word
 }
 
-.modal {
+/* .modal {
     --bs-modal-zindex: 1055;
     --bs-modal-width: 500px;
     --bs-modal-padding: 1rem;
@@ -6540,7 +6540,7 @@ fieldset:disabled .btn {
     .modal-fullscreen-xxl-down .modal-body {
         overflow-y: auto
     }
-}
+} */
 
 .tooltip {
     --bs-tooltip-zindex: 1080;
