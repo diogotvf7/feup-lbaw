@@ -51,6 +51,12 @@ Route::controller(AnswerController::class)->group(function () {
     Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
+Route::controller(CommentController::class)->group(function () {
+    Route::post('/comments/create', 'store')->name('comment/create');
+    Route::patch('/comments/edit', 'edit')->name('comment/edit');
+    Route::delete('/comments/delete', 'destroy')->name('comment/delete');
+});
+
 Route::middleware(AdminMiddleware::class)->group(function () {
     Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');

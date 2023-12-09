@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Comment;
 use App\Models\Answer;
 use App\Models\Question;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
@@ -37,7 +39,27 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if (!Auth::check()) {
+            return redirect('/login');
+        } else {
+            $request->validate([
+                'body' => 'required|string|min:20|max:30000'
+            ]);
+            
+            $user = Auth::user();
+            
+            $comment = new Comment();
+            $comment->body = $request->body;
+            $comment->type = 'ANSWER';
+            $comment->author = $user->id;
+            $comment->answer_id = $request->answer_id;
+
+            //$this->authorize('create', $comment);
+
+            $comment->save();
+    
+            return redirect()->back()->with('success', 'Comment added successfully!');
+        }
     }
 
     /**

@@ -5,6 +5,7 @@ function showComments() {
     showCommentsButton.addEventListener('click', async function(e) {
       const answerId = e.target.dataset.id;
       const commentsContainer = document.querySelector(`#comments-container[data-id="${answerId}"]`);
+      const commentsDiv = document.querySelector('#comments-div');
 
       if (!commentsContainer) {
         console.error(`Comments container for answer ID ${answerId} not found.`);
@@ -15,10 +16,12 @@ function showComments() {
         await loadComments(answerId, commentsContainer);
         commentsContainer.style.display = 'block';
         e.target.textContent = 'Hide Comments';
+        commentsDiv.classList.remove('d-none');
       } else {
         commentsContainer.innerHTML = '';
         commentsContainer.style.display = 'none';
         e.target.textContent = 'Show Comments';
+        commentsDiv.classList.add('d-none');
       }
     });
   });

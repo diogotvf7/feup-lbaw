@@ -24,9 +24,9 @@
                 <button class="submit-edit-answer btn btn-primary btn-sm mt-2 d-none submit-edit" type="submit">Submit</button>
             </div>
         </form>
-        <div class="d-flex justify-content-between gap-5 py-2">
+        <div class="d-flex justify-content-between gap-5 pt-2">
             <div class="d-flex gap-3">
-                <p>
+                <p class="pt-1">
                     {{ $answer->comments->count() }}
                     @if ($answer->comments->count() != 1)
                     comments
@@ -41,7 +41,7 @@
                 @endif
             </div>
             <div class="d-flex gap-5">
-                <p class="m-0">
+                <p class="pt-1">
                     Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
                     @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
                     <a class="text-decoration-none" href="/users/{{ $answer->user->id }}">{{ $answer->user->username }}</a>
@@ -68,7 +68,14 @@
                 </div>
             </div>
         </div>
-        <section id="comments-container" data-id="{{ $answer->id }}">
+        <hr class="m-0 ms-4 d-none" id="comments-div">
+        <section class="ms-4" id="comments-container" data-id="{{ $answer->id }}">
         </section>
     </div>
 </article>
+<form id="comment-form" class="d-flex gap-3 align-items-end my-2" method="POST" action="{{ route('comment/create') }}">
+    {{ csrf_field() }}
+    <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+    <textarea id="comment-input" name="body" class="form-control" placeholder="Write your comment here..." maxlength="30000" rows="1"></textarea>
+    <button id="submit-comment" class="btn btn-primary" type="submit">Submit</button>
+</form>

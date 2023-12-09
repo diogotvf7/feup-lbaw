@@ -1,4 +1,4 @@
-<p class="pt-1">{{ $comment->body }}</p>
-<div class="d-flex justify-content-end">
+<p class="pt-2">{{ $comment->body }}</p>
+<div class="d-flex justify-content-start">
     <p>Commented by {{ $comment->user->username }}</p>
 </div>
