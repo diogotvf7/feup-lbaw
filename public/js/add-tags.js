@@ -1,4 +1,8 @@
-const modal = document.getElementById('create-tag');
+import resetFields from './reset-field.js';
+
+const create_tag_modal = document.getElementById('create-tag');
+const edit_tag_modal = document.getElementById('edit-tag');
+
 let tagInput = document.getElementById('tag-input');
 if (tagInput) {
   tagInput = new Tagify(document.getElementById('tag-input'), {
@@ -69,13 +73,14 @@ function create(name, description) {
         throw new Error('Tag already exists.');
       })
       .then((tag) => {
-        modal.style.display = 'none';
+        if (location.pathname == '/admin/tags')
+          location.href = '/admin/tags?sortField=id&sortDirection=desc';
+        create_tag_modal.style.display = 'none';
         tag.value = tag.id;
         delete tag.id;
         delete tag.description;
         delete tag.search_tag_description;
         delete tag.search_tag_name;
-        console.log(tag);
         tagInput.settings.whitelist.push(tag);
         tagInput.addTags([tag]);
       })
@@ -84,18 +89,64 @@ function create(name, description) {
       });
 }
 
+function update(id, name, description) {
+  const url = '/admin/tags/' + id + '/update';
+  const csrf = document.querySelector('meta[name="csrf-token"]').content;
+  const data = {id: id, name: name, description: description};
+  const options = {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-TOKEN': csrf,
+    },
+    body: JSON.stringify(data),
+  };
+  fetch(url, options)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        // throw new Error('Tag already exists.');
+      })
+      .then((tag) => {
+        if (location.pathname == '/admin/tags')
+          location.href = '/admin/tags?sortField=id&sortDirection=desc';
+      })
+      .catch((error) => {
+        displayError(error.message, document.querySelector('#name input'));
+      });
+}
+
 export default function enableTagModal() {
   document.getElementById('open-modal').onclick = function() {
-    modal.style.display = 'block';
+    create_tag_modal.style.display = 'block';
   };
 
-  document.getElementById('close-modal').onclick = function() {
-    modal.style.display = 'none';
-  };
+  document.querySelectorAll('.edit-tag').forEach((button) => {
+    button.onclick = function() {
+      const row = button.parentElement.parentElement;
+      edit_tag_modal.querySelector('.id').value = row.children[0].textContent;
+      edit_tag_modal.querySelector('.name input').value =
+          row.children[1].textContent;
+      edit_tag_modal.querySelector('.description textarea').value =
+          row.children[2].textContent;
+      edit_tag_modal.style.display = 'block';
+      resetFields(['#edit-tag .name', '#edit-tag .description']);
+    };
+  });
+
+  document.querySelectorAll('.close-modal').forEach(element => {
+    element.onclick =
+        function() {
+          create_tag_modal.style.display = 'none';
+          edit_tag_modal.style.display = 'none';
+        }
+  });
 
   window.onclick = function(event) {
-    if (event.target == modal) {
-      modal.style.display = 'none';
+    if (event.target == create_tag_modal) {
+      create_tag_modal.style.display = 'none';
+      edit_tag_modal.style.display = 'none';
     }
   };
 
@@ -120,6 +171,36 @@ export default function enableTagModal() {
     }
 
     create(tag_name.value, tag_description.value);
+
+    tag_name.value = '';
+    tag_description.value = '';
+  };
+
+  document.getElementById('update-tag').onclick = function() {
+    let tag_id = document.querySelector('#edit-tag .id');
+    let tag_name = document.querySelector('#edit-tag .name input');
+    let tag_description =
+        document.querySelector('#edit-tag .description textarea');
+
+    if (tag_name.value.length == 0) {
+      displayError('The Tag name is mandatory.', tag_name);
+      return;
+    } else {
+      displayError('', tag_name);
+    }
+    if (tag_description.value.length < 10 ||
+        tag_description.value.length > 300) {
+      displayError(
+          'Tag description must be between 10 and 300 characters long.',
+          tag_description);
+      return;
+    } else {
+      displayError('', tag_description);
+    }
+
+    update(tag_id.value, tag_name.value, tag_description.value);
+
+    tag_id.value = '';
     tag_name.value = '';
     tag_description.value = '';
   };

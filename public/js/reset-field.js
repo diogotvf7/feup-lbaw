@@ -1,6 +1,6 @@
-function resetFields([...fields]) {
-  fields.forEach(field => {
-    const formGroup = document.getElementById(field);
+export default function resetFields([...selectors]) {
+  selectors.forEach(field => {
+    const formGroup = document.querySelector(field);
     const input =
         formGroup.querySelector('input') || formGroup.querySelector('textarea');
     const defaultValue = input.value;
@@ -11,5 +11,3 @@ function resetFields([...fields]) {
     });
   });
 }
-
-export default resetFields;

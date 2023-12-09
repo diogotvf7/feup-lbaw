@@ -131,8 +131,10 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request)
     {
+        $tag = Tag::find($request->id);
+        
         if ($request->name !== $tag->name) $request->validate([
             'name' => 'required|string|max:30|unique:tags',
         ]);

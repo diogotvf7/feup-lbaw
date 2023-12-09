@@ -33,15 +33,17 @@ else if (/^\/tags\/?$/.test(currentPath)) {
 }
 // Edit user profile page
 else if (/^\/users\/[0-9]+\/edit$/.test(currentPath)) {
-  resetFields(['name', 'username', 'email']);
+  resetFields([
+    '#editor-profile #name', '#editor-profile #username',
+    '#editor-profile #email'
+  ]);
 }
 // User profile page
 else if (/^\/users\/\w+$/.test(currentPath)) {
-  resetFields(['name', 'username', 'email']);
-}
-// Tag edit page
-else if (/^\/tags\/[0-9]+\/edit$/.test(currentPath)) {
-  resetFields(['name', 'description']);
+  resetFields([
+    '#editor-profile #name', '#editor-profile #username',
+    '#editor-profile #email'
+  ]);
 }
 // Question editing / Answer editing / Answer loading
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
@@ -56,5 +58,9 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
 }
 // Create Question page
 else if (/^\/questions\/create$/.test(currentPath)) {
+  enableTagModal();
+}
+// Admin tags page
+else if (/^\/admin\/tags/.test(currentPath)) {
   enableTagModal();
 }

@@ -74,7 +74,7 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags');
     Route::get('/questions/tag/{tag}', 'show')->name('tag.show');
-    Route::get('/tags/create', 'create')->name('tag.create')->middleware(LoggedMiddleware::class);
+    // Route::get('/tags/create', 'create')->name('tag.create')->middleware(LoggedMiddleware::class);
     Route::post('/tags/store', 'store')->name('tag.store')->middleware(LoggedMiddleware::class);
 });
 

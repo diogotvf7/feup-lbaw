@@ -112,12 +112,15 @@
                                 <i class="bi bi-eye-fill"></i>
                             </a>
                         @endif
-                        <form class="d-inline-block" action="{{ route('tag.edit', $tag->id) }}" method="GET">
+                        <!-- <form class="d-inline-block" action="{{ route('tag.edit', $tag->id) }}" method="GET">
                             {{ csrf_field() }}
                             <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit Tag">
                                 <i class="bi bi-pencil-fill"></i>
                             </button>
-                        </form>
+                        </form> -->
+                        <button class="edit-tag btn btn-primary btn-sm" aria-label="Edit Tag">
+                            <i class="bi bi-pencil-fill"></i>
+                        </button>
                         <form class="d-inline-block" action="{{ route('tag.destroy', $tag->id) }}" method="POST">
                             {{ csrf_field() }}
                             {{ method_field('DELETE') }}
@@ -155,5 +158,6 @@
 @endif
 
 @include('partials.createTag')
+@include('partials.editTag')
 
 @endsection
