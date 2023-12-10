@@ -1,11 +1,31 @@
-import {editAnswer, stopEditingAnswer} from './answer-edit.js';
-import {editQuestion, stopEditingQuestion} from './question-edit.js';
+import { editAnswer, stopEditingAnswer } from './answer-edit.js';
+import { editQuestion, stopEditingQuestion } from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
 
 const currentPath = window.location.pathname;
+
+//Notifications
+
+const pusher = new Pusher("37abc4ec3e719eac9ea4", {
+  cluster: 'eu',
+  encrypted: true,
+  authEndpoint: "/broadcasting/auth",
+  forceTLS: true,
+});
+
+console.log(userId);
+
+if (userId !== '') {
+  const channelName = 'private-user-'+ userId;
+  const channel = pusher.subscribe(channelName);
+  channel.bind('notification-answer', function (data) {
+    console.log(`New answer: ${data.message}`);
+  });
+}
+
 
 // Search bar live search
 if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
@@ -17,7 +37,7 @@ if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
 }
 // Questions page infinite scroll
 else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
-             currentPath)) {
+  currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
 }

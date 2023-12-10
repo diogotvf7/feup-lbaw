@@ -150,10 +150,12 @@ class QuestionController extends Controller
         $searchTerm = $request->searchTerm ? ($request->searchTerm . ':*') : '*';
         $likeSearchTerm = '*' . $request->searchTerm . '*';
         $questions = Question::select('questions.*')->join('content_versions', 'content_versions.question_id', '=', 'questions.id')->whereRaw("(search_title || search_body) @@ to_tsquery(replace(?, ' ', '<->')) OR (search_title || search_body) @@ to_tsquery(replace(?, ' ', '|'))", [$searchTerm, $searchTerm])->orderByRaw("questions.title ILIKE ? DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '<->'))) DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '|'))) DESC", [$likeSearchTerm, $searchTerm, $searchTerm])->get();
-        
+
         if($request->ajax()){
             return view('pages.search', ['includeAll' => False, 'questions' => $questions, 'query' => $request->searchTerm])->render();
         }   
         else return view('pages.search', ['includeAll' => True, 'questions' => $questions, 'query' => $request->searchTerm]);
+
+    
     }
 }

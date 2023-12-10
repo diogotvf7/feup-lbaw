@@ -1,0 +1,27 @@
+<article class="d-flex flex-row text-one-line">
+    <p class="text-muted" style="margin-right: 1em;">{{ \Carbon\Carbon::parse($notification->date)->diffForHumans() }}</p>
+
+    <div class="d-flex flex-row text-one-line">
+        @if ($notification->type === "ANSWER")
+        <a href="{{route('user.profile', $notification->answer->user->id)}}" class="text-decoration-none"> {{ $notification->answer->user->username }}</a>
+        <p>&NonBreakingSpace; answered your &NonBreakingSpace;</p>
+        <a href="{{route('question.show', $notification->answer->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 40%;"> {{ $notification->answer->question->title }}</a>
+            <p>&NonBreakingSpace; question</p>
+            @endif
+
+            @if ($notification->type === "UPVOTE")
+            <a href="{{route('user.profile', $notification->upvote->user->id)}}" class="text-decoration-none text-one-line" style="max-width: 40%;"> {{ $notification->upvote->user->username }}</a>
+                <p>&NonBreakingSpace; upvoted your &NonBreakingSpace;</p>
+                @if ($notification->upvote->type === "QUESTION")
+                <a href="{{route('question.show', $notification->upvote->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 40%;"> {{ $notification->upvote->question->title }}</a>
+                    <p>&NonBreakingSpace; question</p>
+                    @elseif ($notification->upvote->type === "ANSWER")
+                    <a href="{{route('question.show', $notification->upvote->answer->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 40%;">{{ $notification->upvote->answer->updatedVersion->body }}</a>
+                    <p>&NonBreakingSpace; answer</p>
+                    @else
+                    <a href="{{route('question.show', $notification->upvote->comment->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 40%;">{{ $notification->upvote->comment->body }}</a>
+                    <p>&NonBreakingSpace; comment</p>
+                    @endif
+                    @endif
+    </div>
+</article>

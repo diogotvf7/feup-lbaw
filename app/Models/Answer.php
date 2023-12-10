@@ -97,4 +97,11 @@ class Answer extends Model
         return $this->contentVersions()->one()->ofMany('date', 'min');
     }
 
+    /**
+     * Get the notification this answer generated
+     */
+    public function notification(): HasOne
+    {
+        return $this->hasOne(Notification::class);
+    }
 }

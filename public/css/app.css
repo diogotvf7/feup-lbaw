@@ -47,7 +47,7 @@ body {
 
 .sidebar-element {
   color: rgba(255, 255, 255, 0.55);
-	transition: color .3s ease-in-out,background-color .3s ease-in-out,border-color .3s ease-in-out;
+  transition: color .3s ease-in-out, background-color .3s ease-in-out, border-color .3s ease-in-out;
 }
 
 .sidebar-element:hover {
@@ -68,15 +68,34 @@ body {
   background-color: #c8eaf7;
 }
 
-#profile .nav-link{
+#profile .nav-link {
   background-color: white;
-} 
+}
 
-#profile #editor-profile{
+#profile #editor-profile {
   background-color: white;
   width: 50dvw;
 }
 
 #profile .col {
   max-width: 50dvw;
+}
+
+.text-one-line {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+}
+
+@media (min-width: 992px) {
+  #notifications {
+    right: 0;
+  }
+}
+
+@media (max-width: 992px) {
+  #notifications {
+    right: none;
+  }
 }

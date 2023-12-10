@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Answer;
 use App\Models\ContentVersion;
-use App\Models\Question;
+use App\Events\AnswerEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -55,6 +54,8 @@ class AnswerController extends Controller
             $contentversion->answer_id = $answer->id;
             $contentversion->save();
 
+            //Send notification to author about receiving an answer
+            $this->answerEvent($user->id, $request->question_id);
     
             return redirect()->back()->with('success', 'Answer added successfully!');
         }
@@ -108,10 +109,8 @@ class AnswerController extends Controller
         return redirect()->back()->with('success', 'Answer removed successfully!');
     }
 
-    public function answerEvent(Request $request)
+    public function answerEvent()
     {
-        $user = User::findOrFail($request->user_id);
-        $question = Question::findOrFail($request->question_id);
-        event(new Answer($user->username, $question->title));
+        event(new answerEvent(1, 1));
     }
 }

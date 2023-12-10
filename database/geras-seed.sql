@@ -438,7 +438,7 @@ CREATE FUNCTION send_answer_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     INSERT INTO notifications (date, type, answer_id, user_id)
-    VALUES (NOW(), 'ANSWER', NEW.id, NEW.author);
+    VALUES (NOW(), 'ANSWER', NEW.id, (SELECT author FROM questions WHERE id = NEW.question_id));
 
     RETURN NULL;
 END
@@ -460,8 +460,18 @@ CREATE FUNCTION send_upvote_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.is_upvote THEN
-        INSERT INTO notifications (date, type, upvote_id, user_id)
-        VALUES (NOW(), 'UPVOTE', NEW.id, NEW.user_id);
+        IF NEW.type = 'QUESTION' THEN
+            INSERT INTO notifications (date, type, upvote_id, user_id)
+            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM questions WHERE id = NEW.question_id));
+        END IF;
+        IF NEW.type = 'ANSWER' THEN
+            INSERT INTO notifications (date, type, upvote_id, user_id)
+            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM answers WHERE id = NEW.answer_id));
+        END IF;
+        IF NEW.type = 'COMMENT' THEN
+            INSERT INTO notifications (date, type, upvote_id, user_id)
+            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM comments WHERE id = NEW.comment_id));
+        END IF;
     END IF;
 
     RETURN NULL;
@@ -658,15 +668,15 @@ CREATE FUNCTION prevent_self_voting() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.type = 'QUESTION' AND NEW.user_id = (SELECT author FROM questions WHERE id = NEW.question_id) THEN
-        RAISE EXCEPTION 'You cannot votes on your own question';
+        RAISE EXCEPTION 'You cannot vote on your own question';
     END IF;
 
     IF NEW.type = 'ANSWER' AND NEW.user_id = (SELECT author FROM answers WHERE id = NEW.answer_id) THEN
-        RAISE EXCEPTION 'You cannot votes on your own answer';
+        RAISE EXCEPTION 'You cannot vote on your own answer';
     END IF;
 
     IF NEW.type = 'COMMENT' AND NEW.user_id = (SELECT author FROM comments WHERE id = NEW.comment_id) THEN
-        RAISE EXCEPTION 'You cannot votes on your own comment';
+        RAISE EXCEPTION 'You cannot vote on your own comment';
     END IF;
 
   RETURN NEW;
@@ -4819,9 +4829,9 @@ INSERT INTO
         user_id
     )
 VALUES
-    (true, 'QUESTION', NULL, NULL, 4, 1),
-    (false, 'ANSWER', NULL, 3, NULL, 2),
-    (true, 'ANSWER', NULL, 10, NULL, 3),
+    (true, 'QUESTION', NULL, NULL, 3, 1),
+    (false, 'ANSWER', NULL, 9, NULL, 2),
+    (true, 'ANSWER', NULL, 9, NULL, 3),
     (true, 'COMMENT', 21, NULL, NULL, 4),
     (false, 'COMMENT', 11, NULL, NULL, 5),
     (true, 'ANSWER', NULL, 7, NULL, 6),
