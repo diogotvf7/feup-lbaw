@@ -61,8 +61,6 @@ class CommentController extends Controller
                 $comment->type = 'ANSWER';
                 $comment->answer_id = $request->answer_id;
             }
-    
-            //$this->authorize('create', $comment);
 
             $comment->save();
 
@@ -81,9 +79,18 @@ class CommentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Comment $comment)
+    public function edit(Request $request)
     {
-        //
+        $request->validate([
+            'body' => 'required|string|min:20|max:30000'
+        ]);
+        
+        $comment = Comment::findOrFail($request->comment_id);
+        $this->authorize('update', $comment);
+        $comment->body = $request->body;
+        $comment->save();
+
+        return redirect()->back()->with('success', 'Comment edited successfully!');
     }
 
     /**
@@ -97,8 +104,11 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Comment $comment)
+    public function destroy(Request $request)
     {
-        //
+        $comment = Comment::findOrFail($request->comment_id);
+        $this->authorize('delete', $comment);
+        $comment->delete();
+        return redirect()->back()->with('success', 'Comment removed successfully!');
     }
 }

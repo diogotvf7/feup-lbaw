@@ -1,3 +1,5 @@
+import editComment from './comment-edit.js';
+
 function showComments() {
   const comments = document.querySelectorAll('.show-comments');
 
@@ -54,6 +56,7 @@ async function loadComments(id, commentsContainer) {
   const comments = await fetchComments(id, isQuestion);
   const commentsHTML = comments.map(comment => comment + '<hr class="m-0">').join('');
   commentsContainer.innerHTML = commentsHTML;
+  editComment();
 }
 
 export default showComments;
