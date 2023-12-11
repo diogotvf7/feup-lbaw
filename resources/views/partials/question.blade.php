@@ -83,7 +83,7 @@
         </div>
         @endif
     </div>
-    <section class="ms-4" id="comments-container" data-question-id="{{ $question->id }}">
+    <section class="ms-4" id="comments-container" data-question-id="{{ $question->id }}" style="display:none">
     </section>
     @if (Auth()->check())
     <form id="comment-form" class="d-flex gap-3 align-items-end my-2" method="POST" action="{{ route('comment/create') }}">

@@ -68,7 +68,7 @@
                 </div>
             </div>
         </div>
-        <section class="ms-4" id="comments-container" data-answer-id="{{ $answer->id }}">
+        <section class="ms-4" id="comments-container" data-answer-id="{{ $answer->id }}" style="display:none">
         </section>
     </div>
 </article>
