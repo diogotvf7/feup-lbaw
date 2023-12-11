@@ -88,6 +88,18 @@ body {
   display: block;
 }
 
+@media(max-width: 768px) {
+  #notifications {
+    max-width: 100dvw;
+  }
+}
+
+@media(min-width: 768px) {
+  #notifications {
+    max-width: 50dvw;
+  }
+}
+
 @media (min-width: 992px) {
   #notifications {
     right: 0;
@@ -97,5 +109,9 @@ body {
 @media (max-width: 992px) {
   #notifications {
     right: none;
+  }
+
+  .small-screen-hide {
+    display: none;
   }
 }
