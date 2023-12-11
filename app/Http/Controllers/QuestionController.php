@@ -212,17 +212,17 @@ class QuestionController extends Controller
 
     public function follow($id)
     {
-        $user = User::findOrFail(Auth::user()->id);
+        $user = Auth::user();
         $question = Question::findOrFail($id);
 
-        if ($user->followsQuestion($question->id)){
-            $user->followedQuestions()->where('question_id',$question)->delete();
-        }
+        if ($user->id->followsQuestion($question->id)){
+            $user->id->followedQuestions()->where('question_id',$question)->delete();
+            return "Unfollowed";}
         else{
-            $this->authorize('follow',$question);
-            $user->followedQuestions()->create([
+            $user->id->followedQuestions()->create([
                 'question_id' => $question->id,
             ]);
+            return "Followed";
         }
     }
 }

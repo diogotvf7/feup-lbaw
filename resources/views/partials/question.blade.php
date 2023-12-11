@@ -41,9 +41,9 @@
             <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
             <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
             @if ($follow)
-                <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
+                <button id = "follow-button" class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
             @else 
-                <button class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
+                <button id = "follow-button" class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
             @endif
         </div>
         <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">

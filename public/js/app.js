@@ -5,6 +5,7 @@ import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
 import enableVote from './vote.js';
+import follow from './questions-follow.js';
 
 
 const currentPath = window.location.pathname;
@@ -46,8 +47,12 @@ else if (/^\/tags\/[0-9]+\/edit$/.test(currentPath)) {
 // Question editing / Answer editing / Answer loading
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   editQuestion();
+  follow();
   await loadAnswers();
   const answersSort = document.getElementById('answers-sort');
+  const questionFollow = document.getElementById('follow-button');
   answersSort.addEventListener('change', loadAnswers);
+  questionFollow.addEventListener('click', follow);
   enableVote();
+
 }
