@@ -147,12 +147,15 @@
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </form> 
-                            <form class="d-inline-block" action="{{ route('user.edit', $user->id) }}" method="GET">
+                            <button class="edit-user btn btn-primary btn-sm" aria-label="Edit User">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <!-- <form class="d-inline-block" action="{{ route('user.edit', $user->id) }}" method="GET">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit User">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
-                            </form>
+                            </form> -->
                             @if ($user->type !== 'Admin') 
                                 <form class="d-inline-block" action="{{ route('user.promote', $user->id) }}" method="POST">
                                     {{ csrf_field() }}
@@ -192,5 +195,6 @@
     @endif
 
 @include('partials.createUser')
+@include('partials.editUser')
 
 @endsection

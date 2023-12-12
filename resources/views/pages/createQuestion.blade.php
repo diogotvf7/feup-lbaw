@@ -22,7 +22,7 @@
                 <label for="title" class="form-label">Title</label>
                 <input type="text" name="title" class="form-control" placeholder="e.g. How to fix a lamp" value="{{ old('title') }}" required autofocus>
                 @if ($errors->has('title'))
-                    <span class="error">
+                    <span class="text-danger">
                         {{ $errors->first('title') }}
                     </span>
                 @endif
@@ -32,7 +32,7 @@
                 <label for="body" class="form-label">Body</label>
                 <textarea name="body" class="form-control" rows="10" value="{{ old('body') }}" required></textarea>
                 @if ($errors->has('body'))
-                    <span class="error">
+                    <span class="text-danger">
                         {{ $errors->first('body') }}
                     </span>
                 @endif

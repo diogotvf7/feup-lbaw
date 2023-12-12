@@ -146,8 +146,9 @@ export default function enableTagModal() {
   };
 
   document.getElementById('submit-tag').onclick = function() {
-    let tag_name = document.querySelector('#name input');
-    let tag_description = document.querySelector('#description textarea');
+    let tag_name = document.querySelector('#create-tag .name input');
+    let tag_description =
+        document.querySelector('#create-tag .description textarea');
 
     if (tag_name.value.length == 0) {
       displayError('Insert a tag name.', tag_name);
@@ -179,19 +180,19 @@ export default function enableTagModal() {
           document.querySelector('#edit-tag .description textarea');
 
       if (tag_name.value.length == 0) {
-        displayError('The Tag name is mandatory.', tag_name);
+        displayError('The Tag name is mandatory.', tag_name.parentElement);
         return;
       } else {
-        displayError('', tag_name);
+        displayError('', tag_name.parentElement);
       }
       if (tag_description.value.length < 10 ||
           tag_description.value.length > 300) {
         displayError(
             'Tag description must be between 10 and 300 characters long.',
-            tag_description);
+            tag_description.parentElement);
         return;
       } else {
-        displayError('', tag_description);
+        displayError('', tag_description.parentElement);
       }
 
       update(tag_id.value, tag_name.value, tag_description.value);
@@ -203,7 +204,7 @@ export default function enableTagModal() {
 }
 
 function displayError(error, input) {
-  const errorElement = input.parentElement.nextElementSibling;
+  const errorElement = input.nextElementSibling;
   errorElement.classList.add('text-danger');
   errorElement.textContent = error;
 }

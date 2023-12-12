@@ -54,7 +54,7 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
     Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
-    Route::get('/admin/user/create', [UserController::class, 'create'])->name('user.create');
+    // Route::get('/admin/user/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
 
     Route::get('/admin/tags', [TagController::class, 'list'])->name('admin.tags');

@@ -19,7 +19,7 @@
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
                 </div>
-                <p class="error"></p>
+                <p class="text-danger"></p>
             </div>
             <div class="form-group">
                 <label for="description" class="form-label">Description</label>
@@ -29,7 +29,7 @@
                         <i class="bi bi-arrow-counterclockwise"></i>
                     </button>
                 </div>
-                <p class="error"></p>
+                <p class="text-danger"></p>
             </div>
 
             <div class="form-group pt-3">

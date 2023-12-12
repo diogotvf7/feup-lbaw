@@ -32,18 +32,11 @@ else if (/^\/tags\/?$/.test(currentPath)) {
   const loader = document.getElementById('loader');
   tagScrollObserver(loader);
 }
-// Edit user profile page
-else if (/^\/users\/[0-9]+\/edit$/.test(currentPath)) {
-  resetFields([
-    '#editor-profile #name', '#editor-profile #username',
-    '#editor-profile #email'
-  ]);
-}
 // User profile page
 else if (/^\/users\/\w+$/.test(currentPath)) {
   resetFields([
-    '#editor-profile #name', '#editor-profile #username',
-    '#editor-profile #email'
+    '#editor-profile .name', '#editor-profile .username',
+    '#editor-profile .email'
   ]);
 }
 // Question editing / Answer editing / Answer loading
