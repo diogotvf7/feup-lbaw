@@ -6,6 +6,7 @@ use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
@@ -50,6 +51,12 @@ Route::controller(AnswerController::class)->group(function () {
     Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
+Route::controller(CommentController::class)->group(function () {
+    Route::post('/comments/create', 'store')->name('comment/create');
+    Route::patch('/comments/edit', 'edit')->name('comment/edit');
+    Route::delete('/comments/delete', 'destroy')->name('comment/delete');
+});
+
 Route::middleware(AdminMiddleware::class)->group(function () {
     Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
@@ -89,6 +96,11 @@ Route::controller(QuestionController::class)->group(function () {
 
 Route::controller(AnswerController::class)->group(function () {
     Route::get('/api/answers', 'index');
+});
+
+Route::controller(CommentController::class)->group(function () {
+    Route::get('/api/questions/{question_id}/comments', 'fetch')->where('question_id', '[0-9]+');
+    Route::get('/api/answers/{answer_id}/comments', 'fetch')->where('answer_id', '[0-9]+');
 });
 
 Route::controller(TagController::class)->group(function () {

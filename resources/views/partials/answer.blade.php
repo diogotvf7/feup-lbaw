@@ -24,30 +24,59 @@
                 <button class="submit-edit-answer btn btn-primary btn-sm mt-2 d-none submit-edit" type="submit">Submit</button>
             </div>
         </form>
-        <div class="d-flex justify-content-end gap-5 align-content-end py-2">
-            <p class="m-0">
-                Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
-                @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
-                <a class="text-decoration-none" href="/users/{{ $answer->user->id }}">{{ $answer->user->username }}</a>
-                @else
-                {{ $answer->user->username }}
-                @endif
-            </p>
-            <div class="d-flex">
-                @if (auth()->check())
-                    @if (auth()->user()->id === $answer->user->id)
-                    <button class="edit-answer btn btn-secondary btn-sm my-2 my-sm-0">Edit</button>
+        <div class="d-flex justify-content-between gap-5 pt-2">
+            <div class="d-flex gap-3">
+                <p class="pt-1">
+                    {{ $answer->comments->count() }}
+                    @if ($answer->comments->count() != 1)
+                    comments
+                    @else
+                    comment
                     @endif
-                    @if (auth()->user()->id === $answer->user->id || auth()->user()->type === "Admin")
-                    <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
-                        {{ csrf_field() }}
-                        @method('DELETE')
-                        <input type="hidden" name="answer_id" value="{{ $answer->id }}">
-                        <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit">Delete</button>
-                    </form>
-                    @endif
+                </p>
+                @if ($answer->comments->count() > 0)
+                <div class="px-2">
+                    <button class="show-comments btn btn-secondary btn-sm my-2 my-sm-0" data-answer-id="{{ $answer->id }}">Show comments</button>
+                </div>
                 @endif
             </div>
+            <div class="d-flex gap-5">
+                <p class="pt-1">
+                    Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
+                    @if(auth()->check())
+                    <a class="text-decoration-none" href="/users/{{ $answer->user->id }}">{{ $answer->user->username }}</a>
+                    @else
+                    {{ $answer->user->username }}
+                    @endif
+                </p>
+                <div class="d-flex">
+                    @if (auth()->check())
+                        @if (auth()->user()->id === $answer->user->id)
+                        <div class="px-2">
+                            <button class="edit-answer btn btn-secondary btn-sm my-2 my-sm-0">Edit</button>
+                        </div>
+                        @endif
+                        @if (auth()->user()->id === $answer->user->id || auth()->user()->type === "Admin")
+                        <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
+                            {{ csrf_field() }}
+                            @method('DELETE')
+                            <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+                            <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit">Delete</button>
+                        </form>
+                        @endif
+                    @endif
+                </div>
+            </div>
         </div>
+        <section class="ms-4" id="comments-container" data-answer-id="{{ $answer->id }}" style="display:none">
+        </section>
     </div>
 </article>
+@if (Auth()->check())
+<form id="comment-form" class="d-flex gap-3 align-items-end my-2" method="POST" action="{{ route('comment/create') }}">
+    {{ csrf_field() }}
+    <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+    <textarea id="comment-input" name="body" class="form-control" placeholder="Write your comment here..." maxlength="30000" rows="1"></textarea>
+    <button id="submit-comment" class="btn btn-primary" type="submit">Submit</button>
+</form>
+@endif
