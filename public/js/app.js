@@ -35,6 +35,9 @@ else if (/^\/tags\/?$/.test(currentPath)) {
 }
 // User profile page
 else if (/^\/users\/\w+$/.test(currentPath)) {
+  const navbar = document.getElementById('navbar');
+  navbar.style.borderStyle = 'none';
+
   resetFields([
     '#editor-profile .name', '#editor-profile .username',
     '#editor-profile .email'

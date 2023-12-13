@@ -4,7 +4,7 @@
 
 <section id="profile" class="scroll-container" style="overflow: scroll;">
 
-    <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
+    <ul class="nav nav-tabs d-flex" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" data-bs-toggle="tab" href="#informations" aria-selected=true role="tab">Information</a>
         </li>
@@ -92,13 +92,13 @@
             </div>
         </div>
 
-        <div id="answers" role="tabpanel" class="tab-pane fade">
+        <div id="comments" role="tabpanel" class="tab-pane fade">
             <div class="d-flex flex-column justify-content-evenly align-items-center pt-4">
                 <div class="card mb-3 w-25">
                     <div class="card-body d-flex align-items-center flex-column">
                         <div class="profile-pic">
                         </div>
-                        <h4 class="username">{{$user->username}} answers</h4>
+                        <h4 class="username">{{$user->username}} comments</h4>
                         <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
                             <p class="pe-3">Level {{$user->experience}} </p>
                             <p>Kleos {{$user->score}} </p>
@@ -109,10 +109,10 @@
                 <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if (count($user->comments)=== 0)
-                        <h4>User has no answers</h4>
+                        <h4>User has no comments</h4>
                         @else
-                            @foreach ($user->comments as $comment)
-                                @include('partials.answerPreview', ['answer' => $answer])
+                            @foreach ($user->comments as $comments)
+                                @include('partials.commentPreview', ['comment' => $comment])
                                 @if (!$loop->last)
                                     <hr>
                                 @endif
