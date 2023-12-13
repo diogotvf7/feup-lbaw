@@ -170,6 +170,19 @@
     max-width: 50dvw;
   }
 }
+
+#profile ul {
+  background-color: var(--primary);
+}
+
+[data-bs-theme='light'] #profile .nav-link {
+  background-color: var(--background);
+}
+
+[data-bs-theme='dark'] #profile .nav-link {
+  background-color: var(--bs-body-bg);
+}
+
 /* ------------------ */
 
 /*        Modal        */

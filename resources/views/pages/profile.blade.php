@@ -14,6 +14,9 @@
         <li class="nav-item" role="presentation">
             <a class="nav-link" data-bs-toggle="tab" href="#answers" aria-selected="false" role="tab" tabindex="-1">{{Auth::user()->id === $user->id ? "My Answers" : "Answers"}}</a>
         </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" data-bs-toggle="tab" href="#comments" aria-selected="false" role="tab" tabindex="-1">{{Auth::user()->id === $user->id ? "My Comments" : "Comments"}}</a>
+        </li>
     </ul>
 
     <div id="myTabContent" class="tab-content">
@@ -78,6 +81,37 @@
                         <h4>User has no answers</h4>
                         @else
                             @foreach ($user->answers as $answer)
+                                @include('partials.answerPreview', ['answer' => $answer])
+                                @if (!$loop->last)
+                                    <hr>
+                                @endif
+                            @endforeach
+                        @endif
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <div id="answers" role="tabpanel" class="tab-pane fade">
+            <div class="d-flex flex-column justify-content-evenly align-items-center pt-4">
+                <div class="card mb-3 w-25">
+                    <div class="card-body d-flex align-items-center flex-column">
+                        <div class="profile-pic">
+                        </div>
+                        <h4 class="username">{{$user->username}} answers</h4>
+                        <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
+                            <p class="pe-3">Level {{$user->experience}} </p>
+                            <p>Kleos {{$user->score}} </p>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
+                    <div class="card-body align-items-center flex-column">
+                        @if (count($user->comments)=== 0)
+                        <h4>User has no answers</h4>
+                        @else
+                            @foreach ($user->comments as $comment)
                                 @include('partials.answerPreview', ['answer' => $answer])
                                 @if (!$loop->last)
                                     <hr>
