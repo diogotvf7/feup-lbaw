@@ -138,7 +138,7 @@ class AnswerController extends Controller
     public function answerEvent(Request $request)
     {
 
-        event(new answerEvent(91, 113));
+        event(new answerEvent(91, 3));
     }
     public function upvote(Answer $answer)
     {

@@ -32,9 +32,9 @@
     <script>
         var userId = "{{ Auth::user() ? Auth::user()->id : NULL}}";
     </script>
+
+
 </head>
-
-
 
 <body>
     <main class="d-flex flex-column vh-100">
@@ -71,22 +71,7 @@
                             </li>
                             @endif
                         </ul>
-                        <div class="d-flex flex-row align-items-center" style="max-width: fit-content;">
-                            <div class="d-flex flex-row" style="max-width: 80%;">
-                                <form class="d-flex" action="{{ route('search') }}" method="GET">
-                                    {{ csrf_field() }}
-                                    @method('GET')
-                                    <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
-                                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                                </form>
-                            </div>
 
-                            <div style="margin-left: 1em;">
-                                <button id="notification-button" type="button" class="btn btn-secondary">
-                                    <i id="notification-icon" class="bi bi-bell-fill"></i>
-                                </button>
-                            </div>
-                        
                         <button id="theme-toggle" class="btn btn-link me-3 text-white" type="button">
                             <i class="bi bi-brightness-high-fill d-block-light d-none"></i>
                             <i class="bi bi-moon-stars-fill d-block-dark d-none"></i>
@@ -101,11 +86,15 @@
                             </form>
                         </div>
 
+                        <div style="margin-left: 1em;">
+                            <button id="notification-button" type="button" class="btn btn-secondary">
+                                <i id="notification-icon" class="bi bi-bell-fill"></i>
+                            </button>
+                        </div>
+
                         @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
                         <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
                         @endif
-
-
                     </div>
                     @if(Auth::check())
                     <ul id="notifications" class="list-group align-items-center d-flex flex-column list-unstyled position-absolute mt-1" style="z-index: 200; top:100%;">
@@ -116,13 +105,10 @@
                         @endforeach
                     </ul>
                     @endif
-
                 </div>
             </nav>
         </header>
-        <section style="margin-top: 108px;">
-            @yield('content')
-        </section>
+        @yield('content')
     </main>
 </body>
 
