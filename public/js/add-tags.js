@@ -59,7 +59,7 @@ export default function enableTagModal() {
 
   const last_created_tag = document.getElementById('last-created-tag');
 
-  if (last_created_tag.value != '') {
+  if (last_created_tag && last_created_tag.value != '') {
     const tag =
         tagInput.whitelist.find(tag => tag.value == last_created_tag.value);
     tagInput.addTags([tag]);
