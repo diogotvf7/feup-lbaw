@@ -56,6 +56,9 @@ export default function enableUserModal() {
 function closeModals() {
   if (create_user_modal) create_user_modal.style.display = 'none';
   if (edit_user_modal) edit_user_modal.style.display = 'none';
+  document.querySelectorAll('.text-danger').forEach(error => {
+    error.textContent = '';
+  });
 }
 
 function updateAction(url, newid) {

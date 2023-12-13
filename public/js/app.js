@@ -61,5 +61,4 @@ else if (/^\/admin\/tags/.test(currentPath)) {
 // Admin users page
 else if (/^\/admin\/users/.test(currentPath)) {
   enableUserModal();
-  // resetFields(['#editor-profile #name', '#editor-profile #username']);
 }

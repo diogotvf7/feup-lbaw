@@ -14,7 +14,7 @@
             <input id="create-error" value="{{ session('create_error_id') }}" type="hidden">
 
             <div class="name form-group">
-                <label for="name" class="form-label">Name</label>
+                <label class="form-label">Name</label>
                 <input name="name" type="text" class="form-control" maxlength="250" placeholder="Enter name (optional)" autofocus>
                 <p class="text-danger">
                 @if (session()->has('create_error_id') && $errors->has('name'))
@@ -24,7 +24,7 @@
             </div>
 
             <div class="username form-group">
-                <label for="username" class="form-label">Username</label>
+                <label class="form-label">Username</label>
                 <input name="username" type="text" class="form-control" maxlength="30" placeholder="Enter a username" required>
                 <p class="text-danger">
                 @if (session()->has('create_error_id') && $errors->has('username'))
@@ -34,7 +34,7 @@
             </div>
 
             <div class="email form-group">
-                <label for="email" class="form-label">E-mail address</label>
+                <label class="form-label">E-mail address</label>
                 <input name="email" type="email" class="form-control" maxlength="250" placeholder="Enter a email" required>
                 <p class="text-danger">
                 @if (session()->has('create_error_id') && $errors->has('email'))
@@ -45,11 +45,11 @@
 
             <div class="type form-check">
                 <input name="type" type="checkbox" class="form-check-input">
-                <label class="form-check-label" for="admin-checkbox">Admin User</label>
+                <label class="form-check-label">Admin User</label>
             </div>
 
             <div class="password form-group">
-                <label for="password" class="form-label">Password</label>
+                <label class="form-label">Password</label>
                 <input name="password" type="password" class="form-control" placeholder="Enter a password" required>
                 <p class="text-danger">
                 @if (session()->has('create_error_id') && $errors->has('password'))
@@ -59,7 +59,7 @@
             </div>
 
             <div class="password_confirmation form-group">
-                <label for="password-confirmation" class="form-label">Confirm Password</label>
+                <label class="form-label">Confirm Password</label>
                 <input name="password_confirmation" type="password" class="form-control" placeholder="Confirm password" required>
             </div>
 

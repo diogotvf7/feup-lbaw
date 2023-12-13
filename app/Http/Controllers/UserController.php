@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\RedirectResponse;
 
 class UserController extends Controller
 {
@@ -96,11 +95,11 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
-    {
-        $this->authorize('selfOrAdmin', $user);
-        return view('pages.editUser', compact('user'));
-    }
+    // public function edit(User $user)
+    // {
+    //     $this->authorize('selfOrAdmin', $user);
+    //     return view('pages.editUser', compact('user'));
+    // }
 
     /**
      * Update the specified resource in storage.

@@ -33,7 +33,7 @@
             <input id="edit-error" value="{{ session('edit_error_id') }}" type="hidden">
 
             <div class="form-group">
-                <label for="name" class="form-label">Name</label>
+                <label class="form-label">Name</label>
                 <div class="name input-group">
                     <input type="text" name="name" class="form-control" placeholder="Enter new name (optional)" value="{{ $user->name }}" autofocus>
                     <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field">
@@ -47,7 +47,7 @@
                 </p>
             </div>
             <div class="form-group">
-                <label for="username" class="form-label">Username</label>
+                <label class="form-label">Username</label>
                 <div class="username input-group">
                     <input type="text" name="username" class="form-control" placeholder="Enter new username" value="{{ $user->username }}" required>
                     <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field">
@@ -62,7 +62,7 @@
             </div>
 
             <div class="form-group">
-                <label for="email" class="form-label">E-mail address</label>
+                <label class="form-label">E-mail address</label>
                 <div class="email input-group">
                     <input type="email" name="email" class="form-control" placeholder="Enter new email" value="{{ $user->email }}" required>
                     <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field">
@@ -77,7 +77,7 @@
             </div>
 
             <div class="password form-group">
-                <label for="password" class="form-label">Password <small class="text-secondary">(Leave blank if you don't want to update)</small></label>
+                <label class="form-label">Password <small class="text-secondary">(Leave blank if you don't want to update)</small></label>
                 <input type="password" name="password" class="form-control" placeholder="New password">
                 <p class="text-danger">
                 @if ($displayErrors && $errors->has('password'))
@@ -87,7 +87,7 @@
             </div>
 
             <div class="password-confirmation form-group">
-                <label for="password-confirmation" class="form-label">Confirm Password</label>
+                <label class="form-label">Confirm Password</label>
                 <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm new password">
             </div>
 
@@ -99,94 +99,3 @@
         </form>
     </div>
 </div>
-
-
-<!-- @if (Route::is('user.profile'))
-<div class="col align-middle w-lg-50">
-    <div class="row justify-content-center p-3">
-        <form id="editor-profile" method="POST" action="{{ route('user.update', $user->id) }}" class="col-4 border border-2 rounded p-3">
-            {{ csrf_field() }}
-            {{ method_field('PATCH') }}
-@elseif (Route::is('admin.users'))
-<div id="edit-user" class="modal">
-    <div class="modal-content">
-@endif
-        <header class="d-flex justify-content-between">
-            <h2>Edit Profile</h2>
-            <button class="close-modal btn-close" data-bs-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true"></span>
-            </button>
-        </header>
-
-        @if (Route::is('user.edit'))
-            <input type="hidden" name="adminPage" value="true"></input>
-        @else
-            <input type="hidden" name="adminPage" value=""></input>
-        @endif
-        <input id="default-name" type="hidden" name="name" value="{{ $user->name }}"></input>
-        <input id="default-username" type="hidden" name="username" value="{{ $user->username }}"></input>
-        <input id="default-email" type="hidden" name="email" value="{{ $user->email }}"></input>
-
-        <input class="id" type="hidden"></input>
-
-        <div class="form-group">
-            <label for="name" class="form-label">Name</label>
-            <div class="name input-group">
-                <input type="text" name="name" class="form-control" placeholder="Enter new name (optional)" value="{{ $user->name }}" autofocus>
-                <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                </button>
-            </div>
-            <p class="text-danger"></p>
-        </div>
-        <div class="form-group">
-            <label for="username" class="form-label">Username</label>
-            <div class="username input-group">
-                <input type="text" name="username" class="form-control" placeholder="Enter new username" value="{{ $user->username }}" required>
-                <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                </button>
-            </div>
-            <p class="text-danger"></p>
-        </div>
-
-        <div class="form-group">
-            <label for="email" class="form-label">E-mail address</label>
-            <div class="email input-group">
-                <input type="email" name="email" class="form-control" placeholder="Enter new email" value="{{ $user->email }}" required>
-                <button type="button" class="btn btn-secondary btn-sm" aria-label="Reset Field">
-                    <i class="bi bi-arrow-counterclockwise"></i>
-                </button>
-            </div>
-            <p class="text-danger"></p>
-        </div>
-
-        <div class="password form-group">
-            <label for="password" class="form-label">Password <small class="text-secondary">(Leave blank if you don't want to update)</small></label>
-            <input type="password" name="password" class="form-control" placeholder="New password">
-            <p class="text-danger"></p>
-        </div>
-
-        <div class="password-confirmation form-group">
-            <label for="password-confirmation" class="form-label">Confirm Password</label>
-            <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm new password">
-        </div>
-
-        <div class="form-group pt-3">
-            @if (Route::is('user.profile'))
-            <button type="submit" class="btn btn-primary" aria-label="Save Changes">
-            @elseif (Route::is('admin.users'))
-            <button id="update-user" class="btn btn-primary" aria-label="Save Changes">
-            @endif
-                <i class="bi bi-check-circle"></i> Save Changes
-            </button>
-        </div>
-@if (Route::is('user.profile'))
-        </form>
-    </div>
-</div>
-@elseif (Route::is('admin.users'))
-    </div>
-</div>
-@endif -->
-
