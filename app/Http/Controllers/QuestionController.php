@@ -20,18 +20,26 @@ class QuestionController extends Controller
 
     public function fetch(Request $request)
     {
-        $type = $request->query('filter');
+        $path = $request->path();
+        $path_segments = explode('/', trim($path, '/'));
 
         $query = Question::query();
-        
-        if ($type == 'followed' && Auth::check()) 
-        {
-            $query->join('followed_questions', 'questions.id', '=', 'followed_questions.question_id')
-                ->where('user_id', $request->user()->id);
-        }
-        else if ($type == 'top') 
-        {
-            $query->withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count');
+        if (isset($path_segments[2])) {
+            if ($path_segments[2] == 'followed') 
+            {
+                $query->join('followed_questions', 'questions.id', '=', 'followed_questions.question_id')
+                    ->where('user_id', $request->user()->id);
+            }
+            else if ($path_segments[2] == 'top') 
+            {
+                $query->withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count');
+            }
+            else if ($path_segments[2] == 'tag')
+            {
+                $query->whereHas('tags', function ($sub_query) use ($path_segments) {
+                    $sub_query->where('tags.id', $path_segments[3]);
+                })->get();
+            }
         }
 
         $questions = $query->paginate(10);
@@ -86,7 +94,7 @@ class QuestionController extends Controller
             'question_id' => $question->id
         ]);
 
-        return redirect()->route('questions');
+        return redirect()->route('questions')->with('question-create', ['Question created successfully!', '/questions/' . $question->id]);
     }
 
     /**

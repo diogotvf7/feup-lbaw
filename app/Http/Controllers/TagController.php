@@ -4,15 +4,68 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
+    public function index() 
+    {
+        return view('pages.tags');
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function list(Request $request)
     {
-        //
+        $query = Tag::query();
+
+        $sortField = $request->input('sortField', 'approved');
+        $sortDirection = $request->input('sortDirection', 'asc');
+
+        if ($sortField == 'questions' || $sortField == 'usersThatFollow')
+            $query->withCount($sortField)->orderBy(Str::snake($sortField) . '_count', $sortDirection);
+        else
+            $query->orderBy($sortField, $sortDirection);
+        
+        $searchTerm = $request->input('search');
+        if ($searchTerm) {
+            $query->where(function ($query) use ($searchTerm) {
+                if (is_numeric($searchTerm)) {
+                    $query->orWhere('id', $searchTerm);
+                }
+                $query->orWhere('name', 'ilike', "%$searchTerm%")
+                    ->orWhere('description', 'ilike', "%$searchTerm%");
+            });
+        }
+
+        $tags = $query->paginate(10);
+
+        return view('pages.admin.tags', [
+            'tags' => $tags,
+            'sortField' => $sortField,
+            'sortDirection' => $sortDirection,
+            'searchTerm' => $searchTerm,
+        ]);
+    }
+
+    public function fetch(Request $request)
+    {
+        $tags = Tag::where('approved', TRUE)->paginate(30);
+        foreach ($tags as $tag) {
+            $tag->questions;
+            $tag->usersThatFollow;
+        }
+        return $tags;
+    }
+
+
+    public function approve(Tag $tag) 
+    {
+        $tag->approved = true;
+        $tag->save();
+        return redirect()->back()->with('success', ['Tag approved successfully!']);
     }
 
     /**
@@ -20,7 +73,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view('pages.createTag');
     }
 
     /**
@@ -28,7 +81,22 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $userType = Auth::user()->type;
+        $request->validate([
+            'name' => 'required|string|max:30|unique:tags',
+            'description' => 'required|string|min:10|max:300'
+        ]);
+
+        $tag = Tag::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'approved' => $userType == 'Admin' ? true : false,
+        ]);
+
+        if ($userType == 'Admin')
+            return redirect()->route('admin.tags')->with('success', ['Tag created successfully!', '/questions/tag/' . $tag->id]);
+        if ($userType == 'User')
+            return redirect()->route('questions.top')->with('tag-request', ['Your tag creation was requested.', 'Wait for an admin to approve it.']);
     }
 
     /**
@@ -44,7 +112,7 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        //
+        return view('pages.editTag', compact('tag'));
     }
 
     /**
@@ -52,7 +120,18 @@ class TagController extends Controller
      */
     public function update(Request $request, Tag $tag)
     {
-        //
+        if ($request->name !== $tag->name) $request->validate([
+            'name' => 'required|string|max:30|unique:tags',
+        ]);
+        if ($request->username !== $tag->description) $request->validate([
+            'description' => 'required|string|min:10|max:300'
+        ]);
+
+        $tag->name = $request->input('name');
+        $tag->description = $request->input('description');
+
+        $tag->save();
+        return redirect()->route('admin.tags')->with('success', ['Tag edited successfully!', '/questions/tag/' . $tag->id]);
     }
 
     /**
@@ -60,6 +139,7 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        //
+        $tag->delete();
+        return redirect()->back()->with('success', ['Tag deleted successfully!']);
     }
 }

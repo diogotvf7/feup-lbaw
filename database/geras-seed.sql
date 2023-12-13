@@ -87,6 +87,7 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL UNIQUE,
         description TEXT NOT NULL,
+        approved BOOLEAN DEFAULT FALSE,
         search TSVECTOR
     );
 
@@ -168,7 +169,7 @@ CREATE TABLE
 CREATE TABLE
     question_tag (
         question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
-        tag_id INTEGER NOT NULL REFERENCES tags (id), --Temos um trigger para quando se apaga uma tag
+        tag_id INTEGER NOT NULL REFERENCES tags (id) ON DELETE CASCADE, --Temos um trigger para quando se apaga uma tag
         PRIMARY KEY (question_id, tag_id)
     );
 
@@ -568,40 +569,6 @@ CREATE TRIGGER tsvectors_update_content_version
         EXECUTE PROCEDURE tsvectors_update_content_version();
 		
 -- TRIGGER 09
--- If a question has no tag, it is removed
-
-DROP FUNCTION IF EXISTS remove_question_no_tag() CASCADE; 
-
-CREATE FUNCTION remove_question_no_tag() RETURNS TRIGGER AS
-$BODY$
-DECLARE
-    question_id INT;
-    question_count INT;
-BEGIN
-    question_id := OLD.id;
-    
-    DELETE FROM question_tag WHERE tag_id = question_id;
-    
-    FOR question_id IN SELECT DISTINCT question_id FROM question_tag
-    LOOP
-        SELECT COUNT(*) INTO question_count FROM question_tag WHERE question_id = question_id;
-        
-        IF question_count = 0 THEN
-            DELETE FROM questions WHERE id = question_id;
-        END IF;
-    END LOOP;
-    
-    RETURN OLD;
-END
-$BODY$
-LANGUAGE plpgsql;
-
-CREATE TRIGGER remove_question_no_tag
-        BEFORE DELETE ON tags
-        FOR EACH ROW
-        EXECUTE PROCEDURE remove_question_no_tag();
-		
--- TRIGGER 10
 -- A user gains experience by writing a question
 
 DROP FUNCTION IF EXISTS update_experience_question() CASCADE;
@@ -624,7 +591,7 @@ CREATE TRIGGER update_experience_question
         EXECUTE PROCEDURE update_experience_question();
 
 
--- TRIGGER 11
+-- TRIGGER 10
 -- A user gains experience by writing an answer
 
 DROP FUNCTION IF EXISTS update_experience_answer() CASCADE;
@@ -647,7 +614,7 @@ CREATE TRIGGER update_experience_answer
         EXECUTE PROCEDURE update_experience_answer();
 
 		
--- TRIGGER 12
+-- TRIGGER 11
 -- A content version cannot be related to more than five annexes
 
 DROP FUNCTION IF EXISTS verify_annexes() CASCADE;
@@ -669,7 +636,7 @@ CREATE TRIGGER verify_annexes
         FOR EACH ROW
         EXECUTE PROCEDURE verify_annexes();
 		
--- TRIGGER 13
+-- TRIGGER 12
 -- Prevent self voting
 
 DROP FUNCTION IF EXISTS prevent_self_voting() CASCADE;
@@ -699,7 +666,7 @@ CREATE TRIGGER prevent_self_voting
         FOR EACH ROW
         EXECUTE PROCEDURE prevent_self_voting();	
 		
--- TRIGGER 14
+-- TRIGGER 13
 -- A user can't answer their own questions
 
 DROP FUNCTION IF EXISTS prevent_self_answering() CASCADE;
@@ -1229,7 +1196,7 @@ VALUES
         'user1@example.com',
         'John Smith',
         'jsmith',
-        '$2y$10$1qAzY9UGNbT/N9wX26Oz9OfRj38uSyvBf86hsA0s4tY1o4l4.IRL2',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile1.jpg',
         10,
         100,
@@ -1240,7 +1207,7 @@ VALUES
         'user2@example.com',
         'Emily Johnson',
         'ejohnson',
-        '$2y$10$hGVyf4OoCZ8gjOWR/bWWBO1VtWQV9/K8vWeMCTovMCzgrfCgTtA7m',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile2.jpg',
         5,
         75,
@@ -1251,7 +1218,7 @@ VALUES
         'user3@example.com',
         'Michael Williams',
         'mwilliams',
-        '$2y$10$J7v4ie4C0hTVnxjtEmuOsbZPfi1HPWhL0.1Qg2hqC3PLSbE1MQYra',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile3.jpg',
         15,
         200,
@@ -1262,7 +1229,7 @@ VALUES
         'user4@example.com',
         'Sophia Jones',
         'sjones',
-        '$2y$10$e6ixWp.8eNqGdNWAPdJlMuPGWw8tUV7TVlwK3WjBqsJvIHgCBTpI6',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile4.jpg',
         20,
         250,
@@ -1273,7 +1240,7 @@ VALUES
         'user5@example.com',
         'William Davis',
         'wdavis',
-        '$2y$10$aP/3ex.d5DyzT9UjWxR9TOq/0l7B4zMeJ8AjJsLf6vcW.4QF2o3wG',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile5.jpg',
         8,
         90,
@@ -1284,7 +1251,7 @@ VALUES
         'user6@example.com',
         'Olivia Martinez',
         'omartinez',
-        '$2y$10$IRm6eZki4Vly9q/Qef9/iu5e.sjJG7s0Q0Gy51WJ4vlme04FJYjpe',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile6.jpg',
         12,
         150,
@@ -1295,7 +1262,7 @@ VALUES
         'user7@example.com',
         'James Brown',
         'jbrown',
-        '$2y$10$0HVYvWTqRO8Sasqj3cTxGOTZgbl85IjfaAq6q7H.o.3ctk2w6nc/q',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile7.jpg',
         25,
         300,
@@ -1306,7 +1273,7 @@ VALUES
         'user8@example.com',
         'Charlotte Wilson',
         'cwilson',
-        '$2y$10$3WGOq8tGKcn.HT.dZ5I16epYjY3JL0UKaKbFRDduObRmtCsnB2F2O',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile8.jpg',
         7,
         80,
@@ -1328,7 +1295,7 @@ VALUES
         'user10@example.com',
         'Emma Anderson',
         'eanderson',
-        '$2y$10$WofMh33rSPWUMAwucVlsTus9VjSZLRRuUUG4btd2LM5F1..4bESa6',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile10.jpg',
         14,
         170,
@@ -1339,7 +1306,7 @@ VALUES
         'user11@example.com',
         'Liam Thomas',
         'lthomas',
-        '$2y$10$QjJTM/DUVF9k14bPw5RTGusN3/tQ10mmBzE6Z2bFYTWuSN1N1GYNK',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile11.jpg',
         22,
         270,
@@ -1350,7 +1317,7 @@ VALUES
         'user12@example.com',
         'Ava Hall',
         'ahall',
-        '$2y$10$By4c/pFJSVVqYr1SEzdqNeL5Im3.MwbIEfGVMJ95hlBsVtVYsE0Fe',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile12.jpg',
         30,
         350,
@@ -1361,7 +1328,7 @@ VALUES
         'user13@example.com',
         'Mason Harris',
         'mharris',
-        '$2y$10$P5nYbl1O/ULcrSx6A.NaCOeMKzSPBc.wqqJqG//XRPdd2/1RwRCxO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile13.jpg',
         6,
         70,
@@ -1372,7 +1339,7 @@ VALUES
         'user14@example.com',
         'Sophia Adams',
         'sadams',
-        '$2y$10$qKMbl7F6sUpa7Tww/mGnouG/Z.I6ED.GmXcBQ1llQBmeZ.DxXp2Ia',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile14.jpg',
         11,
         130,
@@ -1383,7 +1350,7 @@ VALUES
         'user15@example.com',
         'Aiden Clark',
         'aclark',
-        '$2y$10$ANc7tX5l9pA0rpEZnM8G.z9vXteH1wU2eM7rwiSd.GfzTfg1hS.AK',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile15.jpg',
         17,
         190,
@@ -1394,7 +1361,7 @@ VALUES
         'user16@example.com',
         'Olivia Hall',
         'ohall',
-        '$2y$10$Sfb6kOCgybqQ8pC4OWEz3uZY3UpJWqY5pAmeYnCgBfw8Qymr1WCoI',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile16.jpg',
         13,
         160,
@@ -1405,7 +1372,7 @@ VALUES
         'user18@example.com',
         'Amelia Young',
         'ayoung',
-        '$2y$10$6MXnl1GlBf3nVH.V93Ixxeg10/uTRaE0DEZoE8reIvVhTwYwUkDUu',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile18.jpg',
         19,
         230,
@@ -1416,7 +1383,7 @@ VALUES
         'user19@example.com',
         'Jackson Wright',
         'jwright',
-        '$2y$10$EPaX/4YRWK6wI2Tkpwtgj.yCEfpWEnOmMGx3kMeY0YK9LrmYHhktK',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile19.jpg',
         23,
         280,
@@ -1427,7 +1394,7 @@ VALUES
         'user20@example.com',
         'Ella Turner',
         'eturner',
-        '$2y$10$rbX8Szo4IM0LuQ.g9I09wOZOTJc4.GcE0z5HwjjdYweV8b.3LLwv.',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile20.jpg',
         16,
         180,
@@ -1438,7 +1405,7 @@ VALUES
         'user22@example.com',
         'Avery Adams',
         'aadams',
-        '$2y$10$fiARFimZnG07aDT6tNZ/jOTG4mBp5Wq5jYUAb3DpPPeqnX.8XFDfq',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile22.jpg',
         7,
         80,
@@ -1449,7 +1416,7 @@ VALUES
         'user23@example.com',
         'Jacob Garcia',
         'jgarcia',
-        '$2y$10$p1/xuMoq/gcURo.4pk/HX.wzz.jcRz/T7bPGGzTOZViLtOrL2M8bi',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile23.jpg',
         9,
         100,
@@ -1460,7 +1427,7 @@ VALUES
         'user24@example.com',
         'Harper King',
         'hking',
-        '$2y$10$bnYp99w8Kl5TfwZO/MAPn.hIsopNqZWzP9OEF3TTC7Y2fD0x1on7G',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile24.jpg',
         14,
         170,
@@ -1471,7 +1438,7 @@ VALUES
         'user25@example.com',
         'Ethan Parker',
         'eparker',
-        '$2y$10$DVXroVd9.CFAIiDb4XFtBefy17myTOSMmrE1l6u5h/rvWTbPUsMXm',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile25.jpg',
         15,
         180,
@@ -1482,7 +1449,7 @@ VALUES
         'user27@example.com',
         'Mason Murphy',
         'mmurphy',
-        '$2y$10$ABr6Oxw2iVkmK/7Xalp5b.uH.pUjHaCvsvDWakrrDAgMyw/XKpK1S',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile27.jpg',
         12,
         130,
@@ -1493,7 +1460,7 @@ VALUES
         'user28@example.com',
         'Isabella Brooks',
         'ibrooks',
-        '$2y$10$l3VO0Oi/XZmSE/gF96Mg2OTz4sC5UTQgpt3VD/psdjjXtHL4UQ/KG',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile28.jpg',
         11,
         120,
@@ -1504,7 +1471,7 @@ VALUES
         'user29@example.com',
         'Liam Rivera',
         'lrivera',
-        '$2y$10$SxMg6C6.YZ6opzqkeiWJR.Ps.B8ou.7CTQFNGrFlR8ZwUlfIm5N5u',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile29.jpg',
         13,
         150,
@@ -1515,7 +1482,7 @@ VALUES
         'user30@example.com',
         'Aria Ward',
         'award',
-        '$2y$10$zGidb8rRppdo2JY3EkFjS.2B1BQqvyEDbscT8Ax0o/VSYa0hYebCC',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile30.jpg',
         16,
         190,
@@ -1526,7 +1493,7 @@ VALUES
         'user32@example.com',
         'Ava Wood',
         'awood',
-        '$2y$10$pZv4lxKQiDCEA/haRV80E.P.EY.9iDukVwAqjnNAN3zKZsmImKMB.',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile32.jpg',
         17,
         200,
@@ -1537,7 +1504,7 @@ VALUES
         'user33@example.com',
         'Lucas Nelson',
         'lnelson',
-        '$2y$10$aPqxe6XerDViH/9tKyKwse9osvphobFA/xEzVK25cXufqsh8QFwMK',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile33.jpg',
         17,
         200,
@@ -1548,7 +1515,7 @@ VALUES
         'user34@example.com',
         'Sophia Brooks',
         'sbrooks',
-        '$2y$10$Km1ioU11BwDeYrROzCjqAuyso/r3N9SDitKr.XL9czGJtW6aRVWcC',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile34.jpg',
         19,
         220,
@@ -1559,7 +1526,7 @@ VALUES
         'user35@example.com',
         'Oliver Russell',
         'orussell',
-        '$2y$10$r1vS1OO5ozCmYRwEjKQ64ufp2rsVZbXQIdQ5MqV4M4Uj1Izg3QbEi',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile35.jpg',
         22,
         260,
@@ -1570,7 +1537,7 @@ VALUES
         'user37@example.com',
         'Logan Bailey',
         'lbailey',
-        '$2y$10$3FQ3lXFURhWZ6Gc5P1SWeBPmdFjIMb8s/7oJl9QaaZyxry.4ytPXa',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile37.jpg',
         25,
         300,
@@ -1581,7 +1548,7 @@ VALUES
         'user38@example.com',
         'Harper Allen',
         'hallen',
-        '$2y$10$HLrqDaaZlNbOMUyUe57UJOKHvS0jOL8Ff9mjKwLC02xE6jz9hpxW.',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile38.jpg',
         23,
         270,
@@ -1592,7 +1559,7 @@ VALUES
         'user39@example.com',
         'Mason Martin',
         'mmartin',
-        '$2y$10$5HdS3G6ilvLwvamKpiPUAesT8Uv0ZRqPGOMfzUMoqqPpYl5/z8y7.',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile39.jpg',
         21,
         250,
@@ -1603,7 +1570,7 @@ VALUES
         'user40@example.com',
         'Avery Lewis',
         'alewis',
-        '$2y$10$hzpK1Q.B9l9O5Og5VQK.PKOjyJDXKwN9mUIxYO/JFp9V9E8hIM6Iu',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile40.jpg',
         8,
         90,
@@ -1614,7 +1581,7 @@ VALUES
         'user42@example.com',
         'Sophia Turner',
         'sturner',
-        '$2y$10$dwFS5.SiWwO25tUZ.AzG/OX/EM48jUKvoAy2qPOq.3Q4d.J9W2XC2',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile42.jpg',
         12,
         120,
@@ -1625,7 +1592,7 @@ VALUES
         'user43@example.com',
         'Oliver Davis',
         'odavis',
-        '$2y$10$1POEZO1V/1L9xIzPGQ1Al./cvlGtV1KTDbBnC6iOonLb6YFk/K0MW',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile43.jpg',
         15,
         150,
@@ -1636,7 +1603,7 @@ VALUES
         'user44@example.com',
         'Aria Wilson',
         'awilson',
-        '$2y$10$cyLHbC6yss6x/kbEa0KbTOB0hBJDpCbzme0RXww6oFEVO7w6mBBh6',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile44.jpg',
         9,
         90,
@@ -1647,7 +1614,7 @@ VALUES
         'user46@example.com',
         'Charlotte Green',
         'cgreen',
-        '$2y$10$2JmcC.4pVKaS1mzR/hRXEObxkLfdjD.cJIdkau.mP4LhDwtBiV6Qe',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile46.jpg',
         13,
         130,
@@ -1658,7 +1625,7 @@ VALUES
         'user47@example.com',
         'Liam Smith',
         'lsmith',
-        '$2y$10$.Hlq0.4kBGVRJ/kJFWZUEumFwA0mE4Rmqbmq6wSfttwU3JByYsIUW',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile47.jpg',
         14,
         140,
@@ -1669,7 +1636,7 @@ VALUES
         'user48@example.com',
         'Emma Brown',
         'ebrown',
-        '$2y$10$6HvPZO4e2Pp7nUyGQBuMUOx.U/sv.ogchHrx5JrMGfQyDDqUc2P0O',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile48.jpg',
         7,
         70,
@@ -1680,7 +1647,7 @@ VALUES
         'user50@example.com',
         'Olivia Johnson',
         'ojohnson',
-        '$2y$10$8rm6W5lwDmMl9H7sAz0JKOzv9WQRyZou34sveGfgO0cxGHfTGlWCS',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile50.jpg',
         18,
         180,
@@ -1691,7 +1658,7 @@ VALUES
         'user51@example.com',
         'Noah Martinez',
         'nmartinez',
-        '$2y$10$l1VJUV4eOkTeuE/N3AJ5CeXNLGhPtMCTWLN1Z6bHcCjPKAggjyQHq',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile51.jpg',
         16,
         175,
@@ -1702,7 +1669,7 @@ VALUES
         'user52@example.com',
         'Emma Harris',
         'eharris',
-        '$2y$10$40UGD3G4PI2w3xGgKWfz6OVUUGV4IQ7TqBoBiV7NojHdwjEze9wXm',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile52.jpg',
         15,
         165,
@@ -1713,7 +1680,7 @@ VALUES
         'user53@example.com',
         'Liam Wilson',
         'lwilson',
-        '$2y$10$3tvcv9JXFwLvz1UAF8oOh.TSXiAeeKpVmkK5URZ3QKoJKP7w6TCYS',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile53.jpg',
         14,
         155,
@@ -1724,7 +1691,7 @@ VALUES
         'user55@example.com',
         'Mason Davis',
         'mdavis',
-        '$2y$10$V9yV31OC90XM7pKQl6flUOMCe7WvHgzTFdjhKUw5as88gUjwpsQoq',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile55.jpg',
         11,
         145,
@@ -1735,7 +1702,7 @@ VALUES
         'user56@example.com',
         'Avery Thompson',
         'athompson',
-        '$2y$10$nmdYU4mKzVKo0ndq/KlRZ.G9rWwY80NeyVVKgkw72FL1ElVugyrzG',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile56.jpg',
         18,
         180,
@@ -1746,7 +1713,7 @@ VALUES
         'user57@example.com',
         'Olivia Scott',
         'oscott_45',
-        '$2y$10$4JmbdeB0WYCegjPTz4H7E.cBd8lGRVo64JzRBBBHF6CBjuXXP/VFe',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile57.jpg',
         12,
         150,
@@ -1757,7 +1724,7 @@ VALUES
         'user58@example.com',
         'Jackson Clark',
         'jclark',
-        '$2y$10$0lSRN1k1zzJV1t1aUvSCHepnyBSfifDXRxKApEL0DChVs8V.0fEhq',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile58.jpg',
         19,
         190,
@@ -1768,7 +1735,7 @@ VALUES
         'user60@example.com',
         'Logan Wilson',
         'lwilson2',
-        '$2y$10$I0N1c1bNkylV7hQpmT1RCOMUNAJdxxB6b5XAK2TtvcXV.K8YF9Ohq',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile60.jpg',
         10,
         140,
@@ -1779,7 +1746,7 @@ VALUES
         'user61@example.com',
         'Noah Wright',
         'nwright',
-        '$2y$10$c3VqPv4J6MPSwCdsP.G9MeMk0XgjqJZtH8tNUXsFDMqNLoYIyXEmW',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile61.jpg',
         15,
         170,
@@ -1790,7 +1757,7 @@ VALUES
         'user62@example.com',
         'Harper Turner',
         'hturner',
-        '$2y$10$I0ExedQ7gE9GwZC7c29MaenxYyLHzBbSS2QYbSJVlX1KcnM2I5qKm',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile62.jpg',
         16,
         175,
@@ -1801,7 +1768,7 @@ VALUES
         'user63@example.com',
         'Lucas Harris',
         'lharris',
-        '$2y$10$4sdYfcmQk.t5dBETMck0kO..8a0OFUfN6L3QfT9D4/Mb96zg48kXK',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile63.jpg',
         14,
         155,
@@ -1812,7 +1779,7 @@ VALUES
         'user64@example.com',
         'Aria Davis',
         'adavis',
-        '$2y$10$eHVXh2Q67zy7Dbrbp.MQGeuFEm0TGBqZZ4kH26X8idg0YAGnWZIXy',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile64.jpg',
         12,
         145,
@@ -1823,7 +1790,7 @@ VALUES
         'user65@example.com',
         'Logan Martinez',
         'lmartinez',
-        '$2y$10$lEdXJ3IahG/hVXHzHr1NveCOyrxkouAVxzYJG7RrNnt7jz6jK9W8y',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile65.jpg',
         19,
         190,
@@ -1834,7 +1801,7 @@ VALUES
         'user66@example.com',
         'Oliver Green',
         'ogreen',
-        '$2y$10$h/GCJ3KWBaDWuz5X6Tb21O/EAqOcIJ7Lz0XAvKbo5CG0Kmbjj6dYC',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile66.jpg',
         13,
         160,
@@ -1845,7 +1812,7 @@ VALUES
         'user67@example.com',
         'Charlotte Miller',
         'cmiller',
-        '$2y$10$ZZlXJZUzhG6j6DfWq6SYTe0qFZHzPbwOu0TG5Fc23VUyow4sW0zKe',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile67.jpg',
         11,
         140,
@@ -1856,7 +1823,7 @@ VALUES
         'user68@example.com',
         'Liam King',
         'lking1',
-        '$2y$10$TWyXJMiwhW6j6eYdb6fYc.WlXZ.CrEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile68.jpg',
         18,
         180,
@@ -1867,7 +1834,7 @@ VALUES
         'user69@example.com',
         'Mia Martinez',
         'mmartinez',
-        '$2y$10$rWyXJUiihG5j6eYPb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile69.jpg',
         15,
         175,
@@ -1878,7 +1845,7 @@ VALUES
         'user70@example.com',
         'Aiden Garcia',
         'agarcia',
-        '$2y$10$dGyXJK0zhG5j6eYYb6fYc.WvXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile70.jpg',
         12,
         160,
@@ -1889,7 +1856,7 @@ VALUES
         'user71@example.com',
         'Harper Taylor',
         'htaylor69',
-        '$2y$10$0JUdXJSwhG5j6eYQb6fYc.WxXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile71.jpg',
         16,
         170,
@@ -1900,7 +1867,7 @@ VALUES
         'user72@example.com',
         'William Walker',
         'wwalker',
-        '$2y$10$cWU9XJGuhG5j6eYKb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile72.jpg',
         17,
         180,
@@ -1911,7 +1878,7 @@ VALUES
         'user73@example.com',
         'Emma Scott',
         'escott',
-        '$2y$10$1GyXJ9RuhG5j6eYTb6fYc.WuXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile73.jpg',
         14,
         165,
@@ -1922,7 +1889,7 @@ VALUES
         'user74@example.com',
         'Mason White',
         'mwhite',
-        '$2y$10$2Wz9XJGuhe5j6eYUb6fYc.WtXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile74.jpg',
         11,
         150,
@@ -1933,7 +1900,7 @@ VALUES
         'user75@example.com',
         'Aria Lee',
         'alee56',
-        '$2y$10$6Wz9XJGuhe5j6eYQb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile75.jpg',
         19,
         190,
@@ -1944,7 +1911,7 @@ VALUES
         'user76@example.com',
         'Liam Clark',
         'lclark',
-        '$2y$10$5Gz9XJGuhe5j6eYPb6fYc.WvXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile76.jpg',
         17,
         175,
@@ -1955,7 +1922,7 @@ VALUES
         'user77@example.com',
         'Olivia Martin',
         'omartin',
-        '$2y$10$8Gz9XJGuhe5j6eYOa6fYc.WuXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile77.jpg',
         15,
         160,
@@ -1966,7 +1933,7 @@ VALUES
         'user78@example.com',
         'Elijah King',
         'eking',
-        '$2y$10$V0z9XJGuhe5j6eYTb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile78.jpg',
         13,
         145,
@@ -1977,7 +1944,7 @@ VALUES
         'user79@example.com',
         'Isabella Turner',
         'iturner',
-        '$2y$10$N1z9XJGuhe5j6eYQb6fYc.WvXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile79.jpg',
         18,
         185,
@@ -1988,7 +1955,7 @@ VALUES
         'user80@example.com',
         'Lucas Allen',
         'lallen',
-        '$2y$10$X2z9XJGuhe5j6eYPb6fYc.WuXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile80.jpg',
         12,
         155,
@@ -1999,7 +1966,7 @@ VALUES
         'user81@example.com',
         'Mia Turner',
         'mturner',
-        '$2y$10$Y3z9XJGuhe5j6eYTb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile81.jpg',
         19,
         195,
@@ -2010,7 +1977,7 @@ VALUES
         'user82@example.com',
         'Elijah Davis',
         'edavis',
-        '$2y$10$42z9XJGuhe5j6eYQb6fYc.WvXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile82.jpg',
         16,
         170,
@@ -2021,7 +1988,7 @@ VALUES
         'user83@example.com',
         'Aria Green',
         'agreen',
-        '$2y$10$23z9XJGuhe5j6eYPb6fYc.WuXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile83.jpg',
         15,
         165,
@@ -2032,7 +1999,7 @@ VALUES
         'user84@example.com',
         'Logan King',
         'lking',
-        '$2y$10$62z9XJGuhe5j6eYTb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile84.jpg',
         13,
         155,
@@ -2043,7 +2010,7 @@ VALUES
         'user85@example.com',
         'Amelia Walker',
         'awalker',
-        '$2y$10$J1z9XJGuhe5j6eYQb6fYc.WvXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile85.jpg',
         11,
         150,
@@ -2054,7 +2021,7 @@ VALUES
         'user86@example.com',
         'Mason Harris',
         'mharris45',
-        '$2y$10$R2z9XJGuhe5j6eYPb6fYc.WuXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile86.jpg',
         19,
         185,
@@ -2065,7 +2032,7 @@ VALUES
         'user87@example.com',
         'Oliver Scott',
         'oscott',
-        '$2y$10$V2z9XJGuhe5j6eYTb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile87.jpg',
         17,
         170,
@@ -2076,7 +2043,7 @@ VALUES
         'user88@example.com',
         'Evelyn Allen',
         'eallen',
-        '$2y$10$O2z9XJGuhe5j6eYQb6fYc.WvXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile88.jpg',
         16,
         165,
@@ -2087,7 +2054,7 @@ VALUES
         'user89@example.com',
         'Liam Turner',
         'lturner',
-        '$2y$10$W2z9XJGuhe5j6eYPb6fYc.WuXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile89.jpg',
         12,
         155,
@@ -2098,7 +2065,7 @@ VALUES
         'user90@example.com',
         'Aria Wilson',
         'awilson_lr',
-        '$2y$10$C2z9XJGuhe5j6eYRb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile90.jpg',
         11,
         150,
@@ -2109,7 +2076,7 @@ VALUES
         'user91@example.com',
         'Logan Thompson',
         'lthompson',
-        '$2y$10$a2z9XJGuhe5j6eYSb6fYc.WvXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile91.jpg',
         14,
         160,
@@ -2120,7 +2087,7 @@ VALUES
         'user92@example.com',
         'Amelia White',
         'awhite',
-        '$2y$10$Y2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile92.jpg',
         17,
         175,
@@ -2131,7 +2098,7 @@ VALUES
         'user93@example.com',
         'Liam King',
         'lking2',
-        '$2y$10$Z2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile93.jpg',
         15,
         165,
@@ -2142,7 +2109,7 @@ VALUES
         'user94@example.com',
         'Mia Martinez',
         'mmartinez2',
-        '$2y$10$d2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile94.jpg',
         13,
         155,
@@ -2153,7 +2120,7 @@ VALUES
         'user95@example.com',
         'Aiden Garcia',
         'agarcia443',
-        '$2y$10$f2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile95.jpg',
         11,
         150,
@@ -2164,7 +2131,7 @@ VALUES
         'user96@example.com',
         'Harper Taylor',
         'htaylor',
-        '$2y$10$g2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile96.jpg',
         12,
         155,
@@ -2175,7 +2142,7 @@ VALUES
         'user97@example.com',
         'William Walker',
         'wwalker2',
-        '$2y$10$h2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile97.jpg',
         14,
         160,
@@ -2186,7 +2153,7 @@ VALUES
         'user98@example.com',
         'Sophia White',
         'swhite',
-        '$2y$10$j2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile98.jpg',
         16,
         165,
@@ -2197,7 +2164,7 @@ VALUES
         'user99@example.com',
         'Elijah Wilson',
         'ewilson',
-        '$2y$10$k2z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile99.jpg',
         18,
         170,
@@ -2208,7 +2175,7 @@ VALUES
         'user100@example.com',
         'Olivia Taylor',
         'otaylor',
-        '$2y$10$12z9XJGuhe5j6eYUb6fYc.WwXaZrHMEsAdoTs7s9qo0EKmU8rwzKEO',
+        '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
         '/userFiles/profilePics/profile100.jpg',
         15,
         165,
@@ -2228,55 +2195,82 @@ VALUES
     );
 
 INSERT INTO
-    tags (name, description)
+    tags (name, description, approved)
 VALUES
     (
         'Budgeting',
-        'Managing personal finances and budgeting'
+        'Managing personal finances and budgeting',
+        TRUE
     ),
-    ('Cooking', 'Learning to cook and preparing meals'),
-    ('Laundry', 'Doing laundry and clothing care'),
-    ('Cleaning', 'House cleaning and maintenance'),
+    (
+        'Cooking', 
+        'Learning to cook and preparing meals',
+        TRUE
+    ),
+    (
+        'Laundry', 
+        'Doing laundry and clothing care',
+        TRUE
+    ),
+    (
+        'Cleaning', 
+        'House cleaning and maintenance',
+        TRUE
+    ),
     (
         'Time Management',
-        'Effective time management and productivity'
+        'Effective time management and productivity',
+        TRUE
     ),
     (
         'Job Search',
-        'Searching for jobs and career development'
+        'Searching for jobs and career development',
+        TRUE
     ),
     (
         'Renting',
-        'Renting apartments and property management'
+        'Renting apartments and property management',
+        TRUE
     ),
     (
         'Healthcare',
-        'Managing healthcare and medical appointments'
+        'Managing healthcare and medical appointments',
+        TRUE
     ),
     (
         'Insurance',
-        'Understanding and managing insurance policies'
+        'Understanding and managing insurance policies',
+        TRUE
     ),
-    ('Taxes', 'Filing taxes and tax planning'),
+    (
+        'Taxes', 
+        'Filing taxes and tax planning',
+        TRUE
+    ),
     (
         'Home Repairs',
-        'DIY home repairs and maintenance'
+        'DIY home repairs and maintenance',
+        TRUE
     ),
     (
         'Grocery Shopping',
-        'Effective grocery shopping and meal planning'
+        'Effective grocery shopping and meal planning',
+        TRUE
     ),
     (
         'Car Maintenance',
-        'Maintaining and repairing your vehicle'
+        'Maintaining and repairing your vehicle',
+        FALSE
     ),
     (
         'Networking',
-        'Building professional networks and connections'
+        'Building professional networks and connections',
+        FALSE
     ),
     (
         'Mental Health',
-        'Managing mental health and self-care'
+        'Managing mental health and self-care',
+        FALSE
     );
 
 INSERT INTO

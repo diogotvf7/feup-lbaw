@@ -10,6 +10,13 @@ class Tag extends Model
 {
     use HasFactory;
 
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'name',
+        'description',
+        'approved'
+    ];
+
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 

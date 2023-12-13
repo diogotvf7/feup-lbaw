@@ -2,8 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\CardController;
-use App\Http\Controllers\ItemController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\LoggedMiddleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,10 +25,13 @@ use App\Http\Middleware\AdminMiddleware;
 */
 
 // Home
-Route::redirect('/', '/questions?filter=top');
+Route::redirect('/', '/questions/top');
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
+    Route::get('/questions/top', 'index')->name('questions.top');
+    Route::get('/questions/followed', 'index')->name('questions.followed')->middleware(LoggedMiddleware::class);
+    Route::get('/questions/tag/{id}', 'index')->where('id', '[0-9]+')->name('questions.tag');
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
     Route::get('/questions/search', 'search')->name('search');
@@ -43,22 +46,44 @@ Route::controller(AnswerController::class)->group(function () {
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
 });
 
-Route::controller(UserController::class)->group(function () {
-    Route::get('/admin/users', 'index')->name('users')->middleware(AdminMiddleware::class);
-    Route::patch('/admin/users/{user}/promote', 'promote')->name('user.promote');
-    Route::patch('/admn/users/{user}/demote', 'demote')->name('user.demote');
-    Route::get('/admin/users/{user}/edit', 'edit')->name('admin.users.edit')->middleware(AdminMiddleware::class);;
+Route::middleware(AdminMiddleware::class)->group(function () {
+    Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
+    Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
+    Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
+    Route::get('/admin//user/create', [UserController::class, 'create'])->name('user.create');
+    Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
 
-    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('users.profile');
-    Route::delete('/users/{user}/delete', 'destroy')->name('users.destroy');
-    Route::patch('/users/{user}/update', 'update')->name('users.update');
-    Route::get('/user/create', 'create')->name('user.create')->middleware(AdminMiddleware::class);;
-    Route::post('/user/store', 'store')->name('user.store');
+    Route::get('/admin/tags', [TagController::class, 'list'])->name('admin.tags');
+    Route::patch('/tags/{tag}/approve', [TagController::class, 'approve'])->name('tag.approve');
+    Route::delete('/tags/{tag}/delete', [TagController::class, 'destroy'])->name('tag.destroy');
+    Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
+    Route::patch('/tags/{tag}/update', [TagController::class, 'update'])->name('tag.update');
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::get('/users/{user}', 'show')->where('user', '[0-9]+')->name('user.profile')->middleware(LoggedMiddleware::class);
+    Route::delete('/users/{user}/delete', 'destroy')->name('user.destroy');
+    Route::patch('/users/{user}/update', 'update')->name('user.update');
+    Route::get('/users/{user}/edit', 'edit')->name('user.edit');
+});
+
+Route::controller(TagController::class)->group(function () {
+    Route::get('/tags', 'index')->name('tags');
+    Route::get('/questions/tag/{tag}', 'show')->name('tag.show');
+    Route::get('/tags/create', 'create')->name('tag.create')->middleware(LoggedMiddleware::class);
+    Route::post('/tags/store', 'store')->name('tag.store')->middleware(LoggedMiddleware::class);
 });
 
 //API
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions', 'fetch');
+    Route::get('/api/questions/top', 'fetch');
+    Route::get('/api/questions/followed', 'fetch');
+    Route::get('/api/questions/tag/{id}', 'fetch')->where('id', '[0-9]+');
+});
+
+Route::controller(TagController::class)->group(function () {
+    Route::get('/api/tags', 'fetch');
 });
 
 // Authentication

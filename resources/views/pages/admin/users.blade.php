@@ -137,14 +137,17 @@
                         <td>{{ $user->member_since }}</td>
                         <td>{{ $user->type }}</td>
                         <td class="d-flex flex-wrap gap-1">
-                            <form class="d-inline-block" action="{{ route('users.destroy', $user->id) }}" method="POST">
+                            <a class="btn btn-primary btn-sm" href="{{ route('user.profile', $user->id) }}" aria-label="View User">
+                                <i class="bi bi-eye-fill"></i>
+                            </a>
+                            <form class="d-inline-block" action="{{ route('user.destroy', $user->id) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')" aria-label="Remove User">
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this user?')" aria-label="Delete User">
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </form> 
-                            <form class="d-inline-block" action="{{ route('admin.users.edit', $user->id) }}" method="GET">
+                            <form class="d-inline-block" action="{{ route('user.edit', $user->id) }}" method="GET">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit User">
                                     <i class="bi bi-pencil-fill"></i>
@@ -178,4 +181,13 @@
             {{ $users->appends(['sortField' => $sortField, 'sortDirection' => $sortDirection, 'search' => $searchTerm])->links("pagination::bootstrap-4") }}        
         </div>
     </div>
+    @if (session('success')) 
+        <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <strong>{{ session('success')[0] }}</strong> 
+            @if (isset(session('success')[1]))
+                <a href="{{ session('success')[1] }}" class="alert-link">Check it here</a>.
+            @endif
+        </div>
+    @endif
 @endsection

@@ -14,7 +14,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function list(Request $request)
     {
         $query = User::query();
 
@@ -37,7 +37,7 @@ class UserController extends Controller
 
         $users = $query->paginate(10);
 
-        return view('pages.admin', [
+        return view('pages.admin.users', [
             'users' => $users,
             'sortField' => $sortField,
             'sortDirection' => $sortDirection,
@@ -51,7 +51,6 @@ class UserController extends Controller
      */
     public function create()
     {
-        //$this->authorize('create');
         return view('pages.createUser');
     }
 
@@ -67,7 +66,7 @@ class UserController extends Controller
             'password' => 'required|min:8|confirmed'
         ]);
 
-        User::create([
+        $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
             'email' => $request->email,
@@ -75,7 +74,7 @@ class UserController extends Controller
             'type' => $request->has('is_admin') ? 'Admin' : 'User'
         ]);
 
-        return redirect()->route('users');
+        return redirect()->route('admin.users')->with('success', ['User create successfully!', '/users/' . $user->id]);
     }
 
     /**
@@ -83,7 +82,6 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //$this->authorize('viewAny');
         return view('pages.profile', ['user' => $user]);
     }
 
@@ -93,6 +91,7 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
+        $this->authorize('selfOrAdmin', $user);
         return view('pages.editUser', compact('user'));
     }
 
@@ -101,7 +100,7 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        $this->authorize('update', $user);
+        $this->authorize('selfOrAdmin', $user);
 
         if ($request->name !== $user->name) $request->validate([
             'name' => 'nullable|string|max:250',
@@ -123,7 +122,9 @@ class UserController extends Controller
         }
 
         $user->save();
-        return $request->adminPage ? redirect()->route('users')->with('success', 'Profile edited successfully!') : redirect()->back()->with('success', 'User edited successfully!');
+        return $request->adminPage 
+            ? redirect()->route('admin.users')->with('success', ['User edited successfully!', '/users/' . $user->id])
+            : redirect()->back()->with('success', ['User edited successfully!', '/users/' . $user->id]);
     }
 
     /**
@@ -136,9 +137,9 @@ class UserController extends Controller
         else if ($user->type == 'Banned')
             $user->type = 'User';
         $user->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', [$user->username . ' promoted successfully!']);
     }
-
+    
     /**
      * Demote the specified user.
      */
@@ -150,7 +151,7 @@ class UserController extends Controller
         else if ($user->type == 'User')
             $user->type = 'Banned';
         $user->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', [$user->username . ' demoted successfully!']);
     }
 
     /**
@@ -158,7 +159,8 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
+        $this->authorize('selfOrAdmin', $user);
         $user->delete();
-        return redirect()->back();
+        return redirect()->back()->with('success', [$user->username . ' deleted successfully!']);
     }
 }

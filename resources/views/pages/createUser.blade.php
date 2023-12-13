@@ -72,7 +72,7 @@
 
             <div class="form-group pt-3">
                 <button type="submit" class="btn btn-primary" aria-label="Save Changes">
-                    <i class="bi bi-check-circle"></i> Create User
+                    <i class="bi bi-check-circle"></i> Create Account
                 </button>
             </div>
         </form>

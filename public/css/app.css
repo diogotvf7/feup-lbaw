@@ -1,9 +1,25 @@
-
-
-
 body {
   background-color: #c8eaf7;
+}
 
+#tags-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.tags-preview p {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 600px) {
+  .grid-container {
+    grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+  }
 }
 
 .error {
@@ -43,6 +59,7 @@ body {
   all: unset;
   color: rgb(255, 60, 60);
 }
+
 #profile {
   height: 100%;
 }
