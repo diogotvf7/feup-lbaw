@@ -12,12 +12,13 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class AnswerEvent
+class AnswerEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public $user;
     public $question;
+    public $message;
 
     /**
      * Create a new event instance.
@@ -26,6 +27,7 @@ class AnswerEvent
     {
         $this->user = User::findOrFail($user_id);
         $this->question = Question::findOrFail($question_id);
+        $this->message = $this->user->username . ' answered your ' . $this->question->title . ' question';
     }
 
     /**
@@ -35,7 +37,7 @@ class AnswerEvent
      */
     public function broadcastOn()
     {
-        return [new PrivateChannel('user-' . $this->question->user)];
+        return [new PrivateChannel('user-' . $this->question->user->id)];
     }
 
     // Specify the name of the generated notification.
