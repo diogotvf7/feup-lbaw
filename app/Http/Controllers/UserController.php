@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -59,13 +57,21 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'nullable|string|max:250',
             'username' => 'required|string|min:5|max:30|unique:users',
             'email' => 'required|email|max:250|unique:users',
             'password' => 'required|min:8|confirmed'
         ]);
 
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator)
+                        ->withInput()
+                        ->with('create_error_id', 'yes');
+        };
+  
         $user = User::create([
             'name' => $request->name,
             'username' => $request->username,
@@ -74,7 +80,7 @@ class UserController extends Controller
             'type' => $request->has('is_admin') ? 'Admin' : 'User'
         ]);
 
-        return redirect()->route('admin.users')->with('success', ['User create successfully!', '/users/' . $user->id]);
+        return redirect()->route('admin.users', ['sortField'=> 'id', 'sortDirection' => 'desc'])->with('success', ['User created successfully!', '/users/' . $user->id]);
     }
 
     /**
@@ -89,11 +95,11 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
-    {
-        $this->authorize('selfOrAdmin', $user);
-        return view('pages.editUser', compact('user'));
-    }
+    // public function edit(User $user)
+    // {
+    //     $this->authorize('selfOrAdmin', $user);
+    //     return view('pages.editUser', compact('user'));
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -102,29 +108,35 @@ class UserController extends Controller
     {
         $this->authorize('selfOrAdmin', $user);
 
-        if ($request->name !== $user->name) $request->validate([
-            'name' => 'nullable|string|max:250',
+        $validator = Validator::make($request->all(), [
+            'name' => $request->name !== $user->name ? 
+                'nullable|string|max:250' : '',
+            'username' => $request->username !== $user->username ? 
+                'required|string|min:5|max:30|unique:users' : '',
+            'email' => $request->email !== $user->email ? 
+                'required|email|max:250|unique:users' : '',
+            'password' => $request->password != null ?
+                'required|min:8|confirmed' : ''
         ]);
-        if ($request->username !== $user->username) $request->validate([
-            'username' => 'required|string|min:5|max:30|unique:users'
-        ]);
-        if ($request->email !== $user->email) $request->validate([
-            'email' => 'required|email|max:250|unique:users'
-        ]);
+ 
+        if ($validator->fails()) {
+            return redirect()
+                        ->back()
+                        ->withErrors($validator)
+                        ->withInput()
+                        ->with('edit_error_id', $request->id);
+        };
 
         $user->name = $request->input('name');
         $user->username = $request->input('username');
         $user->email = $request->input('email');
-
-        if ($request->input('password') != null) {
-            $request->validate(['password' => 'required|min:8|confirmed']);
-            $user->password = Hash::make($request->password);
-        }
+        if ($request->input('password') != null) 
+            $user->password = Hash::make($request->password);    
 
         $user->save();
         return $request->adminPage 
-            ? redirect()->route('admin.users')->with('success', ['User edited successfully!', '/users/' . $user->id])
-            : redirect()->back()->with('success', ['User edited successfully!', '/users/' . $user->id]);
+            ? redirect()->back()->with('success', ['User edited successfully!', '/users/' . $user->id])
+            : redirect()->back()->with('success', ['Profile edited successfully!']);
     }
 
     /**

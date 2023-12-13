@@ -1,41 +1,37 @@
 function editAnswer() {
-  var editAnswerButtons = document.querySelectorAll('.edit-answer');
-  editAnswerButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      let card = this.closest('.card');
-      let answerBody = card.querySelector('.answer-body');
-      let editInput = card.querySelector('.edit-input');
-      let submitEdit = card.querySelector('.submit-edit');
-      let stopEditing = card.querySelector('.stop-editing-answer');
+  const answers = document.querySelectorAll('.answer');
 
-      answerBody.classList.add('d-none');
-      editInput.classList.remove('d-none');
-      editInput.removeAttribute('readonly');
-      editInput.value = answerBody.textContent;
-      submitEdit.classList.remove('d-none');
-      stopEditing.classList.remove('d-none');
-      this.classList.add('d-none');
+  answers.forEach(answer => {
+    const editButton = answer.querySelector('.edit-answer');
+    const cancelEditButton = answer.querySelector('.cancel-edit-answer');
+    const submitEditButton = answer.querySelector('.submit-edit-answer');
+    const answerInput = answer.querySelector('.answer-input');
+    const end = answerInput.value.length;
+    answerInput.style.height =
+        (answerInput.scrollHeight > answerInput.clientHeight) ?
+        (answerInput.scrollHeight) + 'px' :
+        '60px';
+
+    if (!editButton) return;
+    editButton.addEventListener('click', function() {
+      editButton.classList.add('d-none');
+      cancelEditButton.classList.remove('d-none');
+      submitEditButton.classList.remove('d-none');
+      answerInput.removeAttribute('readonly');
+      answerInput.classList.remove('form-control-plaintext');
+      answerInput.setSelectionRange(end, end);
+      answerInput.focus();
     });
-  });
-}
 
-function stopEditingAnswer() {
-  var stopEditingButtons = document.querySelectorAll('.stop-editing-answer');
-  stopEditingButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      let card = this.closest('.card');
-      let answerBody = card.querySelector('.answer-body');
-      let editInput = card.querySelector('.edit-input');
-      let submitEdit = card.querySelector('.submit-edit');
-      let editButton = card.querySelector('.edit-answer');
-
-      answerBody.classList.remove('d-none');
-      editInput.classList.add('d-none');
-      submitEdit.classList.add('d-none');
-      this.classList.add('d-none');
+    if (!cancelEditButton) return;
+    cancelEditButton.addEventListener('click', function() {
       editButton.classList.remove('d-none');
+      cancelEditButton.classList.add('d-none');
+      submitEditButton.classList.add('d-none');
+      answerInput.setAttribute('readonly', '');
+      answerInput.classList.add('form-control-plaintext');
     });
   });
 }
 
-export {editAnswer, stopEditingAnswer};
+export default editAnswer;

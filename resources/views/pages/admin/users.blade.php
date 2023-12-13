@@ -5,7 +5,7 @@
         <form class="d-flex m-2 gap-2">
             <input class="form-control" type="search" name="search" placeholder="Search" value="{{ $searchTerm }}">
             <button class="btn btn-secondary text-nowrap" type="submit">Search user</button>
-            <a class="btn btn-secondary text-nowrap" href="{{ route('user.create') }}">Create user</a>
+            <button id="open-modal" type="button" class="btn btn-secondary text-nowrap">Create user</button>
         </form>
         <table class="table table-hover">
             <thead>
@@ -147,12 +147,15 @@
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </form> 
-                            <form class="d-inline-block" action="{{ route('user.edit', $user->id) }}" method="GET">
+                            <button class="edit-user btn btn-primary btn-sm" aria-label="Edit User">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
+                            <!-- <form class="d-inline-block" action="{{ route('user.edit', $user->id) }}" method="GET">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit User">
                                     <i class="bi bi-pencil-fill"></i>
                                 </button>
-                            </form>
+                            </form> -->
                             @if ($user->type !== 'Admin') 
                                 <form class="d-inline-block" action="{{ route('user.promote', $user->id) }}" method="POST">
                                     {{ csrf_field() }}
@@ -190,4 +193,8 @@
             @endif
         </div>
     @endif
+
+@include('partials.createUser')
+@include('partials.editUser')
+
 @endsection

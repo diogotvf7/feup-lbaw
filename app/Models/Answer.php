@@ -76,7 +76,7 @@ class Answer extends Model
     /**
      * Get the difference between number of upvotes and downvotes on the question.
      */
-    public function voteBalance()
+    public function getVoteBalanceAttribute()
     {
         return count($this->upvotes) - count($this->downvotes);
     }
@@ -104,4 +104,22 @@ class Answer extends Model
     {
         return $this->hasOne(Notification::class);
     }
+
+    /** 
+     * Return the date of the creation of the answer.
+     */
+    public function getCreatedAtAttribute(): string
+    {
+        return $this->firstVersion->date;
+    }
+
+    /**
+     * Return the date of the last edit of the answer.
+     */
+    public function getUpdatedAtAttribute(): string
+    {
+        return $this->updatedVersion->date;
+    }
+
+    protected $appends = ['vote_balance', 'created_at', 'updated_at'];
 }

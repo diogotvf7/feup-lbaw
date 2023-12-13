@@ -38,6 +38,8 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/{question}', 'show')->name('question.show');
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
+    Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/question/downvote/{question}', 'downvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::controller(AnswerController::class)->group(function () {
@@ -45,20 +47,22 @@ Route::controller(AnswerController::class)->group(function () {
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
     Route::get('/answers/event', 'answerEvent')->name('answer.event');
+    Route::patch('/answer/upvote/{answer}', 'upvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
     Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
     Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
-    Route::get('/admin//user/create', [UserController::class, 'create'])->name('user.create');
+    // Route::get('/admin/user/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
 
     Route::get('/admin/tags', [TagController::class, 'list'])->name('admin.tags');
-    Route::patch('/tags/{tag}/approve', [TagController::class, 'approve'])->name('tag.approve');
-    Route::delete('/tags/{tag}/delete', [TagController::class, 'destroy'])->name('tag.destroy');
-    Route::get('/tags/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
-    Route::patch('/tags/{tag}/update', [TagController::class, 'update'])->name('tag.update');
+    Route::patch('/admin/tags/{tag}/approve', [TagController::class, 'approve'])->name('tag.approve');
+    Route::delete('/admin/tags/{tag}/delete', [TagController::class, 'destroy'])->name('tag.destroy');
+    Route::get('/admin/tags/{tag}/edit', [TagController::class, 'edit'])->name('tag.edit');
+    Route::patch('/admin/tags/{tag}/update', [TagController::class, 'update'])->name('tag.update');
 });
 
 Route::controller(UserController::class)->group(function () {
@@ -71,7 +75,7 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags');
     Route::get('/questions/tag/{tag}', 'show')->name('tag.show');
-    Route::get('/tags/create', 'create')->name('tag.create')->middleware(LoggedMiddleware::class);
+    // Route::get('/tags/create', 'create')->name('tag.create')->middleware(LoggedMiddleware::class);
     Route::post('/tags/store', 'store')->name('tag.store')->middleware(LoggedMiddleware::class);
 });
 
@@ -80,11 +84,17 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions', 'fetch');
     Route::get('/api/questions/top', 'fetch');
     Route::get('/api/questions/followed', 'fetch');
-    Route::get('/api/questions/tag/{id}', 'fetch')->where('id', '[0-9]+');
+    Route::get('/api/questions/tag/{tag}', 'fetch')->where('tag', '[0-9]+');
+    Route::get('/api/questions/{question}/answers', 'fetch')->where('question', '[0-9]+');
+});
+
+Route::controller(AnswerController::class)->group(function () {
+    Route::get('/api/answers', 'index');
 });
 
 Route::controller(TagController::class)->group(function () {
     Route::get('/api/tags', 'fetch');
+    Route::get('/api/tags/all', 'fetchAll');
 });
 
 // Authentication

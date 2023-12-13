@@ -1,9 +1,15 @@
-import { editAnswer, stopEditingAnswer } from './answer-edit.js';
-import { editQuestion, stopEditingQuestion } from './question-edit.js';
+import './theme-toggler.js';
+import './scroll-top.js';
+
+import enableTagModal from './add-tags.js';
+import enableUserModal from './add-user.js';
+import loadAnswers from './answers-loader.js';
+import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
+import enableVote from './vote.js';
 
 const currentPath = window.location.pathname;
 
@@ -73,25 +79,33 @@ else if (/^\/tags\/?$/.test(currentPath)) {
   const loader = document.getElementById('loader');
   tagScrollObserver(loader);
 }
-// Edit user profile page
-else if (/^\/users\/[0-9]+\/edit$/.test(currentPath)) {
-  const navbar = document.getElementById('navbar');
-  navbar.style.borderStyle = 'none';
-
-  resetFields(['name', 'username', 'email']);
-}
 // User profile page
 else if (/^\/users\/\w+$/.test(currentPath)) {
-  resetFields(['name', 'username', 'email']);
+  resetFields([
+    '#editor-profile .name', '#editor-profile .username',
+    '#editor-profile .email'
+  ]);
 }
-// Tag edit page
-else if (/^\/tags\/[0-9]+\/edit$/.test(currentPath)) {
-  resetFields(['name', 'description']);
-}
-// Question editing / Answer editing
+// Question editing / Answer editing / Answer loading
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
-  editAnswer();
-  stopEditingAnswer();
   editQuestion();
-  stopEditingQuestion();
+  await loadAnswers();
+  const answersSort = document.getElementById('answers-sort');
+  answersSort.addEventListener('change', loadAnswers);
+  const questionInteractions =
+      document.querySelectorAll('.question-interactions');
+  const answerInteractions = document.querySelectorAll('.answer-interactions');
+  enableVote(questionInteractions, answerInteractions);
+}
+// Create Question page
+else if (/^\/questions\/create$/.test(currentPath)) {
+  enableTagModal();
+}
+// Admin tags page
+else if (/^\/admin\/tags/.test(currentPath)) {
+  enableTagModal();
+}
+// Admin users page
+else if (/^\/admin\/users/.test(currentPath)) {
+  enableUserModal();
 }
