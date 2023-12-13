@@ -18,7 +18,10 @@ if (scrollTopButton && scrollContainer) {
   scrollTopButton.addEventListener('click', backToTop);
 
   function backToTop() {
-    scrollContainer.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
+    if (scrollContainer.scrollTo) {
+      scrollContainer.scrollTo({top: 0, behavior: 'smooth'});
+    } else {
+      document.documentElement.scrollTo({top: 0, behavior: 'smooth'});
+    }
   }
 }

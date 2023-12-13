@@ -22,6 +22,7 @@ function createTagPreview(tag) {
   a.textContent = tag.name;
 
   const description = document.createElement('p');
+  description.classList.add('text-wrap', 'text-break');
   description.textContent = tag.description;
 
   const div = document.createElement('div');
