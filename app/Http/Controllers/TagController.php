@@ -6,6 +6,7 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class TagController extends Controller
 {
@@ -60,6 +61,12 @@ class TagController extends Controller
         return $tags;
     }
 
+    public function fetchAll(Request $request)
+    {
+        return Tag::where('approved', TRUE)
+            ->orWhere('creator', Auth::user()->id)
+            ->get();
+    }
 
     public function approve(Tag $tag) 
     {
@@ -82,21 +89,28 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $userType = Auth::user()->type;
-        $request->validate([
+
+        $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:30|unique:tags',
             'description' => 'required|string|min:10|max:300'
         ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('create_error_id', 'yes');
+        };
 
         $tag = Tag::create([
             'name' => $request->name,
             'description' => $request->description,
             'approved' => $userType == 'Admin' ? true : false,
+            'creator' => Auth::user()->id
         ]);
 
-        if ($userType == 'Admin')
-            return redirect()->route('admin.tags')->with('success', ['Tag created successfully!', '/questions/tag/' . $tag->id]);
-        if ($userType == 'User')
-            return redirect()->route('questions.top')->with('tag-request', ['Your tag creation was requested.', 'Wait for an admin to approve it.']);
+        return redirect()->back()->with('success', ['Tag created successfully!', $tag->id]);
     }
 
     /**
@@ -110,28 +124,38 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tag $tag)
-    {
-        return view('pages.editTag', compact('tag'));
-    }
+    // public function edit(Tag $tag)
+    // {
+    //     return view('pages.editTag', compact('tag'));
+    // }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request)
     {
-        if ($request->name !== $tag->name) $request->validate([
-            'name' => 'required|string|max:30|unique:tags',
+        $tag = Tag::findOrFail($request->id);
+
+        $validator = Validator::make($request->all(), [
+            'name' => $request->name !== $tag->name ? 
+                'required|string|max:30|unique:tags' : '',
+            'description' => $request->description !== $tag->description ? 
+                'required|string|min:10|max:300' : ''
         ]);
-        if ($request->username !== $tag->description) $request->validate([
-            'description' => 'required|string|min:10|max:300'
-        ]);
+
+        if ($validator->fails()) {
+            return redirect()
+                ->back()
+                ->withErrors($validator)
+                ->withInput()
+                ->with('edit_error_id', $tag->id);
+        };
 
         $tag->name = $request->input('name');
         $tag->description = $request->input('description');
 
         $tag->save();
-        return redirect()->route('admin.tags')->with('success', ['Tag edited successfully!', '/questions/tag/' . $tag->id]);
+        return redirect()->back()->with('success', ['Tag edited successfully!', '/questions/tag/' . $tag->id]);
     }
 
     /**

@@ -32,7 +32,7 @@ function createQuestionPreview(question, authenticated) {
   content.classList.add('flex-grow-1');
 
   const title = document.createElement('a');
-  title.classList = 'text-decoration-none';
+  title.classList.add('text-decoration-none', 'text-wrap', 'text-break');
   title.href = '/questions/' + question.id
   title.textContent = question.title;
 
@@ -44,6 +44,7 @@ function createQuestionPreview(question, authenticated) {
   tags.classList.add('d-flex', 'gap-1');
 
   question.tags.forEach(tag => {
+    if (!tag.approved) return;
     const tagElement = document.createElement('a');
     tagElement.href = '/questions/tag/' + tag.id;
     tagElement.classList.add(
@@ -74,7 +75,10 @@ function createQuestionPreview(question, authenticated) {
     publishedInfo.innerHTML = question.user.username;
   }
 
-  publishedInfo.innerHTML += ' asked ' + question.timeAgo;
+  publishedInfo.innerHTML += ' asked ' + question.created +
+      ((question.created !== question.updated) ?
+           ' (updated ' + question.updated + ')' :
+           '');
   published.appendChild(publishedInfo);
 
   questionPreview.append(info, content, published);

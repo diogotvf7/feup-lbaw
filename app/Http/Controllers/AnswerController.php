@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Vote;
 use App\Models\Answer;
 use App\Models\ContentVersion;
 use App\Models\Question;
@@ -129,5 +130,58 @@ class AnswerController extends Controller
         $this->authorize('delete', $answer);
         $answer->delete();
         return redirect()->back()->with('success', 'Answer removed successfully!');
+    }
+
+    public function upvote(Answer $answer)
+    {        
+        $this->authorize('vote', $answer);
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->upvoted('answer', $answer->id)) {
+            Vote::where([
+                ['user_id', $user->id],
+                ['answer_id', $answer->id],
+                ])->delete();
+        } else {
+            if ($user->downvoted('answer', $answer->id))
+                Vote::where([
+                    ['user_id', $user->id],
+                    ['answer_id', $answer->id],
+                    ])->delete();
+            Vote::create([
+                'is_upvote' => true,
+                'type' => 'ANSWER',
+                'user_id' => $user->id,
+                'answer_id' => $answer->id,
+            ]);
+        }
+        return ['voteBalance' => $answer->getVoteBalanceAttribute()];
+    }
+
+    public function downvote(Answer $answer)
+    {
+        $this->authorize('vote', $answer);
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->downvoted('answer', $answer->id)) {
+            Vote::where([
+                ['user_id', $user->id],
+                ['answer_id', $answer->id],
+                ])->delete();
+        } else {
+            if ($user->upvoted('answer', $answer->id))
+                Vote::where([
+                    ['user_id', $user->id],
+                    ['answer_id', $answer->id],
+                    ])->delete();
+            Vote::create([
+                'is_upvote' => false,
+                'type' => 'ANSWER',
+                'user_id' => $user->id,
+                'answer_id' => $answer->id,
+            ]);
+        }    
+
+        return ['voteBalance' => $answer->getVoteBalanceAttribute()];
     }
 }

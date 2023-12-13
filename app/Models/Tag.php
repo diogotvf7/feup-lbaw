@@ -14,7 +14,8 @@ class Tag extends Model
     protected $fillable = [
         'name',
         'description',
-        'approved'
+        'approved',
+        'creator'
     ];
 
     // Don't add create and update timestamps in database.

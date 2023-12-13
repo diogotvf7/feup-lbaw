@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
+<html lang="{{ app()->getLocale() }}" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -12,9 +12,16 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
-    <link href="{{ url('css/lumen.min.css') }}" rel="stylesheet">
+    <link href="{{ url('css/theme.css') }}" rel="stylesheet">
     <link href="{{ url('css/app.css') }}" rel="stylesheet">
     <link href="{{ url('css/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
+
+    <script type="text/javascript" src="{{ url('js/bootstrap.bundle.js') }}" defer>
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
     <script type="text/javascript">
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
@@ -24,12 +31,10 @@
 </head>
 
 <body>
-    <script type="text/javascript" src="{{ url('js/bootstrap.bundle.js') }}" defer>
-    </script>
     <main class="d-flex flex-column vh-100">
         <!-- <main style="height: 85dvh;"> -->
         <header>
-            <nav id="navbar" class="navbar navbar-expand-lg bg-primary" data-bs-theme="dark">
+            <nav id="navbar" class="navbar navbar-expand-lg bg-primary">
                 <div class="container-fluid">
                     <h1><a class="navbar-brand" href="{{ url('/questions?filter=top') }}">
                             <img src="{{ asset('images/logo.svg') }}" alt="Geras Logo" width="64" class="m-2">
@@ -60,6 +65,12 @@
                             </li>
                             @endif
                         </ul>
+                        
+                        <button id="theme-toggle" class="btn btn-link me-3 text-white" type="button">
+                            <i class="bi bi-brightness-high-fill d-block-light d-none"></i>
+                            <i class="bi bi-moon-stars-fill d-block-dark d-none"></i>
+                        </button>
+
                         <div class="d-flex flex-row" style="max-width: 70%;">
                             <form class="d-flex" action="{{ route('search') }}" method="GET">
                                 {{ csrf_field() }}

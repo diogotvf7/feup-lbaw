@@ -13,7 +13,7 @@
                     <label for="email" class="form-label mt-4">E-mail address</label>
                     <input id="email" type="email" name="email" class="form-control" placeholder="Enter your email" value="{{ old('email') }}" required autofocus>
                     @if ($errors->has('email'))
-                        <span class="error">
+                        <span class="text-danger">
                             {{ $errors->first('email') }}
                         </span>
                     @endif        
@@ -23,7 +23,7 @@
                     <label for="password" class="form-label mt-4">Password</label>
                     <input id="password" type="password" name="password" class="form-control" placeholder="Enter your password" required>
                     @if ($errors->has('password'))
-                        <span class="error">
+                        <span class="text-danger">
                             {{ $errors->first('password') }}
                         </span>
                     @endif
