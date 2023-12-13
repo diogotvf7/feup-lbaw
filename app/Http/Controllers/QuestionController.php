@@ -16,9 +16,41 @@ class QuestionController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return view('pages.questions');
+        $path = $request->path();
+        $path_segments = explode('/', trim($path, '/'));
+        $title = '';
+        
+        if (isset($path_segments[1])) {
+            if ($path_segments[1] == 'followed') 
+            {
+                $title = '<h1>Followed Question</h1>';
+            }
+            else if ($path_segments[1] == 'top') 
+            {
+                $title = '<h1>Top Questions</h1>';
+            }
+            else if ($path_segments[1] == 'tag')
+            {
+                $tag = Tag::findOrFail($path_segments[2]);
+                if (!$tag->approved) 
+                    return redirect()->intended('questions');
+                $title = '
+                <div>
+                    <h1 class="d-flex flex-wrap gap-3">
+                        Questions Tagged <span class="badge bg-primary">' . $tag->name . '</span>
+                    </h1>
+                    <p>'
+                       . $tag->description .
+                    '</p>
+                </div>
+                ';
+            }
+        } else {
+            $title = '<h1>Recent Questions</h1>';
+        }
+        return view('pages.questions', ['title' => $title]);
     }
 
     public function fetch(Request $request)
@@ -117,6 +149,12 @@ class QuestionController extends Controller
             'question_id' => $question->id
         ]);
 
+        $tags = json_decode($request->tags);
+
+        foreach ($tags as $tag) {
+            $question->tags()->attach($tag->value);
+        }
+
         return redirect('/questions/' . $question->id)->with('question-create', ['Question created successfully!']);
     }
 
@@ -176,9 +214,8 @@ class QuestionController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->searchTerm ? ($request->searchTerm . ':*') : '*';
-        $likeSearchTerm = '*' . $request->searchTerm . '*';
-        $questions = Question::select('questions.*')->join('content_versions', 'content_versions.question_id', '=', 'questions.id')->whereRaw("(search_title || search_body) @@ to_tsquery(replace(?, ' ', '<->')) OR (search_title || search_body) @@ to_tsquery(replace(?, ' ', '|'))", [$searchTerm, $searchTerm])->orderByRaw("questions.title ILIKE ? DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '<->'))) DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '|'))) DESC", [$likeSearchTerm, $searchTerm, $searchTerm])->get();
-        
+        $likeSearchTerm = '%' . $request->searchTerm . '%';
+        $questions = Question::select('questions.*')->whereRaw("search @@ to_tsquery(replace(?, ' ', '<->')) OR search @@ to_tsquery(replace(?, ' ', '|'))", [$searchTerm, $searchTerm])->orderByRaw("title ILIKE ? DESC, ts_rank(search, to_tsquery(replace(?, ' ', '<->'))) DESC, ts_rank(search, to_tsquery(replace(?, ' ', '|'))) DESC", [$likeSearchTerm, $searchTerm, $searchTerm])->get();
         if($request->ajax()){
             return view('pages.search', ['includeAll' => False, 'questions' => $questions, 'query' => $request->searchTerm])->render();
         }   

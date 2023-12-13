@@ -86,10 +86,10 @@ CREATE TABLE
     tags (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL UNIQUE,
-        search_tag_name TSVECTOR NOT NULL,
         description TEXT NOT NULL,
         approved BOOLEAN DEFAULT FALSE,
-        search_tag_description TSVECTOR NOT NULL
+        creator INTEGER REFERENCES users (id) ON DELETE SET NULL,
+        search TSVECTOR
     );
 
 CREATE TABLE
@@ -104,7 +104,7 @@ CREATE TABLE
     questions (
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
-        search_title TSVECTOR NOT NULL,
+        search TSVECTOR,
         author INTEGER REFERENCES users (id) ON DELETE SET NULL
     );
 
@@ -149,7 +149,6 @@ CREATE TABLE
     content_versions (
         id SERIAL PRIMARY KEY,
         body TEXT NOT NULL,
-        search_body TSVECTOR NOT NULL,
         date TIMESTAMP DEFAULT now () NOT NULL,
         type main_content_type NOT NULL,
         question_id INTEGER REFERENCES questions (id) ON DELETE CASCADE,
@@ -283,13 +282,9 @@ CREATE TABLE
 -----------------------------------------
 -- Indexes
 -----------------------------------------
-DROP INDEX IF EXISTS search_question_body;
+DROP INDEX IF EXISTS search_tag;
 
-DROP INDEX IF EXISTS search_question_title;
-
-DROP INDEX IF EXISTS search_tag_description;
-
-DROP INDEX IF EXISTS search_tag_name;
+DROP INDEX IF EXISTS search_question;
 
 DROP INDEX IF EXISTS vote_type;
 
@@ -299,13 +294,9 @@ CREATE INDEX most_recent_version ON content_versions USING btree (date DESC NULL
 
 CREATE INDEX vote_type ON votes USING hash (is_upvote);
 
-CREATE INDEX search_tag_name ON tags USING GIN (search_tag_name);
+CREATE INDEX search_tag ON tags USING GIST (search);
 
-CREATE INDEX search_tag_description ON tags USING GIN (search_tag_description);
-
-CREATE INDEX search_question_title ON questions USING GIN (search_title);
-
-CREATE INDEX search_question_body ON content_versions USING GIST (search_body);
+CREATE INDEX search_question ON questions USING GIST (search);
 
 -----------------------------------------
 -- Triggers
@@ -506,22 +497,21 @@ CREATE FUNCTION tsvectors_update_question() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.search_title = setweight(to_tsvector('english', NEW.title), 'A');
+        NEW.search =  setweight(to_tsvector('english', (SELECT body FROM content_versions WHERE question_id = NEW.id)), 'B') || setweight(to_tsvector('english', NEW.title), 'A');
     END IF;
     
     IF TG_OP = 'UPDATE' THEN
         IF NEW.title <> OLD.title THEN
-            NEW.search_title = setweight(to_tsvector('english', NEW.title), 'A');
+            NEW.search_title = setweight(to_tsvector('english', (SELECT body FROM content_versions WHERE question_id = OLD.id)), 'B') || setweight(to_tsvector('english', NEW.title), 'A');
         END IF;
     END IF;
-    
     RETURN NEW;
 END
 $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_question
-        BEFORE INSERT OR UPDATE ON questions
+        AFTER INSERT OR UPDATE ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_question();
 
@@ -535,16 +525,12 @@ CREATE FUNCTION tsvectors_update_tag() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.search_tag_name = setweight(to_tsvector('english', NEW.name), 'A');
-        NEW.search_tag_description = setweight(to_tsvector('english', NEW.description), 'B');
+        NEW.search = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
     END IF;
     
     IF TG_OP = 'UPDATE' THEN        
-        IF NEW.name <> OLD.name THEN
-            NEW.search_tag_name = setweight(to_tsvector('english', NEW.name), 'A');
-        END IF;
-        IF NEW.description <> OLD.description THEN
-            NEW.search_tag_description = setweight(to_tsvector('english', NEW.description), 'B');
+        IF NEW.name <> OLD.name OR NEW.description <> OLD.description THEN
+            NEW.search_tag_name = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
         END IF;
     END IF;
     
@@ -554,7 +540,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_tag
-        BEFORE INSERT OR UPDATE ON tags
+        AFTER INSERT OR UPDATE ON tags
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_tag();
 
@@ -568,9 +554,11 @@ CREATE FUNCTION tsvectors_update_content_version() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.search_body = setweight(to_tsvector('english', NEW.body), 'B');
+        UPDATE questions
+        SET search = setweight(to_tsvector('english', NEW.body), 'B') || setweight(to_tsvector('english', title), 'A')
+        WHERE id = NEW.question_id;
     END IF;
-    
+
     RETURN NEW;
 END
 $BODY$
@@ -2208,82 +2196,97 @@ VALUES
     );
 
 INSERT INTO
-    tags (name, description, approved)
+    tags (name, description, approved, creator)
 VALUES
     (
         'Budgeting',
         'Managing personal finances and budgeting',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Cooking', 
         'Learning to cook and preparing meals',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Laundry', 
         'Doing laundry and clothing care',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Cleaning', 
         'House cleaning and maintenance',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Time Management',
         'Effective time management and productivity',
-        TRUE
+        TRUE,
+        91
     ),
     (
         'Job Search',
         'Searching for jobs and career development',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Renting',
         'Renting apartments and property management',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Healthcare',
         'Managing healthcare and medical appointments',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Insurance',
         'Understanding and managing insurance policies',
-        TRUE
+        TRUE,
+        NULL
     ),
     (
         'Taxes', 
         'Filing taxes and tax planning',
-        TRUE
+        TRUE, 
+        NULL
     ),
     (
         'Home Repairs',
         'DIY home repairs and maintenance',
-        TRUE
+        TRUE, 
+        NULL
     ),
     (
         'Grocery Shopping',
         'Effective grocery shopping and meal planning',
-        TRUE
+        TRUE,
+        91
     ),
     (
         'Car Maintenance',
         'Maintaining and repairing your vehicle',
-        FALSE
+        FALSE, 
+        91
     ),
     (
         'Networking',
         'Building professional networks and connections',
-        FALSE
+        FALSE,
+        91
     ),
     (
         'Mental Health',
         'Managing mental health and self-care',
-        FALSE
+        FALSE,
+        91
     );
 
 INSERT INTO

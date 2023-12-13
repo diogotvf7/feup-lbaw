@@ -58,7 +58,7 @@
             <input type="hidden" name="question_id" value="{{ $question->id }}">
             <textarea id="question-input" name="body" class="form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $question->updatedVersion->body }}</textarea>
             @if ($errors->has('body'))
-                <span class="error">
+                <span class="text-danger">
                     {{ $errors->first('body') }}
                 </span>
             @endif
