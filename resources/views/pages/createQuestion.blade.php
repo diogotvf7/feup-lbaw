@@ -15,8 +15,8 @@
             </legend>   
 
             <hr>
-
             <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+            <input id="last-created-tag" type="hidden" value="{{ session('success')[1] ?? null }}">
 
             <div class="form-group">
                 <label for="title" class="form-label">Title</label>

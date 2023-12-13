@@ -57,7 +57,13 @@ export default function enableTagModal() {
   const edit_error = document.getElementById('edit-error');
   const create_error = document.getElementById('create-error');
 
-  console.log(edit_error, create_error);
+  const last_created_tag = document.getElementById('last-created-tag');
+
+  if (last_created_tag.value != '') {
+    const tag =
+        tagInput.whitelist.find(tag => tag.value == last_created_tag.value);
+    tagInput.addTags([tag]);
+  }
 
   document.getElementById('open-modal').onclick = function() {
     create_tag_modal.style.display = 'block';
@@ -88,7 +94,7 @@ export default function enableTagModal() {
     }
   };
 
-  if (edit_error.value != '') {
+  if (edit_error && edit_error.value != '') {
     document.querySelectorAll('.edit-tag').forEach((button) => {
       if (button.parentElement.parentElement.children[0].textContent ==
           edit_error.value)
