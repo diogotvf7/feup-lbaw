@@ -86,11 +86,10 @@ CREATE TABLE
     tags (
         id SERIAL PRIMARY KEY,
         name TEXT NOT NULL UNIQUE,
-        search_tag_name TSVECTOR NOT NULL,
         description TEXT NOT NULL,
         approved BOOLEAN DEFAULT FALSE,
         creator INTEGER REFERENCES users (id) ON DELETE SET NULL,
-        search_tag_description TSVECTOR NOT NULL
+        search TSVECTOR
     );
 
 CREATE TABLE
@@ -105,7 +104,7 @@ CREATE TABLE
     questions (
         id SERIAL PRIMARY KEY,
         title TEXT NOT NULL,
-        search_title TSVECTOR NOT NULL,
+        search TSVECTOR,
         author INTEGER REFERENCES users (id) ON DELETE SET NULL
     );
 
@@ -150,7 +149,6 @@ CREATE TABLE
     content_versions (
         id SERIAL PRIMARY KEY,
         body TEXT NOT NULL,
-        search_body TSVECTOR NOT NULL,
         date TIMESTAMP DEFAULT now () NOT NULL,
         type main_content_type NOT NULL,
         question_id INTEGER REFERENCES questions (id) ON DELETE CASCADE,
@@ -284,13 +282,9 @@ CREATE TABLE
 -----------------------------------------
 -- Indexes
 -----------------------------------------
-DROP INDEX IF EXISTS search_question_body;
+DROP INDEX IF EXISTS search_tag;
 
-DROP INDEX IF EXISTS search_question_title;
-
-DROP INDEX IF EXISTS search_tag_description;
-
-DROP INDEX IF EXISTS search_tag_name;
+DROP INDEX IF EXISTS search_question;
 
 DROP INDEX IF EXISTS vote_type;
 
@@ -300,13 +294,9 @@ CREATE INDEX most_recent_version ON content_versions USING btree (date DESC NULL
 
 CREATE INDEX vote_type ON votes USING hash (is_upvote);
 
-CREATE INDEX search_tag_name ON tags USING GIN (search_tag_name);
+CREATE INDEX search_tag ON tags USING GIST (search);
 
-CREATE INDEX search_tag_description ON tags USING GIN (search_tag_description);
-
-CREATE INDEX search_question_title ON questions USING GIN (search_title);
-
-CREATE INDEX search_question_body ON content_versions USING GIST (search_body);
+CREATE INDEX search_question ON questions USING GIST (search);
 
 -----------------------------------------
 -- Triggers
@@ -507,22 +497,21 @@ CREATE FUNCTION tsvectors_update_question() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.search_title = setweight(to_tsvector('english', NEW.title), 'A');
+        NEW.search =  setweight(to_tsvector('english', (SELECT body FROM content_versions WHERE question_id = NEW.id)), 'B') || setweight(to_tsvector('english', NEW.title), 'A');
     END IF;
     
     IF TG_OP = 'UPDATE' THEN
         IF NEW.title <> OLD.title THEN
-            NEW.search_title = setweight(to_tsvector('english', NEW.title), 'A');
+            NEW.search_title = setweight(to_tsvector('english', (SELECT body FROM content_versions WHERE question_id = OLD.id)), 'B') || setweight(to_tsvector('english', NEW.title), 'A');
         END IF;
     END IF;
-    
     RETURN NEW;
 END
 $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_question
-        BEFORE INSERT OR UPDATE ON questions
+        AFTER INSERT OR UPDATE ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_question();
 
@@ -536,16 +525,12 @@ CREATE FUNCTION tsvectors_update_tag() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.search_tag_name = setweight(to_tsvector('english', NEW.name), 'A');
-        NEW.search_tag_description = setweight(to_tsvector('english', NEW.description), 'B');
+        NEW.search = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
     END IF;
     
     IF TG_OP = 'UPDATE' THEN        
-        IF NEW.name <> OLD.name THEN
-            NEW.search_tag_name = setweight(to_tsvector('english', NEW.name), 'A');
-        END IF;
-        IF NEW.description <> OLD.description THEN
-            NEW.search_tag_description = setweight(to_tsvector('english', NEW.description), 'B');
+        IF NEW.name <> OLD.name OR NEW.description <> OLD.description THEN
+            NEW.search_tag_name = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
         END IF;
     END IF;
     
@@ -555,7 +540,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_tag
-        BEFORE INSERT OR UPDATE ON tags
+        AFTER INSERT OR UPDATE ON tags
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_tag();
 
@@ -569,9 +554,11 @@ CREATE FUNCTION tsvectors_update_content_version() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF TG_OP = 'INSERT' THEN
-        NEW.search_body = setweight(to_tsvector('english', NEW.body), 'B');
+        UPDATE questions
+        SET search = setweight(to_tsvector('english', NEW.body), 'B') || setweight(to_tsvector('english', title), 'A')
+        WHERE id = NEW.question_id;
     END IF;
-    
+
     RETURN NEW;
 END
 $BODY$

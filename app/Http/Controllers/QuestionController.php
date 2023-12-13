@@ -214,9 +214,8 @@ class QuestionController extends Controller
     public function search(Request $request)
     {
         $searchTerm = $request->searchTerm ? ($request->searchTerm . ':*') : '*';
-        $likeSearchTerm = '*' . $request->searchTerm . '*';
-        $questions = Question::select('questions.*')->join('content_versions', 'content_versions.question_id', '=', 'questions.id')->whereRaw("(search_title || search_body) @@ to_tsquery(replace(?, ' ', '<->')) OR (search_title || search_body) @@ to_tsquery(replace(?, ' ', '|'))", [$searchTerm, $searchTerm])->orderByRaw("questions.title ILIKE ? DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '<->'))) DESC, ts_rank(search_title || search_body, to_tsquery(replace(?, ' ', '|'))) DESC", [$likeSearchTerm, $searchTerm, $searchTerm])->get();
-        
+        $likeSearchTerm = '%' . $request->searchTerm . '%';
+        $questions = Question::select('questions.*')->whereRaw("search @@ to_tsquery(replace(?, ' ', '<->')) OR search @@ to_tsquery(replace(?, ' ', '|'))", [$searchTerm, $searchTerm])->orderByRaw("title ILIKE ? DESC, ts_rank(search, to_tsquery(replace(?, ' ', '<->'))) DESC, ts_rank(search, to_tsquery(replace(?, ' ', '|'))) DESC", [$likeSearchTerm, $searchTerm, $searchTerm])->get();
         if($request->ajax()){
             return view('pages.search', ['includeAll' => False, 'questions' => $questions, 'query' => $request->searchTerm])->render();
         }   
