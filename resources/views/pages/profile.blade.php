@@ -111,7 +111,7 @@
                         @if (count($user->comments)=== 0)
                         <h4>User has no comments</h4>
                         @else
-                            @foreach ($user->comments as $comments)
+                            @foreach ($user->comments as $comment)
                                 @include('partials.commentPreview', ['comment' => $comment])
                                 @if (!$loop->last)
                                     <hr>

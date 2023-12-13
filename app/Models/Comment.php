@@ -36,7 +36,7 @@ class Comment extends Model
     public function question(): BelongsTo
     {
         return $this->belongsTo(Question::class);
-    }
+    } 
     
     /**
      * Get the votes of the comment.

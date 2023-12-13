@@ -1,4 +1,4 @@
-<article class="answer d-flex gap-3">
+<article id="answer-{{ $answer->id }}" class="answer d-flex gap-3">
     @if (auth()->check())
         <div class="answer-interactions d-flex flex-column align-items-center py-3" data-id="{{ $answer->id }}">
             @if (auth()->user()->id !== $answer->user->id)
