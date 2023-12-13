@@ -77,7 +77,7 @@
                             </div>
 
                             <div style="margin-left: 1em;">
-                                <button type="button" class="btn btn-secondary">
+                                <button id="notification-button" type="button" class="btn btn-secondary">
                                     <i id="notification-icon" class="bi bi-bell-fill"></i>
                                 </button>
                             </div>

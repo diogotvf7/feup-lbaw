@@ -109,8 +109,10 @@ class AnswerController extends Controller
         return redirect()->back()->with('success', 'Answer removed successfully!');
     }
 
-    public function answerEvent()
+    public function answerEvent(Request $request)
     {
-        event(new answerEvent(1, 1));
+        
+        event(new answerEvent(91, 1));
+        return "evented";
     }
 }

@@ -7,7 +7,9 @@ import tagScrollObserver from './tags-fetcher.js';
 
 const currentPath = window.location.pathname;
 
-//Notifications
+//Notifications logic
+
+Pusher.logToConsole = true;
 
 const pusher = new Pusher("37abc4ec3e719eac9ea4", {
   cluster: 'eu',
@@ -16,15 +18,40 @@ const pusher = new Pusher("37abc4ec3e719eac9ea4", {
   forceTLS: true,
 });
 
-console.log(userId);
-
 if (userId !== '') {
-  const channelName = 'private-user-'+ userId;
+  const channelName = 'private-user-' + userId;
   const channel = pusher.subscribe(channelName);
   channel.bind('notification-answer', function (data) {
     console.log(`New answer: ${data.message}`);
   });
 }
+
+//Notification button
+
+export default async function triggerEvent() {
+  return await fetch('/answers/event', {
+    method: 'GET',
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  })
+    .then(function (response) {
+      return response.text()
+    })
+    .then(function (response) {
+      console.log('Triggered event\n');
+      console.log(response);
+    })
+    .catch(function (err) {
+      console.log('Failed to fetch page: ', err);
+    });
+}
+
+const notificationButton = document.getElementById('notification-button');
+notificationButton.addEventListener('click', (e) => {
+  console.log('Going to trigger event\n');
+  triggerEvent();
+})
 
 
 // Search bar live search

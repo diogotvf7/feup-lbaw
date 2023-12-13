@@ -44,6 +44,7 @@ Route::controller(AnswerController::class)->group(function () {
     Route::post('/answers/create', 'store')->name('answer/create');
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
+    Route::get('/answers/event', 'answerEvent')->name('answer.event');
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
