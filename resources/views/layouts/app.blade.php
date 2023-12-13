@@ -97,7 +97,7 @@
                         @endif
                     </div>
                     @if(Auth::check())
-                    <ul id="notifications" class="list-group align-items-center d-flex flex-column list-unstyled position-absolute mt-1" style="z-index: 200; top:100%;">
+                    <ul id="notifications" class="d-none list-group align-items-center d-flex flex-column list-unstyled position-absolute mt-1" style="z-index: 200; top:100%;">
                         @foreach (Auth::user()->notifications as $notification)
                         <li class="list-group-item list-group-item-action">
                             @include('partials.notification', ['notification' => $notification])

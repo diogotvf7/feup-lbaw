@@ -1,5 +1,5 @@
-<article class="d-flex flex-row text-one-line">
-    <p class="text-muted" style="margin-right: 1em;">{{ \Carbon\Carbon::parse($notification->date)->diffForHumans() }}</p>
+<div id="notification-{{$notification->id}}" class="d-flex flex-row text-one-line">
+    <p class="text-secondary" style="margin-right: 1em;">{{ \Carbon\Carbon::parse($notification->date)->diffForHumans() }}</p>
 
     <div class="d-flex flex-row text-one-line">
         @if ($notification->type === "ANSWER")
@@ -26,4 +26,4 @@
         @endif
         @endif
     </div>
-</article>
+</div>

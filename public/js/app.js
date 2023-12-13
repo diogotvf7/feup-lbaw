@@ -32,6 +32,23 @@ if (userId !== '') {
   });
 }
 
+function isVisible(el) {
+  var rect = el.getBoundingClientRect(), top = rect.top, height = rect.height,
+    el = el.parentNode
+  // Check if bottom of the element is off the page
+  if (rect.bottom < 0) return false
+  // Check its within the document viewport
+  if (top > document.documentElement.clientHeight) return false
+  do {
+    rect = el.getBoundingClientRect()
+    if (top <= rect.bottom === false) return false
+    // Check if the element is out of view due to a container scrolling
+    if ((top + height) <= rect.top) return false
+    el = el.parentNode
+  } while (el != document.body)
+  return true
+};
+
 //Notification button
 
 export default async function triggerEvent() {
@@ -54,11 +71,14 @@ export default async function triggerEvent() {
 }
 
 const notificationButton = document.getElementById('notification-button');
+const notifications = document.getElementById('notifications');
+
 notificationButton.addEventListener('click', (e) => {
   console.log('Going to trigger event\n');
   triggerEvent();
-})
-
+  notifications.classList.toggle('d-none');
+}
+)
 
 // Search bar live search
 if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
@@ -93,7 +113,7 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
   const questionInteractions =
-      document.querySelectorAll('.question-interactions');
+    document.querySelectorAll('.question-interactions');
   const answerInteractions = document.querySelectorAll('.answer-interactions');
   enableVote(questionInteractions, answerInteractions);
 }

@@ -225,6 +225,7 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         date TIMESTAMP DEFAULT now () NOT NULL,
         type notification_type NOT NULL,
+        seen BOOLEAN DEFAULT FALSE,
         answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         upvote_id INTEGER REFERENCES votes (id) ON DELETE CASCADE,
         badge_id INTEGER REFERENCES badges (id) ON DELETE CASCADE,
