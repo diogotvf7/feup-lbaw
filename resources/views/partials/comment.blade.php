@@ -1,6 +1,13 @@
 <article class="comment">
     <div class="d-flex justify-content-start gap-2 pt-2">
-        <p class="pt-1">Commented {{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }} by {{ $comment->user->username }}</p>
+        <p class="pt-1">
+            Commented {{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }} by 
+            @if(auth()->check())
+            <a class="text-decoration-none" href="/users/{{ $comment->user->id }}">{{ $comment->user->username }}</a>
+            @else
+            {{ $comment->user->username }}
+            @endif
+        </p>
         <div class="d-flex">
         @if (auth()->check())
             @if (auth()->user()->id === $comment->user->id)

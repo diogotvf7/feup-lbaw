@@ -43,7 +43,7 @@
             <div class="d-flex gap-5">
                 <p class="pt-1">
                     Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
-                    @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
+                    @if(auth()->check())
                     <a class="text-decoration-none" href="/users/{{ $answer->user->id }}">{{ $answer->user->username }}</a>
                     @else
                     {{ $answer->user->username }}
