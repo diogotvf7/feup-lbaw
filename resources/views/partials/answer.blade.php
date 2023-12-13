@@ -1,49 +1,53 @@
-<div class="px-4 pt-2 pb-2">
-    <div class="py-2 card border-secondary mb-3">
-
-        @if(auth()->check() && $question->user->id !== auth()->user()->id)
-        <form class="d-flex px-4 pt-4" method="POST" action="{{ route('answer/create') }}">
+<article class="answer d-flex gap-3">
+    @if (auth()->check())
+        <div class="answer-interactions d-flex flex-column align-items-center py-3" data-id="{{ $answer->id }}">
+            @if (auth()->user()->id !== $answer->user->id)
+                <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+                <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
+                <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+            @endif
+        </div>
+    @endif
+    <div class="flex-grow-1 pt-3">
+        <form method="POST" action="{{ route('answer/edit') }}">
             {{ csrf_field() }}
-            <input type="hidden" name="question_id" value="{{ $question->id }}">
-            <input class="form-control me-sm-2 mw-80" type="text" name="body" placeholder="Add an answer..." required>
-            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Submit</button>
-        </form>
-        @endif
-
-        <section id="answers" class="px-4 pt-4">
-            @foreach($question->answers as $answer)
-            <div class="card border-primary mb-3">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    {{ $answer->user->username }} | {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }}
-                    @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
-                    <div class="d-flex">
-                        @if((auth()->check() && $question->user->id === auth()->user()->id))
-                        <button class="btn btn-secondary my-2 my-sm-0 edit-answer">Edit</button>
-                        <button class="btn btn-secondary my-2 my-sm-0 stop-editing d-none">Stop Editing</button>
-                        @endif
-                        <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
-                            {{ csrf_field() }}
-                            @method('DELETE')
-                            <input type="hidden" name="answer_id" value="{{ $answer->id }}">
-                            <button class="btn btn-secondary my-2 my-sm-0" type="submit">Delete</button>
-                        </form>
-                    </div>
-                    @endif
-                </div>
-                <div class="card-body">
-                    <p class="card-text">
-                        <span class="answer-body">{{ $answer->updatedVersion->body }}</span>
-                    <form method="POST" action="{{ route('answer/edit') }}">
-                        {{ csrf_field() }}
-                        @method('PATCH')
-                        <input type="hidden" name="answer_id" value="{{ $answer->id }}">
-                        <input type="text" name="body" class="form-control edit-input d-none" value="{{ $answer->updatedVersion->body }}">
-                        <button class="btn btn-primary mt-2 d-none submit-edit" type="submit">Submit</button>
-                    </form>
-                    </p>
-                </div>
+            @method('PATCH')
+            <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+            <textarea name="body" class="answer-input form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $answer->updatedVersion->body }}</textarea>
+            @if ($errors->has('body'))
+                <span class="error">
+                    {{ $errors->first('body') }}
+                </span>
+            @endif
+            <div>
+                <button class="cancel-edit-answer btn btn-secondary btn-sm mt-2 d-none" type="button">Cancel</button>
+                <button class="submit-edit-answer btn btn-primary btn-sm mt-2 d-none submit-edit" type="submit">Submit</button>
             </div>
-            @endforeach
-        </section>
+        </form>
+        <div class="d-flex justify-content-end gap-5 align-content-end py-2">
+            <p class="m-0">
+                Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
+                @if(auth()->check() && ($answer->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
+                <a class="text-decoration-none" href="/users/{{ $answer->user->id }}">{{ $answer->user->username }}</a>
+                @else
+                {{ $answer->user->username }}
+                @endif
+            </p>
+            <div class="d-flex">
+                @if (auth()->check())
+                    @if (auth()->user()->id === $answer->user->id)
+                    <button class="edit-answer btn btn-secondary btn-sm my-2 my-sm-0">Edit</button>
+                    @endif
+                    @if (auth()->user()->id === $answer->user->id || auth()->user()->type === "Admin")
+                    <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
+                        {{ csrf_field() }}
+                        @method('DELETE')
+                        <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+                        <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit">Delete</button>
+                    </form>
+                    @endif
+                @endif
+            </div>
+        </div>
     </div>
-</div>
+</article>

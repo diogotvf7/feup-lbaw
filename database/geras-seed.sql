@@ -3913,6 +3913,20 @@ VALUES
         '2016-04-25 23:10:14'
     ),
     (
+        'Plan a budget-friendly trip by researching affordable destinations and exploring discount options for accommodations and transportation. Seek advice from experienced travelers for money-saving tips.',
+        'ANSWER',
+        39,
+        NULL,
+        '2011-04-25 23:10:14'
+    ),
+    (
+        'Plan a budget-friendly trip by researching affordable destinations and exploring discount options for accommodations and transportation. Seek advice from experienced travelers for money-saving tips.',
+        'ANSWER',
+        40,
+        NULL,
+        '2016-07-21 03:10:14'
+    ),
+    (
         'Understand economic principles and their impact on personal finance. Explore investment opportunities and seek advice from financial experts for making sound financial decisions.',
         'ANSWER',
         41,
@@ -3927,6 +3941,20 @@ VALUES
         '2007-06-20 18:44:05'
     ),
     (
+        'Prepare for an economical travel experience by budgeting and seeking affordable travel options. Engage with travel communities for advice on cost-effective travel planning.',
+        'ANSWER',
+        43,
+        NULL,
+        '2007-06-20 18:44:05'
+    ),
+    (
+        'Prepare for an economical travel experience by budgeting and seeking affordable travel options. Engage with travel communities for advice on cost-effective travel planning.',
+        'ANSWER',
+        44,
+        NULL,
+        '2007-06-20 18:44:05'
+    ),
+    (
         'Stay updated on economic news and explore strategies for managing personal finances. Seek advice from financial professionals to navigate economic challenges effectively.',
         'ANSWER',
         45,
@@ -3937,6 +3965,20 @@ VALUES
         'Plan a trip on a tight budget by exploring low-cost travel options and seeking advice from experienced travelers for affordable travel hacks.',
         'ANSWER',
         46,
+        NULL,
+        '2018-07-02 16:29:47'
+    ),
+    (
+        'Plan a trip on a tight budget by exploring low-cost travel options and seeking advice from experienced travelers for affordable travel hacks.',
+        'ANSWER',
+        47,
+        NULL,
+        '2018-07-02 16:29:47'
+    ),
+    (
+        'Plan a trip on a tight budget by exploring low-cost travel options and seeking advice from experienced travelers for affordable travel hacks.',
+        'ANSWER',
+        48,
         NULL,
         '2018-07-02 16:29:47'
     ),
@@ -4855,4 +4897,7 @@ VALUES
     (true, 'ANSWER', NULL, 27, NULL, 47),
     (true, 'ANSWER', NULL, 28, NULL, 48),
     (true, 'ANSWER', NULL, 29, NULL, 49),
-    (true, 'ANSWER', NULL, 30, NULL, 50);
+    (true, 'ANSWER', NULL, 30, NULL, 50),
+    (true, 'QUESTION', NULL, NULL, 6, 91),
+    (true, 'ANSWER', NULL, 11, NULL, 91),
+    (false, 'ANSWER', NULL, 12, NULL, 91);

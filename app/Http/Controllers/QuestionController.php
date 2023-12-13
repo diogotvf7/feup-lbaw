@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Tag;
+use App\Models\Vote;
+use App\Models\User;
 use App\Models\Question;
 use App\Models\ContentVersion;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Tag;
 
 class QuestionController extends Controller
 {
@@ -23,23 +26,42 @@ class QuestionController extends Controller
         $path = $request->path();
         $path_segments = explode('/', trim($path, '/'));
 
-        $query = Question::query();
+        $query = Question::query()
+        ->select('questions.*')
+        ->leftJoin('content_versions', function ($join) {
+            $join->on('content_versions.question_id', '=', 'questions.id')
+                ->where('content_versions.id', '=', function ($sub_query) {
+                    $sub_query->select('id')
+                        ->from('content_versions')
+                        ->whereColumn('question_id', 'questions.id')
+                        ->orderByDesc('date')
+                        ->limit(1);
+                });
+        });
+
         if (isset($path_segments[2])) {
             if ($path_segments[2] == 'followed') 
             {
                 $query->join('followed_questions', 'questions.id', '=', 'followed_questions.question_id')
-                    ->where('user_id', $request->user()->id);
+                    ->where('user_id', $request->user()->id)
+                    ->orderBy('content_versions.date', 'desc');
             }
             else if ($path_segments[2] == 'top') 
             {
-                $query->withCount('upvotes', 'downvotes')->orderBy('upvotes_count', 'desc')->orderBy('downvotes_count');
+                $query->withCount('upvotes', 'downvotes')
+                    ->orderBy('upvotes_count', 'desc')
+                    ->orderBy('downvotes_count');
             }
             else if ($path_segments[2] == 'tag')
             {
                 $query->whereHas('tags', function ($sub_query) use ($path_segments) {
                     $sub_query->where('tags.id', $path_segments[3]);
-                })->get();
+                })
+                ->orderBy('content_versions.date', 'desc')
+                ->get();
             }
+        } else {
+            $query->orderBy('content_versions.date', 'desc');
         }
 
         $questions = $query->paginate(10);
@@ -51,7 +73,8 @@ class QuestionController extends Controller
             $question->answers;
             $question->updatedVersion;
             $question->firstVersion;
-            $question->timeAgo = \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans();
+            $question->created = \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans();
+            $question->updated = \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans();
         }
 
         $response = [
@@ -79,8 +102,8 @@ class QuestionController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|min:5|max:100',
-            'body' => 'required|string|min:20'
+            'title' => 'required|string|min:5|max:150',
+            'body' => 'required|string|min:20|max:30000'
         ]);
 
         $question = Question::create([
@@ -94,7 +117,7 @@ class QuestionController extends Controller
             'question_id' => $question->id
         ]);
 
-        return redirect()->route('questions')->with('question-create', ['Question created successfully!', '/questions/' . $question->id]);
+        return redirect('/questions/' . $question->id)->with('question-create', ['Question created successfully!']);
     }
 
     /**
@@ -102,7 +125,12 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        return view('pages.question', ['question' => $question]);
+        if (!Auth::check()) 
+            return view('pages.question', ['question' => $question, 'vote' => '', 'follow' => '']);
+        $currentUser = User::find(Auth::user()->id);
+        $vote = $currentUser->voted('question', $question->id);
+        $follow = $currentUser->followsQuestion($question->id);
+        return view('pages.question', ['question' => $question, 'vote' => $vote, 'follow' => $follow]);
     }
 
     /**
@@ -111,7 +139,7 @@ class QuestionController extends Controller
     public function edit(Request $request)
     {
         $request->validate([
-            'body' => 'required|string|max:250'
+            'body' => 'required|string|min:20|max:30000'
         ]);
         
         $question = Question::findOrFail($request->question_id);
@@ -154,5 +182,57 @@ class QuestionController extends Controller
             return view('pages.search', ['includeAll' => False, 'questions' => $questions, 'query' => $request->searchTerm])->render();
         }   
         else return view('pages.search', ['includeAll' => True, 'questions' => $questions, 'query' => $request->searchTerm]);
+    }
+
+    public function upvote(Question $question)
+    {        
+        $this->authorize('vote', $question);
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->upvoted('question', $question->id)) {
+            Vote::where([
+                ['user_id', $user->id],
+                ['question_id', $question->id],
+                ])->delete();
+        } else {
+            if ($user->downvoted('question', $question->id))
+                Vote::where([
+                    ['user_id', $user->id],
+                    ['question_id', $question->id],
+                    ])->delete();
+            Vote::create([
+                'is_upvote' => true,
+                'type' => 'QUESTION',
+                'user_id' => $user->id,
+                'question_id' => $question->id,
+            ]);
+        }
+        return ['voteBalance' => $question->voteBalance()];
+    }
+
+    public function downvote(Question $question)
+    {
+        $this->authorize('vote', $question);
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->downvoted('question', $question->id)) {
+            Vote::where([
+                ['user_id', $user->id],
+                ['question_id', $question->id],
+                ])->delete();
+        } else {
+            if ($user->upvoted('question', $question->id))
+                Vote::where([
+                    ['user_id', $user->id],
+                    ['question_id', $question->id],
+                    ])->delete();
+            Vote::create([
+                'is_upvote' => false,
+                'type' => 'QUESTION',
+                'user_id' => $user->id,
+                'question_id' => $question->id,
+            ]);
+        }    
+        return ['voteBalance' => $question->voteBalance()];
     }
 }

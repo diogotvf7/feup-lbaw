@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use Illuminate\Support\Facades\Auth;
 use App\Models\Question;
 use App\Models\User;
 use Illuminate\Auth\Access\Response;
@@ -62,5 +63,13 @@ class QuestionPolicy
     public function forceDelete(User $user, Question $question): bool
     {
         //
+    }
+
+    public function vote(User $user, Question $question): Response
+    {
+        if ($user->id === $question->author) {
+            return Response::deny('You cannot vote your own question!');
+        }
+        return Response::allow();
     }
 }

@@ -2,9 +2,9 @@
 
 @section('content')
 
-<section id="profile">
+<section id="profile" class="scroll-container" style="overflow: scroll;">
 
-    <ul class="nav nav-tabs flex-d" style="background-color: var(--bs-blue);" role="tablist">
+    <ul class="nav nav-tabs d-flex justify-content-center" role="tablist">
         <li class="nav-item" role="presentation">
             <a class="nav-link active" data-bs-toggle="tab" href="#informations" aria-selected=true role="tab">Information</a>
         </li>
@@ -16,9 +16,10 @@
         </li>
     </ul>
 
-    <div id="myTabContent" class="tab-content" class="d-flex flex-row align-items-center" style="height: 100%;">
-        <div class="tab-pane fade active show" id="informations" role="tabpanel" style="height: 100%;">
-            <div class="d-flex justify-content-around align-items-center" style="height: 100%;">
+    <div id="myTabContent" class="tab-content">
+
+        <div class="tab-pane fade active show" id="informations" role="tabpanel">
+            <div class="d-flex flex-column flex-lg-row justify-content-around align-items-center">
                 @include('partials.profileCard')
                 @if (Auth::user()->id === $user->id)
                         @include('partials.editUser')
@@ -26,23 +27,22 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="questions" role="tabpanel">
-
-            <div class="body d-flex flex-column justify-content-evenly align-items-center pt-4">
-                <div class="card text-white bg-info mb-3" style=" width: 20em; max-width: 20em;">
-                    <div class="card-body d-flex  align-items-center flex-column">
+        <div id="questions" role="tabpanel" class="tab-pane fade">
+            <div class="d-flex flex-column justify-content-evenly align-items-center pt-4">
+                <div class="card mb-3 w-25">
+                    <div class="card-body d-flex align-items-center flex-column">
                         <div class="profile-pic">
                         </div>
-                        <h4 class="username">{{$user->username}} </h4>
+                        <h4 class="username">{{$user->username}} questions</h4>
                         <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
-                            <p>Level: {{$user->experience}} </p>
-                            <p>Kleos: {{$user->score}} </p>
+                            <p class="pe-3">Level {{$user->experience}}</p>
+                            <p>Kleos {{$user->score}}</p>
                         </div>
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height:70vh; overflow: scroll; ">
-                    <div class="card-body align-items-center flex-column">
+                <section class="card mb-3 w-75" style="overflow: scroll;">
+                    <div class="card-body">
                         @if(count($user->questions)=== 0)
                         <h4>User has no questions</h4>
                         @else
@@ -58,17 +58,16 @@
             </div>
         </div>
 
-        <div class="tab-pane fade" id="answers" role="tabpanel">
-
-            <div class="body d-flex flex-column justify-content-evenly align-items-center pt-4">
-                <div class="card text-white bg-info mb-3" style=" width: 20em; max-width: 20em;">
-                    <div class="card-body d-flex  align-items-center flex-column">
+        <div id="answers" role="tabpanel" class="tab-pane fade">
+            <div class="d-flex flex-column justify-content-evenly align-items-center pt-4">
+                <div class="card mb-3 w-25">
+                    <div class="card-body d-flex align-items-center flex-column">
                         <div class="profile-pic">
                         </div>
-                        <h4 class="username">{{$user->username}} </h4>
+                        <h4 class="username">{{$user->username}} answers</h4>
                         <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
-                            <p>Level: {{$user->experience}} </p>
-                            <p>Kleos: {{$user->score}} </p>
+                            <p class="pe-3">Level {{$user->experience}} </p>
+                            <p>Kleos {{$user->score}} </p>
                         </div>
                     </div>
                 </div>
@@ -91,6 +90,9 @@
         </div>
     </div>
 </section>
+<button type="button" class="btn btn-primary rounded" id="back-top">
+    <i class="bi bi-arrow-up"></i>
+</button>
 @if (session('success')) 
     <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>

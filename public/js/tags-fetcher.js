@@ -4,9 +4,8 @@ let page = 1;
 function noMoreTags() {
   const text = document.createElement('p');
   text.textContent = 'No more tags to show';
-  text.classList.add('text-center', 'text-secondary');
+  text.classList.add('text-center', 'text-secondary', 'mt-3');
   tagsContainer.after(text);
-  // tagsContainer.appendChild(text);
   loader.remove();
 }
 
@@ -16,15 +15,11 @@ function createTagPreview(tag) {
       'd-flex', 'flex-column', 'justify-content-between', 'tag-preview', 'p-3',
       'm-1', 'border', 'border-primary-subtle', 'rounded');
 
-  const h2 = document.createElement('h2');
-  h2.classList.add('badge', 'bg-primary');
-
   const a = document.createElement('a');
   a.href = '/questions/tag/' + tag.id;
-  a.classList.add('text-reset', 'text-decoration-none');
+  a.classList.add(
+      'badge', 'bg-primary', 'text-white', 'text-decoration-none', 'mb-3');
   a.textContent = tag.name;
-
-  h2.appendChild(a);
 
   const description = document.createElement('p');
   description.textContent = tag.description;
@@ -40,7 +35,7 @@ function createTagPreview(tag) {
 
   div.append(nQuestions, nFollowers);
 
-  tagPreview.append(h2, description, div);
+  tagPreview.append(a, description, div);
 
   return tagPreview;
 }

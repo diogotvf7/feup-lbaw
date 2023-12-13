@@ -129,4 +129,39 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Question::class, 'followed_questions', 'user_id', 'question_id');
     }
+
+    /**
+     * Return true if the user upvoted the question with the given id.
+     */
+    public function upvoted($content_type, $content_id) : string
+    {
+        return $this->votes()
+            ->where('is_upvote', true)
+            ->where($content_type . '_id', $content_id)
+            ->exists();
+    }
+
+    /**
+     * Return true if the user downvoted the question with the given id.
+     */
+    public function downvoted($content_type, $content_id) : string
+    {
+        return $this->votes()
+            ->where($content_type . '_id', $content_id)
+            ->where('is_upvote', false)
+            ->exists();
+    }
+
+    public function voted($type, $content_id) : string
+    {
+        $type .= '_id';
+        $vote = $this->votes()->where($type, $content_id)->first();
+        if ($vote) return $vote->is_upvote ? 'upvote' : 'downvote';
+        return '';
+    }
+
+    public function followsQuestion($question_id) : bool
+    {
+        return $this->followedQuestions()->where('question_id', $question_id)->exists();
+    }
 }

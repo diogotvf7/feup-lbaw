@@ -34,6 +34,14 @@ class AnswerPolicy
         return $user->id !== $question->author;
     }
 
+    public function vote(User $user, Answer $answer): Response
+    {
+        if ($user->id === $answer->author) {
+            return Response::deny('You cannot vote your own answer!');
+        }
+        return Response::allow();
+    }
+
     /**
      * Determine whether the user can update the answer.
      */

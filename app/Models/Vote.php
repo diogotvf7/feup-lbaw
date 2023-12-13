@@ -13,6 +13,15 @@ class Vote extends Model
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
+    protected $fillable = [
+        'is_upvote',
+        'user_id',
+        'question_id',
+        'answer_id',
+        'comment_id',
+        'type'
+    ];
+
     /**
      * Get the user who made the vote.
      */
