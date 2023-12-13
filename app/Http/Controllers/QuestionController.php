@@ -210,18 +210,16 @@ class QuestionController extends Controller
         $user->votes()->where('is_upvote', true)->delete();
     }
 
-    public function follow($id)
+    public function follow(Question $question)
     {
         $user = Auth::user();
-        $question = Question::findOrFail($id);
 
-        if ($user->id->followsQuestion($question->id)){
-            $user->id->followedQuestions()->where('question_id',$question)->delete();
-            return "Unfollowed";}
+        if ($user->followsQuestion($question->id)){
+            $user->followedQuestions()->detach($question->id);
+            return "Unfollowed";
+        }
         else{
-            $user->id->followedQuestions()->create([
-                'question_id' => $question->id,
-            ]);
+            $user->followedQuestions()->attach($question->id);
             return "Followed";
         }
     }
