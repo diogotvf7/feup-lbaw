@@ -10,7 +10,7 @@ use App\Http\Controllers\CommentController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\MailController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\LoggedMiddleware;
 
@@ -118,4 +118,9 @@ Route::controller(LoginController::class)->group(function () {
 Route::controller(RegisterController::class)->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
+});
+
+Route::controller(MailController::class)->group(function () {
+    Route::get('/recover', 'show')->name('recover');
+    Route::post('/send', 'send');
 });
