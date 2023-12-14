@@ -541,7 +541,7 @@ BEGIN
     
     IF TG_OP = 'UPDATE' THEN        
         IF NEW.name <> OLD.name OR NEW.description <> OLD.description THEN
-            NEW.search_tag_name = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
+            NEW.search = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
         END IF;
     END IF;
     

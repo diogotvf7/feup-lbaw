@@ -52,7 +52,7 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const questionInteractions =
     document.querySelectorAll('.question-interactions');
   const answerInteractions = document.querySelectorAll('.answer-interactions');
-  enableVote(questionInteractions, answerInteractions);
+  // enableVote(questionInteractions, answerInteractions);
 }
 // Create Question page
 else if (/^\/questions\/create$/.test(currentPath)) {

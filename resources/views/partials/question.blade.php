@@ -7,7 +7,7 @@
             <div class="d-flex gap-5">
                 <p>
                     Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by 
-                    @if(auth()->check() && ($question->user->id === auth()->user()->id || Auth::user()->type === "Admin"))
+                    @if(auth()->check())
                     <a class="text-decoration-none" href="/users/{{ $question->user->id }}">{{ $question->user->username }}</a>
                     @else
                     {{ $question->user->username }}
@@ -68,6 +68,31 @@
             </div>
         </form>
     </div>
+    <div class="d-flex gap-3">
+        <p class="pt-1">
+            {{ $question->comments->count() }}
+            @if ($question->comments->count() != 1)
+            comments
+            @else
+            comment
+            @endif
+        </p>
+        @if ($question->comments->count() > 0)
+        <div class="px-2">
+            <button class="show-comments btn btn-secondary btn-sm my-2 my-sm-0" data-question-id="{{ $question->id }}">Show comments</button>
+        </div>
+        @endif
+    </div>
+    <section class="ms-4" id="comments-container" data-question-id="{{ $question->id }}" style="display:none">
+    </section>
+    @if (Auth()->check())
+    <form id="comment-form" class="d-flex gap-3 align-items-end my-2" method="POST" action="{{ route('comment/create') }}">
+        {{ csrf_field() }}
+        <input type="hidden" name="question_id" value="{{ $question->id }}">
+        <textarea id="comment-input" name="body" class="form-control" placeholder="Write your comment here..." maxlength="30000" rows="1"></textarea>
+        <button id="submit-comment" class="btn btn-primary" type="submit">Submit</button>
+    </form>
+    @endif
     <footer class="d-flex justify-content-between align-items-center pb-2">
         <h3>
             {{ $question->answers->count() }}
