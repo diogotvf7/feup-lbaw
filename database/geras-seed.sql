@@ -225,6 +225,7 @@ CREATE TABLE
         id SERIAL PRIMARY KEY,
         date TIMESTAMP DEFAULT now () NOT NULL,
         type notification_type NOT NULL,
+        seen BOOLEAN DEFAULT FALSE,
         answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         upvote_id INTEGER REFERENCES votes (id) ON DELETE CASCADE,
         badge_id INTEGER REFERENCES badges (id) ON DELETE CASCADE,
@@ -429,7 +430,7 @@ CREATE FUNCTION send_answer_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     INSERT INTO notifications (date, type, answer_id, user_id)
-    VALUES (NOW(), 'ANSWER', NEW.id, NEW.author);
+    VALUES (NOW(), 'ANSWER', NEW.id, (SELECT author FROM questions WHERE id = NEW.question_id));
 
     RETURN NULL;
 END
@@ -451,8 +452,18 @@ CREATE FUNCTION send_upvote_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.is_upvote THEN
-        INSERT INTO notifications (date, type, upvote_id, user_id)
-        VALUES (NOW(), 'UPVOTE', NEW.id, NEW.user_id);
+        IF NEW.type = 'QUESTION' THEN
+            INSERT INTO notifications (date, type, upvote_id, user_id)
+            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM questions WHERE id = NEW.question_id));
+        END IF;
+        IF NEW.type = 'ANSWER' THEN
+            INSERT INTO notifications (date, type, upvote_id, user_id)
+            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM answers WHERE id = NEW.answer_id));
+        END IF;
+        IF NEW.type = 'COMMENT' THEN
+            INSERT INTO notifications (date, type, upvote_id, user_id)
+            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM comments WHERE id = NEW.comment_id));
+        END IF;
     END IF;
 
     RETURN NULL;
@@ -646,15 +657,15 @@ CREATE FUNCTION prevent_self_voting() RETURNS TRIGGER AS
 $BODY$
 BEGIN
     IF NEW.type = 'QUESTION' AND NEW.user_id = (SELECT author FROM questions WHERE id = NEW.question_id) THEN
-        RAISE EXCEPTION 'You cannot votes on your own question';
+        RAISE EXCEPTION 'You cannot vote on your own question';
     END IF;
 
     IF NEW.type = 'ANSWER' AND NEW.user_id = (SELECT author FROM answers WHERE id = NEW.answer_id) THEN
-        RAISE EXCEPTION 'You cannot votes on your own answer';
+        RAISE EXCEPTION 'You cannot vote on your own answer';
     END IF;
 
     IF NEW.type = 'COMMENT' AND NEW.user_id = (SELECT author FROM comments WHERE id = NEW.comment_id) THEN
-        RAISE EXCEPTION 'You cannot votes on your own comment';
+        RAISE EXCEPTION 'You cannot vote on your own comment';
     END IF;
 
   RETURN NEW;
@@ -2931,7 +2942,7 @@ VALUES
         '2023-03-24 18:18:23'
     ),
     (
-        'Knowing basic home repairs is a valuable skill. Here are some essential repairs every adult should know how to do:',
+        'Im a new homeowner looking to tackle basic home repairs. What are the essential skills and repairs that every adult should know to maintain their home effectively? Whether its fixing a leaky faucet or handling minor electrical issues, what advice can you share for someone getting started with basic home repairs?',
         'QUESTION',
         11,
         NULL,
@@ -3449,7 +3460,7 @@ VALUES
         '2018-02-20 14:16:02'
     ),
     (
-        'Tips for Effective Group Projects in University: What tips can help me excel in group projects at the university level?',
+        'As an introverted engineer interested in networking within the tech industry, Id love some advice. How can I navigate the world of Networking in Tech and overcome the challenges associated with being introverted? What tips do you have for building meaningful connections and advancing in the tech field while staying true to my introverted nature?',
         'QUESTION',
         84,
         NULL,
@@ -3796,18 +3807,18 @@ VALUES
         '2004-09-10 16:59:02'
     ),
     (
-        'Use active learning techniques like summarizing, questioning, and teaching the material to others. Break study sessions into manageable chunks and take breaks for better retention. Experiment with different study environments to find what works best for you.',
+        'Well, you know, home repairs can be a real hassle. My advice? Just ignore those issues until they become major problems. Who needs functioning faucets or working light switches anyway? Embrace the chaos, I say!',
         'ANSWER',
         21,
         NULL,
-        '2007-08-15 19:40:02'
+        '2018-08-15 19:40:02'
     ),
     (
-        'Join clubs, student organizations, or volunteer groups related to your interests. Attend workshops, seminars, and events on campus to broaden your horizons. Don''t be afraid to step out of your comfort zone and try something new.',
+        'While home repairs can be intimidating, it''s essential to address issues promptly. Start by learning basic plumbing skills like fixing a leaky faucet or unclogging drains. Familiarize yourself with simple electrical work, such as changing a light switch. Take it one step at a time, and consider watching online tutorials for guidance. Building these skills gradually will help you become more confident in handling basic home repairs.',
         'ANSWER',
         22,
         NULL,
-        '2000-01-15 14:14:57'
+        '2020-01-15 14:14:57'
     ),
     (
         'Practice time management, set realistic goals, and prioritize self-care activities. Seek support from professors, counselors, or support groups if you''re feeling overwhelmed. Remember that it''s okay to ask for help.',
@@ -4864,9 +4875,9 @@ INSERT INTO
         user_id
     )
 VALUES
-    (true, 'QUESTION', NULL, NULL, 4, 1),
-    (false, 'ANSWER', NULL, 3, NULL, 2),
-    (true, 'ANSWER', NULL, 10, NULL, 3),
+    (true, 'QUESTION', NULL, NULL, 3, 1),
+    (false, 'ANSWER', NULL, 9, NULL, 2),
+    (true, 'ANSWER', NULL, 9, NULL, 3),
     (true, 'COMMENT', 21, NULL, NULL, 4),
     (false, 'COMMENT', 11, NULL, NULL, 5),
     (true, 'ANSWER', NULL, 7, NULL, 6),

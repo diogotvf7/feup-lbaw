@@ -14,11 +14,29 @@ class Notification extends Model
     public $timestamps  = false;
 
     /**
-     * Get the user who receives the notification.
+     * Get the user who receives the notification
      */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
-    
+
+    /**
+     * Get the answer this notification relates to
+     */
+    public function answer(): BelongsTo
+    {
+        if ($this->type == "ANSWER")
+            return $this->belongsTo(Answer::class);
+    }
+
+    /**
+     * Get the upvote this notification relates to
+     */
+    public function upvote(): BelongsTo
+    {
+        if ($this->type == "UPVOTE")
+            return $this->belongsTo(Vote::class);
+    }
+
 }
