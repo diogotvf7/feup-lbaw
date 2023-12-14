@@ -8,7 +8,7 @@
         </div>
         @else
         <div class="flex-grow-1">
-            <a href="{{route('question.show',$comment->answer->question->id)}}#answer-{{$comment->answer_id}}" class="text-decoration-none text-wrap text-break">{{ $comment->answer->question->title }}</a>
+            <a href="{{route('question.show',$comment->answer->question->id)}}#answer-{{$comment->answer_id}}"  class="text-decoration-none text-wrap text-break">{{ $comment->answer->question->title }}</a>
             <p class="preview-body text-wrap text-break">{{ $comment->body}}</p>
         </div>
         @endif
