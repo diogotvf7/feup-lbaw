@@ -81,20 +81,24 @@ function upvotePopup(data) {
 }
 
 export function clearNotificationCount() {
-    document.getElementById('notification-button').removeChild(document.getElementById('notification-count'));
+    const notificationButton = document.getElementById('notification-button');
+    const noficationCount = document.getElementById('notification-count');
+    if (notificationButton && noficationCount) { notificationButton.removeChild(noficationCount); }
 }
 
 export function notificationButton() {
     const notificationButton = document.getElementById('notification-button');
     const notifications = document.getElementById('notifications');
 
-    notificationButton.addEventListener('click', (e) => {
-        triggerEvent();
-        makePostRequest('/notifications/read');
-        clearNotificationCount();
-        notifications.classList.toggle('d-none');
+    if (notificationButton) {
+        notificationButton.addEventListener('click', (e) => {
+            triggerEvent();
+            makePostRequest('/notifications/read');
+            clearNotificationCount();
+            notifications.classList.toggle('d-none');
+        }
+        )
     }
-    )
 }
 
 export function dismissNotificationsButton() {
