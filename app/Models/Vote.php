@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Vote extends Model
 {
@@ -35,15 +36,16 @@ class Vote extends Model
      */
     public function content(): BelongsTo
     {
-        switch($this->type){
+        switch ($this->type) {
             case 'QUESTION':
                 return $this->question();
             case 'ANSWER':
                 return $this->answer();
             case 'COMMENT':
                 return $this->comment();
+            default:  return NULL;
         }
-    }    
+    }
 
     /**
      * Get the question of the vote.
@@ -69,5 +71,13 @@ class Vote extends Model
         return $this->belongsTo(Answer::class);
     }
 
-    //TODO: Função que lê content_type e retorna o id content correspondente
+    /**
+     * Get the notification the upvote generated
+     */
+    public function notification(): HasOne
+    {
+        if ($this->is_upvote) {
+            return $this->HasOne(Notification::class);
+        }
+    }
 }
