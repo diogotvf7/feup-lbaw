@@ -9,7 +9,8 @@ use App\Http\Controllers\AnswerController;
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-
+use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\VoteController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\LoggedMiddleware;
 
@@ -49,6 +50,10 @@ Route::controller(AnswerController::class)->group(function () {
     Route::get('/answers/event', 'answerEvent')->name('answer.event');
     Route::patch('/answer/upvote/{answer}', 'upvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
+});
+
+Route::controller(VoteController::class)->group(function () {
+    Route::get('/votes/event', 'voteEvent')->name('vote.event');
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
@@ -95,6 +100,13 @@ Route::controller(AnswerController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/api/tags', 'fetch');
     Route::get('/api/tags/all', 'fetchAll');
+});
+
+Route::controller(NotificationController::class)->group(function () {
+    Route::post('/notifications/read', 'read');
+    Route::post('/notifications/delete', 'destroyAll');
+    Route::post('/notifications/delete/{notification}', 'destroy')->where('notification', '[0-9]+');
+    Route::get('/api/notifications', 'fetch');
 });
 
 // Authentication

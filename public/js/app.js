@@ -10,75 +10,12 @@ import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
 import enableVote from './vote.js';
+import enableNotifications, { notificationButton } from './notifications.js';
 
 const currentPath = window.location.pathname;
 
 //Notifications logic
-
-Pusher.logToConsole = true;
-
-const pusher = new Pusher("37abc4ec3e719eac9ea4", {
-  cluster: 'eu',
-  encrypted: true,
-  authEndpoint: "/broadcasting/auth",
-  forceTLS: true,
-});
-
-if (userId !== '') {
-  const channelName = 'private-user-' + userId;
-  const channel = pusher.subscribe(channelName);
-  channel.bind('notification-answer', function (data) {
-    console.log(`New answer: ${data.message}`);
-  });
-}
-
-function isVisible(el) {
-  var rect = el.getBoundingClientRect(), top = rect.top, height = rect.height,
-    el = el.parentNode
-  // Check if bottom of the element is off the page
-  if (rect.bottom < 0) return false
-  // Check its within the document viewport
-  if (top > document.documentElement.clientHeight) return false
-  do {
-    rect = el.getBoundingClientRect()
-    if (top <= rect.bottom === false) return false
-    // Check if the element is out of view due to a container scrolling
-    if ((top + height) <= rect.top) return false
-    el = el.parentNode
-  } while (el != document.body)
-  return true
-};
-
-//Notification button
-
-export default async function triggerEvent() {
-  return await fetch('/answers/event', {
-    method: 'GET',
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest',
-    },
-  })
-    .then(function (response) {
-      return response.text()
-    })
-    .then(function (response) {
-      console.log('Triggered event\n');
-      console.log(response);
-    })
-    .catch(function (err) {
-      console.log('Failed to fetch page: ', err);
-    });
-}
-
-const notificationButton = document.getElementById('notification-button');
-const notifications = document.getElementById('notifications');
-
-notificationButton.addEventListener('click', (e) => {
-  console.log('Going to trigger event\n');
-  triggerEvent();
-  notifications.classList.toggle('d-none');
-}
-)
+enableNotifications();
 
 // Search bar live search
 if (/^[/\w, \/]*\/search*$/.test(currentPath)) {

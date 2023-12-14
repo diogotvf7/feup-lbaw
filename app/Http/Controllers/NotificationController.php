@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Notification;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class NotificationController extends Controller
 {
@@ -60,8 +61,21 @@ class NotificationController extends Controller
      */
     public function destroy(Notification $notification)
     {
-        //
+        $notification->delete();
     }
 
-    
+    public function destroyAll()
+    {
+        foreach (Auth::user()->notifications as $notification) $notification->delete();
+    }
+
+    public function read()
+    {
+        Notification::where('user_id', Auth::user()->id)->update(['seen' => "True"]);
+    }
+
+    public function fetch()
+    {
+        return view('partials.notificationsCard');
+    }
 }

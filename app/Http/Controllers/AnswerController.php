@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Models\User;
 use App\Models\Vote;
 use App\Models\Answer;
 use App\Models\ContentVersion;
 use App\Events\AnswerEvent;
+use App\Events\UpvoteEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -135,11 +137,6 @@ class AnswerController extends Controller
         return redirect()->back()->with('success', 'Answer removed successfully!');
     }
 
-    public function answerEvent(Request $request)
-    {
-
-        event(new answerEvent(91, 3));
-    }
     public function upvote(Answer $answer)
     {
         $this->authorize('vote', $answer);
@@ -182,14 +179,25 @@ class AnswerController extends Controller
                     ['user_id', $user->id],
                     ['answer_id', $answer->id],
                 ])->delete();
-            Vote::create([
+            $id = Vote::create([
                 'is_upvote' => false,
                 'type' => 'ANSWER',
                 'user_id' => $user->id,
                 'answer_id' => $answer->id,
-            ]);
+            ])->id;
         }
-
+        $this->upvoteEvent(Auth::user(), $id);
         return ['voteBalance' => $answer->getVoteBalanceAttribute()];
+    }
+
+    public function upvoteEvent($user_id, $vote_id)
+    {
+        event(new UpvoteEvent($user_id, $vote_id));
+    }
+
+    public function answerEvent($user_id, $question_id)
+    {
+
+        event(new answerEvent($user_id, $question_id));
     }
 }

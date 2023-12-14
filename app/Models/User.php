@@ -87,9 +87,9 @@ class User extends Authenticatable
      */
     public function questions(): HasMany
     {
-        return $this->hasMany(Question::class,'author');
+        return $this->hasMany(Question::class, 'author');
     }
-    
+
     /**
      * Get the comments made by the user.
      */
@@ -125,7 +125,7 @@ class User extends Authenticatable
     /**
      * Get the questions that the user follows.
      */
-    public function followedQuestions() : BelongsToMany
+    public function followedQuestions(): BelongsToMany
     {
         return $this->belongsToMany(Question::class, 'followed_questions', 'user_id', 'question_id');
     }
@@ -133,7 +133,7 @@ class User extends Authenticatable
     /**
      * Return true if the user upvoted the question with the given id.
      */
-    public function upvoted($content_type, $content_id) : string
+    public function upvoted($content_type, $content_id): string
     {
         return $this->votes()
             ->where('is_upvote', true)
@@ -144,7 +144,7 @@ class User extends Authenticatable
     /**
      * Return true if the user downvoted the question with the given id.
      */
-    public function downvoted($content_type, $content_id) : string
+    public function downvoted($content_type, $content_id): string
     {
         return $this->votes()
             ->where($content_type . '_id', $content_id)
@@ -152,7 +152,7 @@ class User extends Authenticatable
             ->exists();
     }
 
-    public function voted($type, $content_id) : string
+    public function voted($type, $content_id): string
     {
         $type .= '_id';
         $vote = $this->votes()->where($type, $content_id)->first();
@@ -160,8 +160,15 @@ class User extends Authenticatable
         return '';
     }
 
-    public function followsQuestion($question_id) : bool
+    public function followsQuestion($question_id): bool
     {
         return $this->followedQuestions()->where('question_id', $question_id)->exists();
     }
+
+    public function getUnreadNotificationsAttribute()
+    {
+        return $this->notifications()->where('seen', 'false')->count();
+    }
+
+    protected $appends = ['unreadNotifications'];
 }
