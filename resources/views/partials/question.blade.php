@@ -63,7 +63,7 @@
             <input type="hidden" name="question_id" value="{{ $question->id }}">
             <div class="d-flex gap-3 pb-2 align-items-center">
                 <label id="tag-label" for="tags" class="form-label d-none pt-1">Tags</label>
-                <input id="tag-input" type="text" name="tags" class="form-control d-none">
+                <input id="tag-input" type="text" name="tags" class="form-control d-none" data-question-tags="{{ implode(',', $question->tags->pluck('name')->toArray()) }}">
             </div>
             <textarea id="question-input" name="body" class="form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $question->updatedVersion->body }}</textarea>
             @if ($errors->has('body'))

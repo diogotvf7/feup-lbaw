@@ -7,6 +7,7 @@ function editQuestion() {
   const tagLabel = document.getElementById('tag-label');
   const tagInput = document.getElementById('tag-input');
   let tagifyInstance;
+  let initialTagsAdded = false;
 
   const end = questionInput.value.length;
   questionInput.style.height =
@@ -46,6 +47,11 @@ function editQuestion() {
           dropdownItem: suggestionItemTemplate,
         },
       });
+      if (!initialTagsAdded) {
+        const existingTags = tagInput.getAttribute('data-question-tags').split(',');
+        tagifyInstance.addTags(existingTags);
+        initialTagsAdded = true;
+      }
     }
   });
 
