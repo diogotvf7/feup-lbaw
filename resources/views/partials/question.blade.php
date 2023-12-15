@@ -36,6 +36,11 @@
             @endif
         </div>
     </header>
+    <div class="d-flex gap-1">
+    @foreach ($question->tags as $tag)
+        <p class="badge badge-primary bg-primary text-decoration-none m-0">{{$tag->name}}</p>
+    @endforeach
+    </div>
     <hr>
     <div class="d-flex gap-3 my-3">
         @if (auth()->check())
@@ -56,6 +61,10 @@
             {{ csrf_field() }}
             @method('PATCH')
             <input type="hidden" name="question_id" value="{{ $question->id }}">
+            <div class="d-flex gap-3 pb-2 align-items-center">
+                <label id="tag-label" for="tags" class="form-label d-none pt-1">Tags</label>
+                <input id="tag-input" type="text" name="tags" class="form-control d-none">
+            </div>
             <textarea id="question-input" name="body" class="form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $question->updatedVersion->body }}</textarea>
             @if ($errors->has('body'))
                 <span class="text-danger">

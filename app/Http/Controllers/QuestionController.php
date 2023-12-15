@@ -189,6 +189,14 @@ class QuestionController extends Controller
         $contentversion->question_id = $request->question_id;
         $contentversion->save();
 
+        $question->tags()->detach();
+        $tags = json_decode($request->tags);
+        if($tags) {
+            foreach ($tags as $tag) {
+                $question->tags()->attach($tag->value);
+            }
+        }
+        
         return redirect()->back()->with('success', 'Question edited successfully!');
     }
 

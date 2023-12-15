@@ -3,32 +3,7 @@ import resetFields from './reset-field.js';
 const create_tag_modal = document.getElementById('create-tag');
 const edit_tag_modal = document.getElementById('edit-tag');
 
-let tagInput = document.getElementById('tag-input');
-if (tagInput) {
-  tagInput = new Tagify(document.getElementById('tag-input'), {
-    tagTextProp: 'name',
-    whitelist: await fetchTags(),
-    enforceWhitelist: true,
-    skipInvalid: true,
-    dropdown: {
-      enabled: 0,
-      closeOnSelect: false,
-      searchKeys: [
-        'name',
-      ]
-    },
-    autocomplete: {
-      enabled: 1,
-      // rightKey: true,
-    },
-    templates: {
-      dropdownItem: suggestionItemTemplate,
-    },
-  });
-}
-
 async function fetchTags() {
-  const url = new URL(window.location.href);
   const request = await fetch('/api/tags/all');
   const response = await request.json();
   response.forEach((tag) => {
@@ -53,7 +28,32 @@ function suggestionItemTemplate(tagData) {
   `
 }
 
-export default function enableTagModal() {
+export default async function enableTagModal() {
+  
+  let tagInput = document.getElementById('tag-input');
+  if (tagInput) {
+    tagInput = new Tagify(document.getElementById('tag-input'), {
+      tagTextProp: 'name',
+      whitelist: await fetchTags(),
+      enforceWhitelist: true,
+      skipInvalid: true,
+      dropdown: {
+        enabled: 0,
+        closeOnSelect: false,
+        searchKeys: [
+          'name',
+        ]
+      },
+      autocomplete: {
+        enabled: 1,
+        // rightKey: true,
+      },
+      templates: {
+        dropdownItem: suggestionItemTemplate,
+      },
+    });
+  }
+
   const edit_error = document.getElementById('edit-error');
   const create_error = document.getElementById('create-error');
 
