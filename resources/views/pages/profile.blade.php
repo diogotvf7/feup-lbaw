@@ -30,15 +30,15 @@
                     @endif
                 </div>
                 @if (Auth::user()->id === $user->id)
-                <form class="d-inline-block" action="{{ route('user.destroy', $user->id) }}" method="POST">
-                    {{ csrf_field() }}
-                    {{ method_field('DELETE') }}
-                    <div id= "bottom-tab" style= "margin: 13vh 3vh 2vh; padding: 0vh 4vh;" >  // mudar orderm hehehehehe
+                <div id= "bottom-tab" style= "margin: 13vh 3vh 2vh; padding: 0vh 4vh;" > 
+                    <form class="d-inline-block" action="{{ route('user.destroy', $user->id) }}" method="POST">
+                        {{ csrf_field() }}
+                        {{ method_field('DELETE') }}
                         <button id="delete-button" type="submit" class="btn btn-primary d-flex justify-content-center align-items-center" style="min-width:3vh;width:7vh;min-height:7vh;height:3vh;" onclick="return confirm('Are you sure you want to delete your account?')" aria-label="Delete Account">
                             <i class="bi bi-trash3-fill" style="font-size:3vh;"></i>
                         </button>
-                    </div>
-                </form>
+                    </form>
+                </div>
                 @endif
             </div>
         </div>

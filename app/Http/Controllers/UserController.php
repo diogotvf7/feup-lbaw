@@ -170,12 +170,15 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request,User $user)
     {
         $this->authorize('selfOrAdmin', $user);
         $user->delete();
         if($user->id === Auth::user()->id){
-        return redirect()->route('homepage')->withSuccess('Your account was deleted successfully!');
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('homepage')->with('success', ['Your account was deleted successfully!']);
         }
         else{
         return redirect()->back()->with('success', [$user->username . ' deleted successfully!']);
