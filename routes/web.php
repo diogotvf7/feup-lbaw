@@ -7,7 +7,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CommentController;
-
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\NotificationController;
@@ -66,7 +66,6 @@ Route::middleware(AdminMiddleware::class)->group(function () {
     Route::get('/admin/users', [UserController::class, 'list'])->name('admin.users');
     Route::patch('/admin/users/{user}/promote', [UserController::class, 'promote'])->name('user.promote');
     Route::patch('/admin/users/{user}/demote', [UserController::class, 'demote'])->name('user.demote');
-    // Route::get('/admin/user/create', [UserController::class, 'create'])->name('user.create');
     Route::post('/admin/user/store', [UserController::class, 'store'])->name('user.store');
 
     Route::get('/admin/tags', [TagController::class, 'list'])->name('admin.tags');
@@ -86,7 +85,6 @@ Route::controller(UserController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/tags', 'index')->name('tags');
     Route::get('/questions/tag/{tag}', 'show')->name('tag.show');
-    // Route::get('/tags/create', 'create')->name('tag.create')->middleware(LoggedMiddleware::class);
     Route::post('/tags/store', 'store')->name('tag.store')->middleware(LoggedMiddleware::class);
 });
 
@@ -128,7 +126,15 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::controller(RegisterController::class)->group(function () {
+Route::controller(RegisterController::class)->middleware('guest')->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
+});
+
+Route::controller(PasswordResetController::class)->middleware('guest')->group(function () {
+    Route::get('/forgot-password', 'show')->name('password.request');    
+    Route::post('/forgot-password', 'sendToken')->name('password.email');
+
+    Route::get('/reset-password/{token}', 'resetPassword')->name('password.reset');    
+    Route::post('/reset-password', 'updatePassword')->name('password.update');
 });

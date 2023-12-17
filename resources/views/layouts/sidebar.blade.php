@@ -1,4 +1,4 @@
-<nav class="sidebar position-relative d-flex flex-column align-items-stretch" style="min-width: 250px; max-width: 250px;">
+<nav class="sidebar bg-inherit position-relative d-flex flex-column align-items-stretch" style="min-width: 250px; max-width: 250px;">
     <ul class="p-0">
         <a href="{{ route('questions.top') }}" class="text-decoration-none">
             <li class="py-3 px-5 sidebar-element">
