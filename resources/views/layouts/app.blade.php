@@ -27,6 +27,12 @@
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
     </script>
     <script type="module" src="{{ url('js/app.js') }}" defer></script>
+    <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
+
+    <script>
+        var userId = "{{ Auth::user() ? Auth::user()->id : NULL}}";
+    </script>
+
 
 </head>
 
@@ -66,7 +72,7 @@
                             </li>
                             @endif
                         </ul>
-                        
+
                         <button id="theme-toggle" class="btn btn-link me-3 text-white" type="button">
                             <i class="bi bi-brightness-high-fill d-block-light d-none"></i>
                             <i class="bi bi-moon-stars-fill d-block-dark d-none"></i>
@@ -81,14 +87,30 @@
                             </form>
                         </div>
 
+                        @if(Auth::check())
+                        <div style="margin-left: 1em; margin-right: 1em;">
+                            <button id="notification-button" type="button" class="btn btn-secondary position-relative">
+                                <i id="notification-icon" class="bi bi-bell-fill"></i>
+                                @if(Auth::user()->getUnreadNotificationsAttribute())
+                                <span id="notification-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->getUnreadNotificationsAttribute()}}<span class="visually-hidden">unread messages</span></span>
+                                @endif
+                            </button>
+                        </div>
+                        @endif
+
                         @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
                         <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
                         @endif
                     </div>
+                    @if(Auth::check())
+                    <ul id="notifications" class="d-none list-group align-items-center d-flex flex-column list-unstyled position-absolute mt-1" style="z-index: 200; top:100%;">
+                        @include('partials.notificationsCard')
+                    </ul>
+                    @endif
                 </div>
             </nav>
         </header>
-            @yield('content')
+        @yield('content')
     </main>
 </body>
 
