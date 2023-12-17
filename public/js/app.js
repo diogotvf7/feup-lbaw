@@ -10,8 +10,12 @@ import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
 import enableVote from './vote.js';
+import enableNotifications, { notificationButton } from './notifications.js';
 
 const currentPath = window.location.pathname;
+
+//Notifications logic
+enableNotifications();
 
 // Search bar live search
 if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
@@ -23,7 +27,7 @@ if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
 }
 // Questions page infinite scroll
 else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
-             currentPath)) {
+  currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
 }
@@ -46,7 +50,7 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
   const questionInteractions =
-      document.querySelectorAll('.question-interactions');
+    document.querySelectorAll('.question-interactions');
   const answerInteractions = document.querySelectorAll('.answer-interactions');
   enableVote(questionInteractions, answerInteractions);
 }
