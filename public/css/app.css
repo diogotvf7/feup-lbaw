@@ -214,3 +214,11 @@
   cursor: pointer;
 }
 /* ------------------- */
+
+/*   Tagify readonly   */
+.tagify[readonly] {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+/* ------------------- */

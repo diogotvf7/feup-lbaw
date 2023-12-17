@@ -29,7 +29,6 @@ function suggestionItemTemplate(tagData) {
 }
 
 export default async function enableTagModal() {
-  
   let tagInput = document.getElementById('tag-input');
   if (tagInput) {
     tagInput = new Tagify(document.getElementById('tag-input'), {

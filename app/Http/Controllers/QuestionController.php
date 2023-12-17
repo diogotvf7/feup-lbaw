@@ -118,6 +118,15 @@ class QuestionController extends Controller
     }
 
     /**
+     * Fetch the tags of a question.
+     */
+    public function fetchTags(Question $question)
+    {
+        $tags = $question->tags;
+        return $tags;
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()

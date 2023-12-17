@@ -36,12 +36,8 @@
             @endif
         </div>
     </header>
-    <div class="d-flex gap-1">
-    @foreach ($question->tags as $tag)
-        <p class="badge badge-primary bg-primary text-decoration-none m-0">{{$tag->name}}</p>
-    @endforeach
-    </div>
-    <hr>
+    <input form="questionForm" id="tag-input" type="text" name="tags" class="form-control mb-2" readonly>
+    <hr class="mt-0">
     <div class="d-flex gap-3 my-3">
         @if (auth()->check())
             <div class="question-interactions d-flex flex-column align-items-center">
@@ -57,14 +53,10 @@
                 @endif
             </div>
         @endif
-        <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
+        <form id="questionForm" method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}
             @method('PATCH')
             <input type="hidden" name="question_id" value="{{ $question->id }}">
-            <div class="d-flex gap-3 pb-2 align-items-center">
-                <label id="tag-label" for="tags" class="form-label d-none pt-1">Tags</label>
-                <input id="tag-input" type="text" name="tags" class="form-control d-none" data-question-tags="{{ implode(',', $question->tags->pluck('name')->toArray()) }}">
-            </div>
             <textarea id="question-input" name="body" class="form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $question->updatedVersion->body }}</textarea>
             @if ($errors->has('body'))
                 <span class="text-danger">

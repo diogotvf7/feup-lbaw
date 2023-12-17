@@ -1,13 +1,101 @@
-function editQuestion() {
-  const editButton = document.getElementById('edit-question');
-  const cancelEditButton = document.getElementById('cancel-edit-question');
+const editButton = document.getElementById('edit-question');
+const cancelEditButton = document.getElementById('cancel-edit-question');
+const submitEditButton = document.getElementById('submit-edit-question');
+const questionInput = document.getElementById('question-input');
+let tagInput = document.getElementById('tag-input');
+
+let tagsContent = [];
+let bodyContent = '';
+
+const questionId = new URL(window.location.href).pathname.split('/').pop();
+let tagify = null;
+
+async function fetchQuestionTags() {
+  const request = await fetch(`/api/questions/${questionId}/tags`);
+  const response = await request.json();
+  response.forEach((tag) => {
+    tag.value = tag.id;
+    delete tag.id;
+    delete tag.description;
+    delete tag.search_tag_description;
+    delete tag.search_tag_name;
+  });
+  return response;
+}
+
+async function fetchTags() {
+  const request = await fetch('/api/tags/all');
+  const response = await request.json();
+  response.forEach((tag) => {
+    tag.value = tag.id;
+    delete tag.id;
+    delete tag.description;
+    delete tag.search_tag_description;
+    delete tag.search_tag_name;
+  });
+  return response;
+}
+
+function suggestionItemTemplate(tagData) {
+  return `
+      <div ${this.getAttributes(tagData)}
+          class='tagify__dropdown__item ${tagData.class ? tagData.class : ''}'
+          tabindex="0"
+          role="option">
+          <p class="tagify-text m-0">${tagData.name}${
+      tagData.approved ? '' : ' <small>(Pending approval)</small>'}</p>
+      </div>
+  `
+}
+
+function tagTemplate(tagData, tagify) {
+  return `
+      <tag title='${tagData.value}' contenteditable='false' spellcheck="false"
+      class='tagify__tag ${
+      tagData.class ? tagData.class :
+                      ''} badge badge-primary bg-primary d-flex gap-2' ${
+      this.getAttributes(tagData)}>
+        <x title='remove tag' class='tagify__tag__removeBtn text-white'></x>
+        <span class='tagify__tag-text'>
+          ${tagData.name}
+        </span>
+  
+      </tag>
+  `
+}
+
+
+async function editQuestion() {
   if (!editButton || !cancelEditButton) return;
-  const submitEditButton = document.getElementById('submit-edit-question');
-  const questionInput = document.getElementById('question-input');
-  const tagLabel = document.getElementById('tag-label');
-  const tagInput = document.getElementById('tag-input');
-  let tagifyInstance;
-  let initialTagsAdded = false;
+
+  if (tagInput) {
+    tagify = new Tagify(document.getElementById('tag-input'), {
+      tagTextProp: 'name',
+      whitelist: await fetchTags(),
+      enforceWhitelist: true,
+      skipInvalid: true,
+      userInput: true,
+      dropdown: {
+        enabled: 0,
+        closeOnSelect: false,
+        searchKeys: [
+          'name',
+        ]
+      },
+      autocomplete: {
+        enabled: 1,
+        // rightKey: true,
+      },
+      templates: {
+        dropdownItem: suggestionItemTemplate,
+        tag: tagTemplate,
+      },
+    });
+
+    const tags = await fetchQuestionTags();
+    tagify.addTags(tags);
+    tagInput = document.querySelector('.tagify');
+  }
 
   const end = questionInput.value.length;
   questionInput.style.height =
@@ -23,36 +111,10 @@ function editQuestion() {
     questionInput.classList.remove('form-control-plaintext');
     questionInput.setSelectionRange(end, end);
     questionInput.focus();
-    tagLabel.classList.remove('d-none');
-    tagInput.classList.remove('d-none');
-    
-    if (tagInput) {
-      tagifyInstance = new Tagify(document.getElementById('tag-input'), {
-        tagTextProp: 'name',
-        whitelist: await fetchTags(),
-        enforceWhitelist: true,
-        skipInvalid: true,
-        dropdown: {
-          enabled: 0,
-          closeOnSelect: false,
-          searchKeys: [
-            'name',
-          ]
-        },
-        autocomplete: {
-          enabled: 1,
-          // rightKey: true,
-        },
-        templates: {
-          dropdownItem: suggestionItemTemplate,
-        },
-      });
-      if (!initialTagsAdded) {
-        const existingTags = tagInput.getAttribute('data-question-tags').split(',');
-        tagifyInstance.addTags(existingTags);
-        initialTagsAdded = true;
-      }
-    }
+    tagify.setReadonly(false);
+
+    tagsContent = tagify.value;
+    bodyContent = questionInput.value;
   });
 
   cancelEditButton.addEventListener('click', function() {
@@ -61,38 +123,11 @@ function editQuestion() {
     submitEditButton.classList.add('d-none');
     questionInput.setAttribute('readonly', '');
     questionInput.classList.add('form-control-plaintext');
-    tagLabel.classList.add('d-none');
-    tagInput.classList.add('d-none');
-    if (tagifyInstance) {
-      tagifyInstance.destroy();
-    }
-  });
-}
+    tagify.setReadonly(true);
 
-function suggestionItemTemplate(tagData) {
-  return `
-      <div ${this.getAttributes(tagData)}
-          class='tagify__dropdown__item ${tagData.class ? tagData.class : ''}'
-          tabindex="0"
-          role="option">
-          <p class="tagify-text m-0">${tagData.name}${
-      tagData.approved ? '' : ' <small>(Pending approval)</small>'}</p>
-      </div>
-  `
-}
-
-async function fetchTags() {
-  const url = new URL(window.location.href);
-  const request = await fetch('/api/tags/all');
-  const response = await request.json();
-  response.forEach((tag) => {
-    tag.value = tag.id;
-    delete tag.id;
-    delete tag.description;
-    delete tag.search_tag_description;
-    delete tag.search_tag_name;
+    tagify.value = tagsContent;
+    questionInput.value = bodyContent;
   });
-  return response;
 }
 
 export default editQuestion;
