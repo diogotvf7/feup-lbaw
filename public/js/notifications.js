@@ -30,23 +30,27 @@ export async function update() {
         });
 }
 
-async function triggerEvent() {
-    return await fetch('/votes/event', {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-        },
-    })
-        .then(function (response) {
-            return response.text()
-        })
-        .then(function (response) {
-            console.log('Triggered event\n');
-            console.log(response);
-        })
-        .catch(function (err) {
-            console.log('Failed to fetch page: ', err);
-        });
+export function notificationPopup(url, data) {
+    const main = document.getElementsByTagName("main")[0];
+    const extDiv = document.createElement("div");
+    extDiv.classList = "alert alert-dismissible alert-dismissable alert-info position-absolute bottom-0 end-0 m-5 d-flex flex-row";
+    const button = document.createElement("button");
+    button.type = "button";
+    button.classList = "btn-close";
+    button.dataset.bsDismiss = "alert";
+    button.addEventListener('click', (e) => {
+        e.preventDefault();
+    });
+    const strong = document.createElement("strong");
+    strong.innerHTML = data.message + ".\u00A0"; //Non-breaking white space
+    const a = document.createElement("a");
+    a.classList = "alert-link";
+    a.href = url;
+    main.appendChild(a);
+    a.appendChild(extDiv);
+    extDiv.appendChild(button);
+    extDiv.appendChild(strong);
+    extDiv.appendChild(a);
 }
 
 function upvotePopup(data) {
@@ -61,23 +65,17 @@ function upvotePopup(data) {
 
     console.log(`${url}`);
 
-    const main = document.getElementsByTagName("main")[0];
-    const extDiv = document.createElement("div");
-    extDiv.classList = "alert alert-dismissible alert-dismissable alert-info position-absolute bottom-0 end-0 m-5 d-flex flex-row";
-    const button = document.createElement("button");
-    button.type = "button";
-    button.classList = "btn-close";
-    button.dataset.bsDismiss = "alert";
-    const strong = document.createElement("strong");
-    strong.innerHTML = data.message + ".\u00A0"; //Non-breaking white space
-    const a = document.createElement("a");
-    a.classList = "alert-link";
-    a.href = url;
-    a.innerText = "Check it here"
-    main.appendChild(extDiv);
-    extDiv.appendChild(button);
-    extDiv.appendChild(strong);
-    extDiv.appendChild(a);
+    notificationPopup(url, data);
+}
+
+function answerPopup(data) {
+    console.log(`New answer: ${data.message}`);
+
+    let url = '/questions/' + data.question.id;
+
+    console.log(`${url}`);
+
+    notificationPopup(url, data);
 }
 
 export function clearNotificationCount() {
@@ -92,12 +90,10 @@ export function notificationButton() {
 
     if (notificationButton) {
         notificationButton.addEventListener('click', (e) => {
-            triggerEvent();
             makePostRequest('/notifications/read');
             clearNotificationCount();
             notifications.classList.toggle('d-none');
-        }
-        )
+        });
     }
 }
 
@@ -129,6 +125,10 @@ export default function enableNotifications() {
 
         channel.bind('notification-upvote', function (data) {
             upvotePopup(data);
+        });
+
+        channel.bind('notification-answer', function (data) {
+            answerPopup(data);
         });
     }
 
