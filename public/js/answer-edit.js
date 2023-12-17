@@ -1,3 +1,5 @@
+let answerContent = '';
+
 function editAnswer() {
   const answers = document.querySelectorAll('.answer');
 
@@ -21,6 +23,7 @@ function editAnswer() {
       answerInput.classList.remove('form-control-plaintext');
       answerInput.setSelectionRange(end, end);
       answerInput.focus();
+      answerContent = answerInput.value;
     });
 
     if (!cancelEditButton) return;
@@ -30,6 +33,7 @@ function editAnswer() {
       submitEditButton.classList.add('d-none');
       answerInput.setAttribute('readonly', '');
       answerInput.classList.add('form-control-plaintext');
+      answerInput.value = answerContent;
     });
   });
 }

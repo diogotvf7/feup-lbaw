@@ -36,7 +36,8 @@
             @endif
         </div>
     </header>
-    <hr>
+    <input form="questionForm" id="tag-input" type="text" name="tags" class="form-control mb-2" readonly>
+    <hr class="mt-0">
     <div class="d-flex gap-3 my-3">
         @if (auth()->check())
             <div class="question-interactions d-flex flex-column align-items-center">
@@ -52,7 +53,7 @@
                 @endif
             </div>
         @endif
-        <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
+        <form id="questionForm" method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}
             @method('PATCH')
             <input type="hidden" name="question_id" value="{{ $question->id }}">

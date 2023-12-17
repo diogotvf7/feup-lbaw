@@ -97,6 +97,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions/followed', 'fetch');
     Route::get('/api/questions/tag/{tag}', 'fetch')->where('tag', '[0-9]+');
     Route::get('/api/questions/{question}/answers', 'fetch')->where('question', '[0-9]+');
+    Route::get('/api/questions/{question}/tags', 'fetchTags')->where('question', '[0-9]+');
 });
 
 Route::controller(AnswerController::class)->group(function () {

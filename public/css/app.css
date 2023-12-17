@@ -224,8 +224,16 @@
   text-decoration: none;
   cursor: pointer;
 }
-
 /* ------------------- */
+
+/*   Tagify readonly   */
+.tagify[readonly] {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+/* ------------------- */
+
 /*        Notifications        */
 [data-bs-theme='light'] #notifications li {
   background-color: #EBEBEB;
@@ -270,9 +278,9 @@
     right: none;
   }
 }
-
 /* ------------------ */
 
+/*        Sidebar        */
 .sidebar li {
   color: var(--bs-body-color);
 }
@@ -280,3 +288,4 @@
 .sidebar li:hover {
   color: white;
 }
+/* ------------------ */
