@@ -28,7 +28,7 @@ function editAnswer() {
       editButton.classList.remove('d-none');
       cancelEditButton.classList.add('d-none');
       submitEditButton.classList.add('d-none');
-      answerInput.setAttribute('readonly', '');
+      answerInput.setAttribute('readonly');
       answerInput.classList.add('form-control-plaintext');
     });
   });

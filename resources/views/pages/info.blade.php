@@ -22,7 +22,7 @@
             <img src="{{ asset('images/logo.svg') }}" alt="Geras Logo" class="d-inline-block img-thumbnail">
         </div>
 
-        <hr class="my-3">
+        <hr class="my-5">
 
         <div>
             <h2>Explore, Learn, Grow!</h2>
@@ -90,40 +90,40 @@
             </p>
         </div>
 
-        <hr class="my-3">
+        <hr class="my-5">
 
         <div>
-        <h2>Contacts</h2>
-        <div class="d-flex">
-            <p>
-                Dear Geras Community, <br/>
-                We cherish the thoughts and insights you bring to Geras. 
-                Whether you have questions, suggestions, or simply want to connect, 
-                don't hesitate to reach out. Your feedback plays a crucial role in shaping 
-                the Geras experience. Feel free to contact us via email at info@gerasforum.com 
-                or through our social media channels. Your voice matters, and we're here to 
-                listen. <br/>
-                Let's build a vibrant community together! <br/>
-                Warm regards, <br/>
-                The Geras Team
-            </p>
-            <div class="d-flex text-center gap-3">
-                <div>
-                    <i class="bi bi-telephone-fill text-primary" style="height: 100px;"></i>
-                    <p>Call us at:</p>
-                    <div class="ms-2 text-nowrap">+1 (514) 123-4567</div>
-                    <div class="ms-2 text-nowrap">+1 (514) 765-4321</div>
-                    <div class="ms-2 text-nowrap">+1 (514) 987-6543</div>
-                </div>
-                <div>
-                    <i class="bi bi-envelope-fill text-primary"></i>
-                    <div class="ms-2">
-                        <p>Send us an email at:</p>
-                        <a href="mailto:info@gerasforum.com" class="text-decoration-none">
-                        info@gerasforum.com
-                        </a>
+            <h2>Contacts</h2>
+            <div class="d-flex">
+                <p>
+                    Dear Geras Community, <br/>
+                    We cherish the thoughts and insights you bring to Geras. 
+                    Whether you have questions, suggestions, or simply want to connect, 
+                    don't hesitate to reach out. Your feedback plays a crucial role in shaping 
+                    the Geras experience. Feel free to contact us via email at info@gerasforum.com 
+                    or through our social media channels. Your voice matters, and we're here to 
+                    listen. Let's build a vibrant community together! <br/>
+                    Warm regards, <br/>
+                    The Geras Team
+                </p>
+                <div class="d-flex text-center gap-3">
+                    <div>
+                        <i class="bi bi-telephone-fill text-primary" style="height: 100px;"></i>
+                        <p>Call us at:</p>
+                        <div class="ms-2 text-nowrap">+1 (514) 123-4567</div>
+                        <div class="ms-2 text-nowrap">+1 (514) 765-4321</div>
+                        <div class="ms-2 text-nowrap">+1 (514) 987-6543</div>
                     </div>
-                </div>                    
+                    <div>
+                        <i class="bi bi-envelope-fill text-primary"></i>
+                        <div class="ms-2">
+                            <p>Send us an email at:</p>
+                            <a href="mailto:info@gerasforum.com" class="text-decoration-none">
+                            info@gerasforum.com
+                            </a>
+                        </div>
+                    </div>                    
+                </div>
             </div>
         </div>
     </section>
