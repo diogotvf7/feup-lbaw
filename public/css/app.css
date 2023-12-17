@@ -234,7 +234,6 @@
 }
 /* ------------------- */
 
-/* ------------------- */
 /*        Notifications        */
 [data-bs-theme='light'] #notifications li {
   background-color: #EBEBEB;
@@ -279,9 +278,9 @@
     right: none;
   }
 }
-
 /* ------------------ */
 
+/*        Sidebar        */
 .sidebar li {
   color: var(--bs-body-color);
 }
@@ -289,3 +288,4 @@
 .sidebar li:hover {
   color: white;
 }
+/* ------------------ */

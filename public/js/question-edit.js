@@ -48,7 +48,7 @@ function suggestionItemTemplate(tagData) {
   `
 }
 
-function tagTemplate(tagData, tagify) {
+function tagTemplate(tagData) {
   return `
       <tag title='${tagData.value}' contenteditable='false' spellcheck="false"
       class='tagify__tag ${
@@ -66,9 +66,12 @@ function tagTemplate(tagData, tagify) {
 
 
 async function editQuestion() {
-  if (!editButton || !cancelEditButton) return;
-
   if (tagInput) {
+    const tags = await fetchQuestionTags();
+
+    if (tags.length === 0) {
+      tagInput.classList.add('d-none');
+    }
     tagify = new Tagify(document.getElementById('tag-input'), {
       tagTextProp: 'name',
       whitelist: await fetchTags(),
@@ -91,8 +94,6 @@ async function editQuestion() {
         tag: tagTemplate,
       },
     });
-
-    const tags = await fetchQuestionTags();
     tagify.addTags(tags);
     tagInput = document.querySelector('.tagify');
   }
@@ -103,6 +104,8 @@ async function editQuestion() {
       (questionInput.scrollHeight) + 'px' :
       '60px';
 
+  if (!editButton || !cancelEditButton) return;
+
   editButton.addEventListener('click', async function() {
     editButton.classList.add('d-none');
     cancelEditButton.classList.remove('d-none');
@@ -111,6 +114,7 @@ async function editQuestion() {
     questionInput.classList.remove('form-control-plaintext');
     questionInput.setSelectionRange(end, end);
     questionInput.focus();
+    tagInput.classList.remove('d-none');
     tagify.setReadonly(false);
 
     tagsContent = tagify.value;
@@ -123,6 +127,7 @@ async function editQuestion() {
     submitEditButton.classList.add('d-none');
     questionInput.setAttribute('readonly', '');
     questionInput.classList.add('form-control-plaintext');
+    if (tagInput.value === '') tagInput.classList.add('d-none');
     tagify.setReadonly(true);
 
     tagify.value = tagsContent;
