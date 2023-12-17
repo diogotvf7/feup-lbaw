@@ -30,64 +30,81 @@
                 At Geras, we've crafted a dynamic and engaging platform tailored to meet 
                 the unique needs of young adults embarking on the journey of adulthood. 
                 Here's a glimpse of the exciting features that await you:
-                <ul class="my-3">
-                    <li class="list-group-item"> 
-                        <h4>Ask and Answer Questions:</h4> 
-                        <p class="m-0"><strong>-</strong> Pose burning questions on any topic related to adulthood, from 
-                            career dilemmas to personal growth.</p>
-                        <p class="m-0"><strong>-</strong> Share your expertise by providing insightful answers to help 
-                            others navigate their challenges.</p>
-                    </li>
-                    <li class="list-group-item"> 
-                        <h4>Vibrant Community Interaction:</h4> 
-                        <p class="m-0"><strong>-</strong> Engage in lively discussions through comments, fostering a 
-                            supportive and collaborative environment.</p>
-                        <p class="m-0"><strong>-</strong> Connect with like-minded individuals, exchanging ideas and 
-                            experiences.</p>
-                    </li>
-                    <li class="list-group-item"> 
-                        <h4>Follow Questions and Users:</h4> 
-                        <p class="m-0"><strong>-</strong> Stay updated on topics that matter to you by following 
-                            specific questions of interest.</p>
-                        <p class="m-0"><strong>-</strong> Build your network by following users whose perspectives 
-                            resonate with you.</p>
-                    </li>
-                    <li class="list-group-item"> 
-                        <h4>Tagging for Precision:</h4> 
-                        <p class="m-0"><strong>-</strong> Enhance discoverability by adding relevant tags to your posts, 
-                            ensuring they reach the right audience.</p>
-                        <p class="m-0"><strong>-</strong> Seamlessly browse through content based on tags, making it 
-                            easy to find discussions aligned with your interests.</p>
-                    </li>
-                    <li class="list-group-item"> 
-                        <h4>Browse by Tags, Posts, and More:</h4> 
-                        <p class="m-0"><strong>-</strong> Explore a vast array of topics using our intuitive tag system, 
-                            designed to simplify content discovery.</p>
-                        <p class="m-0"><strong>-</strong> Navigate through posts effortlessly, whether you're seeking 
-                            advice, inspiration, or shared experiences.</p>
-                    </li>
-                    <li class="list-group-item"> 
-                        <h4>Personalized Profiles:</h4> 
-                        <p class="m-0"><strong>-</strong> Unlock a personalized digital identity as you earn experience 
-                        points, collect badges of honor, and build your virtual fame with Kleos.</p>
-                        <p class="m-0"><strong>-</strong> Keep track of your activity, contributions, and interactions 
-                        on a personalized dashboard.</p>
-                    </li>
-                    <li class="list-group-item"> 
-                        <h4>Notifications and Updates:</h4> 
-                        <p class="m-0"><strong>-</strong> Receive timely notifications about new responses, comments, 
-                            and activities related to your questions and posts.</p>
-                        <p class="m-0"><strong>-</strong> Stay informed about the latest discussions and updates within 
-                            the community.</p>
-                    </li>
-                </ul>
-
-                Geras is more than just a forum; it's a vibrant community where 
-                curiosity meets wisdom, and every interaction contributes to the 
-                collective growth of our members. Join us on this exciting journey 
-                of exploration, learning, and personal development. Together, let's 
-                make adulthood a shared adventure!
             </p>
+            <div class="container">
+                <div class="row row-cols-2 g-2">
+                    <div class="col p-3">
+                        <h4>Ask and Answer Questions:</h4> 
+                        <p class="m-0">
+                            Pose burning questions on any topic related to adulthood, from 
+                            career dilemmas to personal growth and share your expertise by 
+                            providing insightful answers to help others navigate their challenges.
+                        </p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Vibrant Community Interaction:</h4> 
+                        <p class="m-0">
+                            Engage in lively discussions through comments, fostering a 
+                            supportive and collaborative environment and connect with 
+                            like-minded individuals, exchanging ideas and experiences.
+                        </p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Follow Questions and Users:</h4> 
+                        <p class="m-0">
+                            Stay updated on topics that matter to you by following 
+                            specific questions of interest while building your network 
+                            by following users whose perspectives resonate with you.
+                        </p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Tagging for Precision:</h4> 
+                        <p class="m-0">
+                            Enhance discoverability by adding relevant 
+                            tags to your posts, ensuring they reach the right audience 
+                            and seamlessly browse through content based on tags, making it 
+                            easy to find discussions aligned with your interests.
+                        </p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Browse by Tags, Posts, and More:</h4> 
+                        <p class="m-0">
+                            Explore a vast array of topics using our intuitive tag system, 
+                            designed to simplify content discovery and navigate through posts 
+                            effortlessly, whether you're seeking advice, inspiration, or 
+                            shared experiences.
+                        </p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Personalized Profiles:</h4> 
+                        <p class="m-0">
+                            Unlock a personalized digital identity as you earn experience 
+                            points, collect badges of honor, and build your virtual fame with 
+                            Kleos. You can keep track of your activity, contributions, and 
+                            interactions on a personalized dashboard.
+                        </p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Notifications and Updates:</h4> 
+                        <p class="m-0">
+                            Receive timely notifications about new responses, comments, 
+                            and activities related to your questions and posts that will 
+                            let you stay informed about the latest discussions and updates 
+                            within the community.
+                        </p>
+                    </div>
+                    <div class="col p-3">
+                        <h4>Join us!</h4>
+                        <p>
+                            Geras is more than just a forum; it's a vibrant community where 
+                            curiosity meets wisdom, and every interaction contributes to the 
+                            collective growth of our members. Join us on this exciting journey 
+                            of exploration, learning, and personal development. Together, let's 
+                            make adulthood a shared adventure!
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <hr class="my-5">
