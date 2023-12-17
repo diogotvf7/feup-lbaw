@@ -7,9 +7,9 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\MailController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\VoteController;
 use App\Http\Middleware\AdminMiddleware;
@@ -126,12 +126,15 @@ Route::controller(LoginController::class)->group(function () {
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::controller(RegisterController::class)->group(function () {
+Route::controller(RegisterController::class)->middleware('guest')->group(function () {
     Route::get('/register', 'showRegistrationForm')->name('register');
     Route::post('/register', 'register');
 });
 
-Route::controller(MailController::class)->group(function () {
-    Route::get('/recover', 'show')->name('recover');
-    Route::post('/send', 'send');
+Route::controller(PasswordResetController::class)->middleware('guest')->group(function () {
+    Route::get('/forgot-password', 'show')->name('password.request');    
+    Route::post('/forgot-password', 'sendToken')->name('password.email');
+
+    Route::get('/reset-password/{token}', 'resetPassword')->name('password.reset');    
+    Route::post('/reset-password', 'updatePassword')->name('password.update');
 });

@@ -2,8 +2,8 @@
   --text: #021713;
   --text-rgb: 2, 23, 19;
 
-  /* --background: #f1fefb;
-  --background-rgb: 241, 254, 251; */
+  --background: #f1fefb;
+  --background-rgb: 241, 254, 251;
 
   --primary: #ce1238;
   --primary-rgb: 206, 18, 56;
@@ -37,6 +37,7 @@
 .tagify__dropdown__footer {
   color: var(--text);
 }
+/* ------------------ */
 
 /*      Sidebar       */
 .sidebar {
@@ -64,7 +65,6 @@
 .sidebar-element:hover a {
   color: white;
 }
-
 /* ------------------ */
 
 /*      Sidebar       */
@@ -91,7 +91,7 @@
 
 /* Edit question form */
 .form-control-plaintext {
-  background-color: var(--background);
+  background-color: inherit;
   border: none;
   box-shadow: none;
   resize: none;
