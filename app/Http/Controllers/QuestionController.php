@@ -268,7 +268,6 @@ class QuestionController extends Controller
         return ['voteBalance' => $question->voteBalance()];
     }
 
-<<<<<<< HEAD
     public function follow(Question $question)
     {
         $user = Auth::user();
@@ -281,10 +280,10 @@ class QuestionController extends Controller
             $user->followedQuestions()->attach($question->id);
             return "Followed";
         }
-=======
+    }
+        
     public function upvoteEvent($user_id, $vote_id)
     {
         event(new UpvoteEvent($user_id, $vote_id));
->>>>>>> 7db89527304cf483f6cb1e50ab04dd3e8ed9559f
     }
 }
