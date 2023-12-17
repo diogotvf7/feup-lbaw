@@ -1,6 +1,5 @@
 export default async function follow(){
   const questionId = new URL(window.location.href).pathname.split('/').pop();
-    console.log(questionId);
     return await fetch('/questions/follow/' + questionId,{
         method: 'PATCH',
         headers: {

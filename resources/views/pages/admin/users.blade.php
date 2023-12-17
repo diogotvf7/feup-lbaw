@@ -193,6 +193,9 @@
             @endif
         </div>
     @endif
+    <?php
+        var_dump($_SESSION);
+        ?>
 
 @include('partials.createUser')
 @include('partials.editUser')

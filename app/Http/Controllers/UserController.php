@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -173,6 +174,12 @@ class UserController extends Controller
     {
         $this->authorize('selfOrAdmin', $user);
         $user->delete();
+        if($user->id === Auth::user()->id){
+        return redirect()->route('homepage')->withSuccess('Your account was deleted successfully!');
+        }
+        else{
         return redirect()->back()->with('success', [$user->username . ' deleted successfully!']);
+        }
+        
     }
 }
