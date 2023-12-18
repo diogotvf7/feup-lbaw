@@ -27,7 +27,6 @@
   --separator-rgb: rgb(222, 226, 230);
 }
 
-
 [data-bs-theme='light'] .d-block-light,
 [data-bs-theme='dark'] .d-block-dark {
   display: block !important;
@@ -38,6 +37,7 @@
 .tagify__dropdown__footer {
   color: var(--text);
 }
+/* ------------------ */
 
 /*      Sidebar       */
 .sidebar {
@@ -65,7 +65,6 @@
 .sidebar-element:hover a {
   color: white;
 }
-
 /* ------------------ */
 
 /*      Sidebar       */
@@ -239,8 +238,16 @@
   text-decoration: none;
   cursor: pointer;
 }
-
 /* ------------------- */
+
+/*   Tagify readonly   */
+.tagify[readonly] {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+/* ------------------- */
+
 /*        Notifications        */
 [data-bs-theme='light'] #notifications li {
   background-color: #EBEBEB;
@@ -285,9 +292,9 @@
     right: none;
   }
 }
-
 /* ------------------ */
 
+/*        Sidebar        */
 .sidebar li {
   color: var(--bs-body-color);
 }
@@ -295,3 +302,4 @@
 .sidebar li:hover {
   color: white;
 }
+/* ------------------ */

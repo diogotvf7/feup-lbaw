@@ -63,9 +63,11 @@ class TagController extends Controller
 
     public function fetchAll(Request $request)
     {
-        return Tag::where('approved', TRUE)
-            ->orWhere('creator', Auth::user()->id)
-            ->get();
+        $tags = Tag::where('approved', TRUE);
+        if (Auth::check()) {
+            $tags = $tags->orWhere('creator', Auth::user()->id);
+        }
+        return $tags->get();
     }
 
     public function approve(Tag $tag) 

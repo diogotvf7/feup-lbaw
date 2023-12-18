@@ -109,6 +109,15 @@ class QuestionController extends Controller
     }
 
     /**
+     * Fetch the tags of a question.
+     */
+    public function fetchTags(Question $question)
+    {
+        $tags = $question->tags;
+        return $tags;
+    }
+
+    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -182,6 +191,14 @@ class QuestionController extends Controller
         $contentversion->question_id = $request->question_id;
         $contentversion->save();
 
+        $question->tags()->detach();
+        $tags = json_decode($request->tags);
+        if($tags) {
+            foreach ($tags as $tag) {
+                $question->tags()->attach($tag->value);
+            }
+        }
+        
         return redirect()->back()->with('success', 'Question edited successfully!');
     }
 

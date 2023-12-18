@@ -38,13 +38,14 @@
 
 <body>
     <main class="d-flex flex-column vh-100">
-        <!-- <main style="height: 85dvh;"> -->
         <header>
             <nav id="navbar" class="navbar navbar-expand-lg bg-primary">
                 <div class="container-fluid">
-                    <h1><a class="navbar-brand" href="{{ url('/questions?filter=top') }}">
+                    <h1>
+                        <a class="navbar-brand" href="{{ url('/questions?filter=top') }}">
                             <img src="{{ asset('images/logo.svg') }}" alt="Geras Logo" width="64" class="m-2">
-                        </a></h1>
+                        </a>
+                    </h1>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
