@@ -2,7 +2,7 @@
   --text: #021713;
   --text-rgb: 2, 23, 19;
 
-  --background: #f1fefb;
+  --background: #fff;
   --background-rgb: 241, 254, 251;
 
   --primary: #ce1238;
@@ -179,7 +179,7 @@
   }
 }
 
-<<<<<<< HEAD
+
 #profile ul {
   background-color: var(--primary);
 }
@@ -192,8 +192,6 @@
   background-color: var(--bs-body-bg);
 }
 
-=======
->>>>>>> 7db89527304cf483f6cb1e50ab04dd3e8ed9559f
 /* ------------------ */
 
 /*        Modal        */

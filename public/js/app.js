@@ -4,6 +4,8 @@ import './scroll-top.js';
 import enableTagModal from './add-tags.js';
 import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
+import handleComments from './comments-loader.js';
+import enableInteractions from './interactions.js';
 import enableNotifications, {notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
@@ -11,13 +13,8 @@ import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
 import enableVote from './vote.js';
-<<<<<<< HEAD
 import follow from './questions-follow.js';
 import enableNotifications, { notificationButton } from './notifications.js';
-=======
->>>>>>> 824911923674c4d0a2d81f732ffd961835b77148
-
-const currentPath = window.location.pathname;
 
 // Notifications logic
 enableNotifications();
@@ -55,15 +52,12 @@ else if (/^\/users\/\w+$/.test(currentPath)) {
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   await editQuestion();
   await loadAnswers();
+
   const answersSort = document.getElementById('answers-sort');
-  const questionFollow = document.getElementById('follow-button');
   answersSort.addEventListener('change', loadAnswers);
-  questionFollow.addEventListener('click', follow);
-  enableVote();
-  const questionInteractions =
-      document.querySelectorAll('.question-interactions');
-  const answerInteractions = document.querySelectorAll('.answer-interactions');
-  enableVote(questionInteractions, answerInteractions);
+
+  // handleComments();
+  // enableInteractions();
 }
 // Create Question page
 else if (/^\/questions\/create$/.test(currentPath)) {

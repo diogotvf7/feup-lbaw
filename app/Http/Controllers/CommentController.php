@@ -12,22 +12,6 @@ use Illuminate\Support\Facades\Auth;
 class CommentController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
-    public function fetch(Request $request)
-    {
-        if ($request->answer_id === NULL) $content = Question::findOrFail($request->question_id);
-        else $content = Answer::findOrFail($request->answer_id);
-        $comments = $content->comments;
-        $commentsViews = [];
-        // $currentUser = User::find(Auth::user());
-        foreach ($comments as $comment) {
-            $commentsViews[] = view('partials.comment', ['comment' => $comment])->render();
-        }
-        return response()->json(['comments' => $commentsViews]);
-    }
-
-    /**
      * Show the form for creating a new resource.
      */
     public function create()
@@ -44,7 +28,7 @@ class CommentController extends Controller
             return redirect('/login');
         } else {
             $request->validate([
-                'body' => 'required|string|min:20|max:30000'
+                'body' => 'required|string|max:30000'
             ]);
             
             $user = Auth::user();

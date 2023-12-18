@@ -89,6 +89,14 @@ Route::controller(TagController::class)->group(function () {
     Route::post('/tags/store', 'store')->name('tag.store')->middleware(LoggedMiddleware::class);
 });
 
+Route::get('/info', function () {
+    return view('pages.info');
+})->name('info');
+
+Route::get('/faq', function () {
+    return view('pages.faq');
+})->name('faq');
+
 //API
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/api/questions', 'fetch');
