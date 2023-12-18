@@ -12,6 +12,7 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
+    <link rel="shortcut icon" href="{{ asset('images/logo.svg') }}">
     <link href="{{ url('css/theme.css') }}" rel="stylesheet">
     <link href="{{ url('css/app.css') }}" rel="stylesheet">
     <link href="{{ url('css/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
