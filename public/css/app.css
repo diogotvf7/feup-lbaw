@@ -132,6 +132,46 @@
 
 /* ------------------ */
 
+/*     Vote Button    */
+.correct-answer-visitor {
+  aspect-ratio: 1 / 1;
+  height: 30px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  background-color: var(--primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;    
+}
+
+.correct-answer {
+  aspect-ratio: 1 / 1;
+  height: 30px;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+
+.correct-answer.on,
+.correct-answer.off:hover {
+  border: none;
+  color: white;
+  background-color: var(--primary);
+}
+
+.correct-answer.on:hover,
+.correct-answer.off {
+  border: 2px solid #687074;
+  color: #687074;
+  background-color: transparent;
+}
+
+.correct-answer:hover {
+  transform: scale(0.9);
+}
+
+/* ------------------ */
+
 /*    Tag Container   */
 #tags-container {
   display: grid;

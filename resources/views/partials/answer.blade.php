@@ -1,6 +1,7 @@
 <article id="answer-{{ $answer->id }}" class="answer d-flex gap-3">
+    <div class="d-flex flex-column py-3 gap-2 align-items-center">
     @if (auth()->check() && auth()->user()->id !== $answer->user->id)
-        <div class="answer-interactions d-flex flex-column align-items-center py-3" style="width: 3em;" data-id="{{ $answer->id }}">
+        <div class="answer-interactions d-flex flex-column align-items-center" style="width: 3em;" data-id="{{ $answer->id }}">
             @if (auth()->user()->id !== $answer->user->id)
                 <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
                 <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
@@ -8,6 +9,14 @@
             @endif
         </div>
     @endif
+    @if (auth()->check() && auth()->user()->id === $answer->question->user->id)
+    <button class="correct-answer {{ $answer->id === $answer->question->correctAnswer->id ? 'on' : 'off' }}"><i class="bi bi-check-lg"></i></button>
+    @else
+        @if ($answer->id === $answer->question->correctAnswer->id)
+        <i class="correct-answer-visitor bi bi-check-lg"></i>
+        @endif
+    @endif
+    </div>
     <div class="flex-grow-1 pt-3">
         <form method="POST" action="{{ route('answer/edit') }}">
             {{ csrf_field() }}
