@@ -2,7 +2,7 @@
   --text: #021713;
   --text-rgb: 2, 23, 19;
 
-  --background: #f1fefb;
+  --background: #fff;
   --background-rgb: 241, 254, 251;
 
   --primary: #ce1238;
@@ -104,32 +104,37 @@
 
 /* ------------------ */
 
-/*     Vote Button    */
-.vote-button {
+/*  Interaction Button */
+
+.interaction-button[disabled] {
+  /* filter: grayscale(1); */
+  filter: blur(1px) grayscale(.25);
+}
+
+.interaction-button {
   aspect-ratio: 1 / 1;
   height: 30px;
   border-radius: 50%;
   transition: all 0.3s ease-in-out;
 }
 
-.vote-button.on,
-.vote-button.off:hover {
+.interaction-button.on,
+.interaction-button.off:hover {
   border: none;
   color: white;
   background-color: var(--primary);
 }
 
-.vote-button.on:hover,
-.vote-button.off {
+.interaction-button.on:hover,
+.interaction-button.off {
   border: 2px solid #687074;
   color: #687074;
   background-color: transparent;
 }
 
-.vote-button:hover {
+.interaction-button:hover {
   transform: scale(0.9);
 }
-
 /* ------------------ */
 
 /*    Tag Container   */
@@ -179,7 +184,6 @@
   }
 }
 
-<<<<<<< HEAD
 #profile ul {
   background-color: var(--primary);
 }
@@ -191,9 +195,6 @@
 [data-bs-theme='dark'] #profile .nav-link {
   background-color: var(--bs-body-bg);
 }
-
-=======
->>>>>>> 7db89527304cf483f6cb1e50ab04dd3e8ed9559f
 /* ------------------ */
 
 /*        Modal        */

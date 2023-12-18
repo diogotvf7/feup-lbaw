@@ -198,7 +198,7 @@ class QuestionController extends Controller
                 $question->tags()->attach($tag->value);
             }
         }
-        
+
         return redirect()->back()->with('success', 'Question edited successfully!');
     }
 
@@ -254,7 +254,7 @@ class QuestionController extends Controller
                 'question_id' => $question->id,
             ])->id;
 
-            $this->upvoteEvent(Auth::user(), $vote_id);
+            // $this->upvoteEvent(Auth::user(), $vote_id);
         }
         return ['voteBalance' => $question->voteBalance()];
     }
@@ -287,7 +287,8 @@ class QuestionController extends Controller
 
     public function follow(Question $question)
     {
-        $user = Auth::user();
+        $this->authorize('vote', $question);
+        $user = User::findOrFail(Auth::user()->id);
 
         if ($user->followsQuestion($question->id)){
             $user->followedQuestions()->detach($question->id);
@@ -298,7 +299,7 @@ class QuestionController extends Controller
             return "Followed";
         }
     }
-        
+    
     public function upvoteEvent($user_id, $vote_id)
     {
         event(new UpvoteEvent($user_id, $vote_id));

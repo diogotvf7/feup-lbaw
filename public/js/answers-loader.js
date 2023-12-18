@@ -1,5 +1,6 @@
 import editAnswer from './answer-edit.js';
-import showComments from './comments-loader.js';
+import handleComments from './comments-loader.js';
+import enableInteractions from './interactions.js';
 
 const answersContainer = document.getElementById('answers-container');
 const answersSort = document.getElementById('answers-sort');
@@ -17,8 +18,10 @@ async function loadAnswers() {
   const answersHTML =
       answers.map(answer => answer + '<hr class="m-0">').join('');
   answersContainer.innerHTML = answersHTML;
+
   editAnswer();
-  showComments();
+  handleComments();
+  enableInteractions();
 }
 
 export default loadAnswers;
