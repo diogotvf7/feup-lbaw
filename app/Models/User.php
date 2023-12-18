@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use App\Http\Controllers\FileController;
 
 
 
@@ -170,6 +171,10 @@ class User extends Authenticatable
     public function getUnreadNotificationsAttribute()
     {
         return $this->notifications()->where('seen', 'false')->count();
+    }
+
+    public function getProfileImage(){
+        return FileController::get('profile', $this -> id());
     }
 
     protected $appends = ['unreadNotifications'];
