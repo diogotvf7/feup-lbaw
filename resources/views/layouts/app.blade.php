@@ -103,11 +103,6 @@
                         <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
                         @endif
                     </div>
-                    @if(Auth::check())
-                    <ul id="notifications" class="d-none">
-                        @include('partials.notificationsCard')
-                    </ul>
-                    @endif
                 </div>
             </nav>
         </header>

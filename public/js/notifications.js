@@ -25,28 +25,9 @@ export async function updateNotifications() {
             return response.text()
         })
         .then(function (html) {
-            notificationPopover._config.content = html;
+            notificationPopover._config.content = html, 0;
             notificationPopover.setContent();
-        })
-        .catch(function (err) {
-            console.log('Failed to fetch page: ', err);
-        });
-
-
-}
-
-export async function popupContent() {
-    return await fetch('/api/notifications/', {
-        method: 'GET',
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest'
-        },
-    })
-        .then(function (response) {
-            return response.html()
-        })
-        .then(function (html) {
-            return html;
+            dismissNotificationsButton();
         })
         .catch(function (err) {
             console.log('Failed to fetch page: ', err);
@@ -217,17 +198,13 @@ export default function enableNotifications() {
         var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
         var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
             notificationPopover = new bootstrap.Popover(popoverTriggerEl, {
-                content: function () {
-                    const emptyNotifications = document.getElementById('empty-notifications');
-                    let display = "";
-                    if (emptyNotifications !== null) display = 'd-none';
-                    return '<li class="' + display + ' list-group-item list-group-item-action"><a id="dismiss-notifications" href="javascript:void(0)" class="btn btn-secondary">Dismiss All</a></li>' + document.getElementById('notifications').innerHTML;
-                },
                 template: '<div class="popover"><div class="popover-arrow"></div><h3 class="popover-header">Notifications</h3><div id="popover-body-notifications" class="popover-body list-group d-flex flex-column list-unstyled p-0"></div></div>',
                 container: 'body',
                 html: true,
                 placement: 'bottom',
             });
+            updateNotifications();
+            popoverTriggerEl.addEventListener('hidden.bs.popover', updateNotifications);
             return notificationPopover;
         });
 
@@ -242,7 +219,7 @@ export default function enableNotifications() {
             }
 
             const deleteNotifs = document.getElementsByClassName('dismiss-notification');
-            for(const button of deleteNotifs) {
+            for (const button of deleteNotifs) {
                 button.addEventListener('click', function (e) {
                     const notificationId = e.target.parentElement.id.split('-').pop();
                     makePostRequest("/notifications/delete/" + notificationId);
