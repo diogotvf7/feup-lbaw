@@ -18,7 +18,6 @@ async function loadAnswers() {
       answers.map(answer => answer + '<hr class="m-0">').join('');
   answersContainer.innerHTML = answersHTML;
   editAnswer();
-  showComments();
 }
 
 export default loadAnswers;

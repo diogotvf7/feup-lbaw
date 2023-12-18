@@ -4,6 +4,7 @@ import './scroll-top.js';
 import enableTagModal from './add-tags.js';
 import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
+import handleComments from './comments-loader.js';
 import enableNotifications, {notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
@@ -51,6 +52,7 @@ else if (/^\/users\/\w+$/.test(currentPath)) {
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   await editQuestion();
   await loadAnswers();
+  handleComments();
   const answersSort = document.getElementById('answers-sort');
   const questionFollow = document.getElementById('follow-button');
   answersSort.addEventListener('change', loadAnswers);

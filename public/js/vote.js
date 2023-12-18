@@ -83,33 +83,35 @@ async function enableVote(questionInteractions, answerInteractions) {
     const downvote = interaction.querySelector('.downvote');
     const voteCount = interaction.querySelector('.vote-count');
 
-    upvote.addEventListener('click', () => {
-      if (upvote.classList.contains('on')) {
-        voteAnswer('upvote', answerId, voteCount);
-        upvote.classList.remove('on');
-        upvote.classList.add('off');
-      } else {
-        voteAnswer('upvote', answerId, voteCount);
-        upvote.classList.remove('off');
-        upvote.classList.add('on');
-        downvote.classList.remove('on');
-        downvote.classList.add('off');
-      }
-    });
+    if (upvote)
+      upvote.addEventListener('click', () => {
+        if (upvote.classList.contains('on')) {
+          voteAnswer('upvote', answerId, voteCount);
+          upvote.classList.remove('on');
+          upvote.classList.add('off');
+        } else {
+          voteAnswer('upvote', answerId, voteCount);
+          upvote.classList.remove('off');
+          upvote.classList.add('on');
+          downvote.classList.remove('on');
+          downvote.classList.add('off');
+        }
+      });
 
-    downvote.addEventListener('click', () => {
-      if (downvote.classList.contains('on')) {
-        voteAnswer('downvote', answerId, voteCount);
-        downvote.classList.remove('on');
-        downvote.classList.add('off');
-      } else {
-        voteAnswer('downvote', answerId, voteCount);
-        downvote.classList.remove('off');
-        downvote.classList.add('on');
-        upvote.classList.remove('on');
-        upvote.classList.add('off');
-      }
-    });
+    if (downvote)
+      downvote.addEventListener('click', () => {
+        if (downvote.classList.contains('on')) {
+          voteAnswer('downvote', answerId, voteCount);
+          downvote.classList.remove('on');
+          downvote.classList.add('off');
+        } else {
+          voteAnswer('downvote', answerId, voteCount);
+          downvote.classList.remove('off');
+          downvote.classList.add('on');
+          upvote.classList.remove('on');
+          upvote.classList.add('off');
+        }
+      });
   });
 }
 
