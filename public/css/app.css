@@ -255,7 +255,7 @@
   background-color: #EBEBEB;
 }
 
-[data-bs-theme='dark'] .popover li{
+[data-bs-theme='dark'] .popover li {
   background-color: #333333;
 }
 
@@ -286,6 +286,17 @@
   .popover {
     max-width: 50dvw;
   }
+}
+
+.notification p {
+  margin-bottom: 0;
+}
+
+.notification .btn {
+  min-height: 1rem;
+  min-width: 1rem;
+  max-width: 1rem;
+  min-height: 1rem;
 }
 
 /* ------------------ */

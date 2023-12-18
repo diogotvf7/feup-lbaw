@@ -1,4 +1,4 @@
-    @forelse (Auth::user()->notifications as $notification)
+    @forelse (collect(Auth::user()->notifications)->sortBy('date') as $notification)
     <li class="list-group-item list-group-item-action">
         @include('partials.notification', ['notification' => $notification])
     </li>
