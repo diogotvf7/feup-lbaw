@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Question;
 use App\Models\User;
 use App\Models\Vote;
 use App\Models\Answer;
 use App\Models\ContentVersion;
-use App\Models\Question;
+use App\Events\AnswerEvent;
+use App\Events\UpvoteEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -34,7 +36,7 @@ class AnswerController extends Controller
                 $answers = $answers->sortByDesc('created_at');
                 break;
         }
-    
+
         $answersViews = [];
         // $currentUser = User::find(Auth::user());
         foreach ($answers as $answer) {
@@ -63,9 +65,9 @@ class AnswerController extends Controller
             $request->validate([
                 'body' => 'required|string|min:20|max:30000'
             ]);
-            
+
             $user = Auth::user();
-            
+
             $answer = new Answer();
             $answer->author = $user->id;
             $answer->question_id = $request->question_id;
@@ -79,7 +81,10 @@ class AnswerController extends Controller
             $contentversion->type = 'ANSWER';
             $contentversion->answer_id = $answer->id;
             $contentversion->save();
-    
+
+            //Send notification to author about receiving an answer
+            $this->answerEvent($user->id, $request->question_id);
+
             return redirect()->back()->with('success', 'Answer added successfully!');
         }
     }
@@ -100,7 +105,7 @@ class AnswerController extends Controller
         $request->validate([
             'body' => 'required|string|min:20|max:30000'
         ]);
-        
+
         $answer = Answer::findOrFail($request->answer_id);
         $this->authorize('update', $answer);
 
@@ -133,7 +138,7 @@ class AnswerController extends Controller
     }
 
     public function upvote(Answer $answer)
-    {        
+    {
         $this->authorize('vote', $answer);
         $user = User::findOrFail(Auth::user()->id);
 
@@ -141,13 +146,13 @@ class AnswerController extends Controller
             Vote::where([
                 ['user_id', $user->id],
                 ['answer_id', $answer->id],
-                ])->delete();
+            ])->delete();
         } else {
             if ($user->downvoted('answer', $answer->id))
                 Vote::where([
                     ['user_id', $user->id],
                     ['answer_id', $answer->id],
-                    ])->delete();
+                ])->delete();
             Vote::create([
                 'is_upvote' => true,
                 'type' => 'ANSWER',
@@ -167,21 +172,32 @@ class AnswerController extends Controller
             Vote::where([
                 ['user_id', $user->id],
                 ['answer_id', $answer->id],
-                ])->delete();
+            ])->delete();
         } else {
             if ($user->upvoted('answer', $answer->id))
                 Vote::where([
                     ['user_id', $user->id],
                     ['answer_id', $answer->id],
-                    ])->delete();
-            Vote::create([
+                ])->delete();
+            $id = Vote::create([
                 'is_upvote' => false,
                 'type' => 'ANSWER',
                 'user_id' => $user->id,
                 'answer_id' => $answer->id,
-            ]);
-        }    
-
+            ])->id;
+        }
+        $this->upvoteEvent(Auth::user(), $id);
         return ['voteBalance' => $answer->getVoteBalanceAttribute()];
+    }
+
+    public function upvoteEvent($user_id, $vote_id)
+    {
+        event(new UpvoteEvent($user_id, $vote_id));
+    }
+
+    public function answerEvent($user_id, $question_id)
+    {
+
+        event(new answerEvent($user_id, $question_id));
     }
 }

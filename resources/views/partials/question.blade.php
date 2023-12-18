@@ -6,7 +6,7 @@
             </h1>
             <div class="d-flex gap-5">
                 <p>
-                    Asked {{ \Carbon\Carbon::parse($question->created_at)->diffForHumans() }} by 
+                    Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by 
                     @if(auth()->check())
                     <a class="text-decoration-none" href="/users/{{ $question->user->id }}">{{ $question->user->username }}</a>
                     @else
@@ -15,7 +15,7 @@
                 </p>
                 @if ($question->contentVersions()->count() > 1)
                 <p>
-                    Last Edited {{ \Carbon\Carbon::parse($question->updated_at)->diffForHumans() }}
+                    Last Edited {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
                 </p>
                 @endif
             </div>
@@ -36,10 +36,10 @@
             @endif
         </div>
     </header>
-    <hr>
+    <input form="questionForm" id="tag-input" type="text" name="tags" class="form-control mb-2" readonly>
+    <hr class="mt-0">
     <div class="d-flex gap-3 my-3">
-
-    @if (auth()->check())
+        @if (auth()->check())
         <div class="question-interactions d-flex flex-column align-items-center">
             <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
             <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
@@ -50,8 +50,8 @@
                 <button id = "follow-button" class="vote-button my-2 off"><i class="bi bi-bookmark-fill"></i></button>
             @endif
         </div>
-    @endif
-        <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
+        @endif
+        <form id="questionForm" method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}
             @method('PATCH')
             <input type="hidden" name="question_id" value="{{ $question->id }}">
