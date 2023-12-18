@@ -1,62 +1,33 @@
-import editComment from './comment-edit.js';
+export default function handleComments() {
+  document.querySelectorAll('.show-comments')
+      .forEach(button => {button.addEventListener('click', function() {
+                 const commentsContainer = button.parentNode.parentNode;
+                 for (let i = 4; i < commentsContainer.children.length - 2;
+                      i++) {
+                   commentsContainer.children[i].classList.toggle('d-none');
+                 }
 
-function showComments() {
-  const comments = document.querySelectorAll('.show-comments');
+                 if (button.textContent == 'show more comments')
+                   button.textContent = 'show less comments'
+                   else button.textContent = 'show more comments'
+               })});
 
-  comments.forEach(showCommentsButton => {
-    showCommentsButton.addEventListener('click', async function(e) {
-      let id;
-      let commentsContainer;
-      if (e.target.dataset.questionId) {
-        id = e.target.dataset.questionId;
-        commentsContainer = document.querySelector(`#comments-container[data-question-id="${id}"]`);
-      } else if (e.target.dataset.answerId) {
-        id = e.target.dataset.answerId;
-        commentsContainer = document.querySelector(`#comments-container[data-answer-id="${id}"]`);
-      } else {
-        console.error('Could not find ID for comments.');
-        return;
-      }
+  document.querySelectorAll('.show-comment-input')
+      .forEach(button => {button.addEventListener('click', function() {
+                 const options = button.parentNode;
+                 const form = button.parentNode.nextSibling.nextSibling;
 
-      if (!commentsContainer) {
-        console.error(`Comments container for ID ${id} not found.`);
-        return;
-      }
+                 options.classList.toggle('d-none');
+                 form.classList.toggle('d-none');
+               })});
 
-      if (commentsContainer.style.display === 'none') {
-        await loadComments(id, commentsContainer);
-        commentsContainer.style.display = 'block';
-        e.target.textContent = 'Hide Comments';
-      } else {
-        commentsContainer.innerHTML = '';
-        commentsContainer.style.display = 'none';
-        e.target.textContent = 'Show Comments';
-      }
-    });
-  });
+  document.querySelectorAll('.cancel-comment')
+      .forEach(button => {button.addEventListener('click', function() {
+                 const form = button.parentNode;
+                 const options =
+                     button.parentNode.previousSibling.previousSibling;
+
+                 options.classList.toggle('d-none');
+                 form.classList.toggle('d-none');
+               })});
 }
-
-async function fetchComments(id, isQuestion) {
-  let endpoint = '/api/';
-  if (isQuestion) {
-    endpoint += 'questions/';
-  } else {
-    endpoint += 'answers/';
-  }
-  const request = await fetch(endpoint + id + '/comments');
-  const response = await request.json();
-  return response.comments;
-}
-
-async function loadComments(id, commentsContainer) {
-  let isQuestion = false;
-  if (commentsContainer.dataset.questionId) {
-    isQuestion = true;
-  }
-  const comments = await fetchComments(id, isQuestion);
-  const commentsHTML = comments.map(comment => comment + '<hr class="m-0">').join('');
-  commentsContainer.innerHTML = commentsHTML;
-  editComment();
-}
-
-export default showComments;

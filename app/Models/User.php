@@ -10,6 +10,8 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+
+
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
@@ -162,7 +164,7 @@ class User extends Authenticatable
 
     public function followsQuestion($question_id): bool
     {
-        return $this->followedQuestions()->where('question_id', $question_id)->exists();
+        return $this->followedQuestions()->where('id', '=', $question_id)->exists();
     }
 
     public function getUnreadNotificationsAttribute()

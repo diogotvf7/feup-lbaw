@@ -36,23 +36,22 @@
             @endif
         </div>
     </header>
-    <hr>
+    <input form="questionForm" id="tag-input" type="text" name="tags" class="form-control mb-2" readonly>
+    <hr class="mt-0">
     <div class="d-flex gap-3 my-3">
-        @if (auth()->check())
-            <div class="question-interactions d-flex flex-column align-items-center">
-                @if (auth()->user()->id !== $question->user->id)
-                    <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
-                    <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
-                    <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
-                    @if ($follow)
-                        <button class="vote-button on my-2"><i class="bi bi-bookmark-fill"></i></button>
-                    @else 
-                        <button class="vote-button off my-2"><i class="bi bi-bookmark"></i></button>
-                    @endif
-                @endif
-            </div>
+        @if (auth()->check() && auth()->user()->id !== $question->user->id)
+        <div id="question-interactions" class="d-flex flex-column align-items-center">
+            <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+            <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
+            <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+            @if ($follow)
+                <button id = "follow-button" class="vote-button my-2 on"><i class="bi bi-bookmark-fill"></i></button>
+            @else 
+                <button id = "follow-button" class="vote-button my-2 off"><i class="bi bi-bookmark-fill"></i></button>
+            @endif
+        </div>
         @endif
-        <form method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
+        <form id="questionForm" method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}
             @method('PATCH')
             <input type="hidden" name="question_id" value="{{ $question->id }}">
@@ -68,31 +67,36 @@
             </div>
         </form>
     </div>
-    <div class="d-flex gap-3">
-        <p class="pt-1">
+    <div class="mx-4" id="comments-container">
+        <h4>
             {{ $question->comments->count() }}
             @if ($question->comments->count() != 1)
             comments
             @else
             comment
             @endif
-        </p>
-        @if ($question->comments->count() > 0)
-        <div class="px-2">
-            <button class="show-comments btn btn-secondary btn-sm my-2 my-sm-0" data-question-id="{{ $question->id }}">Show comments</button>
+        </h4>
+        @foreach ($question->comments as $comment)
+            @include('partials.comment', ['hidden' => $loop->index > 2])
+        @endforeach
+        <div class="d-flex">
+            @if (sizeof($question->comments) > 3)
+            <button class="show-comments btn btn-link btn-sm text-decoration-none">show more comments</button>
+            @endif
+            @if (Auth()->check())
+            <button class="show-comment-input btn btn-link btn-sm text-decoration-none">comment</button>
+            @endif
         </div>
+        @if (Auth()->check())
+        <form id="comment-form" class="d-flex gap-3 align-items-end my-2 d-none" method="POST" action="{{ route('comment/create') }}">
+            {{ csrf_field() }}
+            <input type="hidden" name="question_id" value="{{ $question->id }}">
+            <textarea id="comment-input" name="body" class="form-control" placeholder="Write your comment here..." maxlength="30000" rows="1"></textarea>
+            <button class="btn btn-primary" type="submit">Submit</button>
+            <button class="cancel-comment btn btn-secondary" type="button">Cancel</button>
+        </form>
         @endif
     </div>
-    <section class="ms-4" id="comments-container" data-question-id="{{ $question->id }}" style="display:none">
-    </section>
-    @if (Auth()->check())
-    <form id="comment-form" class="d-flex gap-3 align-items-end my-2" method="POST" action="{{ route('comment/create') }}">
-        {{ csrf_field() }}
-        <input type="hidden" name="question_id" value="{{ $question->id }}">
-        <textarea id="comment-input" name="body" class="form-control" placeholder="Write your comment here..." maxlength="30000" rows="1"></textarea>
-        <button id="submit-comment" class="btn btn-primary" type="submit">Submit</button>
-    </form>
-    @endif
     <footer class="d-flex justify-content-between align-items-center pb-2">
         <h3>
             {{ $question->answers->count() }}
