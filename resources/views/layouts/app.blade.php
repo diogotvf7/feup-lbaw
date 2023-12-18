@@ -90,7 +90,7 @@
 
                         @if(Auth::check())
                         <div style="margin-left: 1em; margin-right: 1em;">
-                            <button id="notification-button" type="button" class="btn btn-secondary position-relative">
+                            <button id="notification-button" type="button" class="btn btn-secondary position-relative" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom" data-boundary="window" data-bs-original-title="Notifications">
                                 <i id="notification-icon" class="bi bi-bell-fill"></i>
                                 @if(Auth::user()->getUnreadNotificationsAttribute())
                                 <span id="notification-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->getUnreadNotificationsAttribute()}}<span class="visually-hidden">unread messages</span></span>
@@ -104,7 +104,7 @@
                         @endif
                     </div>
                     @if(Auth::check())
-                    <ul id="notifications" class="d-none list-group align-items-center d-flex flex-column list-unstyled position-absolute mt-1" style="z-index: 200; top:100%; min-width: 30dvw; min-height: 20dvh;">
+                    <ul id="notifications" class="d-none">
                         @include('partials.notificationsCard')
                     </ul>
                     @endif

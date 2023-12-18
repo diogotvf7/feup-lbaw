@@ -1,3 +1,6 @@
+let notificationPopover;
+
+
 async function makePostRequest(url) {
     return await fetch(url, {
         method: 'POST',
@@ -22,8 +25,28 @@ export async function updateNotifications() {
             return response.text()
         })
         .then(function (html) {
-            const notifDiv = document.getElementById('notifications');
-            notifications.innerHTML = html;
+            notificationPopover._config.content = html;
+            notificationPopover.setContent();
+        })
+        .catch(function (err) {
+            console.log('Failed to fetch page: ', err);
+        });
+
+
+}
+
+export async function popupContent() {
+    return await fetch('/api/notifications/', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+    })
+        .then(function (response) {
+            return response.html()
+        })
+        .then(function (html) {
+            return html;
         })
         .catch(function (err) {
             console.log('Failed to fetch page: ', err);
@@ -43,6 +66,7 @@ export async function updateNotificationCount() {
             return response.text()
         })
         .then(function (count) {
+            console.log(count);
             const notificationButton = document.getElementById('notification-button');
             const notificationCount = document.getElementById('notification-count');
 
@@ -72,7 +96,7 @@ export async function updateNotificationCount() {
 export function update() {
     updateNotifications();
     updateNotificationCount();
-    dismissNotificationsButton();
+    //dismissNotificationsButton();
 }
 
 export function notificationPopup(url, data) {
@@ -142,13 +166,11 @@ export function clearNotificationCount() {
 
 export function notificationButton() {
     const notificationButton = document.getElementById('notification-button');
-    const notifications = document.getElementById('notifications');
 
     if (notificationButton) {
         notificationButton.addEventListener('click', (e) => {
             makePostRequest('/notifications/read');
             clearNotificationCount();
-            notifications.classList.toggle('d-none');
         });
     }
 }
@@ -191,8 +213,41 @@ export default function enableNotifications() {
     }
 
     notificationButton();
-    dismissNotificationsButton();
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
+        var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+            notificationPopover = new bootstrap.Popover(popoverTriggerEl, {
+                content: function () {
+                    const emptyNotifications = document.getElementById('empty-notifications');
+                    let display = "";
+                    if(emptyNotifications !== null) display = 'd-none';
+                    return '<li class="' + display + 'list-group-item list-group-item-action"><a id="dismiss-notifications" href="javascript:void(0)" class="btn btn-secondary">Dismiss All</a></li>' + document.getElementById('notifications').innerHTML;
+                },
+                template: '<div class="popover"><div class="popover-arrow"></div><h3 class="popover-header">Notifications</h3><div id="popover-body-notifications" class="popover-body list-group d-flex flex-column list-unstyled p-0"></div></div>',
+                container: 'body',
+                html: true
+            });
+            return notificationPopover;
+        });
+
+        notificationPopover._element.addEventListener('shown.bs.popover', function (event) {
+
+            
+            const deleteNotif = document.getElementById('dismiss-notifications');
+
+            if (deleteNotif) {
+                deleteNotif.addEventListener('click', function (data) {
+                    makePostRequest("/notifications/delete");
+                    update();
+                });
+            }
+        })
+    });
+
+
 }
+
 
 
 

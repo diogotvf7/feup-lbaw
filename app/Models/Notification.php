@@ -49,11 +49,11 @@ class Notification extends Model
      */
     public function relatedQuestionId()
     {
-        if ($this->type == "UPVOTE")
+        if ($this->type == "UPVOTE") {
             if ($this->upvote->type == "ANSWER") return $this->upvote->answer->question_id;
             else if ($this->upvote->type == "QUESTION") return $this->upvote->question_id;
-            else if ($this->type == "ANSWER") {
-                return $this->answer->question_id;
-            }
+        } else if ($this->type == "ANSWER") {
+            return $this->answer->question_id;
+        }
     }
 }
