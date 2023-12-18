@@ -19,7 +19,7 @@ function editAnswer() {
       editButton.classList.add('d-none');
       cancelEditButton.classList.remove('d-none');
       submitEditButton.classList.remove('d-none');
-      answerInput.removeAttribute('readonly');
+      answerInput.toggleAttribute('readonly');
       answerInput.classList.remove('form-control-plaintext');
       answerInput.setSelectionRange(end, end);
       answerInput.focus();
@@ -31,7 +31,7 @@ function editAnswer() {
       editButton.classList.remove('d-none');
       cancelEditButton.classList.add('d-none');
       submitEditButton.classList.add('d-none');
-      answerInput.setAttribute('readonly');
+      answerInput.toggleAttribute('readonly');
       answerInput.classList.add('form-control-plaintext');
       answerInput.value = answerContent;
     });

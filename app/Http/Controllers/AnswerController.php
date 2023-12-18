@@ -186,7 +186,7 @@ class AnswerController extends Controller
                 'answer_id' => $answer->id,
             ])->id;
         }
-        $this->upvoteEvent(Auth::user(), $id);
+        // $this->upvoteEvent(Auth::user(), $id);
         return ['voteBalance' => $answer->getVoteBalanceAttribute()];
     }
 
