@@ -4,13 +4,14 @@ import './scroll-top.js';
 import enableTagModal from './add-tags.js';
 import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
+import handleComments from './comments-loader.js';
+import enableInteractions from './interactions.js';
 import enableNotifications, {notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
-import enableVote from './vote.js';
 
 const currentPath = window.location.pathname;
 
@@ -38,6 +39,9 @@ else if (/^\/tags\/?$/.test(currentPath)) {
 }
 // User profile page
 else if (/^\/users\/\w+$/.test(currentPath)) {
+  const navbar = document.getElementById('navbar');
+  navbar.style.borderStyle = 'none';
+
   resetFields([
     '#editor-profile .name', '#editor-profile .username',
     '#editor-profile .email'
@@ -47,12 +51,12 @@ else if (/^\/users\/\w+$/.test(currentPath)) {
 else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   await editQuestion();
   await loadAnswers();
+
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
-  const questionInteractions =
-      document.querySelectorAll('.question-interactions');
-  const answerInteractions = document.querySelectorAll('.answer-interactions');
-  enableVote(questionInteractions, answerInteractions);
+
+  // handleComments();
+  // enableInteractions();
 }
 // Create Question page
 else if (/^\/questions\/create$/.test(currentPath)) {

@@ -2,7 +2,7 @@
   --text: #021713;
   --text-rgb: 2, 23, 19;
 
-  --background: #f1fefb;
+  --background: #fff;
   --background-rgb: 241, 254, 251;
 
   --primary: #ce1238;
@@ -179,6 +179,17 @@
   }
 }
 
+#profile ul {
+  background-color: var(--primary);
+}
+
+[data-bs-theme='light'] #profile .nav-link {
+  background-color: var(--background);
+}
+
+[data-bs-theme='dark'] #profile .nav-link {
+  background-color: var(--bs-body-bg);
+}
 /* ------------------ */
 
 /*        Modal        */

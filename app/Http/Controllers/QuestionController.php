@@ -198,7 +198,7 @@ class QuestionController extends Controller
                 $question->tags()->attach($tag->value);
             }
         }
-        
+
         return redirect()->back()->with('success', 'Question edited successfully!');
     }
 
@@ -254,7 +254,7 @@ class QuestionController extends Controller
                 'question_id' => $question->id,
             ])->id;
 
-            $this->upvoteEvent(Auth::user(), $vote_id);
+            // $this->upvoteEvent(Auth::user(), $vote_id);
         }
         return ['voteBalance' => $question->voteBalance()];
     }
@@ -283,6 +283,21 @@ class QuestionController extends Controller
             ]);
         }
         return ['voteBalance' => $question->voteBalance()];
+    }
+
+    public function follow(Question $question)
+    {
+        $this->authorize('vote', $question);
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->followsQuestion($question->id)){
+            $user->followedQuestions()->detach($question->id);
+            return "Unfollowed";
+        }
+        else{
+            $user->followedQuestions()->attach($question->id);
+            return "Followed";
+        }
     }
 
     public function upvoteEvent($user_id, $vote_id)

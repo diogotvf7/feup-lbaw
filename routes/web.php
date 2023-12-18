@@ -42,6 +42,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
     Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/question/downvote/{question}', 'downvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/questions/follow/{question}', 'follow')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::controller(AnswerController::class)->group(function () {
