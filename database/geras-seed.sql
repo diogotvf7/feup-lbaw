@@ -460,10 +460,6 @@ BEGIN
             INSERT INTO notifications (date, type, upvote_id, user_id)
             VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM answers WHERE id = NEW.answer_id));
         END IF;
-        IF NEW.type = 'COMMENT' THEN
-            INSERT INTO notifications (date, type, upvote_id, user_id)
-            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM comments WHERE id = NEW.comment_id));
-        END IF;
     END IF;
 
     RETURN NULL;

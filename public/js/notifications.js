@@ -11,7 +11,7 @@ async function makePostRequest(url) {
         });
 }
 
-export async function update() {
+export async function updateNotifications() {
     return await fetch('/api/notifications/', {
         method: 'GET',
         headers: {
@@ -28,6 +28,51 @@ export async function update() {
         .catch(function (err) {
             console.log('Failed to fetch page: ', err);
         });
+
+
+}
+
+export async function updateNotificationCount() {
+    return await fetch('/api/notifications/count', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+    })
+        .then(function (response) {
+            return response.text()
+        })
+        .then(function (count) {
+            const notificationButton = document.getElementById('notification-button');
+            const notificationCount = document.getElementById('notification-count');
+
+            if (notificationButton && count > 0) {
+                if (notificationButton && notificationCount) { notificationCount.innerHTML = count; }
+                else if (notificationButton) {
+                    const span = document.createElement('span');
+                    span.id = 'notification-count';
+                    span.classList = 'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+                    span.innerHTML = count;
+                    const spanHidden = document.createElement('span');
+                    spanHidden.classList = 'visually-hidden';
+                    spanHidden.innerHTML = 'unread messages'
+
+                    notificationButton.appendChild(span);
+                    span.appendChild(spanHidden);
+                }
+            } else if (notificationButton && notificationCount && count == 0) {
+                clearNotificationCount();
+            }
+        })
+        .catch(function (err) {
+            console.log('Failed to fetch page: ', err);
+        });
+}
+
+export function update() {
+    updateNotifications();
+    updateNotificationCount();
+    dismissNotificationsButton();
 }
 
 export function notificationPopup(url, data) {
@@ -46,11 +91,22 @@ export function notificationPopup(url, data) {
     const a = document.createElement("a");
     a.classList = "alert-link";
     a.href = url;
+    a.addEventListener('click', function (e) {
+        const targetUrl = document.activeElement.href;
+        const id = targetUrl.match("([^\/]+)\/?$")[0];
+
+    });
+
     main.appendChild(a);
     a.appendChild(extDiv);
     extDiv.appendChild(button);
     extDiv.appendChild(strong);
-    extDiv.appendChild(a);
+}
+
+export function markQuestionNotifRead() {
+    const questionId = window.location.href.split('/').pop();
+    makePostRequest('/notifications/read/question/' + questionId);
+    updateNotificationCount();
 }
 
 function upvotePopup(data) {
@@ -60,7 +116,7 @@ function upvotePopup(data) {
 
     switch (data.vote.type) {
         case 'ANSWER': url = url + data.vote.content.question_id; break;
-        case 'QUESTION': url = url + data.question_id; break;
+        case 'QUESTION': url = url + data.vote.question_id; break;
     }
 
     console.log(`${url}`);
@@ -80,8 +136,8 @@ function answerPopup(data) {
 
 export function clearNotificationCount() {
     const notificationButton = document.getElementById('notification-button');
-    const noficationCount = document.getElementById('notification-count');
-    if (notificationButton && noficationCount) { notificationButton.removeChild(noficationCount); }
+    const notificationCount = document.getElementById('notification-count');
+    if (notificationButton && notificationCount) { notificationButton.removeChild(notificationCount); }
 }
 
 export function notificationButton() {
@@ -125,10 +181,12 @@ export default function enableNotifications() {
 
         channel.bind('notification-upvote', function (data) {
             upvotePopup(data);
+            update();
         });
 
         channel.bind('notification-answer', function (data) {
             answerPopup(data);
+            update();
         });
     }
 

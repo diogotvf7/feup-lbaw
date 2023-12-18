@@ -6,6 +6,7 @@
         @include('partials.notification', ['notification' => $notification])
     </li>
     @empty
+    <li class="list-group-item list-group-item-action d-none"><button id="dismiss-notifications" class="btn btn-secondary">Dismiss All</button></li>
     <li class="list-group-item list-group-item-action">
         <p>Nothing to see here!</p>
     </li>

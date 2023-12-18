@@ -51,7 +51,6 @@ class AnswerController extends Controller
      */
     public function create()
     {
-        
     }
 
     /**
@@ -153,12 +152,13 @@ class AnswerController extends Controller
                     ['user_id', $user->id],
                     ['answer_id', $answer->id],
                 ])->delete();
-            Vote::create([
+            $vote_id = Vote::create([
                 'is_upvote' => true,
                 'type' => 'ANSWER',
                 'user_id' => $user->id,
                 'answer_id' => $answer->id,
-            ]);
+            ])->id;
+            $this->upvoteEvent(Auth::user()->id, $vote_id);
         }
         return ['voteBalance' => $answer->getVoteBalanceAttribute()];
     }
@@ -179,14 +179,13 @@ class AnswerController extends Controller
                     ['user_id', $user->id],
                     ['answer_id', $answer->id],
                 ])->delete();
-            $id = Vote::create([
+            Vote::create([
                 'is_upvote' => false,
                 'type' => 'ANSWER',
                 'user_id' => $user->id,
                 'answer_id' => $answer->id,
             ])->id;
         }
-        // $this->upvoteEvent(Auth::user(), $id);
         return ['voteBalance' => $answer->getVoteBalanceAttribute()];
     }
 

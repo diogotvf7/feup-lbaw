@@ -254,7 +254,7 @@ class QuestionController extends Controller
                 'question_id' => $question->id,
             ])->id;
 
-            // $this->upvoteEvent(Auth::user(), $vote_id);
+            $this->upvoteEvent(Auth::user()->id, $vote_id);
         }
         return ['voteBalance' => $question->voteBalance()];
     }
