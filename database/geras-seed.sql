@@ -74,12 +74,13 @@ CREATE TABLE
         email TEXT NOT NULL CONSTRAINT user_email_uk UNIQUE,
         name TEXT,
         username TEXT NOT NULL,
-        password TEXT NOT NULL,
+        password TEXT,
         profile_picture TEXT,
         experience INTEGER DEFAULT 0,
         score INTEGER DEFAULT 0,
         member_since DATE DEFAULT now (),
-        type user_status_type DEFAULT 'User'
+        type user_status_type DEFAULT 'User',
+        google_id TEXT
     );
 
 CREATE TABLE
@@ -317,8 +318,8 @@ BEGIN
 		RAISE EXCEPTION 'Username cannot be NULL.';
 		END IF;
 
-		IF NEW.password IS NULL THEN
-		RAISE EXCEPTION 'Password cannot be NULL.';
+		IF (NEW.password IS NULL AND NEW.google_id IS NULL) THEN
+		RAISE EXCEPTION 'Password and Google ID cannot be NULL.';
 		END IF;
 
 		IF NEW.email IS NULL THEN

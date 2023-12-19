@@ -34,7 +34,7 @@
         var userId = "{{ Auth::user() ? Auth::user()->id : NULL}}";
     </script>
 
-
+    <script src="https://accounts.google.com/gsi/client" async></script>
 </head>
 
 <body>
