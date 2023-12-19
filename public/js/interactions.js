@@ -1,63 +1,63 @@
 async function followQuestion() {
   const questionId = new URL(window.location.href).pathname.split('/').pop();
   return await fetch('/questions/follow/' + questionId, {
-           method: 'PATCH',
-           headers: {
-             'X-Requested-With': 'XMLHttpRequest',
-             'X-CSRF-TOKEN':
-                 document.querySelector('meta[name="csrf-token"]').content
-           },
-         })
-      .then(function(response) {
-        return response.text();
-      })
-      .then(function(text) {
-        const followButton = document.getElementById('follow-button');
-        if (text === 'Followed') {
-          followButton.classList.add('on');
-          followButton.classList.remove('off');
-        } else {
-          followButton.classList.add('off');
-          followButton.classList.remove('on');
-        }
-      })
-      .catch(function(err) {
-        console.log('Failed to fetch page: ', err);
-      })
+    method: 'PATCH',
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-CSRF-TOKEN':
+        document.querySelector('meta[name="csrf-token"]').content
+    },
+  })
+    .then(function (response) {
+      return response.text();
+    })
+    .then(function (text) {
+      const followButton = document.getElementById('follow-button');
+      if (text === 'Followed') {
+        followButton.classList.add('on');
+        followButton.classList.remove('off');
+      } else {
+        followButton.classList.add('off');
+        followButton.classList.remove('on');
+      }
+    })
+    .catch(function (err) {
+      console.log('Failed to fetch page: ', err);
+    })
 }
 
 async function voteQuestion(vote, questionId, voteCount) {
   return await fetch(`/question/${vote}/${questionId}`, {
-           method: 'PATCH',
-           headers: {
-             'X-Requested-With': 'XMLHttpRequest',
-             'X-CSRF-TOKEN':
-                 document.querySelector('meta[name="csrf-token"]').content
-           },
-         })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        voteCount.textContent = json.voteBalance;
-      });
+    method: 'PATCH',
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-CSRF-TOKEN':
+        document.querySelector('meta[name="csrf-token"]').content
+    },
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (json) {
+      voteCount.textContent = json.voteBalance;
+    });
 }
 
 async function voteAnswer(vote, answerId, voteCount) {
   return await fetch(`/answer/${vote}/${answerId}`, {
-           method: 'PATCH',
-           headers: {
-             'X-Requested-With': 'XMLHttpRequest',
-             'X-CSRF-TOKEN':
-                 document.querySelector('meta[name="csrf-token"]').content
-           },
-         })
-      .then(function(response) {
-        return response.json();
-      })
-      .then(function(json) {
-        voteCount.textContent = json.voteBalance;
-      });
+    method: 'PATCH',
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+      'X-CSRF-TOKEN':
+        document.querySelector('meta[name="csrf-token"]').content
+    },
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (json) {
+      voteCount.textContent = json.voteBalance;
+    });
 }
 
 async function enableQuestionInteractions(questionInteractions) {
@@ -142,8 +142,8 @@ async function enableAnswerInteractions(answerInteractions) {
 async function enableInteractions() {
   const questionInteractions = document.getElementById('question-interactions');
   const answerInteractions = document.querySelectorAll('.answer-interactions');
-  enableQuestionInteractions(questionInteractions);
-  enableAnswerInteractions(answerInteractions);
+  if (questionInteractions) { enableQuestionInteractions(questionInteractions); }
+  if (answerInteractions) { enableAnswerInteractions(answerInteractions); }
 }
 
 export default enableInteractions;

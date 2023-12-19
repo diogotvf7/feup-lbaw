@@ -89,6 +89,13 @@ Route::controller(TagController::class)->group(function () {
     Route::post('/tags/store', 'store')->name('tag.store')->middleware(LoggedMiddleware::class);
 });
 
+Route::controller(NotificationController::class)->group(function () {
+    Route::post('/notifications/read', 'read')->middleware(LoggedMiddleware::class);
+    Route::post('/notifications/delete', 'destroyAll')->middleware(LoggedMiddleware::class);
+    Route::post('/notifications/delete/{notification}', 'destroy')->where('notification', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::post('/notifications/read/question/{id}', 'readAllRelatedTo')->where('id', '[0-9]+')->middleware(LoggedMiddleware::class);
+});
+
 Route::get('/info', function () {
     return view('pages.info');
 })->name('info');
@@ -122,10 +129,8 @@ Route::controller(TagController::class)->group(function () {
 });
 
 Route::controller(NotificationController::class)->group(function () {
-    Route::post('/notifications/read', 'read');
-    Route::post('/notifications/delete', 'destroyAll');
-    Route::post('/notifications/delete/{notification}', 'destroy')->where('notification', '[0-9]+');
-    Route::get('/api/notifications', 'fetch');
+   Route::get('/api/notifications', 'fetch');
+   Route::get('api/notifications/count', 'count');
 });
 
 // Authentication
@@ -141,9 +146,9 @@ Route::controller(RegisterController::class)->middleware('guest')->group(functio
 });
 
 Route::controller(PasswordResetController::class)->middleware('guest')->group(function () {
-    Route::get('/forgot-password', 'show')->name('password.request');    
+    Route::get('/forgot-password', 'show')->name('password.request');
     Route::post('/forgot-password', 'sendToken')->name('password.email');
 
-    Route::get('/reset-password/{token}', 'resetPassword')->name('password.reset');    
+    Route::get('/reset-password/{token}', 'resetPassword')->name('password.reset');
     Route::post('/reset-password', 'updatePassword')->name('password.update');
 });

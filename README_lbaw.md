@@ -353,7 +353,7 @@ Once Docker is authenticated, configure the `upload_image.sh` script with your i
 Example configuration:
 
 ```bash
-IMAGE_NAME=git.fe.up.pt:5050/lbaw/lbawYYYY/lbawYYXX # Replace with your group's image name
+IMAGE_NAME=git.fe.up.pt:5050/lbaw/lbaw2324/lbaw2326 
 ```
 
 You can now build and upload the docker image by executing that script from the project root folder:
@@ -369,7 +369,7 @@ There should be only one image per group. All team members should be able to upd
 After building it, you can test locally the image by running:
 
 ```bash
-docker run -it -p 8000:80 --name=lbawYYXX -e DB_DATABASE="lbawYYXX" -e DB_SCHEMA="lbawYYXX" -e DB_USERNAME="lbawYYXX" -e DB_PASSWORD="PASSWORD" git.fe.up.pt:5050/lbaw/lbawYYYY/lbawYYXX # Replace with your group's image name
+docker run -it -p 8000:80 --name=lbaw2326 -e DB_DATABASE="lbaw2326" -e DB_SCHEMA="lbaw2326" -e DB_USERNAME="lbaw2326" -e DB_PASSWORD="QVYmpBKq" git.fe.up.pt:5050/lbaw/lbaw2324/lbaw2326
 ```
 
 The above command exposes your application on http://localhost:8000.
@@ -381,7 +381,7 @@ Your database configuration will be provided as an environment variable to your 
 While running your container, you can use another terminal to run a shell inside the container by executing:
 
 ```bash
-docker exec -it lbawYYXX bash
+docker exec -it lbaw2326 bash
 ```
 
 Inside the container you may, for example, see the content of the Web server logs by executing:
