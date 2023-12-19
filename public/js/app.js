@@ -6,7 +6,7 @@ import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
 import handleComments from './comments-loader.js';
 import enableInteractions from './interactions.js';
-import enableNotifications, {notificationButton} from './notifications.js';
+import enableNotifications, { markQuestionNotifRead, notificationButton } from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
@@ -28,7 +28,7 @@ if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
 }
 // Questions page infinite scroll
 else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
-             currentPath)) {
+  currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
 }
@@ -55,8 +55,9 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
 
-  // handleComments();
-  // enableInteractions();
+  markQuestionNotifRead();
+  //handleComments();
+  //enableInteractions();
 }
 // Create Question page
 else if (/^\/questions\/create$/.test(currentPath)) {
