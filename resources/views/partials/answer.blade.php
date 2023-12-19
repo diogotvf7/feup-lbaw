@@ -1,13 +1,13 @@
+<?php 
+    $canInteract = (auth()->check() && auth()->user()->id !== $answer->user->id);
+?>
+
 <article id="answer-{{ $answer->id }}" class="answer d-flex gap-3">
-    @if (auth()->check() && auth()->user()->id !== $answer->user->id)
-        <div class="answer-interactions d-flex flex-column align-items-center py-3" style="width: 3em;" data-id="{{ $answer->id }}">
-            @if (auth()->user()->id !== $answer->user->id)
-                <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
-                <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
-                <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
-            @endif
-        </div>
-    @endif
+    <div class="answer-interactions d-flex flex-column align-items-center py-3" style="width: 3em;" data-id="{{ $answer->id }}">
+        <button class="interaction-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-caret-up-fill"></i></button>
+        <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
+        <button class="interaction-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-caret-down-fill"></i></button>
+    </div>
     <div class="flex-grow-1 pt-3">
         <form method="POST" action="{{ route('answer/edit') }}">
             {{ csrf_field() }}

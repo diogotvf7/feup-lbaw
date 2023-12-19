@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -91,16 +92,6 @@ class UserController extends Controller
         return view('pages.profile', ['user' => $user]);
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    // public function edit(User $user)
-    // {
-    //     $this->authorize('selfOrAdmin', $user);
-    //     return view('pages.editUser', compact('user'));
-    // }
-
     /**
      * Update the specified resource in storage.
      */
@@ -169,10 +160,18 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Request $request, User $user)
     {
         $this->authorize('selfOrAdmin', $user);
+        
+        if($user->id === Auth::user()->id){
+            Auth::logout();
+            $user->delete();
+            return redirect()->route('questions.top')->with('success', ['Your account was deleted successfully!']);
+        }
+
         $user->delete();
         return redirect()->back()->with('success', [$user->username . ' deleted successfully!']);
+        
     }
 }
