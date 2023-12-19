@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Events\UpvoteEvent;
 use App\Models\Tag;
 use App\Models\Vote;
@@ -298,6 +299,22 @@ class QuestionController extends Controller
             $user->followedQuestions()->attach($question->id);
             return "Followed";
         }
+    }
+
+    public function correctanswer(Request $request)
+    {
+        $question = Question::findOrFail($request->question_id);
+        $answer = Answer::findOrFail($request->answer_id);
+        if ($request->mark_or_remove == "mark"){
+            //$question->correctAnswer()->save($answer);
+            //dd($question->correctAnswer);
+        }
+        else {
+            //$question->save();
+        }
+        //$this->authorize('update', $question);
+
+        return redirect()->back()->with('success', 'Correct answer edited successfully!');
     }
 
     public function upvoteEvent($user_id, $vote_id)
