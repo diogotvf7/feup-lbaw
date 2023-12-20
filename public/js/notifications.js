@@ -3,72 +3,72 @@ let notificationPopover;
 
 async function makePostRequest(url) {
   return await fetch(url, {
-    method: 'POST',
-    headers: {
-      'X-Requested-With': 'XMLHttpRequest',
-      'X-CSRF-TOKEN':
-        document.querySelector('meta[name="csrf-token"]').content
-    },
-  })
-    .catch(function (err) {
-      console.log('Failed to fetch page: ', err);
-    });
+           method: 'POST',
+           headers: {
+             'X-Requested-With': 'XMLHttpRequest',
+             'X-CSRF-TOKEN':
+                 document.querySelector('meta[name="csrf-token"]').content
+           },
+         })
+      .catch(function(err) {
+        console.log('Failed to fetch page: ', err);
+      });
 }
 
 export async function updateNotifications() {
   return await fetch('/api/notifications/', {
-    method: 'GET',
-    headers: { 'X-Requested-With': 'XMLHttpRequest' },
-  })
-    .then(function (response) {
-      return response.text()
-    })
-    .then(function (html) {
-      notificationPopover._config.content = html, 0;
-      notificationPopover.setContent();
-      dismissNotificationsButton();
-    })
-    .catch(function (err) {
-      console.log('Failed to fetch page: ', err);
-    });
+           method: 'GET',
+           headers: {'X-Requested-With': 'XMLHttpRequest'},
+         })
+      .then(function(response) {
+        return response.text()
+      })
+      .then(function(html) {
+        notificationPopover._config.content = html, 0;
+        notificationPopover.setContent();
+        dismissNotificationsButton();
+      })
+      .catch(function(err) {
+        console.log('Failed to fetch page: ', err);
+      });
 }
 
 export async function updateNotificationCount() {
   return await fetch('/api/notifications/count', {
-    method: 'GET',
-    headers: { 'X-Requested-With': 'XMLHttpRequest' },
-  })
-    .then(function (response) {
-      return response.text()
-    })
-    .then(function (count) {
-      const notificationButton =
-        document.getElementById('notification-button');
-      const notificationCount = document.getElementById('notification-count');
+           method: 'GET',
+           headers: {'X-Requested-With': 'XMLHttpRequest'},
+         })
+      .then(function(response) {
+        return response.text()
+      })
+      .then(function(count) {
+        const notificationButton =
+            document.getElementById('notification-button');
+        const notificationCount = document.getElementById('notification-count');
 
-      if (notificationButton && count > 0) {
-        if (notificationButton && notificationCount) {
-          notificationCount.innerHTML = count;
-        } else if (notificationButton) {
-          const span = document.createElement('span');
-          span.id = 'notification-count';
-          span.classList =
-            'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
-          span.innerHTML = count;
-          const spanHidden = document.createElement('span');
-          spanHidden.classList = 'visually-hidden';
-          spanHidden.innerHTML = 'unread messages'
+        if (notificationButton && count > 0) {
+          if (notificationButton && notificationCount) {
+            notificationCount.innerHTML = count;
+          } else if (notificationButton) {
+            const span = document.createElement('span');
+            span.id = 'notification-count';
+            span.classList =
+                'position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger';
+            span.innerHTML = count;
+            const spanHidden = document.createElement('span');
+            spanHidden.classList = 'visually-hidden';
+            spanHidden.innerHTML = 'unread messages'
 
-          notificationButton.appendChild(span);
-          span.appendChild(spanHidden);
+            notificationButton.appendChild(span);
+            span.appendChild(spanHidden);
+          }
+        } else if (notificationButton && notificationCount && count == 0) {
+          clearNotificationCount();
         }
-      } else if (notificationButton && notificationCount && count == 0) {
-        clearNotificationCount();
-      }
-    })
-    .catch(function (err) {
-      console.log('Failed to fetch page: ', err);
-    });
+      })
+      .catch(function(err) {
+        console.log('Failed to fetch page: ', err);
+      });
 }
 
 export function update() {
@@ -80,7 +80,7 @@ export function notificationPopup(url, data) {
   const main = document.getElementsByTagName('main')[0];
   const extDiv = document.createElement('div');
   extDiv.classList =
-    'alert alert-dismissible alert-dismissable alert-info position-absolute bottom-0 end-0 m-5 d-flex flex-row';
+      'alert alert-dismissible alert-dismissable alert-info position-absolute bottom-0 end-0 m-5 d-flex flex-row';
   const button = document.createElement('button');
   button.type = 'button';
   button.classList = 'btn-close';
@@ -171,7 +171,7 @@ export function notificationButton() {
 export function dismissNotificationsButton() {
   const deleteAllNotifs = document.getElementById('dismiss-notifications');
   if (deleteAllNotifs) {
-    deleteAllNotifs.addEventListener('click', function (data) {
+    deleteAllNotifs.addEventListener('click', function(data) {
       makePostRequest('/notifications/delete');
       update();
     });
@@ -194,18 +194,13 @@ export default function enableNotifications() {
 
     let main = document.getElementsByTagName('main')[0];
 
-    channel.bind('notification-upvote', function (data) {
+    channel.bind('notification-upvote', function(data) {
       upvotePopup(data);
       update();
     });
 
-    channel.bind('notification-answer', function (data) {
+    channel.bind('notification-answer', function(data) {
       answerPopup(data);
-      update();
-    });
-
-    channel.bind('notification-comment', function (data) {
-      commentPopup(data);
       update();
     });
   }
@@ -215,47 +210,48 @@ export default function enableNotifications() {
   let popover = document.querySelectorAll('[data-bs-toggle="popover"]');
 
   if (popover.length !== 0) {
-    document.addEventListener('DOMContentLoaded', function () {
-      var popoverTriggerList =
-        [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-      var popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+    document.addEventListener('DOMContentLoaded', function() {
+      var popoverTriggerList = [].slice.call(
+          document.querySelectorAll('[data-bs-toggle="popover"]'));
+      var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
         notificationPopover = new bootstrap.Popover(popoverTriggerEl, {
           template:
-            '<div class="popover"><div class="popover-arrow"></div><h3 class="popover-header">Notifications</h3><div id="popover-body-notifications" class="popover-body list-group d-flex flex-column list-unstyled p-0"></div></div>',
+              '<div class="popover"><div class="popover-arrow"></div><h3 class="popover-header">Notifications</h3><div id="popover-body-notifications" class="popover-body list-group d-flex flex-column list-unstyled p-0"></div></div>',
           container: 'body',
           html: true,
           placement: 'bottom',
         });
         updateNotifications();
         popoverTriggerEl.addEventListener(
-          'hidden.bs.popover', updateNotifications);
+            'hidden.bs.popover', updateNotifications);
         return notificationPopover;
       });
 
       notificationPopover._element.addEventListener(
-        'shown.bs.popover', function (event) {
-          const deleteAllNotifs =
-            document.getElementById('dismiss-notifications');
+          'shown.bs.popover', function(event) {
+            const deleteAllNotifs =
+                document.getElementById('dismiss-notifications');
 
-          if (deleteAllNotifs) {
-            deleteAllNotifs.addEventListener('click', function (data) {
-              makePostRequest('/notifications/delete');
-              update();
-            });
-          }
+            if (deleteAllNotifs) {
+              deleteAllNotifs.addEventListener('click', function(data) {
+                makePostRequest('/notifications/delete');
+                update();
+              });
+            }
 
-          const deleteNotifs =
-            document.getElementsByClassName('dismiss-notification');
-          for (const button of deleteNotifs) {
-            button.addEventListener('click', function (e) {
-              const notificationId = e.target.parentElement.id.split('-').pop();
-              makePostRequest('/notifications/delete/' + notificationId);
-              update();
-            })
-          }
-        });
+            const deleteNotifs =
+                document.getElementsByClassName('dismiss-notification');
+            for (const button of deleteNotifs) {
+              button.addEventListener('click', function(e) {
+                const notificationId =
+                    e.target.parentElement.id.split('-').pop();
+                makePostRequest('/notifications/delete/' + notificationId);
+                update();
+              })
+            }
+          });
 
-      document.addEventListener('click', function (event) {
+      document.addEventListener('click', function(event) {
         if (!event.target.closest('.popover')) {
           notificationPopover.hide();
         }

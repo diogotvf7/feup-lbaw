@@ -7,6 +7,19 @@
         <button class="interaction-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-caret-up-fill"></i></button>
         <p class="vote-count px-4 mb-0">{{ $answer->vote_balance }}</p>
         <button class="interaction-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-caret-down-fill"></i></button>
+        @if (auth()->check() && (auth()->user()->id === $answer->question->user->id || auth()->user()->type === "Admin"))
+        <form class="mt-1" method="POST" action="{{ route('answer.correct') }}">
+            {{ csrf_field() }}
+            @method('PATCH')
+            <input type="hidden" name="question_id" value="{{ $answer->question->id }}">
+            <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+            <button class="interaction-button correct-answer {{ $answer->id === $answer->question->correct_answer ? 'on' : 'off' }}" type="submit">
+                <i class="bi bi-check-lg"></i>
+            </button>
+        </form>
+        @elseif ($answer->id === $answer->question->correct_answer)
+        <i class="correct-answer-visitor bi bi-check-lg mt-1" title="Correct Answer"></i>
+        @endif
     </div>
     <div class="flex-grow-1 pt-3">
         <form method="POST" action="{{ route('answer/edit') }}">
