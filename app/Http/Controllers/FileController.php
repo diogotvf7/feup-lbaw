@@ -11,8 +11,8 @@ class FileController extends Controller
     static $diskName = 'files';
 
     static $systemTypes = [
-        'profile' => ['png', 'jpeg', 'jpg', 'gif'],
-        'post' => ['png', 'jpeg', 'jpg', 'gif','mp4','mp3','pdf'],
+        'profiles' => ['png', 'jpeg', 'jpg', 'gif'],
+        'posts' => ['png', 'jpeg', 'jpg', 'gif','mp4','mp3','pdf'],
     ];
 
     private static function isValidType(String $type) {
@@ -27,7 +27,7 @@ class FileController extends Controller
         
         $fileName = null;
         switch($type) {
-            case 'profile':
+            case 'profiles':
                 $fileName = User::find($id)->profile_image;
                 break;
             case 'posts':
@@ -37,8 +37,8 @@ class FileController extends Controller
         return $fileName;
     }
     
-    public function get(String $fileType,Int $userId){
-                // Validation: upload type
+    static function get(String $fileType,Int $userId){
+        // Validation: upload type
         if (!self::isValidType($fileType)) {
             return self::defaultAsset($fileType);
         }

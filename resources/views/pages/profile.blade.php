@@ -24,11 +24,6 @@
         <div id="informations" class="tab-pane fade active show" role="tabpanel">
             <div class="d-flex flex-column">
                 <div class="d-flex flex-column flex-lg-row justify-content-around align-items-center">
-                <div class="profile">
-                    <h3>Profile</h3>
-                    <h4>&#64;{{ $user->username }}</h4>
-                    <img src="{{ $user->getProfileImage() }}">
-                </div>
                     @include('partials.profileCard')
                     @if (Auth::user()->id === $user->id)
                             @include('partials.editUser')
