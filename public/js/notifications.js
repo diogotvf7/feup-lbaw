@@ -93,10 +93,6 @@ export function notificationPopup(url, data) {
   const a = document.createElement('a');
   a.classList = 'alert-link';
   a.href = url;
-  a.addEventListener('click', function(e) {
-    const targetUrl = document.activeElement.href;
-    const id = targetUrl.match('([^\/]+)\/?$')[0];
-  });
 
   main.appendChild(a);
   a.appendChild(extDiv);
@@ -124,8 +120,6 @@ function upvotePopup(data) {
       break;
   }
 
-  console.log(`${url}`);
-
   notificationPopup(url, data);
 }
 
@@ -133,9 +127,6 @@ function answerPopup(data) {
   console.log(`New answer: ${data.message}`);
 
   let url = '/questions/' + data.question.id;
-
-  console.log(`${url}`);
-
   notificationPopup(url, data);
 }
 
@@ -197,50 +188,55 @@ export default function enableNotifications() {
 
   notificationButton();
 
-  document.addEventListener('DOMContentLoaded', function() {
-    var popoverTriggerList =
-        [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-    var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
-      notificationPopover = new bootstrap.Popover(popoverTriggerEl, {
-        template:
-            '<div class="popover"><div class="popover-arrow"></div><h3 class="popover-header">Notifications</h3><div id="popover-body-notifications" class="popover-body list-group d-flex flex-column list-unstyled p-0"></div></div>',
-        container: 'body',
-        html: true,
-        placement: 'bottom',
-      });
-      updateNotifications();
-      popoverTriggerEl.addEventListener(
-          'hidden.bs.popover', updateNotifications);
-      return notificationPopover;
-    });
+  let popover = document.querySelectorAll('[data-bs-toggle="popover"]');
 
-    notificationPopover._element.addEventListener(
-        'shown.bs.popover', function(event) {
-          const deleteAllNotifs =
-              document.getElementById('dismiss-notifications');
-
-          if (deleteAllNotifs) {
-            deleteAllNotifs.addEventListener('click', function(data) {
-              makePostRequest('/notifications/delete');
-              update();
-            });
-          }
-
-          const deleteNotifs =
-              document.getElementsByClassName('dismiss-notification');
-          for (const button of deleteNotifs) {
-            button.addEventListener('click', function(e) {
-              const notificationId = e.target.parentElement.id.split('-').pop();
-              makePostRequest('/notifications/delete/' + notificationId);
-              update();
-            })
-          }
+  if (popover.length !== 0) {
+    document.addEventListener('DOMContentLoaded', function() {
+      var popoverTriggerList = [].slice.call(
+          document.querySelectorAll('[data-bs-toggle="popover"]'));
+      var popoverList = popoverTriggerList.map(function(popoverTriggerEl) {
+        notificationPopover = new bootstrap.Popover(popoverTriggerEl, {
+          template:
+              '<div class="popover"><div class="popover-arrow"></div><h3 class="popover-header">Notifications</h3><div id="popover-body-notifications" class="popover-body list-group d-flex flex-column list-unstyled p-0"></div></div>',
+          container: 'body',
+          html: true,
+          placement: 'bottom',
         });
+        updateNotifications();
+        popoverTriggerEl.addEventListener(
+            'hidden.bs.popover', updateNotifications);
+        return notificationPopover;
+      });
 
-    document.addEventListener('click', function(event) {
-      if (!event.target.closest('.popover')) {
-        notificationPopover.hide();
-      }
+      notificationPopover._element.addEventListener(
+          'shown.bs.popover', function(event) {
+            const deleteAllNotifs =
+                document.getElementById('dismiss-notifications');
+
+            if (deleteAllNotifs) {
+              deleteAllNotifs.addEventListener('click', function(data) {
+                makePostRequest('/notifications/delete');
+                update();
+              });
+            }
+
+            const deleteNotifs =
+                document.getElementsByClassName('dismiss-notification');
+            for (const button of deleteNotifs) {
+              button.addEventListener('click', function(e) {
+                const notificationId =
+                    e.target.parentElement.id.split('-').pop();
+                makePostRequest('/notifications/delete/' + notificationId);
+                update();
+              })
+            }
+          });
+
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('.popover')) {
+          notificationPopover.hide();
+        }
+      });
     });
-  });
+  }
 }

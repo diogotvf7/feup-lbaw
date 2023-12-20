@@ -300,7 +300,7 @@ class QuestionController extends Controller
             return "Followed";
         }
     }
-
+    
     public function upvoteEvent($user_id, $vote_id)
     {
         event(new UpvoteEvent($user_id, $vote_id));
