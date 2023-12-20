@@ -15,11 +15,10 @@
         @method('PATCH')
         <input type="hidden" name="question_id" value="{{ $answer->question->id }}">
         <input type="hidden" name="answer_id" value="{{ $answer->id }}">
-        <input type="hidden" name="mark_or_remove" value="{{ $answer->id === $answer->question->correctAnswer->id ? 'remove' : 'mark' }}">
-        <button class="correct-answer {{ $answer->id === $answer->question->correctAnswer->id ? 'on' : 'off' }}" type="submit"><i class="bi bi-check-lg"></i></button>
+        <button class="correct-answer {{ $answer->id === $answer->question->correct_answer ? 'on' : 'off' }}" type="submit"><i class="bi bi-check-lg"></i></button>
     </form>
     @else
-        @if ($answer->id === $answer->question->correctAnswer->id)
+        @if ($answer->id === $answer->question->correct_answer)
         <i class="correct-answer-visitor bi bi-check-lg"></i>
         @endif
     @endif

@@ -305,15 +305,14 @@ class QuestionController extends Controller
     {
         $question = Question::findOrFail($request->question_id);
         $answer = Answer::findOrFail($request->answer_id);
-        if ($request->mark_or_remove == "mark"){
-            //$question->correctAnswer()->save($answer);
-            //dd($question->correctAnswer);
-        }
-        else {
-            //$question->save();
-        }
-        //$this->authorize('update', $question);
 
+        $this->authorize('update', $question);
+
+        if ($question->correctAnswer == $answer->id)
+            $question->correctAnswer = null;
+        else
+            $question->correctAnswer = $answer->id;
+        
         return redirect()->back()->with('success', 'Correct answer edited successfully!');
     }
 

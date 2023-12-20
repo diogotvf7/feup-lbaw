@@ -26,8 +26,6 @@ DROP TABLE IF EXISTS answers CASCADE;
 
 DROP TABLE IF EXISTS comments CASCADE;
 
-DROP TABLE IF EXISTS correct_answer CASCADE;
-
 DROP TABLE IF EXISTS content_versions CASCADE;
 
 DROP TABLE IF EXISTS question_tag CASCADE;
@@ -106,6 +104,7 @@ CREATE TABLE
         title TEXT NOT NULL,
         search TSVECTOR,
         author INTEGER REFERENCES users (id) ON DELETE SET NULL
+        correct_answer INTEGER REFERENCES answers (id) ON DELETE SET NULL
     );
 
 CREATE TABLE
@@ -136,13 +135,6 @@ CREATE TABLE
                 AND answer_id IS NOT NULL
             )
         )
-    );
-
-CREATE TABLE
-    correct_answer (
-        question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
-        answer_id INTEGER NOT NULL REFERENCES answers (id) ON DELETE CASCADE,
-        PRIMARY KEY (question_id, answer_id)
     );
 
 CREATE TABLE
@@ -2754,121 +2746,6 @@ VALUES
     (50, 25);
 
 INSERT INTO
-    correct_answer (question_id, answer_id)
-VALUES
-    (1, 3),
-    (2, 6),
-    (3, 9),
-    (4, 12),
-    (5, 15),
-    (6, 18),
-    (7, 21),
-    (8, 24),
-    (9, 27),
-    (10, 30),
-    (11, 33),
-    (12, 36),
-    (13, 39),
-    (14, 42),
-    (15, 45),
-    (16, 48),
-    (17, 3),
-    (18, 6),
-    (19, 9),
-    (20, 12),
-    (21, 15),
-    (22, 18),
-    (23, 21),
-    (24, 24),
-    (25, 27),
-    (26, 30),
-    (27, 33),
-    (28, 36),
-    (29, 39),
-    (30, 42),
-    (31, 45),
-    (32, 48),
-    (33, 3),
-    (34, 6),
-    (35, 9),
-    (36, 12),
-    (37, 15),
-    (38, 18),
-    (39, 21),
-    (40, 24),
-    (41, 27),
-    (42, 30),
-    (43, 33),
-    (44, 36),
-    (45, 39),
-    (46, 42),
-    (47, 45),
-    (48, 48),
-    (49, 3),
-    (50, 6),
-    (51, 9),
-    (52, 12),
-    (53, 15),
-    (54, 18),
-    (55, 21),
-    (56, 24),
-    (57, 27),
-    (58, 30),
-    (59, 33),
-    (60, 36),
-    (61, 39),
-    (62, 42),
-    (63, 45),
-    (64, 48),
-    (65, 3),
-    (66, 6),
-    (67, 9),
-    (68, 12),
-    (69, 15),
-    (70, 18),
-    (71, 21),
-    (72, 24),
-    (73, 27),
-    (74, 30),
-    (75, 33),
-    (76, 36),
-    (77, 39),
-    (78, 42),
-    (79, 45),
-    (80, 48),
-    (81, 3),
-    (82, 6),
-    (83, 9),
-    (84, 12),
-    (85, 15),
-    (86, 18),
-    (87, 21),
-    (88, 24),
-    (89, 27),
-    (90, 30),
-    (91, 33),
-    (92, 36),
-    (93, 39),
-    (94, 42),
-    (95, 45),
-    (96, 48),
-    (97, 3),
-    (98, 6),
-    (99, 9),
-    (100, 12),
-    (101, 15),
-    (102, 18),
-    (103, 21),
-    (104, 24),
-    (105, 27),
-    (106, 30),
-    (107, 33),
-    (108, 36),
-    (109, 39),
-    (110, 42),
-    (111, 45);
-
-INSERT INTO
     content_versions (body, type, question_id, answer_id, date)
 VALUES
     (
@@ -4643,32 +4520,6 @@ VALUES
         NULL,
         12
     );
-
-INSERT INTO
-    correct_answer (question_id, answer_id)
-VALUES
-    (1, 1),
-    (2, 4),
-    (3, 5),
-    (4, 7),
-    (5, 10),
-    (6, 11),
-    (7, 13),
-    (9, 17),
-    (10, 20),
-    (11, 21),
-    (12, 24),
-    (13, 25),
-    (16, 31),
-    (17, 33),
-    (18, 36),
-    (19, 37),
-    (20, 40),
-    (21, 41),
-    (22, 44),
-    (23, 46),
-    (24, 47),
-    (25, 49);
 
 INSERT INTO
     badge_user (user_id, badge_id, date)
