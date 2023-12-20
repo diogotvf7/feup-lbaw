@@ -130,6 +130,25 @@ function upvotePopup(data) {
   notificationPopup(url, data);
 }
 
+function commentPopup(data) {
+  console.log(`New comment: ${data.message}`);
+
+  let url = '/questions/';
+
+  switch (data.comment.type) {
+    case 'ANSWER':
+      url = url + data.comment.content.question_id;
+      break;
+    case 'QUESTION':
+      url = url + data.comment.question_id;
+      break;
+  }
+
+  console.log(`${url}`);
+
+  notificationPopup(url, data);
+}
+
 function answerPopup(data) {
   console.log(`New answer: ${data.message}`);
 
@@ -192,6 +211,11 @@ export default function enableNotifications() {
 
     channel.bind('notification-answer', function(data) {
       answerPopup(data);
+      update();
+    });
+
+    channel.bind('notification-comment', function(data) {
+      commentPopup(data);
       update();
     });
   }

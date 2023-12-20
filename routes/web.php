@@ -49,18 +49,15 @@ Route::controller(AnswerController::class)->group(function () {
     Route::post('/answers/create', 'store')->name('answer/create');
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
-    Route::get('/answers/event', 'answerEvent')->name('answer.event');
     Route::patch('/answer/upvote/{answer}', 'upvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
-Route::controller(VoteController::class)->group(function () {
-    Route::get('/votes/event', 'voteEvent')->name('vote.event');
-});
 Route::controller(CommentController::class)->group(function () {
     Route::post('/comments/create', 'store')->name('comment/create');
     Route::patch('/comments/edit', 'edit')->name('comment/edit');
     Route::delete('/comments/delete', 'destroy')->name('comment/delete');
+    Route::get('/comment/event', 'commentEvent')->name('comment.event');
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
