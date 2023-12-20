@@ -89,7 +89,9 @@ function createQuestionPreview(question, authenticated) {
 
 async function fetchQuestions() {
   const url = new URL(window.location.href);
-  const request = await fetch('/api' + url.pathname + '?page=' + page++);
+  url.pathname = '/api' + url.pathname
+  url.searchParams.append('page', page++);
+  const request = await fetch(url);
   const response = await request.json();
   return response;
 }

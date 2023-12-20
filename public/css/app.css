@@ -349,18 +349,6 @@
   max-width: 1rem;
   min-height: 1rem;
 }
-
-/* ------------------ */
-
-/*        Sidebar        */
-.sidebar li {
-  color: var(--bs-body-color);
-}
-
-.sidebar li:hover {
-  color: white;
-}
-
 /* ------------------ */
 
 /*        Google Button        */

@@ -58,7 +58,6 @@
                         </h2>
                         <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
                             <form class="accordion-body p-0" action="{{ $url }}" method="GET">
-
                                 <div class="form-group my-1">
                                     <div class="form-check">
                                         <input id="no-answers" class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
