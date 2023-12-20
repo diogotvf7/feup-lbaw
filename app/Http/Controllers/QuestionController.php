@@ -299,11 +299,6 @@ class QuestionController extends Controller
             return "Followed";
         }
     }
-<<<<<<< HEAD
-        
-=======
-
->>>>>>> 8966009f5415635431892c4e9c9cb65b1ef7a989
     public function upvoteEvent($user_id, $vote_id)
     {
         event(new UpvoteEvent($user_id, $vote_id));
