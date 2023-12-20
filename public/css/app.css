@@ -241,8 +241,8 @@
 /* ------------------ */
 
 /*        Modal        */
-.modal {
-  /* display: none; */
+ .modal {
+  display: none;
   position: fixed;
   z-index: 5;
   left: 0;

@@ -28,25 +28,34 @@
                     @if (Auth::user()->id === $user->id)
                     @include('partials.editUser')
                     @endif
-                    
+
                     <div id="edit-pfp" class="modal">
                         <div class="modal-content">
-                            <header>
+                            <header class="d-flex justify-content-between">
+                                <h2>Edit Profile Picture</h2>
                                 <button type="button" class="close-modal btn-close" data-bs-dismiss="modal" aria-label="Close">
                                     <span aria-hidden="true"></span>
                                 </button>
                             </header>
-                            <form method="POST" action="/file/upload" class= "d-flex flex-column justify-content-center align-items-center" enctype="multipart/form-data">
+
+                            <hr />
+                            <form method="POST" action="/file/upload" enctype="multipart/form-data" class="">
                                 {{ csrf_field() }}
                                 {{ method_field('PATCH') }}
-                                <input name="file" type="file" required style="max-width: fit-content;">
-                                <input name="id" type="number" value="{{ $user->id }}" hidden>
-                                <input name="type" type="text" value="profile" hidden>
-                                <button id="submit-image" type="submit" class="btn btn-primary" aria-label="Submit Image" required>Submit Image</button>
+                                <div class="modal-body m-3">
+                                    <input name="file" type="file" required>
+                                    <input name="id" type="number" value="{{ $user->id }}" hidden>
+                                    <input name="type" type="text" value="profile" hidden>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="submit" id="submit-image" class="btn btn-primary" aria-label="Save Changes">Save changes</button>
+                                    <button type="button" class="close-modal btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
                             </form>
                         </div>
                     </div>
-                </div>            
+                </div>
             </div>
         </div>
 
