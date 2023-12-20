@@ -12,7 +12,7 @@
         <div class="d-flex justify-content-between mx-3">
             <div class="d-flex gap-1">
                 @foreach ($question->tags as $tag)
-                    <p class="badge badge-primary bg-primary text-decoration-none m-0">{{$tag->name}}</p>
+                    <p class="badge bg-primary text-decoration-none m-0">{{$tag->name}}</p>
                 @endforeach
             </div>
             <div class="align-self-end text-secondary text-wrap text-break">

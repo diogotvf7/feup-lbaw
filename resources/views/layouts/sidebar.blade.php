@@ -1,6 +1,20 @@
+<?php
+    use Illuminate\Support\Facades\Request;
+
+    $url = Request::url();
+    
+    $request = Request::all();
+
+    $hasParams = sizeof($request) > 0;
+
+    $no_answers = $request['no-answers'] ?? null;
+    $no_accepted_answers = $request['no-accepted-answers'] ?? null;
+
+?>
+
 <nav class="sidebar position-relative d-flex flex-column align-items-stretch" style="min-width: 250px; max-width: 250px;">
-    <div class="px-3 pt-3">
-        <ul class="p-0">
+    <div class="px-3 pt-3 pb-5 overflow-y-scroll">
+        <ul class="p-0 m-0">
             <li class="py-3 px-1 sidebar-element">
                 <a href="{{ route('questions.top') }}" class="text-decoration-none">
                     Top Questions
@@ -37,34 +51,43 @@
                 </a>
             </li>
         </ul>
-        <div id="filters" class="accordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button collapsed px-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                        Filters
+        @if ((Request::is('questions') || Request::is('questions/*') && !(Request::is('questions/create'))))
+        <hr class="m-0">
+        <div id="filters-accordion" class="accordion">
+            <div>
+                <h2 class="accordion-header">
+                    <button class="accordion-button {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams }}" aria-controls="filters">
+                        <i class="bi bi-filter me-1"></i> Filters
                     </button>
                 </h2>
-                <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
-                    <form class="accordion-body" action="{{ route('questions') }}" method="GET">
+                <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
+                    <form class="accordion-body p-0" action="{{ $url }}" method="GET">
 
-                        <div class="form-group">                    
-                            <label for="filter" class="form-label mt-4">Tags</label>
-                            <div id="top-tags" class="d-flex flex-wrap">
+                        <div class="form-group">
+                            <label for="tags" class="form-label">Tags</label>
+                            <input id="tag-input" type="text" name="tags" class="form-control">
+                        </div>
+
+                        <div class="form-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">No answers</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="no-accepted-answers" {{ $no_accepted_answers ? 'checked' : '' }}>
+                                <label class="form-check-label" for="flexSwitchCheckChecked">No accepted answers</label>
                             </div>
                         </div>
 
-                        <div class="">
-                            <input type="checkbox">
-                        </div>
-
-                        <div class="d-grid mb-0">
+                        <div class="d-grid my-3">
                             <button type="submit" class="btn btn-primary" aria-label="Apply Filters">
-                                <i class="bi bi-filter"></i> Apply
+                                Apply
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
+        @endif
     </div>
 </nav>

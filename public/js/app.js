@@ -9,6 +9,7 @@ import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
+import enableTagFilter from './tag-filter.js';
 import tagScrollObserver from './tags-fetcher.js';
 
 const currentPath = window.location.pathname;
@@ -29,6 +30,7 @@ else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
              currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
+  enableTagFilter();
 }
 // Tags page infinite scroll
 else if (/^\/tags\/?$/.test(currentPath)) {
