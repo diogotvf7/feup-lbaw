@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dd4dcfdca521e27ef796bb0875c6f1b3",
+    "content-hash": "cf41c542eba76dcad19300f654f7ad22",
     "packages": [
         {
             "name": "brick/math",
@@ -63,26 +63,26 @@
         },
         {
             "name": "carbonphp/carbon-doctrine-types",
-            "version": "3.1.0",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/CarbonPHP/carbon-doctrine-types.git",
-                "reference": "a31d3358a2a5d6ae947df1691d1f321418a5f3d5"
+                "reference": "99f76ffa36cce3b70a4a6abce41dba15ca2e84cb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/CarbonPHP/carbon-doctrine-types/zipball/a31d3358a2a5d6ae947df1691d1f321418a5f3d5",
-                "reference": "a31d3358a2a5d6ae947df1691d1f321418a5f3d5",
+                "url": "https://api.github.com/repos/CarbonPHP/carbon-doctrine-types/zipball/99f76ffa36cce3b70a4a6abce41dba15ca2e84cb",
+                "reference": "99f76ffa36cce3b70a4a6abce41dba15ca2e84cb",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^7.4 || ^8.0"
             },
             "conflict": {
-                "doctrine/dbal": "<4.0.0 || >=5.0.0"
+                "doctrine/dbal": "<3.7.0 || >=4.0.0"
             },
             "require-dev": {
-                "doctrine/dbal": "^4.0.0",
+                "doctrine/dbal": "^3.7.0",
                 "nesbot/carbon": "^2.71.0 || ^3.0.0",
                 "phpunit/phpunit": "^10.3"
             },
@@ -112,7 +112,7 @@
             ],
             "support": {
                 "issues": "https://github.com/CarbonPHP/carbon-doctrine-types/issues",
-                "source": "https://github.com/CarbonPHP/carbon-doctrine-types/tree/3.1.0"
+                "source": "https://github.com/CarbonPHP/carbon-doctrine-types/tree/2.1.0"
             },
             "funding": [
                 {
@@ -128,7 +128,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-12-10T15:33:53+00:00"
+            "time": "2023-12-11T17:09:12+00:00"
         },
         {
             "name": "dflydev/dot-access-data",
@@ -1046,17 +1046,136 @@
             "time": "2023-12-03T19:50:20+00:00"
         },
         {
-            "name": "laravel/framework",
-            "version": "v10.38.0",
+            "name": "intervention/gif",
+            "version": "3.0.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/laravel/framework.git",
-                "reference": "531732a17e4d0fa4fc4fb987a72abbdb93537d3a"
+                "url": "https://github.com/Intervention/gif.git",
+                "reference": "cfececc760862f075a52acf747031bad08c8301b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/531732a17e4d0fa4fc4fb987a72abbdb93537d3a",
-                "reference": "531732a17e4d0fa4fc4fb987a72abbdb93537d3a",
+                "url": "https://api.github.com/repos/Intervention/gif/zipball/cfececc760862f075a52acf747031bad08c8301b",
+                "reference": "cfececc760862f075a52acf747031bad08c8301b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Gif\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@intervention.io",
+                    "homepage": "https://intervention.io/"
+                }
+            ],
+            "description": "Native PHP GIF Encoder/Decoder",
+            "homepage": "https://github.com/intervention/gif",
+            "keywords": [
+                "animation",
+                "gd",
+                "gif",
+                "image"
+            ],
+            "support": {
+                "issues": "https://github.com/Intervention/gif/issues",
+                "source": "https://github.com/Intervention/gif/tree/3.0.0"
+            },
+            "time": "2023-11-27T18:54:30+00:00"
+        },
+        {
+            "name": "intervention/image",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/image.git",
+                "reference": "3de73efee5b1f96355f4d3ff4103411527a7cfb6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/3de73efee5b1f96355f4d3ff4103411527a7cfb6",
+                "reference": "3de73efee5b1f96355f4d3ff4103411527a7cfb6",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "intervention/gif": "^3",
+                "php": "^8.1"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.6",
+                "phpstan/phpstan": "^1",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@intervention.io",
+                    "homepage": "https://intervention.io/"
+                }
+            ],
+            "description": "PHP image manipulation",
+            "homepage": "https://image.intervention.io/",
+            "keywords": [
+                "gd",
+                "image",
+                "imagick",
+                "resize",
+                "thumbnail",
+                "watermark"
+            ],
+            "support": {
+                "issues": "https://github.com/Intervention/image/issues",
+                "source": "https://github.com/Intervention/image/tree/3.1.0"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/interventionio",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Intervention",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-12-16T14:21:10+00:00"
+        },
+        {
+            "name": "laravel/framework",
+            "version": "v10.38.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/framework.git",
+                "reference": "ced4689f495213e9d23995b36098f12a802cc15b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/ced4689f495213e9d23995b36098f12a802cc15b",
+                "reference": "ced4689f495213e9d23995b36098f12a802cc15b",
                 "shasum": ""
             },
             "require": {
@@ -1102,6 +1221,8 @@
                 "voku/portable-ascii": "^2.0"
             },
             "conflict": {
+                "carbonphp/carbon-doctrine-types": ">=3.0",
+                "doctrine/dbal": ">=4.0",
                 "tightenco/collect": "<5.5.33"
             },
             "provide": {
@@ -1213,6 +1334,7 @@
                 "files": [
                     "src/Illuminate/Collections/helpers.php",
                     "src/Illuminate/Events/functions.php",
+                    "src/Illuminate/Filesystem/functions.php",
                     "src/Illuminate/Foundation/helpers.php",
                     "src/Illuminate/Support/helpers.php"
                 ],
@@ -1245,7 +1367,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2023-12-19T14:59:00+00:00"
+            "time": "2023-12-20T14:52:12+00:00"
         },
         {
             "name": "laravel/prompts",

@@ -133,11 +133,11 @@ Route::controller(TagController::class)->group(function () {
 
 Route::controller(NotificationController::class)->group(function () {
    Route::get('/api/notifications', 'fetch');
-   Route::get('api/notifications/count', 'count');
+   Route::get('/api/notifications/count', 'count');
 });
 
 Route::controller(FileController::class)->middleware(LoggedMiddleware::class)->group(function (){
-    Route::post('/file/upload', 'upload');
+    Route::patch('/file/upload', 'upload')->name('file.upload');
 });
 
 // Authentication

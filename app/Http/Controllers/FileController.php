@@ -1,43 +1,51 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\User;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
 class FileController extends Controller
-{   
+{
     static $default = 'default.jpg';
     static $diskName = 'files';
 
     static $systemTypes = [
         'profile' => ['png', 'jpeg', 'jpg', 'gif'],
-        'post' => ['png', 'jpeg', 'jpg', 'gif','mp4','mp3','pdf', 'txt'],
+        'post' => ['png', 'jpeg', 'jpg', 'gif', 'mp4', 'mp3', 'pdf', 'txt'],
     ];
 
-    private static function getDefaultExtension(String $type) {
+    private static function getDefaultExtension(String $type)
+    {
         return reset(self::$systemTypes[$type]);
     }
 
-    private static function isValidExtension(String $type, String $extension) {
+    private static function isValidExtension(String $type, String $extension)
+    {
         $allowedExtensions = self::$systemTypes[$type];
 
         // Note the toLowerCase() method, it is important to allow .JPG and .jpg extensions as well
         return in_array(strtolower($extension), $allowedExtensions);
     }
 
-    private static function isValidType(String $type) {
+    private static function isValidType(String $type)
+    {
         return array_key_exists($type, self::$systemTypes);
     }
 
-    private static function defaultAsset(String $type) {
-        return asset('userFiles/'. $type . '/' . self::$default);
+    private static function defaultAsset(String $type)
+    {
+        return asset('userFiles/' . $type . '/' . self::$default);
     }
 
-    private static function getFileName(String $type, int $id, String $extension = null) {
+    private static function getFileName(String $type, int $id, String $extension = null)
+    {
 
         $fileName = null;
-        switch($type) {
+        switch ($type) {
             case 'profile':
                 $fileName = User::find($id)->profile_picture; // can be null as well
                 break;
@@ -51,12 +59,13 @@ class FileController extends Controller
         return $fileName;
     }
 
-    private static function delete(String $type, int $id) {
+    private static function delete(String $type, int $id)
+    {
         $existingFileName = self::getFileName($type, $id);
         if ($existingFileName) {
-            Storage::disk(self::$diskName)->delete('userFiles/'. $type . '/' . $existingFileName);
+            Storage::disk(self::$diskName)->delete('userFiles/' . $type . '/' . $existingFileName);
 
-            switch($type) {
+            switch ($type) {
                 case 'profile':
                     User::find($id)->profile_picture = null;
                     break;
@@ -67,7 +76,8 @@ class FileController extends Controller
         }
     }
 
-    function upload(Request $request) {
+    function upload(Request $request)
+    {
 
         // Validation: has file
         if (!$request->hasFile('file')) {
@@ -95,7 +105,7 @@ class FileController extends Controller
 
         // Validation: model
         $error = null;
-        switch($request->type) {
+        switch ($request->type) {
             case 'profile':
                 $user = User::findOrFail($request->id);
                 if ($user) {
@@ -119,10 +129,12 @@ class FileController extends Controller
         }
 
         $file->storeAs('userFiles/' . $type, $fileName, self::$diskName);
+
         return redirect()->back()->with('success', 'Success: upload completed!');
     }
 
-    static function get(String $type, int $userId) {
+    static function get(String $type, int $userId)
+    {
 
         // Validation: upload type
         if (!self::isValidType($type)) {
