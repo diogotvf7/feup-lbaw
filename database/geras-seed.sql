@@ -104,7 +104,6 @@ CREATE TABLE
         title TEXT NOT NULL,
         search TSVECTOR,
         author INTEGER REFERENCES users (id) ON DELETE SET NULL
-        correct_answer INTEGER REFERENCES answers (id) ON DELETE SET NULL
     );
 
 CREATE TABLE
@@ -113,6 +112,9 @@ CREATE TABLE
         author INTEGER REFERENCES users (id) ON DELETE SET NULL,
         question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE
     );
+
+ALTER TABLE questions
+ADD COLUMN correct_answer INTEGER REFERENCES answers (id) ON DELETE SET NULL;
 
 CREATE TABLE
     comments (
@@ -451,10 +453,6 @@ BEGIN
         IF NEW.type = 'ANSWER' THEN
             INSERT INTO notifications (date, type, upvote_id, user_id)
             VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM answers WHERE id = NEW.answer_id));
-        END IF;
-        IF NEW.type = 'COMMENT' THEN
-            INSERT INTO notifications (date, type, upvote_id, user_id)
-            VALUES (NOW(), 'UPVOTE', NEW.id, (SELECT author FROM comments WHERE id = NEW.comment_id));
         END IF;
     END IF;
 

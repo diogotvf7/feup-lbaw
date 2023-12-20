@@ -21,12 +21,14 @@
 
     <div id="myTabContent" class="tab-content">
 
-        <div class="tab-pane fade active show" id="informations" role="tabpanel">
-            <div class="d-flex flex-column flex-lg-row justify-content-around align-items-center">
-                @include('partials.profileCard')
-                @if (Auth::user()->id === $user->id)
-                        @include('partials.editUser')
-                @endif
+        <div id="informations" class="tab-pane fade active show" role="tabpanel">
+            <div class="d-flex flex-column">
+                <div class="d-flex flex-column flex-sm-row justify-content-around align-items-center">
+                    @include('partials.profileCard')
+                    @if (Auth::user()->id === $user->id)
+                            @include('partials.editUser')
+                    @endif
+                </div>
             </div>
         </div>
 

@@ -108,17 +108,11 @@
                     <td class="{{ $tag->approved ? '' : 'text-danger' }}">{{ $tag->approved ? 'Active' : 'Pending Approval' }}</td>
                     <td class="d-flex flex-wrap gap-1">
                         @if ($tag->approved)
-                            <a class="btn btn-primary btn-sm" href="{{ route('tag.show', $tag->id) }}" aria-label="Browse Tag">
+                            <a class="btn btn-dark btn-sm" href="{{ route('tag.show', $tag->id) }}" aria-label="Browse Tag">
                                 <i class="bi bi-eye-fill"></i>
                             </a>
                         @endif
-                        <!-- <form class="d-inline-block" action="{{ route('tag.edit', $tag->id) }}" method="GET">
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit Tag">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                        </form> -->
-                        <button class="edit-tag btn btn-primary btn-sm" aria-label="Edit Tag">
+                        <button class="edit-tag btn btn-dark btn-sm" aria-label="Edit Tag">
                             <i class="bi bi-pencil-fill"></i>
                         </button>
                         <form class="d-inline-block" action="{{ route('tag.destroy', $tag->id) }}" method="POST">

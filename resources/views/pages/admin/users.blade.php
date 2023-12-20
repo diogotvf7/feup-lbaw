@@ -137,9 +137,12 @@
                         <td>{{ $user->member_since }}</td>
                         <td>{{ $user->type }}</td>
                         <td class="d-flex flex-wrap gap-1">
-                            <a class="btn btn-primary btn-sm" href="{{ route('user.profile', $user->id) }}" aria-label="View User">
+                            <a class="btn btn-dark btn-sm" href="{{ route('user.profile', $user->id) }}" aria-label="View User">
                                 <i class="bi bi-eye-fill"></i>
                             </a>
+                            <button class="edit-user btn btn-dark btn-sm" aria-label="Edit User">
+                                <i class="bi bi-pencil-fill"></i>
+                            </button>
                             <form class="d-inline-block" action="{{ route('user.destroy', $user->id) }}" method="POST">
                                 {{ csrf_field() }}
                                 {{ method_field('DELETE') }}
@@ -147,15 +150,6 @@
                                     <i class="bi bi-trash-fill"></i>
                                 </button>
                             </form> 
-                            <button class="edit-user btn btn-primary btn-sm" aria-label="Edit User">
-                                <i class="bi bi-pencil-fill"></i>
-                            </button>
-                            <!-- <form class="d-inline-block" action="{{ route('user.edit', $user->id) }}" method="GET">
-                                {{ csrf_field() }}
-                                <button type="submit" class="btn btn-primary btn-sm" aria-label="Edit User">
-                                    <i class="bi bi-pencil-fill"></i>
-                                </button>
-                            </form> -->
                             @if ($user->type !== 'Admin') 
                                 <form class="d-inline-block" action="{{ route('user.promote', $user->id) }}" method="POST">
                                     {{ csrf_field() }}

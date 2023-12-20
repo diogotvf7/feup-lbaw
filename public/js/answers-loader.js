@@ -18,6 +18,7 @@ async function loadAnswers() {
   const answersHTML =
       answers.map(answer => answer + '<hr class="m-0">').join('');
   answersContainer.innerHTML = answersHTML;
+
   editAnswer();
   handleComments();
   enableInteractions();

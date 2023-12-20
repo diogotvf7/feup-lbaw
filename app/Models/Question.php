@@ -108,4 +108,9 @@ class Question extends Model
     {
         return $this->contentVersions()->one()->ofMany('date', 'min');
     }
+
+    public function correctAnswer(): HasOne
+    {
+        return $this->hasOne(Answer::class, 'id', 'correct_answer');
+    }
 }

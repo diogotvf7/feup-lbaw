@@ -255,7 +255,7 @@ class QuestionController extends Controller
                 'question_id' => $question->id,
             ])->id;
 
-            // $this->upvoteEvent(Auth::user(), $vote_id);
+            $this->upvoteEvent(Auth::user()->id, $vote_id);
         }
         return ['voteBalance' => $question->voteBalance()];
     }
@@ -299,21 +299,6 @@ class QuestionController extends Controller
             $user->followedQuestions()->attach($question->id);
             return "Followed";
         }
-    }
-
-    public function correctanswer(Request $request)
-    {
-        $question = Question::findOrFail($request->question_id);
-        $answer = Answer::findOrFail($request->answer_id);
-
-        $this->authorize('update', $question);
-
-        if ($question->correctAnswer == $answer->id)
-            $question->correctAnswer = null;
-        else
-            $question->correctAnswer = $answer->id;
-        
-        return redirect()->back()->with('success', 'Correct answer edited successfully!');
     }
 
     public function upvoteEvent($user_id, $vote_id)

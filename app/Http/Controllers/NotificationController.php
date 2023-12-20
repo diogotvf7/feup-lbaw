@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Notification;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,6 +65,15 @@ class NotificationController extends Controller
         $notification->delete();
     }
 
+    public function readAllRelatedTo(Int $id)
+    {
+        foreach (Auth::user()->notifications as $notification) {
+            if ($notification->relatedQuestionId() == $id) {
+                $notification->update(['seen' => "True"]);
+            }
+        }
+    }
+
     public function destroyAll()
     {
         foreach (Auth::user()->notifications as $notification) $notification->delete();
@@ -77,5 +87,10 @@ class NotificationController extends Controller
     public function fetch()
     {
         return view('partials.notificationsCard');
+    }
+
+    public function count()
+    {
+        return Auth::user()->getUnreadNotificationsAttribute();
     }
 }
