@@ -52,6 +52,7 @@ Route::controller(AnswerController::class)->group(function () {
     Route::get('/answers/event', 'answerEvent')->name('answer.event');
     Route::patch('/answer/upvote/{answer}', 'upvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/answer/correct', 'correct')->name('answer.correct');
 });
 
 Route::controller(VoteController::class)->group(function () {

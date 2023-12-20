@@ -22,6 +22,8 @@ class AnswerController extends Controller
         $question = Question::findOrFail($request->question_id);
         $answers = $question->answers;
 
+        $correctAnswer = $question->correctAnswer;
+
         switch ($request->sort) {
             case 'oldest':
                 $answers = $answers->sortBy('created_at');
@@ -37,9 +39,16 @@ class AnswerController extends Controller
                 break;
         }
 
-        $answersViews = [];
-        // $currentUser = User::find(Auth::user());
+        if ($correctAnswer) {
+            $vote = $request->user() ? $request->user()->voted('answer', $correctAnswer->id) : null;
+            $answersViews = [view('partials.answer', ['answer' => $correctAnswer, 'vote' => $vote])->render()];
+        }
+        else $answersViews = [];
+        
         foreach ($answers as $answer) {
+            if ($answer->id == $question->correct_answer) {
+                continue;
+            }
             $vote = $request->user() ? $request->user()->voted('answer', $answer->id) : null;
             $answersViews[] = view('partials.answer', ['answer' => $answer, 'vote' => $vote])->render();
         }
@@ -187,6 +196,23 @@ class AnswerController extends Controller
             ])->id;
         }
         return ['voteBalance' => $answer->getVoteBalanceAttribute()];
+    }
+
+    public function correct(Request $request)
+    {
+        $question = Question::findOrFail($request->question_id);
+        $answer = Answer::findOrFail($request->answer_id);
+
+        $this->authorize('update', $answer);
+
+        if ($question->correct_answer == $answer->id)
+            $question->correct_answer = null;
+        else
+            $question->correct_answer = $answer->id;
+        
+        $question->save();
+
+        return redirect()->back()->with('success', 'Correct answer edited successfully!');
     }
 
     public function upvoteEvent($user_id, $vote_id)
