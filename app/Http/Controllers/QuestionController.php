@@ -44,7 +44,7 @@ class QuestionController extends Controller
                 ';
             }
         } else {
-            $title = '<h1>Recent Questions</h1>';
+            $title = '<h1>All Questions</h1>';
         }
         return view('pages.questions', ['title' => $title]);
     }

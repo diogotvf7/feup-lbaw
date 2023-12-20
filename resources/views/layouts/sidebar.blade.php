@@ -2,13 +2,14 @@
     use Illuminate\Support\Facades\Request;
 
     $url = Request::url();
-    
+
     $request = Request::all();
 
     $hasParams = sizeof($request) > 0;
 
     $no_answers = $request['no-answers'] ?? null;
     $no_accepted_answers = $request['no-accepted-answers'] ?? null;
+    $sort = $request['sort'] ?? null;
 
 ?>
 
@@ -23,7 +24,7 @@
 
             <li class="py-3 px-1 sidebar-element">
                 <a href="{{ route('questions') }}" class="text-decoration-none">
-                    Recent Questions
+                    All Questions
                 </a>
             </li>
 
@@ -68,7 +69,7 @@
                             <input id="tag-input" type="text" name="tags" class="form-control">
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group my-1">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
                                 <label class="form-check-label" for="flexSwitchCheckChecked">No answers</label>
@@ -78,6 +79,36 @@
                                 <label class="form-check-label" for="flexSwitchCheckChecked">No accepted answers</label>
                             </div>
                         </div>
+
+                        @if (!Request::is('questions/top'))    
+                        <fieldset class="form-group">
+                            <p class="my-1">Sort by:</p>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="latest" value="latest" {{ $sort=="latest" ? 'checked' : '' }}>
+                                <label class="form-check-label" for="latest">
+                                    Latest
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="oldest" value="oldest" {{ $sort=="oldest" ? 'checked' : '' }}>
+                                <label class="form-check-label" for="oldest">
+                                    Oldest
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="votes" value="votes" {{ $sort=="votes" ? 'checked' : '' }}>
+                                <label class="form-check-label" for="votes">
+                                    Most votes
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="answers" value="answers" {{ $sort=="answers" ? 'checked' : '' }}>
+                                <label class="form-check-label" for="answers">
+                                    Most answers
+                                </label>
+                            </div>
+                        </fieldset>
+                        @endif
 
                         <div class="d-grid my-3">
                             <button type="submit" class="btn btn-primary" aria-label="Apply Filters">
