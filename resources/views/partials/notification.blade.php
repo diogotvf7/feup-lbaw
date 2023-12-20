@@ -10,9 +10,7 @@
         <p class="small-screen-hide"> your &NonBreakingSpace;</p>
         <a href="{{route('question.show', $notification->answer->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 30dvw;"> {{ $notification->answer->question->title }}</a>
         <p class="small-screen-hide">&NonBreakingSpace; question</p>
-        @endif
-
-        @if ($notification->type === "UPVOTE")
+        @elseif ($notification->type === "UPVOTE")
         <a href="$notification->upvote->user ? {{route('user.profile', $notification->upvote->user->id)}} : ''" class="text-decoration-none" style="min-width: fit-content;"> {{ $notification->upvote->user->username }}</a>
         <p>&NonBreakingSpace; upvoted &NonBreakingSpace;</p>
         <p class="small-screen-hide">your &NonBreakingSpace;</p>
@@ -22,6 +20,17 @@
         @elseif ($notification->upvote->type === "ANSWER")
         <p class="small-screen-hide"> answer on &NonBreakingSpace;</p>
         <a href="{{route('question.show', $notification->upvote->answer->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 30dvw;">{{ $notification->upvote->answer->question->title }}</a>
+        @endif
+        @elseif ($notification->type === "COMMENT")
+        <a href="$notification->comment->user ? {{route('user.profile', $notification->comment->user->id)}} : ''" class="text-decoration-none" style="min-width: fit-content;"> {{ $notification->comment->user->username }}</a>
+        <p>&NonBreakingSpace;commented&NonBreakingSpace;on&NonBreakingSpace;</p>
+        <p class="small-screen-hide">your&NonBreakingSpace;</p>
+        @if($notification->comment->type === "QUESTION")
+        <a href="{{route('question.show', $notification->comment->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 30dvw;"> {{ $notification->comment->question->title }}</a>
+        <p class="small-screen-hide">&NonBreakingSpace; question</p>
+        @elseif($notification->comment->type === "ANSWER")
+        <p class="small-screen-hide">answer&NonBreakingSpace;on&NonBreakingSpace;</p>
+        <a href="{{route('question.show', $notification->comment->answer->question->id)}}" class="text-decoration-none text-one-line" style="max-width: 30dvw;">{{ $notification->comment->answer->question->title }}</a>
         @endif
         @endif
     </div>

@@ -53,7 +53,7 @@ DROP TYPE IF EXISTS user_status_type CASCADE;
 -----------------------------------------
 -- Types
 -----------------------------------------
-CREATE TYPE notification_type AS ENUM ('ANSWER', 'UPVOTE', 'BADGE');
+CREATE TYPE notification_type AS ENUM ('ANSWER', 'UPVOTE', 'COMMENT');
 
 CREATE TYPE file_type AS ENUM ('FILE', 'IMAGE');
 
@@ -223,26 +223,26 @@ CREATE TABLE
         seen BOOLEAN DEFAULT FALSE,
         answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         upvote_id INTEGER REFERENCES votes (id) ON DELETE CASCADE,
-        badge_id INTEGER REFERENCES badges (id) ON DELETE CASCADE,
+        comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE,
         user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
         CHECK (
             (
                 type = 'ANSWER'
                 AND answer_id IS NOT NULL
                 AND upvote_id IS NULL
-                AND badge_id IS NULL
+                AND comment_id IS NULL
             )
             OR (
                 type = 'UPVOTE'
                 AND answer_id IS NULL
                 AND upvote_id IS NOT NULL
-                AND badge_id IS NULL
+                AND comment_id IS NULL
             )
             OR (
-                type = 'BADGE'
+                type = 'COMMENT'
                 AND answer_id IS NULL
                 AND upvote_id IS NULL
-                AND badge_id IS NOT NULL
+                AND comment_id IS NOT NULL
             )
         )
     );
@@ -286,7 +286,11 @@ DROP INDEX IF EXISTS vote_type;
 
 DROP INDEX IF EXISTS most_recent_version;
 
+DROP INDEX IF EXISTS ordered_notifications;
+
 CREATE INDEX most_recent_version ON content_versions USING btree (date DESC NULLS LAST);
+
+CREATE INDEX ordered_notifications ON notifications USING btree (date DESC NULLS LAST);
 
 CREATE INDEX vote_type ON votes USING hash (is_upvote);
 
@@ -469,25 +473,32 @@ CREATE TRIGGER send_upvote_notification
 
 
 -- TRIGGER 05
--- A notification must be sent after a badges is received
+-- A notification must be sent after a comment is received
 
-DROP FUNCTION IF EXISTS send_badge_notification() CASCADE;
+DROP FUNCTION IF EXISTS send_comment_notification() CASCADE;
 
-CREATE FUNCTION send_badge_notification() RETURNS TRIGGER AS
+CREATE FUNCTION send_comment_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-    INSERT INTO notifications (date, type, badge_id, user_id)
-    VALUES (NOW(), 'BADGE', NEW.badge_id, NEW.user_id);
+
+    IF NEW.type = 'QUESTION' THEN
+        INSERT INTO notifications (date, type, comment_id, user_id)
+        VALUES (NOW(), 'COMMENT', NEW.id, (SELECT author FROM questions WHERE id = NEW.question_id));
+    END IF;
+    IF NEW.type = 'ANSWER' THEN
+        INSERT INTO notifications (date, type, comment_id, user_id)
+        VALUES (NOW(), 'COMMENT', NEW.id, (SELECT author FROM answers WHERE id = NEW.answer_id));
+    END IF;
 
     RETURN NULL;
 END
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER send_badge_notification
-        AFTER INSERT ON badge_user
+CREATE TRIGGER send_comment_notification
+        AFTER INSERT ON comments
         FOR EACH ROW
-        EXECUTE PROCEDURE send_badge_notification();
+        EXECUTE PROCEDURE send_comment_notification();
 
 
 -- TRIGGER 06
