@@ -10,6 +10,11 @@ class Notification extends Model
 {
     use HasFactory;
 
+    // The attributes that are mass assignable.
+    protected $fillable = [
+        'seen'
+    ];
+
     // Don't add create and update timestamps in database.
     public $timestamps  = false;
 
@@ -39,4 +44,16 @@ class Notification extends Model
             return $this->belongsTo(Vote::class);
     }
 
+    /**
+     * Get the question id this notification indirectly relates to
+     */
+    public function relatedQuestionId()
+    {
+        if ($this->type == "UPVOTE") {
+            if ($this->upvote->type == "ANSWER") return $this->upvote->answer->question_id;
+            else if ($this->upvote->type == "QUESTION") return $this->upvote->question_id;
+        } else if ($this->type == "ANSWER") {
+            return $this->answer->question_id;
+        }
+    }
 }

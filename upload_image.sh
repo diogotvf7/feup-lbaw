@@ -9,6 +9,7 @@ IMAGE_NAME=git.fe.up.pt:5050/lbaw/lbaw2324/lbaw2326 # Replace with your group's 
 composer install
 php artisan config:clear
 php artisan clear-compiled
+# php artisan migrate
 php artisan optimize
 
 # docker buildx build --push --platform linux/amd64 -t $IMAGE_NAME .

@@ -54,14 +54,6 @@ class Question extends Model
     }
 
     /**
-     * Get the correct answer of the question.
-     */
-    public function correctAnswer(): HasOne
-    {
-        return $this->hasOne(Answer::class)->withDefault();
-    }
-
-    /**
      * Get the comments made to the question.
      */
     public function comments(): HasMany
@@ -115,5 +107,10 @@ class Question extends Model
     public function firstVersion(): HasOne
     {
         return $this->contentVersions()->one()->ofMany('date', 'min');
+    }
+
+    public function correctAnswer(): HasOne
+    {
+        return $this->hasOne(Answer::class, 'id', 'correct_answer');
     }
 }

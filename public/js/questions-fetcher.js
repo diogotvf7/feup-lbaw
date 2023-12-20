@@ -63,7 +63,10 @@ function createQuestionPreview(question, authenticated) {
   const publishedInfo = document.createElement('div');
   publishedInfo.classList.add('text-secondary');
 
-  if (authenticated) {
+  console.log(question.user);
+  if (question.user == null) {
+    publishedInfo.innerHTML = 'Deleted Account';
+  } else if (authenticated) {
     const userLink = document.createElement('a');
     userLink.href = '/users/' + question.user.id;
     userLink.classList.add('text-decoration-none');

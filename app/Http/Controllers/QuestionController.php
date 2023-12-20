@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Events\UpvoteEvent;
 use App\Models\Tag;
 use App\Models\Vote;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      */
@@ -193,7 +195,7 @@ class QuestionController extends Controller
 
         $question->tags()->detach();
         $tags = json_decode($request->tags);
-        if($tags) {
+        if ($tags) {
             foreach ($tags as $tag) {
                 $question->tags()->attach($tag->value);
             }
@@ -254,7 +256,7 @@ class QuestionController extends Controller
                 'question_id' => $question->id,
             ])->id;
 
-            // $this->upvoteEvent(Auth::user(), $vote_id);
+            $this->upvoteEvent(Auth::user()->id, $vote_id);
         }
         return ['voteBalance' => $question->voteBalance()];
     }
@@ -290,15 +292,15 @@ class QuestionController extends Controller
         $this->authorize('vote', $question);
         $user = User::findOrFail(Auth::user()->id);
 
-        if ($user->followsQuestion($question->id)){
+        if ($user->followsQuestion($question->id)) {
             $user->followedQuestions()->detach($question->id);
             return "Unfollowed";
-        }
-        else{
+        } else {
             $user->followedQuestions()->attach($question->id);
             return "Followed";
         }
     }
+
     public function upvoteEvent($user_id, $vote_id)
     {
         event(new UpvoteEvent($user_id, $vote_id));

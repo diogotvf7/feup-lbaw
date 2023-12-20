@@ -4,17 +4,20 @@ import './scroll-top.js';
 import enableTagModal from './add-tags.js';
 import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
-import handleComments from './comments-loader.js';
-import enableInteractions from './interactions.js';
-import enableNotifications, {notificationButton} from './notifications.js';
+import enableNotifications, {markQuestionNotifRead, notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
+<<<<<<< HEAD
 import enableVote from './vote.js';
 import follow from './questions-follow.js';
 import enableNotifications, { notificationButton } from './notifications.js';
+=======
+
+const currentPath = window.location.pathname;
+>>>>>>> aa37cc9c3380df2f93b801f5bbe935ba4b6a0939
 
 // Notifications logic
 enableNotifications();
@@ -56,8 +59,7 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
 
-  // handleComments();
-  // enableInteractions();
+  markQuestionNotifRead();
 }
 // Create Question page
 else if (/^\/questions\/create$/.test(currentPath)) {

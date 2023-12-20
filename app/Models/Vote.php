@@ -41,8 +41,6 @@ class Vote extends Model
                 return $this->question();
             case 'ANSWER':
                 return $this->answer();
-            case 'COMMENT':
-                return $this->comment();
             default:  return NULL;
         }
     }
