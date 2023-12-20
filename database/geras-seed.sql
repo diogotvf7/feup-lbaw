@@ -26,8 +26,6 @@ DROP TABLE IF EXISTS answers CASCADE;
 
 DROP TABLE IF EXISTS comments CASCADE;
 
-DROP TABLE IF EXISTS correct_answer CASCADE;
-
 DROP TABLE IF EXISTS content_versions CASCADE;
 
 DROP TABLE IF EXISTS question_tag CASCADE;
@@ -55,7 +53,7 @@ DROP TYPE IF EXISTS user_status_type CASCADE;
 -----------------------------------------
 -- Types
 -----------------------------------------
-CREATE TYPE notification_type AS ENUM ('ANSWER', 'UPVOTE', 'BADGE');
+CREATE TYPE notification_type AS ENUM ('ANSWER', 'UPVOTE', 'COMMENT');
 
 CREATE TYPE file_type AS ENUM ('FILE', 'IMAGE');
 
@@ -74,12 +72,13 @@ CREATE TABLE
         email TEXT NOT NULL CONSTRAINT user_email_uk UNIQUE,
         name TEXT,
         username TEXT NOT NULL,
-        password TEXT NOT NULL,
+        password TEXT,
         profile_picture TEXT,
         experience INTEGER DEFAULT 0,
         score INTEGER DEFAULT 0,
         member_since DATE DEFAULT now (),
-        type user_status_type DEFAULT 'User'
+        type user_status_type DEFAULT 'User',
+        google_id TEXT
     );
 
 CREATE TABLE
@@ -115,6 +114,9 @@ CREATE TABLE
         question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE
     );
 
+ALTER TABLE questions
+ADD COLUMN correct_answer INTEGER REFERENCES answers (id) ON DELETE SET NULL;
+
 CREATE TABLE
     comments (
         id SERIAL PRIMARY KEY,
@@ -136,13 +138,6 @@ CREATE TABLE
                 AND answer_id IS NOT NULL
             )
         )
-    );
-
-CREATE TABLE
-    correct_answer (
-        question_id INTEGER NOT NULL REFERENCES questions (id) ON DELETE CASCADE,
-        answer_id INTEGER NOT NULL REFERENCES answers (id) ON DELETE CASCADE,
-        PRIMARY KEY (question_id, answer_id)
     );
 
 CREATE TABLE
@@ -228,26 +223,26 @@ CREATE TABLE
         seen BOOLEAN DEFAULT FALSE,
         answer_id INTEGER REFERENCES answers (id) ON DELETE CASCADE,
         upvote_id INTEGER REFERENCES votes (id) ON DELETE CASCADE,
-        badge_id INTEGER REFERENCES badges (id) ON DELETE CASCADE,
+        comment_id INTEGER REFERENCES comments (id) ON DELETE CASCADE,
         user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
         CHECK (
             (
                 type = 'ANSWER'
                 AND answer_id IS NOT NULL
                 AND upvote_id IS NULL
-                AND badge_id IS NULL
+                AND comment_id IS NULL
             )
             OR (
                 type = 'UPVOTE'
                 AND answer_id IS NULL
                 AND upvote_id IS NOT NULL
-                AND badge_id IS NULL
+                AND comment_id IS NULL
             )
             OR (
-                type = 'BADGE'
+                type = 'COMMENT'
                 AND answer_id IS NULL
                 AND upvote_id IS NULL
-                AND badge_id IS NOT NULL
+                AND comment_id IS NOT NULL
             )
         )
     );
@@ -291,7 +286,11 @@ DROP INDEX IF EXISTS vote_type;
 
 DROP INDEX IF EXISTS most_recent_version;
 
+DROP INDEX IF EXISTS ordered_notifications;
+
 CREATE INDEX most_recent_version ON content_versions USING btree (date DESC NULLS LAST);
+
+CREATE INDEX ordered_notifications ON notifications USING btree (date DESC NULLS LAST);
 
 CREATE INDEX vote_type ON votes USING hash (is_upvote);
 
@@ -317,8 +316,8 @@ BEGIN
 		RAISE EXCEPTION 'Username cannot be NULL.';
 		END IF;
 
-		IF NEW.password IS NULL THEN
-		RAISE EXCEPTION 'Password cannot be NULL.';
+		IF (NEW.password IS NULL AND NEW.google_id IS NULL) THEN
+		RAISE EXCEPTION 'Password and Google ID cannot be NULL.';
 		END IF;
 
 		IF NEW.email IS NULL THEN
@@ -474,25 +473,32 @@ CREATE TRIGGER send_upvote_notification
 
 
 -- TRIGGER 05
--- A notification must be sent after a badges is received
+-- A notification must be sent after a comment is received
 
-DROP FUNCTION IF EXISTS send_badge_notification() CASCADE;
+DROP FUNCTION IF EXISTS send_comment_notification() CASCADE;
 
-CREATE FUNCTION send_badge_notification() RETURNS TRIGGER AS
+CREATE FUNCTION send_comment_notification() RETURNS TRIGGER AS
 $BODY$
 BEGIN
-    INSERT INTO notifications (date, type, badge_id, user_id)
-    VALUES (NOW(), 'BADGE', NEW.badge_id, NEW.user_id);
+
+    IF NEW.type = 'QUESTION' THEN
+        INSERT INTO notifications (date, type, comment_id, user_id)
+        VALUES (NOW(), 'COMMENT', NEW.id, (SELECT author FROM questions WHERE id = NEW.question_id));
+    END IF;
+    IF NEW.type = 'ANSWER' THEN
+        INSERT INTO notifications (date, type, comment_id, user_id)
+        VALUES (NOW(), 'COMMENT', NEW.id, (SELECT author FROM answers WHERE id = NEW.answer_id));
+    END IF;
 
     RETURN NULL;
 END
 $BODY$
 LANGUAGE plpgsql;
 
-CREATE TRIGGER send_badge_notification
-        AFTER INSERT ON badge_user
+CREATE TRIGGER send_comment_notification
+        AFTER INSERT ON comments
         FOR EACH ROW
-        EXECUTE PROCEDURE send_badge_notification();
+        EXECUTE PROCEDURE send_comment_notification();
 
 
 -- TRIGGER 06
@@ -2750,121 +2756,6 @@ VALUES
     (50, 25);
 
 INSERT INTO
-    correct_answer (question_id, answer_id)
-VALUES
-    (1, 3),
-    (2, 6),
-    (3, 9),
-    (4, 12),
-    (5, 15),
-    (6, 18),
-    (7, 21),
-    (8, 24),
-    (9, 27),
-    (10, 30),
-    (11, 33),
-    (12, 36),
-    (13, 39),
-    (14, 42),
-    (15, 45),
-    (16, 48),
-    (17, 3),
-    (18, 6),
-    (19, 9),
-    (20, 12),
-    (21, 15),
-    (22, 18),
-    (23, 21),
-    (24, 24),
-    (25, 27),
-    (26, 30),
-    (27, 33),
-    (28, 36),
-    (29, 39),
-    (30, 42),
-    (31, 45),
-    (32, 48),
-    (33, 3),
-    (34, 6),
-    (35, 9),
-    (36, 12),
-    (37, 15),
-    (38, 18),
-    (39, 21),
-    (40, 24),
-    (41, 27),
-    (42, 30),
-    (43, 33),
-    (44, 36),
-    (45, 39),
-    (46, 42),
-    (47, 45),
-    (48, 48),
-    (49, 3),
-    (50, 6),
-    (51, 9),
-    (52, 12),
-    (53, 15),
-    (54, 18),
-    (55, 21),
-    (56, 24),
-    (57, 27),
-    (58, 30),
-    (59, 33),
-    (60, 36),
-    (61, 39),
-    (62, 42),
-    (63, 45),
-    (64, 48),
-    (65, 3),
-    (66, 6),
-    (67, 9),
-    (68, 12),
-    (69, 15),
-    (70, 18),
-    (71, 21),
-    (72, 24),
-    (73, 27),
-    (74, 30),
-    (75, 33),
-    (76, 36),
-    (77, 39),
-    (78, 42),
-    (79, 45),
-    (80, 48),
-    (81, 3),
-    (82, 6),
-    (83, 9),
-    (84, 12),
-    (85, 15),
-    (86, 18),
-    (87, 21),
-    (88, 24),
-    (89, 27),
-    (90, 30),
-    (91, 33),
-    (92, 36),
-    (93, 39),
-    (94, 42),
-    (95, 45),
-    (96, 48),
-    (97, 3),
-    (98, 6),
-    (99, 9),
-    (100, 12),
-    (101, 15),
-    (102, 18),
-    (103, 21),
-    (104, 24),
-    (105, 27),
-    (106, 30),
-    (107, 33),
-    (108, 36),
-    (109, 39),
-    (110, 42),
-    (111, 45);
-
-INSERT INTO
     content_versions (body, type, question_id, answer_id, date)
 VALUES
     (
@@ -4639,32 +4530,6 @@ VALUES
         NULL,
         12
     );
-
-INSERT INTO
-    correct_answer (question_id, answer_id)
-VALUES
-    (1, 1),
-    (2, 4),
-    (3, 5),
-    (4, 7),
-    (5, 10),
-    (6, 11),
-    (7, 13),
-    (9, 17),
-    (10, 20),
-    (11, 21),
-    (12, 24),
-    (13, 25),
-    (16, 31),
-    (17, 33),
-    (18, 36),
-    (19, 37),
-    (20, 40),
-    (21, 41),
-    (22, 44),
-    (23, 46),
-    (24, 47),
-    (25, 49);
 
 INSERT INTO
     badge_user (user_id, badge_id, date)

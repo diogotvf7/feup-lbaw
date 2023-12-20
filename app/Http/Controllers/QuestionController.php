@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Answer;
 use App\Events\UpvoteEvent;
 use App\Models\Tag;
 use App\Models\Vote;

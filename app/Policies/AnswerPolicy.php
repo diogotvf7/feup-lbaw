@@ -10,22 +10,6 @@ use Illuminate\Auth\Access\Response;
 class AnswerPolicy
 {
     /**
-     * Determine whether the user can view any answers.
-     */
-    public function viewAny(User $user): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can view the answer.
-     */
-    public function view(User $user, Answer $answer): bool
-    {
-        //
-    }
-
-    /**
      * Determine whether the user can create answers.
      */
     public function create(User $user, Answer $answer): bool
@@ -34,6 +18,9 @@ class AnswerPolicy
         return $user->id !== $question->author;
     }
 
+    /**
+     * Determine whether the user can vote the answer.
+     */
     public function vote(User $user, Answer $answer): Response
     {
         if ($user->id === $answer->author) {
@@ -56,21 +43,5 @@ class AnswerPolicy
     public function delete(User $user, Answer $answer): bool
     {
         return $user->type === "Admin" || $user->id === $answer->author;
-    }
-
-    /**
-     * Determine whether the user can restore the answer.
-     */
-    public function restore(User $user, Answer $answer): bool
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can permanently delete the answer.
-     */
-    public function forceDelete(User $user, Answer $answer): bool
-    {
-        //
     }
 }

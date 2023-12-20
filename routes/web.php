@@ -8,6 +8,7 @@ use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\NotificationController;
@@ -49,18 +50,16 @@ Route::controller(AnswerController::class)->group(function () {
     Route::post('/answers/create', 'store')->name('answer/create');
     Route::patch('/answers/edit', 'edit')->name('answer/edit');
     Route::delete('/answers/delete', 'destroy')->name('answer/delete');
-    Route::get('/answers/event', 'answerEvent')->name('answer.event');
     Route::patch('/answer/upvote/{answer}', 'upvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/answer/downvote/{answer}', 'downvote')->where('answer', '[0-9]+')->middleware(LoggedMiddleware::class);
+    Route::patch('/answer/correct', 'correct')->name('answer.correct');
 });
 
-Route::controller(VoteController::class)->group(function () {
-    Route::get('/votes/event', 'voteEvent')->name('vote.event');
-});
 Route::controller(CommentController::class)->group(function () {
     Route::post('/comments/create', 'store')->name('comment/create');
     Route::patch('/comments/edit', 'edit')->name('comment/edit');
     Route::delete('/comments/delete', 'destroy')->name('comment/delete');
+    Route::get('/comment/event', 'commentEvent')->name('comment.event');
 });
 
 Route::middleware(AdminMiddleware::class)->group(function () {
@@ -152,3 +151,9 @@ Route::controller(PasswordResetController::class)->middleware('guest')->group(fu
     Route::get('/reset-password/{token}', 'resetPassword')->name('password.reset');
     Route::post('/reset-password', 'updatePassword')->name('password.update');
 });
+
+Route::controller(GoogleController::class)->group(function () {
+    Route::get('auth/google', 'redirect')->name('google-auth');
+    Route::get('auth/google/call-back', 'callbackGoogle')->name('google-call-back');
+});
+
