@@ -10,6 +10,9 @@ async function fetchTags() {
     delete tag.description;
     delete tag.search_tag_description;
     delete tag.search_tag_name;
+    delete tag.approved;
+    delete tag.creator;
+    delete tag.search;
   });
   return response;
 }
@@ -20,8 +23,7 @@ function suggestionItemTemplate(tagData) {
             class='tagify__dropdown__item ${tagData.class ? tagData.class : ''}'
             tabindex="0"
             role="option">
-            <p class="tagify-text m-0">${tagData.name}${
-      tagData.approved ? '' : ' <small>(Pending approval)</small>'}</p>
+            <p class="tagify-text m-0">${tagData.name}</p>
         </div>
     `
 }
@@ -46,6 +48,7 @@ export default async function enableTagFilter() {
   console.log('enableTagFilter');
   const url = new URL(window.location.href);
   const tags = decodeURIComponent(new URLSearchParams(url.search).get('tags'));
+  console.log(JSON.parse(tags));
 
   if (tagInput) {
     tagify = new Tagify(document.getElementById('tag-input'), {

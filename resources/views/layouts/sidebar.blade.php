@@ -61,12 +61,12 @@
 
                                 <div class="form-group my-1">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked">No answers</label>
+                                        <input id="no-answers" class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="no-answers">No answers</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="checkbox" name="no-accepted-answers" {{ $no_accepted_answers ? 'checked' : '' }}>
-                                        <label class="form-check-label" for="flexSwitchCheckChecked">No accepted answers</label>
+                                        <input id="no-accepted-answers" class="form-check-input" type="checkbox" name="no-accepted-answers" {{ $no_accepted_answers ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="no-accepted-answers">No accepted answers</label>
                                     </div>
                                 </div>
 
@@ -104,7 +104,7 @@
                                     <label for="tags" class="form-label">Tags</label>
                                     <input id="tag-input" type="text" name="tags" class="form-control">
                                 </div>
-                                
+
                                 <div class="d-grid my-3">
                                     <button type="submit" class="btn btn-primary" aria-label="Apply Filters">
                                         Apply
