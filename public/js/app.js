@@ -9,6 +9,7 @@ import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
+import {sidebarToggle, sidebarToggler} from './sidebar-toggle.js';
 import enableTagFilter from './tag-filter.js';
 import tagScrollObserver from './tags-fetcher.js';
 
@@ -68,4 +69,8 @@ else if (/^\/admin\/tags/.test(currentPath)) {
 // Admin users page
 else if (/^\/admin\/users/.test(currentPath)) {
   enableUserModal();
+}
+
+if (sidebarToggler) {
+  sidebarToggle();
 }

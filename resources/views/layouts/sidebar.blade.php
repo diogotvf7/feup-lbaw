@@ -13,7 +13,7 @@
 
 ?>
 
-<nav class="sidebar position-relative d-flex flex-column align-items-stretch" style="min-width: 250px; max-width: 250px;">
+<nav id="sidebar" class="flex-column align-items-stretch" style="min-width: 250px; max-width: 250px;">
     <div class="px-3 pt-3 pb-5 overflow-y-scroll">
         <ul class="p-0 m-0">
             <li class="py-3 px-1 sidebar-element">
@@ -127,3 +127,6 @@
         
     </div>
 </nav>
+<button id="sidebar-toggle" class="btn btn-primary m-3">
+    <i class="bi bi-chevron-double-right"></i>
+</button>

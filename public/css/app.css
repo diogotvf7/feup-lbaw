@@ -27,11 +27,24 @@
   --separator-rgb: rgb(222, 226, 230);
 }
 
+[data-bs-theme='dark'] {
+  --background: #222;
+  --backgound-rgb: 2, 2, 2;
+}
+
+[data-bs-theme='light'] {
+  --text: #fff;
+  --background-rgb: 255, 255, 255;
+}
+
+
+
+/*         Theme icon         */
 [data-bs-theme='light'] .d-block-light,
 [data-bs-theme='dark'] .d-block-dark {
   display: block !important;
 }
-
+/* -------------------------- */
 
 /*       Tagify       */
 .tagify-text,
@@ -42,11 +55,49 @@
 /* ------------------ */
 
 /*      Sidebar       */
-.sidebar {
+@media(max-width: 992px) {
+  #sidebar {
+    display: none;
+    position: fixed;
+    background-color: var(--background);
+    z-index: 999;
+    height: calc(100vh - 108px);
+  }
+
+  #sidebar.active {
+    display: block;
+  }
+
+  #sidebar-toggle {
+    display: block;
+    position: fixed;
+    z-index: 999;
+    height: 40px;
+    width: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .scroll-container {
+    padding-top: calc(40px + 1rem) !important;
+  }
+}
+
+@media(min-width: 992px) {
+  #sidebar {
+    display: flex;
+  }
+  
+  #sidebar-toggle {
+    display: none;
+  }
+}
+
+#sidebar {
   border-right: 1px solid var(--separator);
 }
 
-.sidebar ul {
+#sidebar ul {
   list-style-type: none;
 }
 
@@ -58,33 +109,35 @@
   color: var(--text);
 }
 
-.sidebar .accordion-item {
+#sidebar .accordion-item {
   border: 0;
 } 
 
-.sidebar .accordion-button {
+#sidebar .accordion-button {
   border: 0;
   border-color: var(--separator);
   border-radius: 0 ;
 }
 
-.sidebar .accordion-button:focus {
+#sidebar .accordion-button:focus {
   box-shadow: none;
 }
 
-.sidebar .accordion-button:not(.collapsed) {
+#sidebar .accordion-button:not(.collapsed) {
   background-color: transparent;
   border-bottom: 1px solid var(--separator);
 }
 /* ------------------ */
 
+
+
+/* Back to top button */
 #back-top {
   position: fixed;
   bottom: 20px;
   right: 20px;
   display: none;
 }
-
 /* ------------------ */
 
 /* Edit question form */
