@@ -52,9 +52,9 @@
                 <div id="filters-accordion" class="accordion">
                     <div>
                         <h2 class="accordion-header">
-                            <button class="accordion-button {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams }}" aria-controls="filters">
+                            <a class="accordion-button text-decoration-none {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams }}" aria-controls="filters">
                                 <i class="bi bi-filter me-1"></i> Filters
-                            </button>
+                            </a>
                         </h2>
                         <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
                             <form class="accordion-body p-0" action="{{ $url }}" method="GET">

@@ -55,6 +55,15 @@
 /* ------------------ */
 
 /*      Sidebar       */
+
+[data-bs-theme='light'] #sidebar .sidebar-element a {
+  color: #000 !important;
+}
+
+[data-bs-theme='dark'] #sidebar .sidebar-element a {
+  color: #fff !important;
+}
+
 @media(max-width: 992px) {
   #sidebar {
     display: none;
@@ -101,13 +110,13 @@
   list-style-type: none;
 }
 
-[data-bs-theme='dark'] .sidebar-element a {
+/* [data-bs-theme='dark'] .sidebar-element a {
   color: white;
 }
 
 [data-bs-theme='light'] .sidebar-element a {
   color: var(--text);
-}
+} */
 
 #sidebar .accordion-item {
   border: 0;
