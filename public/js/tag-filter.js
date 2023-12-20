@@ -48,7 +48,6 @@ export default async function enableTagFilter() {
   console.log('enableTagFilter');
   const url = new URL(window.location.href);
   const tags = decodeURIComponent(new URLSearchParams(url.search).get('tags'));
-  console.log(JSON.parse(tags));
 
   if (tagInput) {
     tagify = new Tagify(document.getElementById('tag-input'), {
