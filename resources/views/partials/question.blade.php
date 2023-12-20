@@ -1,3 +1,7 @@
+<?php 
+    $canInteract = (auth()->check() && auth()->user()->id !== $question->user->id);
+?>
+
 <section>
     <header class="d-flex justify-content-between align-items-center">
         <hgroup>
@@ -39,18 +43,16 @@
     <input form="questionForm" id="tag-input" type="text" name="tags" class="form-control mb-2" readonly>
     <hr class="mt-0">
     <div class="d-flex gap-3 my-3">
-        @if (auth()->check() && auth()->user()->id !== $question->user->id)
         <div id="question-interactions" class="d-flex flex-column align-items-center">
-            <button class="vote-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}"><i class="bi bi-caret-up-fill"></i></button>
+            <button class="interaction-button upvote {{ $vote === 'upvote' ? 'on' : 'off' }}" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-caret-up-fill"></i></button>
             <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
-            <button class="vote-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}"><i class="bi bi-caret-down-fill"></i></button>
+            <button class="interaction-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-caret-down-fill"></i></button>
             @if ($follow)
-                <button id = "follow-button" class="vote-button my-2 on"><i class="bi bi-bookmark-fill"></i></button>
+                <button id = "follow-button" class="interaction-button my-2 on"><i class="bi bi-bookmark-fill"></i></button>
             @else 
-                <button id = "follow-button" class="vote-button my-2 off"><i class="bi bi-bookmark-fill"></i></button>
+                <button id = "follow-button" class="interaction-button my-2 off" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-bookmark-fill"></i></button>
             @endif
         </div>
-        @endif
         <form id="questionForm" method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
             {{ csrf_field() }}
             @method('PATCH')

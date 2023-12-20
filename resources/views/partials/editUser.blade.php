@@ -5,8 +5,8 @@
 
 @if (Route::is('user.profile'))
 <div class="col align-middle w-lg-50">
-    <div class="row justify-content-center p-3">
-        <form id="editor-profile" method="POST" action="{{ route('user.update', $user->id) }}" class="col-4 border border-2 rounded p-3">
+    <div class="row justify-content-center p-3 m-3 border border-2 rounded">
+        <form id="editor-profile" method="POST" action="{{ route('user.update', $user->id) }}" class="w-100">
 @elseif (Route::is('admin.users'))
 <div id="edit-user" class="modal">
     <div class="modal-content">
@@ -91,11 +91,23 @@
                 <input type="password" name="password_confirmation" class="form-control" placeholder="Confirm new password">
             </div>
 
-            <div class="form-group pt-3">
-                <button id="update-user" type="submit" class="btn btn-primary" aria-label="Save Changes">
+            <div class="d-grid mt-3">
+                <button id="update-user" type="submit" class="btn btn-lg btn-secondary" aria-label="Save Changes">
                     <i class="bi bi-check-circle"></i> Save Changes
                 </button>
             </div>
         </form>
+        @if (Route::is('user.profile'))
+        <hr class="mt-3 mb-0">
+        <form class="d-inline-block" action="{{ route('user.destroy', $user->id) }}" method="POST">
+            {{ csrf_field() }}
+            {{ method_field('DELETE') }}
+            <div class="d-grid mt-3">
+                <button type="submit" class="btn btn-lg btn-primary" aria-label="Save Changes" onclick="return confirm('Are you sure you want to delete your account?')" aria-label="Delete Account">
+                    <i class="bi bi-trash-fill"></i> Delete Account
+                </button>
+            </div>
+        </form>
+        @endif
     </div>
 </div>

@@ -27,7 +27,7 @@ use App\Http\Middleware\LoggedMiddleware;
 */
 
 // Home
-Route::redirect('/', '/questions/top');
+Route::redirect('/', '/questions/top')->name('homepage');
 
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
