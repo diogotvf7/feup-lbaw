@@ -44,6 +44,79 @@
                 </a>
             </li>
 
+
+            @if ((Request::is('questions') || Request::is('questions/*') && !(Request::is('questions/create'))))        
+            <hr class="m-0">
+            
+            <li class="sidebar-element">
+                <div id="filters-accordion" class="accordion">
+                    <div>
+                        <h2 class="accordion-header">
+                            <button class="accordion-button {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams }}" aria-controls="filters">
+                                <i class="bi bi-filter me-1"></i> Filters
+                            </button>
+                        </h2>
+                        <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
+                            <form class="accordion-body p-0" action="{{ $url }}" method="GET">
+
+                                <div class="form-group my-1">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="flexSwitchCheckChecked">No answers</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" name="no-accepted-answers" {{ $no_accepted_answers ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="flexSwitchCheckChecked">No accepted answers</label>
+                                    </div>
+                                </div>
+
+                                @if (!Request::is('questions/top'))    
+                                <fieldset class="form-group">
+                                    <p class="my-1">Sort by:</p>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sort" id="latest" value="latest" {{ $sort=="latest" ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="latest">
+                                            Latest
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sort" id="oldest" value="oldest" {{ $sort=="oldest" ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="oldest">
+                                            Oldest
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sort" id="votes" value="votes" {{ $sort=="votes" ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="votes">
+                                            Most votes
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="sort" id="answers" value="answers" {{ $sort=="answers" ? 'checked' : '' }}>
+                                        <label class="form-check-label" for="answers">
+                                            Most answers
+                                        </label>
+                                    </div>
+                                </fieldset>
+                                @endif
+
+                                <div class="form-group">
+                                    <label for="tags" class="form-label">Tags</label>
+                                    <input id="tag-input" type="text" name="tags" class="form-control">
+                                </div>
+                                
+                                <div class="d-grid my-3">
+                                    <button type="submit" class="btn btn-primary" aria-label="Apply Filters">
+                                        Apply
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            @endif
+            
             <hr class="m-0">
 
             <li class="py-3 px-1 sidebar-element">
@@ -52,73 +125,6 @@
                 </a>
             </li>
         </ul>
-        @if ((Request::is('questions') || Request::is('questions/*') && !(Request::is('questions/create'))))
-        <hr class="m-0">
-        <div id="filters-accordion" class="accordion">
-            <div>
-                <h2 class="accordion-header">
-                    <button class="accordion-button {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams }}" aria-controls="filters">
-                        <i class="bi bi-filter me-1"></i> Filters
-                    </button>
-                </h2>
-                <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
-                    <form class="accordion-body p-0" action="{{ $url }}" method="GET">
-
-                        <div class="form-group">
-                            <label for="tags" class="form-label">Tags</label>
-                            <input id="tag-input" type="text" name="tags" class="form-control">
-                        </div>
-
-                        <div class="form-group my-1">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
-                                <label class="form-check-label" for="flexSwitchCheckChecked">No answers</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="no-accepted-answers" {{ $no_accepted_answers ? 'checked' : '' }}>
-                                <label class="form-check-label" for="flexSwitchCheckChecked">No accepted answers</label>
-                            </div>
-                        </div>
-
-                        @if (!Request::is('questions/top'))    
-                        <fieldset class="form-group">
-                            <p class="my-1">Sort by:</p>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="latest" value="latest" {{ $sort=="latest" ? 'checked' : '' }}>
-                                <label class="form-check-label" for="latest">
-                                    Latest
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="oldest" value="oldest" {{ $sort=="oldest" ? 'checked' : '' }}>
-                                <label class="form-check-label" for="oldest">
-                                    Oldest
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="votes" value="votes" {{ $sort=="votes" ? 'checked' : '' }}>
-                                <label class="form-check-label" for="votes">
-                                    Most votes
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="answers" value="answers" {{ $sort=="answers" ? 'checked' : '' }}>
-                                <label class="form-check-label" for="answers">
-                                    Most answers
-                                </label>
-                            </div>
-                        </fieldset>
-                        @endif
-
-                        <div class="d-grid my-3">
-                            <button type="submit" class="btn btn-primary" aria-label="Apply Filters">
-                                Apply
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        @endif
+        
     </div>
 </nav>
