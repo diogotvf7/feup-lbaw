@@ -4,7 +4,7 @@
         @if($user->name)
         <h5 class="card-subtitle text-muted">{{($user->name)}}</h5>
         @endif
-        <img src="{{ $user->getProfileImage() }}">
+        <img src="{{ $user->getProfilePicture() }}">
     </div>
     <div class="card-body d-flex align-content-around">
         <p class="card-text">Kleos: {{$user->score}}</p>

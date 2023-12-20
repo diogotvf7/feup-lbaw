@@ -10,6 +10,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\VoteController;
 use App\Http\Middleware\AdminMiddleware;
@@ -126,6 +127,10 @@ Route::controller(NotificationController::class)->group(function () {
     Route::post('/notifications/delete', 'destroyAll');
     Route::post('/notifications/delete/{notification}', 'destroy')->where('notification', '[0-9]+');
     Route::get('/api/notifications', 'fetch');
+});
+
+Route::controller(FileController::class)->middleware(LoggedMiddleware::class)->group(function (){
+    Route::post('/file/upload', 'upload');
 });
 
 // Authentication

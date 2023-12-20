@@ -46,6 +46,7 @@
                 @endif
                 </p>
             </div>
+
             <div class="form-group">
                 <label class="form-label">Username</label>
                 <div class="username input-group">
@@ -96,6 +97,14 @@
                     <i class="bi bi-check-circle"></i> Save Changes
                 </button>
             </div>
+        </form>
+
+        <form method="POST" action="/file/upload" enctype="multipart/form-data">
+                @csrf
+                <input name="file" type="file" required>
+                <input name="id" type="number" value="{{ $user->id }}" hidden>
+                <input name="type" type="text" value="profile" hidden>
+                <button type="submit">Submit</button>
         </form>
     </div>
 </div>

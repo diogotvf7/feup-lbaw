@@ -184,15 +184,5 @@ class UserController extends Controller
         return redirect()->back()->with('success', [$user->username . ' deleted successfully!']);
         }
         
-    }
-
-
-
-
-
-
-
-
-
-    
+    } 
 }

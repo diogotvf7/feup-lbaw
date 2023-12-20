@@ -173,9 +173,9 @@ class User extends Authenticatable
         return $this->notifications()->where('seen', 'false')->count();
     }
 
-    public function getProfileImage(): string
+    public function getProfilePicture(): string
     {
-        return FileController::get('profiles', $this -> id);
+        return FileController::get('profile', $this->id);
     }
 
     protected $appends = ['unreadNotifications'];
