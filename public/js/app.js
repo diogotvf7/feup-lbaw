@@ -4,6 +4,7 @@ import './scroll-top.js';
 import enableTagModal from './add-tags.js';
 import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
+import editComment from './comment-edit.js';
 import enableFollowTag from './follow-tag.js';
 import enableNotifications, {markQuestionNotifRead, notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
