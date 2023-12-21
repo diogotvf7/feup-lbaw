@@ -13,7 +13,7 @@
                 <div class="d-flex gap-1">
                     @foreach ($question->tags as $tag)
                     @if($tag->approved)
-                    <a href="{{ route('tag.show', $tag->id) }}" class="badge bg-primary text-decoration-none">{{$tag->name}}</a>
+                    <a href="{{ route('tag.show', $tag->id) }}" class="badge bg-primary text-decoration-none my-auto">{{$tag->name}}</a>
                     @endif
                     @endforeach
                 </div>
