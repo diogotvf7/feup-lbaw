@@ -114,15 +114,6 @@
   list-style-type: none;
 }
 
-
-/* [data-bs-theme='dark'] .sidebar-element a {
-  color: white;
-}
-
-[data-bs-theme='light'] .sidebar-element a {
-  color: var(--text);
-} */
-
 #sidebar .accordion-item {
   border: 0;
 }

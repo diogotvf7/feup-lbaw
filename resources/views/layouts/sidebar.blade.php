@@ -53,7 +53,7 @@ $sort = $request['sort'] ?? null;
                 <div id="filters-accordion" class="accordion">
                     <div>
                         <h2 class="accordion-header">
-                            <button class="accordion-button text-decoration-none {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams ? 'true' : 'false' }}" aria-controls="filters">
+                            <button class="accordion-button text-decoration-none {{ $hasParams ? '' : 'collapsed' }} px-1 pb-0" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams ? 'true' : 'false' }}" aria-controls="filters">
                                 <i class="bi bi-filter me-1"></i> Filters
                             </button>
                         </h2>
@@ -118,7 +118,7 @@ $sort = $request['sort'] ?? null;
             @endif
 
             <li class="sidebar-element">
-                <hr class="m-0 mb-3">
+                <hr class="m-0 my-3">
                 <a href="{{ route('info') }}" class="text-decoration-none ms-3">
                     Info
                 </a>
