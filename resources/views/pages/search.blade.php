@@ -10,7 +10,7 @@
                     <div class="list-group-item accordion-button d-flex flex-row justify-content-between align-items-center">
                         <p class="my-0">Questions</p>
                         <span class="mx-3 badge bg-primary rounded-pill">{{count($questions)}}</span>
-</div>
+                    </div>
                     <div id="collapseOne" class="w-100 accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                         <div class="accordion-body">
                             @if (count($questions) !== 0)
