@@ -19,8 +19,14 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
+            if(Auth::user()->type ==='Banned'){
+                return redirect()->route('banned.user');
+            }
+            else{
             return redirect()->route('questions');
-        } else {
+            }
+        }
+         else {
             return view('auth.login');
         }
     }
@@ -37,6 +43,10 @@ class LoginController extends Controller
  
         if (Auth::attempt($credentials, $request->filled('remember'))) {
             $request->session()->regenerate();
+
+            if(Auth::user()->type ==='Banned'){
+                return redirect()->route('banned.user');
+            }
  
             return redirect()->route('questions');
         }
