@@ -39,7 +39,7 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
                 <button class="submit-edit-answer btn btn-primary btn-sm mt-2 d-none submit-edit" type="submit">Submit</button>
             </div>
         </form>
-        <div class="mx-4" id="comments-container">
+        <div class="mx-4 mb-3 comments-container">
             <div class="d-flex justify-content-between gap-5 py-2">
                 <h5 class="m-0">
                     {{ $answer->comments->count() }}

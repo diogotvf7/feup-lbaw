@@ -63,7 +63,7 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
             </div>
         </form>
     </div>
-    <div class="mx-4 comments-container">
+    <div class="mx-4 mb-3 comments-container">
         <h4>
             {{ $question->comments->count() }}
             @if ($question->comments->count() != 1)

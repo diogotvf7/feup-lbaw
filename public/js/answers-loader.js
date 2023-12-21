@@ -1,4 +1,5 @@
 import editAnswer from './answer-edit.js';
+import editComment from './comment-edit.js';
 import handleComments from './comments-loader.js';
 import enableInteractions from './interactions.js';
 
@@ -19,6 +20,7 @@ async function loadAnswers() {
       answers.map(answer => answer + '<hr class="m-0">').join('');
   answersContainer.innerHTML = answersHTML;
 
+  editComment();
   editAnswer();
   handleComments();
   enableInteractions();
