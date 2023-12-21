@@ -1,5 +1,7 @@
 <?php
-$canInteract = (auth()->check() && auth()->user()->id !== $answer->user->id);
+$canInteract = (auth()->check() && $answer->user && auth()->user()->id !== $answer->user->id);
+$isAuthor = auth()->check() && $answer->user && $answer->user->id === auth()->user()->id;
+$isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
 ?>
 
 <article id="answer-{{ $answer->id }}" class="answer d-flex gap-3">
@@ -49,26 +51,24 @@ $canInteract = (auth()->check() && auth()->user()->id !== $answer->user->id);
                 </h5>
                 <div class="d-flex gap-5">
                     <div class="d-flex flex-row align-items-center">
-                        <p class="pt-1 m-0 me-2">
+                        <p class="m-0 me-2">
                             Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by
                         </p>
                         @include('partials.userPreview', ['user' => $answer->user])
                     </div>
                     <div class="d-flex">
-                        @if (auth()->check())
-                        @if (auth()->user()->id === $answer->user->id)
+                        @if ($isAuthor)
                         <div class="px-2">
                             <button class="edit-answer btn btn-secondary btn-sm my-2 my-sm-0">Edit</button>
                         </div>
                         @endif
-                        @if (auth()->user()->id === $answer->user->id || auth()->user()->type === "Admin")
+                        @if ($isAuthorOrAdmin)
                         <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
                             {{ csrf_field() }}
                             @method('DELETE')
                             <input type="hidden" name="answer_id" value="{{ $answer->id }}">
                             <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit">Delete</button>
                         </form>
-                        @endif
                         @endif
                     </div>
                 </div>
