@@ -4,11 +4,11 @@ const submitEditButton = document.getElementById('submit-edit-question');
 const questionInput = document.getElementById('question-input');
 let tagInput = document.getElementById('tag-input');
 
+const questionId = new URL(window.location.href).pathname.split('/').pop();
 let tagsContent = [];
 let bodyContent = '';
-
-const questionId = new URL(window.location.href).pathname.split('/').pop();
 let tagify = null;
+
 
 async function fetchQuestionTags() {
   const request = await fetch(`/api/questions/${questionId}/tags`);
@@ -52,9 +52,9 @@ function tagTemplate(tagData) {
   return `
       <tag title='${tagData.value}' contenteditable='false' spellcheck="false"
       class='tagify__tag ${
-      tagData.class ? tagData.class :
-                      ''} badge badge-primary bg-primary d-flex gap-2' ${
-      this.getAttributes(tagData)}>
+      tagData.class ?
+          tagData.class :
+          ''} badge bg-primary d-flex gap-2' ${this.getAttributes(tagData)}>
         <x title='remove tag' class='tagify__tag__removeBtn text-white'></x>
         <span class='tagify__tag-text'>
           ${tagData.name}
@@ -64,14 +64,11 @@ function tagTemplate(tagData) {
   `
 }
 
-
 async function editQuestion() {
+  console.log('editQuestion');
   if (tagInput) {
     const tags = await fetchQuestionTags();
 
-    if (tags.length === 0) {
-      tagInput.classList.add('d-none');
-    }
     tagify = new Tagify(document.getElementById('tag-input'), {
       tagTextProp: 'name',
       whitelist: await fetchTags(),
@@ -96,6 +93,11 @@ async function editQuestion() {
     });
     tagify.addTags(tags);
     tagInput = document.querySelector('.tagify');
+
+    if (tags.length === 0) {
+      tagInput.classList.add('d-none');
+      console.log(tagInput.classList)
+    }
   }
 
   const end = questionInput.value.length;
