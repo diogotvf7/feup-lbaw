@@ -70,14 +70,6 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the tags the user follows.
-     */
-    public function tags(): BelongsToMany
-    {
-        return $this->belongsToMany(Tag::class);
-    }
-
-    /**
      * Get the notifications the user received.
      */
     public function notifications(): HasMany
@@ -133,6 +125,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Question::class, 'followed_questions', 'user_id', 'question_id');
     }
 
+    public function followedTags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class, 'followed_tags', 'user_id', 'tag_id');
+    }
+
     /**
      * Return true if the user upvoted the question with the given id.
      */
@@ -166,6 +163,11 @@ class User extends Authenticatable
     public function followsQuestion($question_id): bool
     {
         return $this->followedQuestions()->where('id', '=', $question_id)->exists();
+    }
+
+    public function followsTag($tag_id): bool
+    {
+        return $this->followedTags()->where('id', '=', $tag_id)->exists();
     }
 
     public function getUnreadNotificationsAttribute()

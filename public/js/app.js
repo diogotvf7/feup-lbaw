@@ -4,6 +4,7 @@ import './scroll-top.js';
 import enableTagModal from './add-tags.js';
 import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
+import enableFollowTag from './follow-tag.js';
 import enableNotifications, {markQuestionNotifRead, notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
@@ -29,6 +30,9 @@ else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
              currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
+
+  const followTag = document.getElementById('follow-tag');
+  enableFollowTag(followTag);
 }
 // Tags page infinite scroll
 else if (/^\/tags\/?$/.test(currentPath)) {
