@@ -1,5 +1,6 @@
 <?php
     use Illuminate\Support\Facades\Request;
+    use Illuminate\Support\Facades\Route;
 
     if (Request::is('search')) {
         $url = '/search';
@@ -16,7 +17,6 @@
     $no_answers = $request['no-answers'] ?? null;
     $no_accepted_answers = $request['no-accepted-answers'] ?? null;
     $sort = $request['sort'] ?? null;
-
 ?>
 
 <nav id="sidebar" class="flex-column align-items-stretch" style="min-width: 250px; max-width: 250px;">
@@ -51,7 +51,7 @@
             </li>
 
 
-            @if (Request::is('search') || Request::is('questions') || (Request::is('questions/*') && !(Request::is('questions/create'))))        
+            @if (Request::is('search') || Request::is('questions') || (Request::is('questions/*') && !(Route::is('question.show')) && !(Request::is('questions/create'))))        
             <hr class="m-0">
             
             <li class="sidebar-element">
