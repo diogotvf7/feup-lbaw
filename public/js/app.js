@@ -10,6 +10,7 @@ import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
 import tagScrollObserver from './tags-fetcher.js';
+import enablePfpModal from './upload-pfp.js';
 
 const currentPath = window.location.pathname;
 
@@ -39,6 +40,8 @@ else if (/^\/tags\/?$/.test(currentPath)) {
 else if (/^\/users\/\w+$/.test(currentPath)) {
   const navbar = document.getElementById('navbar');
   navbar.style.borderStyle = 'none';
+  
+  enablePfpModal();
 
   resetFields([
     '#editor-profile .name', '#editor-profile .username',

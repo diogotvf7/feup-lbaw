@@ -26,7 +26,8 @@
                 <div class="d-flex flex-column flex-sm-row justify-content-around align-items-center">
                     @include('partials.profileCard')
                     @if (Auth::user()->id === $user->id)
-                            @include('partials.editUser')
+                    @include('partials.editUser')
+                    @include('partials.editProfilePic')
                     @endif
                 </div>
             </div>
@@ -51,12 +52,12 @@
                         @if(count($user->questions)=== 0)
                         <h4>User has no questions</h4>
                         @else
-                            @foreach ($user->questions as $question)
-                                @include('partials.questionPreview', ['question' => $question])
-                                @if (!$loop->last)
-                                    <hr>
-                                @endif
-                            @endforeach
+                        @foreach ($user->questions as $question)
+                        @include('partials.questionPreview', ['question' => $question])
+                        @if (!$loop->last)
+                        <hr>
+                        @endif
+                        @endforeach
                         @endif
                     </div>
                 </section>
@@ -82,12 +83,12 @@
                         @if (count($user->answers)=== 0)
                         <h4>User has no answers</h4>
                         @else
-                            @foreach ($user->answers as $answer)
-                                @include('partials.answerPreview', ['answer' => $answer])
-                                @if (!$loop->last)
-                                    <hr>
-                                @endif
-                            @endforeach
+                        @foreach ($user->answers as $answer)
+                        @include('partials.answerPreview', ['answer' => $answer])
+                        @if (!$loop->last)
+                        <hr>
+                        @endif
+                        @endforeach
                         @endif
                     </div>
                 </section>
@@ -113,12 +114,12 @@
                         @if (count($user->comments)=== 0)
                         <h4>User has no comments</h4>
                         @else
-                            @foreach ($user->comments as $comment)
-                                @include('partials.commentPreview', ['comment' => $comment])
-                                @if (!$loop->last)
-                                    <hr>
-                                @endif
-                            @endforeach
+                        @foreach ($user->comments as $comment)
+                        @include('partials.commentPreview', ['comment' => $comment])
+                        @if (!$loop->last)
+                        <hr>
+                        @endif
+                        @endforeach
                         @endif
                     </div>
                 </section>
@@ -129,10 +130,10 @@
 <button type="button" class="btn btn-primary rounded" id="back-top">
     <i class="bi bi-arrow-up"></i>
 </button>
-@if (session('success')) 
-    <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        <strong>{{ session('success')[0] }}</strong>
-    </div>
+@if (session('success'))
+<div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    <strong>{{ session('success')[0] }}</strong>
+</div>
 @endif
 @endsection

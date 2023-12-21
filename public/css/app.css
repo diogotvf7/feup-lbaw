@@ -241,7 +241,7 @@
 /* ------------------ */
 
 /*        Modal        */
-.modal {
+ .modal {
   display: none;
   position: fixed;
   z-index: 5;
@@ -465,3 +465,7 @@
 }
 
 /* ------------------ */
+
+.text-blue {
+  color: var(--bs-blue);
+}
