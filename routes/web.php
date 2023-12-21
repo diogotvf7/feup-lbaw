@@ -11,6 +11,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VoteController;
@@ -43,6 +44,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
     Route::get('/questions/{question}', 'show')->name('question.show');
+    Route::get('/questions/preview/{question}', 'preview')->name('question.preview');
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
     Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
@@ -129,11 +131,17 @@ Route::controller(CommentController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/api/tags', 'fetch');
     Route::get('/api/tags/all', 'fetchAll');
+    Route::post('/api/tags/{tag}/follow', 'follow')->where('tag', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::controller(NotificationController::class)->group(function () {
-    Route::get('/api/notifications', 'fetch');
-    Route::get('api/notifications/count', 'count');
+   Route::get('/api/notifications', 'fetch');
+   Route::get('/api/notifications/count', 'count');
+});
+
+Route::controller(FileController::class)->middleware(LoggedMiddleware::class)->group(function (){
+    Route::patch('/file/upload', 'upload')->name('file.upload');
+    Route::patch('/file/delete', 'remove')->name('file.delete');
 });
 
 // Authentication

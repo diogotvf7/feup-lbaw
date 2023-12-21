@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Answer;
 use App\Events\UpvoteEvent;
 use App\Models\Tag;
 use App\Models\Vote;
@@ -10,11 +9,11 @@ use App\Models\User;
 use App\Models\Question;
 use App\Models\ContentVersion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      */
@@ -31,13 +30,26 @@ class QuestionController extends Controller
                 $title = '<h1>Top Questions</h1>';
             } else if ($path_segments[1] == 'tag') {
                 $tag = Tag::findOrFail($path_segments[2]);
+                $user = (Auth::check()) ? User::find(Auth::user()->id) : null;
                 if (!$tag->approved)
                     return redirect()->intended('questions');
                 $title = '
                 <div>
                     <h1 class="d-flex flex-wrap gap-3">
-                        Questions Tagged <span class="badge bg-primary">' . $tag->name . '</span>
-                    </h1>
+                        Questions Tagged 
+                        <span class="badge bg-primary">' . $tag->name . '</span>' .
+                        ((!$user) 
+                            ? '<button id="follow-tag" class="btn btn-primary" data-id="'. $tag->id . '" data-status="noAuth">
+                                    <i class="bi bi-bookmark"></i>
+                                </button>' 
+                            : (($user->followsTag($tag->id)) 
+                                ? '<button id="follow-tag" class="btn btn-primary" data-id="'. $tag->id . '" data-status="follows">
+                                        <i class="bi bi-bookmark-fill"></i>
+                                    </button>'
+                                : '<button id="follow-tag" class="btn btn-primary" data-id="'. $tag->id . '" data-status="!follows">
+                                        <i class="bi bi-bookmark"></i>
+                                    </button>')) .
+                    '</h1>
                     <p>'
                     . $tag->description .
                     '</p>
@@ -209,6 +221,14 @@ class QuestionController extends Controller
         return view('pages.question', ['question' => $question, 'vote' => $vote, 'follow' => $follow]);
     }
 
+        /**
+     * Display the preview for the specified resource.
+     */
+    public function preview(Question $question)
+    {
+        return view('partials.questionPreview', ['question' => $question])->render();
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
@@ -229,7 +249,7 @@ class QuestionController extends Controller
 
         $question->tags()->detach();
         $tags = json_decode($request->tags);
-        if($tags) {
+        if ($tags) {
             foreach ($tags as $tag) {
                 $question->tags()->attach($tag->value);
             }
@@ -316,16 +336,15 @@ class QuestionController extends Controller
         $this->authorize('vote', $question);
         $user = User::findOrFail(Auth::user()->id);
 
-        if ($user->followsQuestion($question->id)){
+        if ($user->followsQuestion($question->id)) {
             $user->followedQuestions()->detach($question->id);
             return "Unfollowed";
-        }
-        else{
+        } else {
             $user->followedQuestions()->attach($question->id);
             return "Followed";
         }
     }
-    
+
     public function upvoteEvent($user_id, $vote_id)
     {
         event(new UpvoteEvent($user_id, $vote_id));

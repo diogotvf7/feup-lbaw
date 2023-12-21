@@ -17,6 +17,8 @@ class Tag extends Model
         'approved',
         'creator'
     ];
+    
+    protected $visible = ['id', 'name', 'description', 'approved', 'search', 'creator', 'data', 'questions', 'usersThatFollow'];
 
     // Don't add create and update timestamps in database.
     public $timestamps  = false;

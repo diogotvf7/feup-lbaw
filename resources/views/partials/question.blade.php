@@ -1,5 +1,7 @@
-<?php 
-    $canInteract = (auth()->check() && auth()->user()->id !== $question->user->id);
+<?php
+    $canInteract = (auth()->check() && $question->user && auth()->user()->id !== $question->user->id);
+    $isAuthor = auth()->check() && $question->user && $question->user->id === auth()->user()->id;
+    $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
 ?>
 
 <section>
@@ -8,35 +10,27 @@
             <h1 class="text-wrap text-break me-3">
                 {{ $question->title }}
             </h1>
-            <div class="d-flex gap-5">
-                <p>
-                    Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by 
-                    @if(auth()->check())
-                    <a class="text-decoration-none" href="/users/{{ $question->user->id }}">{{ $question->user->username }}</a>
-                    @else
-                    {{ $question->user->username }}
-                    @endif
-                </p>
-                @if ($question->contentVersions()->count() > 1)
-                <p>
-                    Last Edited {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
+            <div class="d-flex flex-row align-items-center mb-2">
+                <p class="my-0 me-2">Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by</p>
+                @include('partials.userPreview', ['user' => $question->user])
+                <p class="ms-2 m-0">
+                    @if ($question->contentVersions()->count() > 1)
+                    (Last Edited {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }})
                 </p>
                 @endif
             </div>
         </hgroup>
         <div class="d-flex">
-            @if (auth()->check())
-                @if ($question->user->id === auth()->user()->id)
-                    <button id="edit-question" class="btn btn-secondary my-2 my-sm-0">Edit</button>
-                @endif
-                @if (auth()->user()->id === $question->user->id || auth()->user()->type === "Admin")
-                <form class="px-2" method="POST" action="{{ route('question/delete') }}" onclick="return confirm('Are you sure you want to delete this question?');">
-                    {{ csrf_field() }}
-                    @method('DELETE')
-                    <input type="hidden" name="question_id" value="{{ $question->id }}">
-                    <button class="btn btn-secondary my-2 my-sm-0" type="submit">Delete</button>
-                </form>
-                @endif
+            @if ($isAuthor)
+            <button id="edit-question" class="btn btn-secondary my-2 my-sm-0">Edit</button>
+            @endif
+            @if ($isAuthorOrAdmin)
+            <form class="px-2" method="POST" action="{{ route('question/delete') }}" onclick="return confirm('Are you sure you want to delete this question?');">
+                {{ csrf_field() }}
+                @method('DELETE')
+                <input type="hidden" name="question_id" value="{{ $question->id }}">
+                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Delete</button>
+            </form>
             @endif
         </div>
     </header>
@@ -48,9 +42,9 @@
             <p class="vote-count px-4 mb-0">{{ $question->voteBalance() }}</p>
             <button class="interaction-button downvote {{ $vote === 'downvote' ? 'on' : 'off' }}" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-caret-down-fill"></i></button>
             @if ($follow)
-                <button id = "follow-button" class="interaction-button my-2 on"><i class="bi bi-bookmark-fill"></i></button>
-            @else 
-                <button id = "follow-button" class="interaction-button my-2 off" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-bookmark-fill"></i></button>
+            <button id="follow-button" class="interaction-button my-2 on"><i class="bi bi-bookmark-fill"></i></button>
+            @else
+            <button id="follow-button" class="interaction-button my-2 off" {{ $canInteract ? '' : 'disabled' }}><i class="bi bi-bookmark-fill"></i></button>
             @endif
         </div>
         <form id="questionForm" method="POST" class="flex-grow-1" action="{{ route('question/edit') }}">
@@ -59,9 +53,9 @@
             <input type="hidden" name="question_id" value="{{ $question->id }}">
             <textarea id="question-input" name="body" class="form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $question->updatedVersion->body }}</textarea>
             @if ($errors->has('body'))
-                <span class="text-danger">
-                    {{ $errors->first('body') }}
-                </span>
+            <span class="text-danger">
+                {{ $errors->first('body') }}
+            </span>
             @endif
             <div>
                 <button id="cancel-edit-question" class="btn btn-secondary mt-2 d-none" type="button">Cancel</button>
@@ -79,7 +73,7 @@
             @endif
         </h4>
         @foreach ($question->comments as $comment)
-            @include('partials.comment', ['hidden' => $loop->index > 2])
+        @include('partials.comment', ['hidden' => $loop->index > 2])
         @endforeach
         <div class="d-flex">
             @if (sizeof($question->comments) > 3)

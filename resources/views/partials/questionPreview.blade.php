@@ -8,23 +8,25 @@
         <div class="flex-grow-1">
             <a href="{{route('question.show', $question->id)}}" class="text-decoration-none text-wrap text-break">{{ $question->title }}</a>
             <p class="preview-body text-wrap text-break">{{ $question->updatedVersion->body }}</p>
-        </div>
-        <div class="d-flex justify-content-between mx-3">
+            @if($question->tags->count() > 0)
             <div class="d-flex gap-1">
                 @foreach ($question->tags as $tag)
-                    <p class="badge bg-primary text-decoration-none m-0">{{$tag->name}}</p>
-                @endforeach
+                @if($tag->approved)
+                <a href="{{ route('tag.show', $tag->id) }}" class="badge bg-primary text-decoration-none">{{$tag->name}}<a>
+                        @endif
+                        @endforeach
             </div>
-            <div class="align-self-end text-secondary text-wrap text-break">
-                @if (Auth::check())
-                    <a href="{{ route('user.profile', $question->user->id) }}" class="text-decoration-none">{{ $question->user->name }}</a>
-                @else
-                    <span>{{ $question->user->name }}</span>
-                @endif
-                asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
+            @endif
+        </div>
+        <div class="align-self-end d-flex justify-content-between mx-3">
+            <div class="text-secondary text-wrap d-flex flex-row align-items-center d-flex flex-row align-content-center" style="width:max-content;">
+                @include('partials.userPreview', ['user' => $question->user])
+                <p class="m-0">&NonBreakingSpace;
+                asked&NonBreakingSpace;{{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
                 @if ($question->firstVersion->date != $question->updatedVersion->date)
-                    , updated {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
+                ,&NonBreakingSpace;updated&NonBreakingSpace;{{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
                 @endif
+                </p>
             </div>
         </div>
     </div>

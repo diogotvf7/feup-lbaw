@@ -544,3 +544,7 @@
 #search-results .list-group-item {
   border: none;
 }
+
+.text-blue {
+  color: var(--bs-blue);
+}

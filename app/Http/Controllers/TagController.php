@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use App\Models\User;
 
 class TagController extends Controller
 {
@@ -57,6 +58,12 @@ class TagController extends Controller
         foreach ($tags as $tag) {
             $tag->questions;
             $tag->usersThatFollow;
+
+            if (Auth::check()) {
+                $tag->data = $tag->usersThatFollow->contains(Auth::user()) ? 'follows' : '!follows';
+            } else {
+                $tag->data = 'noAuth';
+            }
         }
         return $tags;
     }
@@ -167,5 +174,18 @@ class TagController extends Controller
     {
         $tag->delete();
         return redirect()->back()->with('success', ['Tag deleted successfully!']);
+    }
+
+    public function follow(Tag $tag)
+    {
+        $user = User::findOrFail(Auth::user()->id);
+
+        if ($user->followedTags->contains($tag)) {
+            $user->followedTags()->detach($tag->id);
+            return 'unfollowed';
+        } else {
+            $user->followedTags()->attach($tag->id);
+            return 'followed';
+        }
     }
 }
