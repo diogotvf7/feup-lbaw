@@ -7,8 +7,8 @@ import loadAnswers from './answers-loader.js';
 import enableNotifications, {markQuestionNotifRead, notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
-import search from './search.js';
 import resetFields from './reset-field.js';
+import search from './search.js';
 import {sidebarToggle, sidebarToggler} from './sidebar-toggle.js';
 import enableTagFilter from './tag-filter.js';
 import tagScrollObserver from './tags-fetcher.js';
@@ -18,13 +18,20 @@ const currentPath = window.location.pathname;
 // Notifications logic
 enableNotifications();
 
+if (sidebarToggler) {
+  sidebarToggle();
+}
+
 // Search bar live search
 if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
   const searchBar = document.getElementById('search-bar');
   searchBar.addEventListener('input', (e) => {
     const input = searchBar.value;
+    const searchTerm = document.getElementById('search-term');
+    searchTerm.value = input;
     search(input);
   });
+  enableTagFilter();
 }
 // Questions page infinite scroll
 else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
@@ -69,8 +76,4 @@ else if (/^\/admin\/tags/.test(currentPath)) {
 // Admin users page
 else if (/^\/admin\/users/.test(currentPath)) {
   enableUserModal();
-}
-
-if (sidebarToggler) {
-  sidebarToggle();
 }

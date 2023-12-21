@@ -31,6 +31,10 @@ use App\Http\Middleware\LoggedMiddleware;
 // Home
 Route::redirect('/', '/questions/top')->name('homepage');
 
+Route::controller(SearchController::class)->group(function () {
+    Route::get('/search', 'search')->name('search');
+});
+
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
     Route::get('/questions/top', 'index')->name('questions.top');
@@ -44,10 +48,6 @@ Route::controller(QuestionController::class)->group(function () {
     Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/question/downvote/{question}', 'downvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/questions/follow/{question}', 'follow')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
-});
-
-Route::controller(SearchController::class)->group(function () {
-    Route::get('/api/search', 'search')->name('search');
 });
 
 Route::controller(AnswerController::class)->group(function () {
@@ -103,9 +103,9 @@ Route::get('/info', function () {
     return view('pages.info');
 })->name('info');
 
-Route::get('/faq', function () {
-    return view('pages.faq');
-})->name('faq');
+// Route::get('/faq', function () {
+//     return view('pages.faq');
+// })->name('faq');
 
 //API
 Route::controller(QuestionController::class)->group(function () {

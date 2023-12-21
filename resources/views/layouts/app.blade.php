@@ -1,3 +1,8 @@
+<?php 
+    use Illuminate\Support\Facades\Request;
+    $searchTerm = Request::get('searchTerm');
+?>
+
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" data-bs-theme="light">
 
@@ -81,9 +86,7 @@
 
                         <div class="d-flex flex-row" style="max-width: 70%;">
                             <form class="d-flex" action="{{ route('search') }}" method="GET">
-                                {{ csrf_field() }}
-                                @method('GET')
-                                <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
+                                <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search" value="{{ $searchTerm }}">
                                 <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
                             </form>
                         </div>

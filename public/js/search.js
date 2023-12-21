@@ -1,5 +1,11 @@
 export default async function search(input) {
-  return await fetch('/api/search?searchTerm=' + input, {
+  const url = new URL(window.location.href);
+  const searchParams = new URLSearchParams(url.search);
+
+  searchParams.set('searchTerm', input);
+  url.search = searchParams;
+
+  return await fetch(url.href, {
            method: 'GET',
            headers: {
              'X-Requested-With': 'XMLHttpRequest',
@@ -9,7 +15,7 @@ export default async function search(input) {
         return response.text()
       })
       .then(function(html) {
-        const searchDiv = document.getElementById('search-page');
+        const searchDiv = document.getElementById('myTabContent');
         // console.log(searchDiv);
         searchDiv.innerHTML = html;
       })
