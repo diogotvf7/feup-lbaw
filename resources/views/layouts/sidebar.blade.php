@@ -1,11 +1,17 @@
 <?php
     use Illuminate\Support\Facades\Request;
 
-    $url = Request::url();
+    if (Request::is('search')) {
+        $url = '/search';
+    } else {
+        $url = Request::url();
+    }
 
     $request = Request::all();
 
     $hasParams = sizeof($request) > 0;
+    
+    $searchTerm = $request['searchTerm'] ?? '';
 
     $no_answers = $request['no-answers'] ?? null;
     $no_accepted_answers = $request['no-accepted-answers'] ?? null;
@@ -45,7 +51,7 @@
             </li>
 
 
-            @if ((Request::is('questions') || Request::is('questions/*') && !(Request::is('questions/create'))))        
+            @if (Request::is('search') || Request::is('questions') || (Request::is('questions/*') && !(Request::is('questions/create'))))        
             <hr class="m-0">
             
             <li class="sidebar-element">
@@ -58,6 +64,11 @@
                         </h2>
                         <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
                             <form class="accordion-body p-0" action="{{ $url }}" method="GET">
+
+                                @if (Request::is('search'))
+                                    <input type="hidden" id="search-term" name="searchTerm" value="{{ $searchTerm }}">
+                                @endif
+                                
                                 <div class="form-group my-1">
                                     <div class="form-check">
                                         <input id="no-answers" class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>

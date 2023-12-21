@@ -48,11 +48,14 @@
 /* -------------------------- */
 
 /*       Tagify       */
-.tagify-text,
-.tagify__dropdown__footer {
-  color: var(--text);
+[data-bs-theme='dark'] .tagify-text,
+[data-bs-theme='dark'] .tagify__dropdown__footer {
+  color: #fff;
 }
 
+[data-bs-theme='dark'] .tagify__dropdown__wrapper {
+  background-color: #222;
+}
 /* ------------------ */
 
 /*      Sidebar       */
@@ -528,6 +531,19 @@
 }
 
 /* ------------------ */
+
+#search-results .accordion-button::after {
+  width: 0;
+  height: 0;
+}
+
+#search-results .accordion-button:not(.collapsed) {
+  box-shadow: none;
+}
+
+#search-results .list-group-item {
+  border: none;
+}
 
 .text-blue {
   color: var(--bs-blue);
