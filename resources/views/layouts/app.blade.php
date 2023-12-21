@@ -17,7 +17,7 @@
     <link href="{{ url('css/app.css') }}" rel="stylesheet">
     <link href="{{ url('css/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
-    <script type="text/javascript" src="{{ url('js/bootstrap.bundle.js') }}" defer>
+    <script src="{{ url('js/bootstrap.bundle.js') }}" defer>
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>

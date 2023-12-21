@@ -1,15 +1,15 @@
 <?php
-    $canInteract = (auth()->check() && $question->user && auth()->user()->id !== $question->user->id);
-    $isAuthor = auth()->check() && $question->user && $question->user->id === auth()->user()->id;
-    $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
+$canInteract = (auth()->check() && $question->user && auth()->user()->id !== $question->user->id);
+$isAuthor = auth()->check() && $question->user && $question->user->id === auth()->user()->id;
+$isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
 ?>
 
 <section>
     <header class="d-flex justify-content-between align-items-center">
-        <hgroup>
-            <h1 class="text-wrap text-break me-3">
+        <div>
+            <h2 class="text-wrap text-break me-3">
                 {{ $question->title }}
-            </h1>
+            </h2>
             <div class="d-flex flex-row align-items-center mb-2">
                 <p class="my-0 me-2">Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by</p>
                 @include('partials.userPreview', ['user' => $question->user])
@@ -19,7 +19,7 @@
                 </p>
                 @endif
             </div>
-        </hgroup>
+        </div>
         <div class="d-flex">
             @if ($isAuthor)
             <button id="edit-question" class="btn btn-secondary my-2 my-sm-0">Edit</button>
