@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
 {
+    
     /**
      * Display a listing of the resource.
      */
@@ -229,7 +230,7 @@ class QuestionController extends Controller
 
         $question->tags()->detach();
         $tags = json_decode($request->tags);
-        if($tags) {
+        if ($tags) {
             foreach ($tags as $tag) {
                 $question->tags()->attach($tag->value);
             }
@@ -326,16 +327,15 @@ class QuestionController extends Controller
         $this->authorize('vote', $question);
         $user = User::findOrFail(Auth::user()->id);
 
-        if ($user->followsQuestion($question->id)){
+        if ($user->followsQuestion($question->id)) {
             $user->followedQuestions()->detach($question->id);
             return "Unfollowed";
-        }
-        else{
+        } else {
             $user->followedQuestions()->attach($question->id);
             return "Followed";
         }
     }
-    
+
     public function upvoteEvent($user_id, $vote_id)
     {
         event(new UpvoteEvent($user_id, $vote_id));

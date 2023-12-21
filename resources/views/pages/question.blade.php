@@ -1,5 +1,8 @@
-@extends('layouts.app')
+<?php
+$canInteract = (auth()->check() && $question->user && auth()->user()->id !== $question->user->id);
+?>
 
+@extends('layouts.app')
 @section('content')
 <div class="d-flex flex-fill overflow-hidden">
     @include('layouts.sidebar')
@@ -8,7 +11,7 @@
         <hr class="m-0">
         <section id="answers-container">
         </section>
-        @if (Auth()->check() && Auth()->user()->id !== $question->user->id)
+        @if ($canInteract)
         <form id="answer-form" class="d-flex flex-column gap-3 mt-3" method="POST" action="{{ route('answer/create') }}">
             {{ csrf_field() }}
             <input type="hidden" name="question_id" value="{{ $question->id }}">

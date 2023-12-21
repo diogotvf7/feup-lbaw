@@ -12,15 +12,12 @@
         <div class="d-flex justify-content-between mx-3">
             <div class="d-flex gap-1">
                 @foreach ($question->tags as $tag)
-                    <p class="badge bg-primary text-decoration-none m-0">{{$tag->name}}</p>
+                    <p class="badge badge-primary bg-primary text-decoration-none">{{$tag->name}}</p>
                 @endforeach
             </div>
-            <div class="align-self-end text-secondary text-wrap text-break">
-                @if (Auth::check())
-                    <a href="{{ route('user.profile', $question->user->id) }}" class="text-decoration-none">{{ $question->user->name }}</a>
-                @else
-                    <span>{{ $question->user->name }}</span>
-                @endif
+            <div class="align-self-end text-secondary text-wrap text-break d-flex flex-row align-items-center">
+                @include('partials.userPreview', ['user' => $question->user])
+                &NonBreakingSpace;
                 asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }}
                 @if ($question->firstVersion->date != $question->updatedVersion->date)
                     , updated {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
