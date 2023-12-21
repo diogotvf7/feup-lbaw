@@ -32,13 +32,26 @@ class QuestionController extends Controller
                 $title = '<h1>Top Questions</h1>';
             } else if ($path_segments[1] == 'tag') {
                 $tag = Tag::findOrFail($path_segments[2]);
+                $user = (Auth::check()) ? User::find(Auth::user()->id) : null;
                 if (!$tag->approved)
                     return redirect()->intended('questions');
                 $title = '
                 <div>
                     <h1 class="d-flex flex-wrap gap-3">
-                        Questions Tagged <span class="badge bg-primary">' . $tag->name . '</span>
-                    </h1>
+                        Questions Tagged 
+                        <span class="badge bg-primary">' . $tag->name . '</span>' .
+                        ((!$user) 
+                            ? '<button id="follow-tag" class="btn btn-primary" data-id="'. $tag->id . '" data-status="noAuth">
+                                    <i class="bi bi-bookmark"></i>
+                                </button>' 
+                            : (($user->followsTag($tag->id)) 
+                                ? '<button id="follow-tag" class="btn btn-primary" data-id="'. $tag->id . '" data-status="follows">
+                                        <i class="bi bi-bookmark-fill"></i>
+                                    </button>'
+                                : '<button id="follow-tag" class="btn btn-primary" data-id="'. $tag->id . '" data-status="!follows">
+                                        <i class="bi bi-bookmark"></i>
+                                    </button>')) .
+                    '</h1>
                     <p>'
                     . $tag->description .
                     '</p>

@@ -126,6 +126,7 @@ Route::controller(CommentController::class)->group(function () {
 Route::controller(TagController::class)->group(function () {
     Route::get('/api/tags', 'fetch');
     Route::get('/api/tags/all', 'fetchAll');
+    Route::post('/api/tags/{tag}/follow', 'follow')->where('tag', '[0-9]+')->middleware(LoggedMiddleware::class);
 });
 
 Route::controller(NotificationController::class)->group(function () {

@@ -1,3 +1,4 @@
+import enableFollowTag from './follow-tag.js';
 const tagsContainer = document.getElementById('tags-container');
 let page = 1;
 
@@ -10,34 +11,26 @@ function noMoreTags() {
 }
 
 function createTagPreview(tag) {
-  const tagPreview = document.createElement('article');
-  tagPreview.classList.add(
-      'd-flex', 'flex-column', 'justify-content-between', 'tag-preview', 'p-3',
-      'm-1', 'border', 'border-primary-subtle', 'rounded');
-
-  const a = document.createElement('a');
-  a.href = '/questions/tag/' + tag.id;
-  a.classList.add(
-      'badge', 'bg-primary', 'text-white', 'text-decoration-none', 'mb-3');
-  a.textContent = tag.name;
-
-  const description = document.createElement('p');
-  description.classList.add('text-wrap', 'text-break');
-  description.textContent = tag.description;
-
-  const div = document.createElement('div');
-  div.classList.add('d-flex', 'justify-content-between');
-
-  const nQuestions = document.createElement('p');
-  nQuestions.textContent = tag.questions.length + ' questions';
-
-  const nFollowers = document.createElement('p');
-  nFollowers.textContent = tag.users_that_follow.length + ' followers';
-
-  div.append(nQuestions, nFollowers);
-
-  tagPreview.append(a, description, div);
-
+  const tagPreview = `
+    <a 
+      class="d-flex flex-column justify-content-between text-decoration-none text-reset tag-preview p-3 m-1 border border-primary-subtle rounded"
+      href="/questions/tag/${tag.id}">
+        <span class="bg-primary text-white rounded px-3 py-1 mb-3 d-flex justify-content-between gap-3 text-decoration-none">
+          ${tag.name}
+          <button class="follow-tag btn btn-link btn-sm p-0 text-reset text-align-center border-0" data-id="${
+      tag.id}" data-status="${tag.data}"> 
+            ${
+      tag.data === 'follows' ? '<i class="bi bi-bookmark-fill"></i>' :
+                               '<i class="bi bi-bookmark"></i>'}
+          </button>
+        </span>
+        <p class="text-wrap text-break">${tag.description}</p>
+        <div class="d-flex justify-content-between">
+          <p>${tag.questions.length} questions</p>
+          <p>${tag.users_that_follow.length} followers</p>
+        </div>
+    </a>
+  `;
   return tagPreview;
 }
 
@@ -56,8 +49,9 @@ function insertTags() {
     }
     tags.forEach(tag => {
       const tagPreview = createTagPreview(tag);
-      tagsContainer.appendChild(tagPreview);
-      const hr = document.createElement('hr');
+      tagsContainer.insertAdjacentHTML('beforeend', tagPreview);
+      const tagElement = tagsContainer.lastElementChild;
+      enableFollowTag(tagElement.querySelector('button'));
     });
     if (tags.length < 30) {
       noMoreTags();
