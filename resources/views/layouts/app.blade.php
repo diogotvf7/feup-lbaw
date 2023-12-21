@@ -96,7 +96,7 @@
                             @endif
 
                             @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
-                            <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
+                            <a class="btn btn-secondary me-3" href="{{ url('/login') }}">Login / Register</a>
                             @endif
 
                             <div class="d-flex flex-row" style="max-width: 70%;">
