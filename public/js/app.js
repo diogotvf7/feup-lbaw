@@ -40,6 +40,7 @@ else if (/^\/tags\/?$/.test(currentPath)) {
 else if (/^\/users\/\w+$/.test(currentPath)) {
   const navbar = document.getElementById('navbar');
   navbar.style.borderStyle = 'none';
+  
   enablePfpModal();
 
   resetFields([

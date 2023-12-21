@@ -9,16 +9,14 @@
             <p class="preview-body text-wrap text-break">{{ $answer->updatedVersion->body }}</p>
         </div>
         <div class="d-flex justify-content-end mx-3">
-            <div class="align-self-end text-secondary text-wrap text-break">
-                @if (Auth::check())
-                    <a href="{{ route('user.profile', $answer->user->id) }}" class="text-decoration-none">{{ $answer->user->name }}</a>
-                @else
-                    <span>{{ $question->user->name }}</span>
-                @endif
-                answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }}
-                @if ($answer->firstVersion->date != $answer->updatedVersion->date)
+            <div class="align-self-end text-secondary text-wrap text-break d-flex flex-row align-items-center">
+                @include('partials.userPreview', ['user' => $answer->user])
+                <p class="m-0">
+                    &NonBreakingSpace;answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }}
+                    @if ($answer->firstVersion->date != $answer->updatedVersion->date)
                     , updated {{ \Carbon\Carbon::parse($answer->updatedVersion->date)->diffForHumans() }}
-                @endif
+                    @endif
+                </p>
             </div>
         </div>
     </div>

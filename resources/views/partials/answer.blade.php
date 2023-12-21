@@ -1,5 +1,5 @@
-<?php 
-    $canInteract = (auth()->check() && auth()->user()->id !== $answer->user->id);
+<?php
+$canInteract = (auth()->check() && auth()->user()->id !== $answer->user->id);
 ?>
 
 <article id="answer-{{ $answer->id }}" class="answer d-flex gap-3">
@@ -28,9 +28,9 @@
             <input type="hidden" name="answer_id" value="{{ $answer->id }}">
             <textarea name="body" class="answer-input form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $answer->updatedVersion->body }}</textarea>
             @if ($errors->has('body'))
-                <span class="text-danger">
-                    {{ $errors->first('body') }}
-                </span>
+            <span class="text-danger">
+                {{ $errors->first('body') }}
+            </span>
             @endif
             <div>
                 <button class="cancel-edit-answer btn btn-secondary btn-sm mt-2 d-none" type="button">Cancel</button>
@@ -48,35 +48,33 @@
                     @endif
                 </h5>
                 <div class="d-flex gap-5">
-                    <p class="pt-1">
-                        Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by 
-                        @if(auth()->check())
-                        <a class="text-decoration-none" href="/users/{{ $answer->user->id }}">{{ $answer->user->username }}</a>
-                        @else
-                        {{ $answer->user->username }}
-                        @endif
-                    </p>
+                    <div class="d-flex flex-row align-items-center">
+                        <p class="pt-1 m-0 me-2">
+                            Answered {{ \Carbon\Carbon::parse($answer->firstVersion->date)->diffForHumans() }} by
+                        </p>
+                        @include('partials.userPreview', ['user' => $answer->user])
+                    </div>
                     <div class="d-flex">
                         @if (auth()->check())
-                            @if (auth()->user()->id === $answer->user->id)
-                            <div class="px-2">
-                                <button class="edit-answer btn btn-secondary btn-sm my-2 my-sm-0">Edit</button>
-                            </div>
-                            @endif
-                            @if (auth()->user()->id === $answer->user->id || auth()->user()->type === "Admin")
-                            <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
-                                {{ csrf_field() }}
-                                @method('DELETE')
-                                <input type="hidden" name="answer_id" value="{{ $answer->id }}">
-                                <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit">Delete</button>
-                            </form>
-                            @endif
+                        @if (auth()->user()->id === $answer->user->id)
+                        <div class="px-2">
+                            <button class="edit-answer btn btn-secondary btn-sm my-2 my-sm-0">Edit</button>
+                        </div>
+                        @endif
+                        @if (auth()->user()->id === $answer->user->id || auth()->user()->type === "Admin")
+                        <form class="px-2" method="POST" action="{{ route('answer/delete') }}" onclick="return confirm('Are you sure you want to delete this answer?');">
+                            {{ csrf_field() }}
+                            @method('DELETE')
+                            <input type="hidden" name="answer_id" value="{{ $answer->id }}">
+                            <button class="btn btn-secondary btn-sm my-2 my-sm-0" type="submit">Delete</button>
+                        </form>
+                        @endif
                         @endif
                     </div>
                 </div>
             </div>
             @foreach ($answer->comments as $comment)
-                @include('partials.comment', ['hidden' => $loop->index > 2])
+            @include('partials.comment', ['hidden' => $loop->index > 2])
             @endforeach
             <div class="d-flex">
                 @if (sizeof($answer->comments) > 3)
