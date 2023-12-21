@@ -40,6 +40,7 @@ Route::controller(QuestionController::class)->group(function () {
     Route::post('/questions/store', 'store')->name('question.store');
     Route::get('/questions/search', 'search')->name('search');
     Route::get('/questions/{question}', 'show')->name('question.show');
+    Route::get('/questions/preview/{question}', 'preview')->name('question.preview');
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
     Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);

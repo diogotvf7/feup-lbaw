@@ -9,6 +9,31 @@ function noMoreQuestions() {
   loader.remove();
 }
 
+async function createQuestionPreview(question, authenticated) {
+  console.log('/questions/preview/' + question.id);
+  return await fetch('/questions/preview/' + question.id, {
+    method: 'GET',
+    headers: {
+      'X-Requested-With': 'XMLHttpRequest',
+    },
+  })
+    .then(function (response) {
+      return response.text()
+    })
+    .then(function (html) {
+      console.log(html);
+      /*  const questionPreview =
+           createQuestionPreview(question, response.authenticated);*/
+      loader.insertAdjacentHTML("beforebegin", html);
+      //questionsContainer.insertBefore(html, loader);
+      const hr = document.createElement('hr');
+      questionsContainer.insertBefore(hr, loader);
+    })
+    .catch(function (err) {
+      console.log('Failed to fetch page: ', err);
+    });
+}
+/* 
 function createQuestionPreview(question, authenticated) {
   const questionPreview = document.createElement('article');
 
@@ -85,7 +110,7 @@ function createQuestionPreview(question, authenticated) {
   questionPreview.append(info, content, published);
 
   return questionPreview;
-}
+} */
 
 async function fetchQuestions() {
   const url = new URL(window.location.href);
@@ -104,11 +129,11 @@ function insertQuestions() {
       return;
     }
     questions.forEach(question => {
-      const questionPreview =
-          createQuestionPreview(question, response.authenticated);
-      questionsContainer.insertBefore(questionPreview, loader);
+      // const questionPreview =
+      createQuestionPreview(question, response.authenticated);
+      /* questionsContainer.insertBefore(questionPreview, loader);
       const hr = document.createElement('hr');
-      questionsContainer.insertBefore(hr, loader);
+      questionsContainer.insertBefore(hr, loader); */
     });
     if (questions.length < 10) {
       noMoreQuestions();

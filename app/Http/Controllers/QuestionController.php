@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Answer;
 use App\Events\UpvoteEvent;
 use App\Models\Tag;
 use App\Models\Vote;
@@ -10,7 +9,6 @@ use App\Models\User;
 use App\Models\Question;
 use App\Models\ContentVersion;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
 class QuestionController extends Controller
@@ -221,6 +219,14 @@ class QuestionController extends Controller
         $vote = $currentUser->voted('question', $question->id);
         $follow = $currentUser->followsQuestion($question->id);
         return view('pages.question', ['question' => $question, 'vote' => $vote, 'follow' => $follow]);
+    }
+
+        /**
+     * Display the preview for the specified resource.
+     */
+    public function preview(Question $question)
+    {
+        return view('partials.questionPreview', ['question' => $question])->render();
     }
 
     /**

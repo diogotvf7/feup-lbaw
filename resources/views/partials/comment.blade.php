@@ -22,9 +22,6 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
             </div>
         </form>
         <div class="d-flex flex-row align-items-center">
-            <p class="m-0">
-                &#8212;&NonBreakingSpace;
-            </p>
             @include('partials.userPreview', ['user' => $comment->user])
             <p class="m-0">
             &NonBreakingSpace;commented {{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}

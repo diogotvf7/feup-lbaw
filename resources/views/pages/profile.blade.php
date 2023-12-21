@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section id="profile" class="scroll-container" style="overflow: scroll;">
+<section id="profile" style="overflow: scroll;">
 
     <ul class="nav nav-tabs d-flex" role="tablist">
         <li class="nav-item" role="presentation">
