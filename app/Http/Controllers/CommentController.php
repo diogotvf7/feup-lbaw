@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CommentEvent;
 use App\Models\User;
 use App\Models\Comment;
 use App\Models\Answer;
@@ -47,6 +48,8 @@ class CommentController extends Controller
             }
 
             $comment->save();
+
+            $this->commentEvent(Auth::user()->id, $comment->id);
 
             return redirect()->back()->with('success', 'Comment added successfully!');
         }
@@ -94,5 +97,13 @@ class CommentController extends Controller
         $this->authorize('delete', $comment);
         $comment->delete();
         return redirect()->back()->with('success', 'Comment removed successfully!');
+    }
+
+    /**
+     * Send a real time notification about a comment
+     */
+    public function commentEvent($user_id, $comment_id)
+    {
+        event(new CommentEvent($user_id, $comment_id));
     }
 }

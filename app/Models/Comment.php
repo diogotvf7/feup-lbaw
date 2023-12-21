@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Comment extends Model
 {
@@ -44,5 +45,27 @@ class Comment extends Model
     public function votes(): HasMany
     {
         return $this->hasMany(Vote::class);
+    }
+
+     /**
+     * Get the content of the comment.
+     */
+    public function content(): BelongsTo
+    {
+        switch ($this->type) {
+            case 'QUESTION':
+                return $this->question();
+            case 'ANSWER':
+                return $this->answer();
+            default:  return NULL;
+        }
+    }
+
+    /**
+     * Get the notification this comment generated
+     */
+    public function notification(): HasOne
+    {
+        return $this->hasOne(Notification::class);
     }
 }

@@ -45,15 +45,27 @@ class Notification extends Model
     }
 
     /**
+     * Get the comment this notification relates to
+     */
+    public function comment(): BelongsTo
+    {
+        if ($this->type == "COMMENT")
+            return $this->belongsTo(Comment::class);
+    }
+
+    /**
      * Get the question id this notification indirectly relates to
      */
     public function relatedQuestionId()
     {
-        if ($this->type == "UPVOTE") {
-            if ($this->upvote->type == "ANSWER") return $this->upvote->answer->question_id;
-            else if ($this->upvote->type == "QUESTION") return $this->upvote->question_id;
-        } else if ($this->type == "ANSWER") {
+        if ($this->type === "UPVOTE") {
+            if ($this->upvote->type === "ANSWER") return $this->upvote->answer->question_id;
+            else if ($this->upvote->type === "QUESTION") return $this->upvote->question_id;
+        } else if ($this->type === "ANSWER") {
             return $this->answer->question_id;
+        } else if ($this->type === "COMMENT") {
+            if ($this->comment->type === "ANSWER") return $this->comment->answer->question_id;
+            else if ($this->comment->type === "QUESTION") return $this->comment->question_id;
         }
     }
 }

@@ -64,8 +64,4 @@ class VoteController extends Controller
         //
     }
 
-    public function voteEvent(Request $request)
-    {
-        event(new UpvoteEvent(3, 3));
-    }
 }
