@@ -3,31 +3,28 @@ $isAuthor = auth()->check() && $comment->user && $comment->user->id === auth()->
 $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
 ?>
 
-<article class="comment {{ $hidden ? 'd-none' : '' }}">
+<div class="comment {{ $hidden ? 'd-none' : '' }}">
+    <hr />
     <div class="d-flex">
-
         <form method="POST" action="{{ route('comment/edit') }}" class="flex-grow-1">
             {{ csrf_field() }}
             @method('PATCH')
-            <input type="hidden" name="comment_id" value="{{ $comment->id }}">
-            <textarea name="body" class="comment-input form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $comment->body }}</textarea>
-            @if ($errors->has('body'))
-            <span class="error">
-                {{ $errors->first('body') }}
-            </span>
-            @endif
-            <div>
-                <button class="cancel-edit-comment btn btn-secondary btn-sm mt-2 d-none" type="button">Cancel</button>
-                <button class="submit-edit-comment btn btn-primary btn-sm mt-2 d-none submit-edit" type="submit">Submit</button>
-            </div>
+                <input type="hidden" name="comment_id" value="{{ $comment->id }}">
+                <textarea name="body" class="comment-input form-control form-control-plaintext" minlength="20" maxlength="30000" readonly>{{ $comment->body }}</textarea>
+                @if ($errors->has('body'))
+                <span class="error">
+                    {{ $errors->first('body') }}
+                </span>
+                @endif
+                <div>
+                    <button class="cancel-edit-comment btn btn-secondary btn-sm mt-2 d-none" type="button">Cancel</button>
+                    <button class="submit-edit-comment btn btn-primary btn-sm mt-2 d-none submit-edit" type="submit">Submit</button>
+                </div>
         </form>
         <div class="d-flex flex-row align-items-center">
-            <p class="m-0">
-                &#8212;&NonBreakingSpace;
-            </p>
             @include('partials.userPreview', ['user' => $comment->user])
             <p class="m-0">
-            &NonBreakingSpace;commented {{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}
+                &NonBreakingSpace;commented {{ \Carbon\Carbon::parse($comment->date)->diffForHumans() }}
             </p>
         </div>
         <div class="d-flex">
@@ -51,5 +48,4 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
 
         </div>
     </div>
-    <hr class="mt-0" />
-</article>
+</div>

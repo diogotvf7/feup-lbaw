@@ -2,7 +2,7 @@
 
 @section('content')
 
-<section id="profile" class="scroll-container" style="overflow: scroll;">
+<section id="profile" style="overflow: scroll;">
 
     <ul class="nav nav-tabs d-flex" role="tablist">
         <li class="nav-item" role="presentation">
@@ -27,6 +27,8 @@
                     @include('partials.profileCard')
                     @if (Auth::user()->id === $user->id)
                     @include('partials.editUser')
+                    @endif
+                    @if (Auth::user()->id === $user->id || (Auth::user()->type === "Admin" && $user->profile_picture))
                     @include('partials.editProfilePic')
                     @endif
                 </div>
@@ -40,14 +42,14 @@
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} questions</h4>
-                        <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
+                        <div class="d-flex flex-row justify-content-around" style="width: 100%;">
                             <p class="pe-3">Level {{$user->experience}}</p>
                             <p>Kleos {{$user->score}}</p>
                         </div>
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height: 65vh; overflow: scroll;">
+                <div class="card mb-3 w-75" style="max-height: 65vh; overflow: scroll;">
                     <div class="card-body align-items-center flex-column">
                         @if(count($user->questions)=== 0)
                         <h4>User has no questions</h4>
@@ -60,7 +62,7 @@
                         @endforeach
                         @endif
                     </div>
-                </section>
+                </div>
             </div>
         </div>
 
@@ -71,14 +73,14 @@
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} answers</h4>
-                        <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
+                        <div class="d-flex flex-row justify-content-around" style="width: 100%;">
                             <p class="pe-3">Level {{$user->experience}} </p>
                             <p>Kleos {{$user->score}} </p>
                         </div>
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
+                <div class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if (count($user->answers)=== 0)
                         <h4>User has no answers</h4>
@@ -91,7 +93,7 @@
                         @endforeach
                         @endif
                     </div>
-                </section>
+                </div>
             </div>
         </div>
 
@@ -102,14 +104,14 @@
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} comments</h4>
-                        <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
+                        <div class="d-flex flex-row justify-content-around" style="width: 100%;">
                             <p class="pe-3">Level {{$user->experience}} </p>
                             <p>Kleos {{$user->score}} </p>
                         </div>
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
+                <div class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if (count($user->comments)=== 0)
                         <h4>User has no comments</h4>
@@ -122,18 +124,27 @@
                         @endforeach
                         @endif
                     </div>
-                </section>
+                </div>
             </div>
         </div>
     </div>
+    <button type="button" class="btn btn-primary rounded" id="back-top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+    @if (session('success')) 
+    <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{ session('success')[0] }}</strong> 
+        @if (isset(session('success')[1]))
+            <a href="{{ session('success')[1] }}" class="alert-link">Check it here</a>.
+        @endif
+    </div>
+    @endif
+    @if (session('error'))
+    <div class="alert alert-dismissible alert-danger position-absolute bottom-0 end-0 m-5">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{ session('error')}}</strong>
+    </div>
+    @endif
 </section>
-<button type="button" class="btn btn-primary rounded" id="back-top">
-    <i class="bi bi-arrow-up"></i>
-</button>
-@if (session('success'))
-<div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    <strong>{{ session('success')[0] }}</strong>
-</div>
-@endif
 @endsection

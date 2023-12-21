@@ -1,140 +1,17 @@
-const editButton = document.getElementById('edit-question');
-const cancelEditButton = document.getElementById('cancel-edit-question');
-const submitEditButton = document.getElementById('submit-edit-question');
-const questionInput = document.getElementById('question-input');
-let tagInput = document.getElementById('tag-input');
-
-const questionId = new URL(window.location.href).pathname.split('/').pop();
-let tagsContent = [];
-let bodyContent = '';
-let tagify = null;
-
-
-async function fetchQuestionTags() {
-  const request = await fetch(`/api/questions/${questionId}/tags`);
-  const response = await request.json();
-  response.forEach((tag) => {
-    tag.value = tag.id;
-    delete tag.id;
-    delete tag.description;
-    delete tag.search_tag_description;
-    delete tag.search_tag_name;
-  });
-  return response;
-}
-
-async function fetchTags() {
-  const request = await fetch('/api/tags/all');
-  const response = await request.json();
-  response.forEach((tag) => {
-    tag.value = tag.id;
-    delete tag.id;
-    delete tag.description;
-    delete tag.search_tag_description;
-    delete tag.search_tag_name;
-  });
-  return response;
-}
-
-function suggestionItemTemplate(tagData) {
-  return `
-      <div ${this.getAttributes(tagData)}
-          class='tagify__dropdown__item ${tagData.class ? tagData.class : ''}'
+let editButton=document.getElementById("edit-question"),cancelEditButton=document.getElementById("cancel-edit-question"),submitEditButton=document.getElementById("submit-edit-question"),questionInput=document.getElementById("question-input"),tagInput=document.getElementById("tag-input"),questionId=new URL(window.location.href).pathname.split("/").pop(),tagsContent=[],bodyContent="",tagify=null;async function fetchQuestionTags(){let t=await fetch(`/api/questions/${questionId}/tags`),e=await t.json();return e.forEach(t=>{t.value=t.id,delete t.id,delete t.description,delete t.search_tag_description,delete t.search_tag_name}),e}async function fetchTags(){let t=await fetch("/api/tags/all"),e=await t.json();return e.forEach(t=>{t.value=t.id,delete t.id,delete t.description,delete t.search_tag_description,delete t.search_tag_name}),e}function suggestionItemTemplate(t){return`
+      <div ${this.getAttributes(t)}
+          class='tagify__dropdown__item ${t.class?t.class:""}'
           tabindex="0"
           role="option">
-          <p class="tagify-text m-0">${tagData.name}${
-      tagData.approved ? '' : ' <small>(Pending approval)</small>'}</p>
+          <p class="tagify-text m-0">${t.name}${t.approved?"":" <small>(Pending approval)</small>"}</p>
       </div>
-  `
-}
-
-function tagTemplate(tagData) {
-  return `
-      <tag title='${tagData.value}' contenteditable='false' spellcheck="false"
-      class='tagify__tag ${
-      tagData.class ?
-          tagData.class :
-          ''} badge bg-primary d-flex gap-2' ${this.getAttributes(tagData)}>
+  `}function tagTemplate(t){return`
+      <tag title='${t.value}' contenteditable='false' spellcheck="false"
+      class='tagify__tag ${t.class?t.class:""} badge bg-primary d-flex gap-2' ${this.getAttributes(t)}>
         <x title='remove tag' class='tagify__tag__removeBtn text-white'></x>
         <span class='tagify__tag-text'>
-          ${tagData.name}
+          ${t.name}
         </span>
   
       </tag>
-  `
-}
-
-async function editQuestion() {
-  console.log('editQuestion');
-  if (tagInput) {
-    const tags = await fetchQuestionTags();
-
-    tagify = new Tagify(document.getElementById('tag-input'), {
-      tagTextProp: 'name',
-      whitelist: await fetchTags(),
-      enforceWhitelist: true,
-      skipInvalid: true,
-      userInput: true,
-      dropdown: {
-        enabled: 0,
-        closeOnSelect: false,
-        searchKeys: [
-          'name',
-        ]
-      },
-      autocomplete: {
-        enabled: 1,
-        // rightKey: true,
-      },
-      templates: {
-        dropdownItem: suggestionItemTemplate,
-        tag: tagTemplate,
-      },
-    });
-    tagify.addTags(tags);
-    tagInput = document.querySelector('.tagify');
-
-    if (tags.length === 0) {
-      tagInput.classList.add('d-none');
-      console.log(tagInput.classList)
-    }
-  }
-
-  const end = questionInput.value.length;
-  questionInput.style.height =
-      (questionInput.scrollHeight > questionInput.clientHeight) ?
-      (questionInput.scrollHeight) + 'px' :
-      '60px';
-
-  if (!editButton || !cancelEditButton) return;
-
-  editButton.addEventListener('click', async function() {
-    editButton.classList.add('d-none');
-    cancelEditButton.classList.remove('d-none');
-    submitEditButton.classList.remove('d-none');
-    questionInput.removeAttribute('readonly');
-    questionInput.classList.remove('form-control-plaintext');
-    questionInput.setSelectionRange(end, end);
-    questionInput.focus();
-    tagInput.classList.remove('d-none');
-    tagify.setReadonly(false);
-
-    tagsContent = tagify.value;
-    bodyContent = questionInput.value;
-  });
-
-  cancelEditButton.addEventListener('click', function() {
-    editButton.classList.remove('d-none');
-    cancelEditButton.classList.add('d-none');
-    submitEditButton.classList.add('d-none');
-    questionInput.setAttribute('readonly', '');
-    questionInput.classList.add('form-control-plaintext');
-    if (tagInput.value === '') tagInput.classList.add('d-none');
-    tagify.setReadonly(true);
-
-    tagify.value = tagsContent;
-    questionInput.value = bodyContent;
-  });
-}
-
-export default editQuestion;
+  `}async function editQuestion(){if(console.log("editQuestion"),tagInput){let t=await fetchQuestionTags();(tagify=new Tagify(document.getElementById("tag-input"),{tagTextProp:"name",whitelist:await fetchTags(),enforceWhitelist:!0,skipInvalid:!0,userInput:!0,dropdown:{enabled:0,closeOnSelect:!1,searchKeys:["name",]},autocomplete:{enabled:1},templates:{dropdownItem:suggestionItemTemplate,tag:tagTemplate}})).addTags(t),tagInput=document.querySelector(".tagify"),0===t.length&&(tagInput.classList.add("d-none"),console.log(tagInput.classList))}let e=questionInput.value.length;questionInput.style.height=questionInput.scrollHeight>questionInput.clientHeight?questionInput.scrollHeight+"px":"60px",editButton&&cancelEditButton&&(editButton.addEventListener("click",async function(){editButton.classList.add("d-none"),cancelEditButton.classList.remove("d-none"),submitEditButton.classList.remove("d-none"),questionInput.removeAttribute("readonly"),questionInput.classList.remove("form-control-plaintext"),questionInput.setSelectionRange(e,e),questionInput.focus(),tagInput.classList.remove("d-none"),tagify.setReadonly(!1),tagsContent=tagify.value,bodyContent=questionInput.value}),cancelEditButton.addEventListener("click",function(){editButton.classList.remove("d-none"),cancelEditButton.classList.add("d-none"),submitEditButton.classList.add("d-none"),questionInput.setAttribute("readonly",""),questionInput.classList.add("form-control-plaintext"),""===tagInput.value&&tagInput.classList.add("d-none"),tagify.setReadonly(!0),tagify.value=tagsContent,questionInput.value=bodyContent}))}export default editQuestion;

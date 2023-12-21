@@ -11,7 +11,9 @@
                     {{ csrf_field() }}
 
                     <fieldset>
-                        <h1>Reset Recovery</h1>
+                        <legend>
+                            <h1>Reset Recovery</h1>
+                        </legend>
 
                         <input type="hidden" name="token" value="{{ $token }}">
 
@@ -22,7 +24,7 @@
                             <span class="text-danger">
                                 {{ $errors->first('email') }}
                             </span>
-                            @endif        
+                            @endif
                         </div>
 
                         <div class="form-group">
@@ -39,7 +41,7 @@
                             <label for="password-confirm" class="form-label mt-4">Confirm New Password</label>
                             <input id="password-confirm" type="password" name="password_confirmation" class="form-control" placeholder="Confirm your password" required>
                         </div>
-                        
+
                         <div class="form-group pt-3">
                             <button type="submit" class="btn btn-primary">
                                 Reset Password
@@ -52,7 +54,7 @@
         </div>
     </div>
 </div>
-@if (session('error')) 
+@if (session('error'))
 <div class="alert alert-dismissible alert-danger position-absolute bottom-0 end-0 m-5">
     <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
     <strong>{{ session('error') }}</strong>

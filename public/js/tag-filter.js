@@ -1,77 +1,17 @@
-const tagInput = document.getElementById('tag-input');
-let tagify = null;
-
-async function fetchTags() {
-  const request = await fetch('/api/tags/all');
-  const response = await request.json();
-  response.forEach((tag) => {
-    tag.value = tag.id;
-    delete tag.id;
-    delete tag.description;
-    delete tag.search_tag_description;
-    delete tag.search_tag_name;
-    delete tag.approved;
-    delete tag.creator;
-    delete tag.search;
-  });
-  return response;
-}
-
-function suggestionItemTemplate(tagData) {
-  return `
-        <div ${this.getAttributes(tagData)}
-            class='tagify__dropdown__item ${tagData.class ? tagData.class : ''}'
+let tagInput=document.getElementById("tag-input"),tagify=null;async function fetchTags(){let e=await fetch("/api/tags/all"),t=await e.json();return t.forEach(e=>{e.value=e.id,delete e.id,delete e.description,delete e.search_tag_description,delete e.search_tag_name,delete e.approved,delete e.creator,delete e.search}),t}function suggestionItemTemplate(e){return`
+        <div ${this.getAttributes(e)}
+            class='tagify__dropdown__item ${e.class?e.class:""}'
             tabindex="0"
             role="option">
-            <p class="tagify-text m-0">${tagData.name}</p>
+            <p class="tagify-text m-0">${e.name}</p>
         </div>
-    `
-}
-
-function tagTemplate(tagData) {
-  return `
-      <tag title='${tagData.value}' contenteditable='false' spellcheck="false"
-      class='tagify__tag ${
-      tagData.class ?
-          tagData.class :
-          ''} badge bg-primary d-flex gap-2' ${this.getAttributes(tagData)}>
+    `}function tagTemplate(e){return`
+      <tag title='${e.value}' contenteditable='false' spellcheck="false"
+      class='tagify__tag ${e.class?e.class:""} badge bg-primary d-flex gap-2' ${this.getAttributes(e)}>
         <x title='remove tag' class='tagify__tag__removeBtn text-white'></x>
         <span class='tagify__tag-text'>
-          ${tagData.name}
+          ${e.name}
         </span>
   
       </tag>
-  `
-}
-
-export default async function enableTagFilter() {
-  const url = new URL(window.location.href);
-  const tags = decodeURIComponent(new URLSearchParams(url.search).get('tags'));
-
-  if (tagInput) {
-    tagify = new Tagify(document.getElementById('tag-input'), {
-      tagTextProp: 'name',
-      whitelist: await fetchTags(),
-      enforceWhitelist: true,
-      skipInvalid: true,
-      userInput: true,
-      dropdown: {
-        enabled: 0,
-        closeOnSelect: false,
-        searchKeys: [
-          'name',
-        ]
-      },
-      autocomplete: {
-        enabled: 1,
-        // rightKey: true,
-      },
-      templates: {
-        dropdownItem: suggestionItemTemplate,
-        tag: tagTemplate,
-      },
-    });
-
-    if (tags.length > 0) tagify.addTags(JSON.parse(tags));
-  }
-};
+  `}export default async function e(){let e=new URL(window.location.href),t=decodeURIComponent(new URLSearchParams(e.search).get("tags"));tagInput&&(tagify=new Tagify(document.getElementById("tag-input"),{tagTextProp:"name",whitelist:await fetchTags(),enforceWhitelist:!0,skipInvalid:!0,userInput:!0,dropdown:{enabled:0,closeOnSelect:!1,searchKeys:["name",]},autocomplete:{enabled:1},templates:{dropdownItem:suggestionItemTemplate,tag:tagTemplate}}),t.length>0&&tagify.addTags(JSON.parse(t)))};

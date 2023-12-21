@@ -13,7 +13,6 @@ class FileController extends Controller
 
     static $systemTypes = [
         'profile' => ['png', 'jpeg', 'jpg', 'gif'],
-        'post' => ['png', 'jpeg', 'jpg', 'gif', 'mp4', 'mp3', 'pdf', 'txt'],
     ];
 
     private static function getDefaultExtension(String $type)
@@ -47,9 +46,6 @@ class FileController extends Controller
             case 'profile':
                 $fileName = User::find($id)->profile_picture; // can be null as well
                 break;
-            case 'post':
-                // other models
-                break;
             default:
                 return null;
         }
@@ -65,13 +61,20 @@ class FileController extends Controller
 
             switch ($type) {
                 case 'profile':
-                    User::find($id)->profile_picture = null;
-                    break;
-                case 'post':
-                    // other models
+                    $user = User::find($id);
+                    $user->profile_picture = null;
+                    $user->save();
+
                     break;
             }
         }
+    }
+
+    function remove(Request $request)
+    {
+        if ($request->type && $request->id) $this->delete($request->type, $request->id);
+        return redirect()->back()->with('success', 'Profile picture removed successfully.');
+
     }
 
     function upload(Request $request)
@@ -79,12 +82,12 @@ class FileController extends Controller
 
         // Validation: has file
         if (!$request->hasFile('file')) {
-            return redirect()->back()->with('error', 'Error: File not found');
+            return redirect()->back()->with('error', 'File not found');
         }
 
         // Validation: upload type
         if (!$this->isValidType($request->type)) {
-            return redirect()->back()->with('error', 'Error: Unsupported upload type');
+            return redirect()->back()->with('error', 'Unsupported upload type');
         }
 
         // Validation: upload extension
@@ -92,7 +95,7 @@ class FileController extends Controller
         $type = $request->type;
         $extension = $file->extension();
         if (!$this->isValidExtension($type, $extension)) {
-            return redirect()->back()->with('error', 'Error: Unsupported upload extension');
+            return redirect()->back()->with('error', 'Unsupported file type. Please submit a png, jpeg, jpg or gif file!');
         }
 
         // Prevent existing old files
@@ -113,13 +116,8 @@ class FileController extends Controller
                     $error = "unknown user";
                 }
                 break;
-
-            case 'post':
-                // other models
-                break;
-
             default:
-                redirect()->back()->with('error', 'Error: Unsupported upload object');
+                redirect()->back()->with('error', 'Unsupported upload object');
         }
 
         if ($error) {
@@ -128,7 +126,7 @@ class FileController extends Controller
 
         $file->storeAs('userFiles/' . $type, $fileName, self::$diskName);
 
-        return redirect()->back()->with('success', 'Success: upload completed!');
+        return redirect()->back()->with('success', 'Your profile picture was altered successfully!');
     }
 
     static function get(String $type, int $userId)

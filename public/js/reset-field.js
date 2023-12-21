@@ -1,14 +1,1 @@
-export default function resetFields([...selectors]) {
-  selectors.forEach(field => {
-    const formGroup = document.querySelector(field);
-    if (!formGroup) return;
-    const input =
-        formGroup.querySelector('input') || formGroup.querySelector('textarea');
-    const defaultValue = input.value;
-    const button = formGroup.querySelector('button');
-
-    button.addEventListener('click', () => {
-      input.value = defaultValue;
-    });
-  });
-}
+export default function e([...e]){e.forEach(e=>{let t=document.querySelector(e);if(!t)return;let r=t.querySelector("input")||t.querySelector("textarea"),u=r.value,l=t.querySelector("button");l.addEventListener("click",()=>{r.value=u})})};

@@ -1,5 +1,10 @@
+<?php 
+    use Illuminate\Support\Facades\Request;
+    $searchTerm = Request::get('searchTerm');
+?>
+
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" data-bs-theme="light">
+<html lang="en-US" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8">
@@ -17,7 +22,7 @@
     <link href="{{ url('css/app.css') }}" rel="stylesheet">
     <link href="{{ url('css/bootstrap-icons/bootstrap-icons.css') }}" rel="stylesheet">
 
-    <script type="text/javascript" src="{{ url('js/bootstrap.bundle.js') }}" defer>
+    <script src="{{ url('js/bootstrap.bundle.js') }}" defer>
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
@@ -27,7 +32,7 @@
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
     </script>
-    <script type="module" src="{{ url('js/app.js') }}" defer></script>
+    <script type="module" src="{{ url('js/app.js') }}"></script>
     <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 
     <script>
@@ -73,35 +78,36 @@
                             </li>
                             @endif
                         </ul>
-
-                        <button id="theme-toggle" class="btn btn-link me-3 text-white" type="button">
-                            <i class="bi bi-brightness-high-fill d-block-light d-none"></i>
-                            <i class="bi bi-moon-stars-fill d-block-dark d-none"></i>
-                        </button>
-
-                        <div class="d-flex flex-row" style="max-width: 70%;">
-                            <form class="d-flex" action="{{ route('search') }}" method="GET">
-                                {{ csrf_field() }}
-                                @method('GET')
-                                <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
-                                <button class="btn btn-secondary my-2 my-sm-0" type="submit">Search</button>
-                            </form>
-                        </div>
-
-                        @if(Auth::check())
-                        <div style="margin-left: 1em; margin-right: 1em;">
-                            <button id="notification-button" type="button" class="btn btn-secondary position-relative" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom" data-placement="bottom" data-boundary="window" data-bs-original-title="Notifications">
-                                <i id="notification-icon" class="bi bi-bell-fill"></i>
-                                @if(Auth::user()->getUnreadNotificationsAttribute())
-                                <span id="notification-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->getUnreadNotificationsAttribute()}}<span class="visually-hidden">unread messages</span></span>
-                                @endif
+                        <div class="d-flex flex-row my-1 align-items-center">
+                            <button id="theme-toggle" class="btn btn-link me-3 text-white" type="button">
+                                <i class="bi bi-brightness-high-fill d-block-light d-none"></i>
+                                <i class="bi bi-moon-stars-fill d-block-dark d-none"></i>
                             </button>
-                        </div>
-                        @endif
 
-                        @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
-                        <a class="btn btn-secondary ms-3" href="{{ url('/login') }}">Login / Register</a>
-                        @endif
+                            @if(Auth::check())
+                            <div style="margin-left: 1em; margin-right: 1em;">
+                                <button id="notification-button" type="button" class="btn btn-secondary position-relative" data-bs-toggle="popover" data-bs-html="true" data-bs-placement="bottom" data-placement="bottom" data-boundary="window" data-bs-original-title="Notifications">
+                                    <i id="notification-icon" class="bi bi-bell-fill"></i>
+                                    @if(Auth::user()->getUnreadNotificationsAttribute())
+                                    <span id="notification-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->getUnreadNotificationsAttribute()}}<span class="visually-hidden">unread messages</span></span>
+                                    @endif
+                                </button>
+                            </div>
+                            @endif
+
+                            @if (!Auth::check() && Route::currentRouteName() != 'register' && Route::currentRouteName() != 'login')
+                            <a class="btn btn-secondary me-3" href="{{ url('/login') }}">Login / Register</a>
+                            @endif
+
+                            <div class="d-flex flex-row" style="max-width: 70%;">
+                                <form class="d-flex" action="{{ route('search') }}" method="GET">
+                                    {{ csrf_field() }}
+                                    @method('GET')
+                                    <input id="search-bar" class="form-control me-sm-2" type="search" name="searchTerm" placeholder="Search">
+                                    <button class="btn btn-secondary my-2 my-sm-0 ms-2" type="submit">Search</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>

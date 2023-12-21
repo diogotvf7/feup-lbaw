@@ -13,6 +13,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VoteController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Auth\BlockedController;
@@ -32,6 +33,10 @@ use App\Http\Middleware\LoggedMiddleware;
 // Home
 Route::redirect('/', '/questions/top')->name('homepage');
 
+Route::controller(SearchController::class)->group(function () {
+    Route::get('/search', 'search')->name('search');
+});
+
 Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions', 'index')->name('questions');
     Route::get('/questions/top', 'index')->name('questions.top');
@@ -39,8 +44,8 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/tag/{id}', 'index')->where('id', '[0-9]+')->name('questions.tag');
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
-    Route::get('/questions/search', 'search')->name('search');
     Route::get('/questions/{question}', 'show')->name('question.show');
+    Route::get('/questions/preview/{question}', 'preview')->name('question.preview');
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
     Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
@@ -101,9 +106,9 @@ Route::get('/info', function () {
     return view('pages.info');
 })->name('info');
 
-Route::get('/faq', function () {
-    return view('pages.faq');
-})->name('faq');
+// Route::get('/faq', function () {
+//     return view('pages.faq');
+// })->name('faq');
 
 //API
 Route::controller(QuestionController::class)->group(function () {
@@ -137,6 +142,7 @@ Route::controller(NotificationController::class)->group(function () {
 
 Route::controller(FileController::class)->middleware(LoggedMiddleware::class)->group(function (){
     Route::patch('/file/upload', 'upload')->name('file.upload');
+    Route::patch('/file/delete', 'remove')->name('file.delete');
 });
 
 // Authentication

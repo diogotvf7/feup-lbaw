@@ -524,7 +524,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_question
-        AFTER INSERT OR UPDATE ON questions
+        BEFORE INSERT OR UPDATE ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_question();
 
@@ -546,14 +546,13 @@ BEGIN
             NEW.search = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
         END IF;
     END IF;
-    
     RETURN NEW;
 END
 $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_tag
-        AFTER INSERT OR UPDATE ON tags
+        BEFORE INSERT OR UPDATE ON tags
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_tag();
 
@@ -1211,7 +1210,7 @@ VALUES
         'John Smith',
         'jsmith',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        'profile1.jpg',
+        'profile1.png',
         10,
         100,
         'Admin',
@@ -1222,7 +1221,7 @@ VALUES
         'Emily Johnson',
         'ejohnson',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile2.png',
         5,
         75,
         'Admin',
@@ -1233,7 +1232,7 @@ VALUES
         'Michael Williams',
         'mwilliams',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile3.png',
         15,
         200,
         'Admin',
@@ -1244,7 +1243,7 @@ VALUES
         'Sophia Jones',
         'sjones',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile4.png',
         20,
         250,
         'Admin',
@@ -1255,7 +1254,7 @@ VALUES
         'William Davis',
         'wdavis',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile5.png',
         8,
         90,
         'Admin',
@@ -1266,7 +1265,7 @@ VALUES
         'Olivia Martinez',
         'omartinez',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile6.png',
         12,
         150,
         'Admin',
@@ -1277,7 +1276,7 @@ VALUES
         'James Brown',
         'jbrown',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile7.png',
         25,
         300,
         'User',
@@ -1288,7 +1287,7 @@ VALUES
         'Charlotte Wilson',
         'cwilson',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile8.png',
         7,
         80,
         'Admin',
@@ -1299,7 +1298,7 @@ VALUES
         'Benjamin Taylor',
         'btaylor',
         '$2a$10$wX37icU6.4qS3ph4mQKJIOI3YF1JzVjRkxn61aEFylJ6Mh8LhoQY6',
-        NULL,
+        'profile9.png',
         18,
         220,
         'User',
@@ -1310,7 +1309,7 @@ VALUES
         'Emma Anderson',
         'eanderson',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'profile10.png',
         14,
         170,
         'Admin',
@@ -2201,7 +2200,7 @@ VALUES
         'Admin Sousa',
         'admin',
         '$2y$10$O1WiOMVoIT9f3QJxDyXKjOxtoGTiS.yRSDSVebzelWAJ8azdkxL6S',
-        NULL,
+        'taMJGEuW1X33zAO8gdbEnHv7kJaAEXmEk6FU4qnw.png',
         0,
         0,
         'Admin',
