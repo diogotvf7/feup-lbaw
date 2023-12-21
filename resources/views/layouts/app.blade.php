@@ -43,7 +43,7 @@
             <nav id="navbar" class="navbar navbar-expand-lg bg-primary">
                 <div class="container-fluid">
                     <h1>
-                        <a class="navbar-brand" href="{{ url('/questions?filter=top') }}">
+                        <a class="navbar-brand" href="{{ url('/questions') }}">
                             <img src="{{ asset('images/logo.svg') }}" alt="Geras Logo" width="64" class="m-2">
                         </a>
                     </h1>

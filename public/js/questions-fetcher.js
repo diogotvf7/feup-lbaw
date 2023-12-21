@@ -47,8 +47,7 @@ function createQuestionPreview(question, authenticated) {
     if (!tag.approved) return;
     const tagElement = document.createElement('a');
     tagElement.href = '/questions/tag/' + tag.id;
-    tagElement.classList.add(
-        'badge', 'badge-primary', 'bg-primary', 'text-decoration-none');
+    tagElement.classList.add('badge', 'bg-primary', 'text-decoration-none');
     tagElement.textContent = tag.name;
     tags.appendChild(tagElement);
   });
@@ -63,7 +62,6 @@ function createQuestionPreview(question, authenticated) {
   const publishedInfo = document.createElement('div');
   publishedInfo.classList.add('text-secondary');
 
-  console.log(question.user);
   if (question.user == null) {
     publishedInfo.innerHTML = 'Deleted Account';
   } else if (authenticated) {
@@ -91,7 +89,9 @@ function createQuestionPreview(question, authenticated) {
 
 async function fetchQuestions() {
   const url = new URL(window.location.href);
-  const request = await fetch('/api' + url.pathname + '?page=' + page++);
+  url.pathname = '/api' + url.pathname
+  url.searchParams.append('page', page++);
+  const request = await fetch(url);
   const response = await request.json();
   return response;
 }

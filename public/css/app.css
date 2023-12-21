@@ -27,11 +27,24 @@
   --separator-rgb: rgb(222, 226, 230);
 }
 
+[data-bs-theme='dark'] {
+  --background: #222;
+  --backgound-rgb: 2, 2, 2;
+}
+
+[data-bs-theme='light'] {
+  --text: #fff;
+  --background-rgb: 255, 255, 255;
+}
+
+
+
+/*         Theme icon         */
 [data-bs-theme='light'] .d-block-light,
 [data-bs-theme='dark'] .d-block-dark {
   display: block !important;
 }
-
+/* -------------------------- */
 
 /*       Tagify       */
 .tagify-text,
@@ -42,42 +55,98 @@
 /* ------------------ */
 
 /*      Sidebar       */
-.sidebar {
+
+[data-bs-theme='light'] #sidebar .sidebar-element a {
+  color: #000 !important;
+}
+
+[data-bs-theme='dark'] #sidebar .sidebar-element a {
+  color: #fff !important;
+}
+
+@media(max-width: 992px) {
+  #sidebar {
+    display: none;
+    position: fixed;
+    background-color: var(--background);
+    z-index: 999;
+    height: calc(100vh - 108px);
+  }
+
+  #sidebar.active {
+    display: block;
+  }
+
+  #sidebar-toggle {
+    display: block;
+    position: fixed;
+    z-index: 999;
+    height: 40px;
+    width: 40px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease-in-out;
+  }
+
+  .scroll-container {
+    padding-top: calc(40px + 1rem) !important;
+  }
+}
+
+@media(min-width: 992px) {
+  #sidebar {
+    display: flex;
+  }
+  
+  #sidebar-toggle {
+    display: none;
+  }
+}
+
+#sidebar {
   border-right: 1px solid var(--separator);
 }
 
-.sidebar-element {
-  transition: color .3s ease-in-out, background-color .3s ease-in-out, border-color .3s ease-in-out;
+#sidebar ul {
+  list-style-type: none;
 }
 
-[data-bs-theme='dark'] .sidebar-element a {
+/* [data-bs-theme='dark'] .sidebar-element a {
   color: white;
-  text-decoration: none;
 }
 
 [data-bs-theme='light'] .sidebar-element a {
   color: var(--text);
-  text-decoration: none;
+} */
+
+#sidebar .accordion-item {
+  border: 0;
+} 
+
+#sidebar .accordion-button {
+  border: 0;
+  border-color: var(--separator);
+  border-radius: 0 ;
 }
 
-.sidebar-element:hover {
-  background-color: var(--emphasis);
+#sidebar .accordion-button:focus {
+  box-shadow: none;
 }
 
-.sidebar-element:hover a {
-  color: white;
+#sidebar .accordion-button:not(.collapsed) {
+  background-color: transparent;
+  border-bottom: 1px solid var(--separator);
 }
-
 /* ------------------ */
 
-/*      Sidebar       */
+
+
+/* Back to top button */
 #back-top {
   position: fixed;
   bottom: 20px;
   right: 20px;
   display: none;
 }
-
 /* ------------------ */
 
 /* Edit question form */
@@ -342,18 +411,6 @@
   max-width: 1rem;
   min-height: 1rem;
 }
-
-/* ------------------ */
-
-/*        Sidebar        */
-.sidebar li {
-  color: var(--bs-body-color);
-}
-
-.sidebar li:hover {
-  color: white;
-}
-
 /* ------------------ */
 
 /*        Google Button        */

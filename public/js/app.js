@@ -9,6 +9,8 @@ import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
+import {sidebarToggle, sidebarToggler} from './sidebar-toggle.js';
+import enableTagFilter from './tag-filter.js';
 import tagScrollObserver from './tags-fetcher.js';
 import enablePfpModal from './upload-pfp.js';
 
@@ -30,6 +32,7 @@ else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
              currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
+  enableTagFilter();
 }
 // Tags page infinite scroll
 else if (/^\/tags\/?$/.test(currentPath)) {
@@ -69,4 +72,8 @@ else if (/^\/admin\/tags/.test(currentPath)) {
 // Admin users page
 else if (/^\/admin\/users/.test(currentPath)) {
   enableUserModal();
+}
+
+if (sidebarToggler) {
+  sidebarToggle();
 }

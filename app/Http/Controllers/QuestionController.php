@@ -46,7 +46,7 @@ class QuestionController extends Controller
                 ';
             }
         } else {
-            $title = '<h1>Recent Questions</h1>';
+            $title = '<h1>All Questions</h1>';
         }
         return view('pages.questions', ['title' => $title]);
     }
@@ -72,8 +72,7 @@ class QuestionController extends Controller
         if (isset($path_segments[2])) {
             if ($path_segments[2] == 'followed') {
                 $query->join('followed_questions', 'questions.id', '=', 'followed_questions.question_id')
-                    ->where('user_id', $request->user()->id)
-                    ->orderBy('content_versions.date', 'desc');
+                    ->where('user_id', $request->user()->id);
             } else if ($path_segments[2] == 'top') {
                 $query->withCount('upvotes', 'downvotes')
                     ->orderBy('upvotes_count', 'desc')
@@ -81,9 +80,45 @@ class QuestionController extends Controller
             } else if ($path_segments[2] == 'tag') {
                 $query->whereHas('tags', function ($sub_query) use ($path_segments) {
                     $sub_query->where('tags.id', $path_segments[3]);
-                })
-                    ->orderBy('content_versions.date', 'desc')
-                    ->get();
+                });
+            }
+        }
+        if ($request->has('no-answers')) {
+            $query->whereDoesntHave('answers');
+        } 
+        if ($request->has('no-accepted-answers')) {
+            $query->whereNull('questions.correct_answer');
+        }
+        if ($request->has('tags') && $request['tags']) {
+            $tags = json_decode($request->tags);
+            
+            $query->where(function ($query) use ($tags) {
+                foreach ($tags as $tag) {
+                    $query->orWhereHas('tags', function ($sub_query) use ($tag) {
+                        $sub_query->where('tags.id', $tag->value);
+                    });
+                }
+            });
+        }
+        if ($request->has('sort')) {
+            switch ($request->sort) {
+                case 'oldest':
+                    $query->orderBy('content_versions.date');
+                    break;
+                case 'votes':
+                    $query->withCount('upvotes', 'downvotes')
+                        ->orderBy('upvotes_count', 'desc')
+                        ->orderBy('downvotes_count');
+                    break;
+                case 'newest':
+                    $query->orderBy('content_versions.date', 'desc');
+                    break;
+                case 'answers':
+                    $query->withCount('answers')
+                        ->orderBy('answers_count', 'desc');
+                default:
+                    $query->orderBy('content_versions.date', 'desc');
+                    break;
             }
         } else {
             $query->orderBy('content_versions.date', 'desc');
