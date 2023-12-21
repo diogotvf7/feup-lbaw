@@ -15,6 +15,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\VoteController;
 use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\Auth\BlockedController;
 use App\Http\Middleware\LoggedMiddleware;
 
 /*
@@ -163,3 +164,6 @@ Route::controller(GoogleController::class)->group(function () {
     Route::get('auth/google/call-back', 'callbackGoogle')->name('google-call-back');
 });
 
+Route::controller(BlockedController::class)->group(function () {
+    Route::get('/banned','show') -> name('banned.user');
+});
