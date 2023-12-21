@@ -10,7 +10,7 @@
                     {{ csrf_field() }}
 
                     <fieldset>
-                        <h1>Password Recovery</h1>
+                        <legend><h1>Password Recovery</h1></legend>
 
                         <div class="form-group">
                             <label for="email" class="form-label mt-4">Your email</label>

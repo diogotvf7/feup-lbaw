@@ -10,7 +10,7 @@
                     {{ csrf_field() }}
 
                     <fieldset>
-                        <h1>Register</h1>
+                        <legend><h1>Register</h1></legend>
 
                         <div class="form-group">
                             <label for="name" class="form-label mt-4">Name</label>

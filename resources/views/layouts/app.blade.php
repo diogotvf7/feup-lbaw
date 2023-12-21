@@ -4,7 +4,7 @@
 ?>
 
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" data-bs-theme="light">
+<html lang="en-US" data-bs-theme="light">
 
 <head>
     <meta charset="utf-8">
