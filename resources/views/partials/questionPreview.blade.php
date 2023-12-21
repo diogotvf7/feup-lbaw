@@ -6,7 +6,7 @@
 
     <div class="flex-grow-1 d-flex flex-column justify-content-between align-items-stretch gap-2 me-5">
         <div class="flex-grow-1">
-            <a href="{{route('question.show', $question->id)}}" class="text-decoration-none text-wrap text-break">{{ $question->title }}</a>
+            <a href="{{route('question.show', $question->id)}}" class="text-decoration-none text-wrap text-break"><h6>{{ $question->title }}</h6></a>
             <p class="preview-body text-wrap text-break">{{ $question->updatedVersion->body }}</p>
             @if($question->tags->count() > 0)
             <div class="d-flex gap-1">

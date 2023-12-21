@@ -51,9 +51,9 @@ $sort = $request['sort'] ?? null;
                 <div id="filters-accordion" class="accordion">
                     <div>
                         <h2 class="accordion-header">
-                            <a class="accordion-button text-decoration-none {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams }}" aria-controls="filters">
+                            <button class="accordion-button text-decoration-none {{ $hasParams ? '' : 'collapsed' }} px-1" type="button" data-bs-toggle="collapse" data-bs-target="#filters" aria-expanded="{{ $hasParams ? 'true' : 'false' }}" aria-controls="filters">
                                 <i class="bi bi-filter me-1"></i> Filters
-                            </a>
+                            </button>
                         </h2>
                         <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
                             <form class="accordion-body p-0 mx-3" action="{{ $url }}" method="GET">
@@ -99,7 +99,7 @@ $sort = $request['sort'] ?? null;
                                 @endif
 
                                 <div class="form-group">
-                                    <label for="tags" class="form-label">Tags</label>
+                                    <label for="tag-input" class="form-label">Tags</label>
                                     <input id="tag-input" type="text" name="tags" class="form-control">
                                 </div>
 
