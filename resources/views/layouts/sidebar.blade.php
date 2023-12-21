@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
 
 $url = Request::url();
 
@@ -45,7 +46,8 @@ $sort = $request['sort'] ?? null;
             </li>
 
 
-            @if ((Request::is('questions') || Request::is('questions/*') && !(Request::is('questions/create'))))
+            @if (Request::is('search') || Request::is('questions') || (Request::is('questions/*') && !(Route::is('question.show')) && !(Request::is('questions/create'))))
+
             <li class="sidebar-element">
                 <hr class="m-0 mt-3">
                 <div id="filters-accordion" class="accordion">
