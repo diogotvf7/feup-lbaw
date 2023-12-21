@@ -4,8 +4,8 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
 ?>
 
 <div class="comment {{ $hidden ? 'd-none' : '' }}">
+    <hr />
     <div class="d-flex">
-
         <form method="POST" action="{{ route('comment/edit') }}" class="flex-grow-1">
             {{ csrf_field() }}
             @method('PATCH')
@@ -48,5 +48,4 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
 
         </div>
     </div>
-    <hr class="mt-0" />
 </div>

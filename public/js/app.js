@@ -18,7 +18,9 @@ import enablePfpModal from './upload-pfp.js';
 const currentPath = window.location.pathname;
 
 // Notifications logic
-enableNotifications();
+if (userId !== '') {
+  enableNotifications();
+}
 
 if (sidebarToggler) {
   sidebarToggle();
@@ -75,7 +77,9 @@ else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
   const answersSort = document.getElementById('answers-sort');
   answersSort.addEventListener('change', loadAnswers);
 
-  markQuestionNotifRead();
+  if (userId !== '') {
+    markQuestionNotifRead();
+  }
 }
 // Create Question page
 else if (/^\/questions\/create$/.test(currentPath)) {
