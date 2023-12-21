@@ -1,1 +1,97 @@
-import"./theme-toggler.js";import"./scroll-top.js";import t from"./add-tags.js";import e from"./add-user.js";import r from"./answers-loader.js";import o from"./comment-edit.js";import s from"./follow-tag.js";import i,{markQuestionNotifRead as a,notificationButton as l}from"./notifications.js";import m from"./question-edit.js";import n from"./questions-fetcher.js";import f from"./reset-field.js";import p from"./search.js";import{sidebarToggle as d,sidebarToggler as u}from"./sidebar-toggle.js";import c from"./tag-filter.js";import g from"./tags-fetcher.js";import h from"./upload-pfp.js";let currentPath=window.location.pathname;if(""!==userId&&i(),u&&d(),/^[/\w, \/]*\/search*$/.test(currentPath)){let j=document.getElementById("search-bar");j.addEventListener("input",t=>{let e=j.value,r=document.getElementById("search-term");r.value=e,p(e)}),c()}else if(/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(currentPath)){n();let y=document.getElementById("follow-tag");s(y),c()}else if(/^\/tags\/?$/.test(currentPath)){let P=document.getElementById("loader");g(P)}else if(/^\/users\/\w+$/.test(currentPath)){let w=document.getElementById("navbar");w.style.borderStyle="none",h();let E=currentPath.split("/").pop();userId==E&&(document.getElementById("profile-picture").style.cursor="pointer"),f(["#editor-profile .name","#editor-profile .username","#editor-profile .email"])}else if(/^\/questions\/[0-9]+$/.test(currentPath)){await m(),await r();let B=document.getElementById("answers-sort");B.addEventListener("change",r),""!==userId&&a()}else/^\/questions\/create$/.test(currentPath)?t():/^\/admin\/tags/.test(currentPath)?t():/^\/admin\/users/.test(currentPath)&&e();
+import './theme-toggler.js';
+import './scroll-top.js';
+
+import enableTagModal from './add-tags.js';
+import enableUserModal from './add-user.js';
+import loadAnswers from './answers-loader.js';
+import editComment from './comment-edit.js';
+import enableFollowTag from './follow-tag.js';
+import enableNotifications, {markQuestionNotifRead, notificationButton} from './notifications.js';
+import editQuestion from './question-edit.js';
+import questionScrollObserver from './questions-fetcher.js';
+import resetFields from './reset-field.js';
+import search from './search.js';
+import {sidebarToggle, sidebarToggler} from './sidebar-toggle.js';
+import enableTagFilter from './tag-filter.js';
+import tagScrollObserver from './tags-fetcher.js';
+import enablePfpModal from './upload-pfp.js';
+
+const currentPath = window.location.pathname;
+
+// Notifications logic
+if (userId !== '') {
+  enableNotifications();
+}
+
+if (sidebarToggler) {
+  sidebarToggle();
+}
+
+// Search bar live search
+if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
+  const searchBar = document.getElementById('search-bar');
+  searchBar.addEventListener('input', (e) => {
+    const input = searchBar.value;
+    const searchTerm = document.getElementById('search-term');
+    document.getElementById('search-title').innerHTML = input;
+    searchTerm.value = input;
+    search(input);
+  });
+  enableTagFilter();
+}
+// Questions page infinite scroll
+else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
+             currentPath)) {
+  questionScrollObserver();
+
+  const followTag = document.getElementById('follow-tag');
+  enableFollowTag(followTag);
+
+  enableTagFilter();
+}
+// Tags page infinite scroll
+else if (/^\/tags\/?$/.test(currentPath)) {
+  const loader = document.getElementById('loader');
+  tagScrollObserver(loader);
+}
+// User profile page
+else if (/^\/users\/\w+$/.test(currentPath)) {
+  const navbar = document.getElementById('navbar');
+  navbar.style.borderStyle = 'none';
+
+  enablePfpModal();
+
+  const currentUserPage = currentPath.split('/').pop();
+  if (userId == currentUserPage) {
+    document.getElementById('profile-picture').style.cursor = 'pointer';
+  }
+
+  resetFields([
+    '#editor-profile .name', '#editor-profile .username',
+    '#editor-profile .email'
+  ]);
+}
+// Question editing / Answer editing / Answer loading
+else if (/^\/questions\/[0-9]+$/.test(currentPath)) {
+  await editQuestion();
+  await loadAnswers();
+
+  const answersSort = document.getElementById('answers-sort');
+  answersSort.addEventListener('change', loadAnswers);
+
+  if (userId !== '') {
+    markQuestionNotifRead();
+  }
+}
+// Create Question page
+else if (/^\/questions\/create$/.test(currentPath)) {
+  enableTagModal();
+}
+// Admin tags page
+else if (/^\/admin\/tags/.test(currentPath)) {
+  enableTagModal();
+}
+// Admin users page
+else if (/^\/admin\/users/.test(currentPath)) {
+  enableUserModal();
+}

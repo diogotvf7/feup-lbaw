@@ -5,7 +5,7 @@
     @include('layouts.sidebar')
     <section class="scroll-container overflow-y-scroll w-100 p-3">
         <header class="d-flex justify-content-between align-items-center p-3">
-            <h1 class="text-primary-emphasis">Search results for '<strong>{{$query}}</strong>'</h1>
+            <h1 class="text-primary-emphasis">Search results for '<strong id="search-title">{{$query}}</strong>'</h1>
             <a href="/questions/create" class="btn btn-primary">Ask Question</a>
         </header>
 

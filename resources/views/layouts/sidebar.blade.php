@@ -59,6 +59,8 @@ $sort = $request['sort'] ?? null;
                         </h2>
                         <div id="filters" class="accordion-collapse collapse {{ $hasParams ? 'show' : '' }}" aria-labelledby="filters" data-bs-parent="#filters-accordion">
                             <form class="accordion-body p-0 mx-3" action="{{ $url }}" method="GET">
+                                <input type="hidden" id="search-term" name="searchTerm" value="{{ $request['searchTerm'] ?? '' }}">
+
                                 <div class="form-group my-1">
                                     <div class="form-check">
                                         <input id="no-answers" class="form-check-input" type="checkbox" name="no-answers" {{ $no_answers ? 'checked' : '' }}>
@@ -102,7 +104,7 @@ $sort = $request['sort'] ?? null;
 
                                 <div class="form-group">
                                     <label for="tags" class="form-label">Tags</label>
-                                    <input id="tags" type="text" name="tags" class="form-control">
+                                    <input id="tag-input" type="text" name="tags" class="form-control">
                                 </div>
 
                                 <div class="d-grid my-3">
