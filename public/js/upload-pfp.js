@@ -2,7 +2,6 @@ const uploadImageModal = document.getElementById('edit-pfp');
 const profilePicture = document.getElementById('profile-picture');
 
 export default function enablePfpModal() {
-    //const create_error = document.getElementById('upload-error');
     if (uploadImageModal) {
         profilePicture.addEventListener('click', function (event) {
             uploadImageModal.style.display = 'block';

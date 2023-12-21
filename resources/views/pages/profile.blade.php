@@ -27,6 +27,8 @@
                     @include('partials.profileCard')
                     @if (Auth::user()->id === $user->id)
                     @include('partials.editUser')
+                    @endif
+                    @if (Auth::user()->id === $user->id || (Auth::user()->type === "Admin" && $user->profile_picture))
                     @include('partials.editProfilePic')
                     @endif
                 </div>
@@ -126,14 +128,20 @@
             </div>
         </div>
     </div>
+    <button type="button" class="btn btn-primary rounded" id="back-top">
+        <i class="bi bi-arrow-up"></i>
+    </button>
+    @if (session('success'))
+    <div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{ session('success') }}</strong>
+    </div>
+    @endif
+    @if (session('error'))
+    <div class="alert alert-dismissible alert-danger position-absolute bottom-0 end-0 m-5">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>{{ session('error')}}</strong>
+    </div>
+    @endif
 </section>
-<button type="button" class="btn btn-primary rounded" id="back-top">
-    <i class="bi bi-arrow-up"></i>
-</button>
-@if (session('success'))
-<div class="alert alert-dismissible alert-success position-absolute bottom-0 end-0 m-5">
-    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    <strong>{{ session('success')[0] }}</strong>
-</div>
-@endif
 @endsection

@@ -137,6 +137,7 @@ Route::controller(NotificationController::class)->group(function () {
 
 Route::controller(FileController::class)->middleware(LoggedMiddleware::class)->group(function (){
     Route::patch('/file/upload', 'upload')->name('file.upload');
+    Route::patch('/file/delete', 'remove')->name('file.delete');
 });
 
 // Authentication

@@ -5,12 +5,12 @@ import enableTagModal from './add-tags.js';
 import enableUserModal from './add-user.js';
 import loadAnswers from './answers-loader.js';
 import enableFollowTag from './follow-tag.js';
-import enableNotifications, {markQuestionNotifRead, notificationButton} from './notifications.js';
+import enableNotifications, { markQuestionNotifRead, notificationButton } from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
 import searchQuestions from './questions-search.js';
 import resetFields from './reset-field.js';
-import {sidebarToggle, sidebarToggler} from './sidebar-toggle.js';
+import { sidebarToggle, sidebarToggler } from './sidebar-toggle.js';
 import enableTagFilter from './tag-filter.js';
 import tagScrollObserver from './tags-fetcher.js';
 import enablePfpModal from './upload-pfp.js';
@@ -30,7 +30,7 @@ if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
 }
 // Questions page infinite scroll
 else if (/^\/questions(?:\/(?:top|followed|tag(?:\/[0-9]+)?)?)?\/?$/.test(
-             currentPath)) {
+  currentPath)) {
   const loader = document.getElementById('loader');
   questionScrollObserver(loader);
 
@@ -50,6 +50,11 @@ else if (/^\/users\/\w+$/.test(currentPath)) {
   navbar.style.borderStyle = 'none';
 
   enablePfpModal();
+
+  const currentUserPage = currentPath.split('/').pop();
+  if (userId == currentUserPage) {
+    document.getElementById('profile-picture').style.cursor = 'pointer';
+  }
 
   resetFields([
     '#editor-profile .name', '#editor-profile .username',
