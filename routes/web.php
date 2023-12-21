@@ -12,6 +12,7 @@ use App\Http\Controllers\GoogleController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\VoteController;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Middleware\LoggedMiddleware;
@@ -37,13 +38,16 @@ Route::controller(QuestionController::class)->group(function () {
     Route::get('/questions/tag/{id}', 'index')->where('id', '[0-9]+')->name('questions.tag');
     Route::get('/questions/create', 'create')->name('question.create');
     Route::post('/questions/store', 'store')->name('question.store');
-    Route::get('/questions/search', 'search')->name('search');
     Route::get('/questions/{question}', 'show')->name('question.show');
     Route::patch('/questions/edit', 'edit')->name('question/edit');
     Route::delete('/questions/delete', 'destroy')->name('question/delete');
     Route::patch('/question/upvote/{question}', 'upvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/question/downvote/{question}', 'downvote')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
     Route::patch('/questions/follow/{question}', 'follow')->where('question', '[0-9]+')->middleware(LoggedMiddleware::class);
+});
+
+Route::controller(SearchController::class)->group(function () {
+    Route::get('/api/search', 'search')->name('search');
 });
 
 Route::controller(AnswerController::class)->group(function () {
@@ -128,8 +132,8 @@ Route::controller(TagController::class)->group(function () {
 });
 
 Route::controller(NotificationController::class)->group(function () {
-   Route::get('/api/notifications', 'fetch');
-   Route::get('api/notifications/count', 'count');
+    Route::get('/api/notifications', 'fetch');
+    Route::get('api/notifications/count', 'count');
 });
 
 // Authentication
@@ -156,4 +160,3 @@ Route::controller(GoogleController::class)->group(function () {
     Route::get('auth/google', 'redirect')->name('google-auth');
     Route::get('auth/google/call-back', 'callbackGoogle')->name('google-call-back');
 });
-

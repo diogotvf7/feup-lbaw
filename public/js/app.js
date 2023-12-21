@@ -7,7 +7,7 @@ import loadAnswers from './answers-loader.js';
 import enableNotifications, {markQuestionNotifRead, notificationButton} from './notifications.js';
 import editQuestion from './question-edit.js';
 import questionScrollObserver from './questions-fetcher.js';
-import searchQuestions from './questions-search.js';
+import search from './search.js';
 import resetFields from './reset-field.js';
 import {sidebarToggle, sidebarToggler} from './sidebar-toggle.js';
 import enableTagFilter from './tag-filter.js';
@@ -23,7 +23,7 @@ if (/^[/\w, \/]*\/search*$/.test(currentPath)) {
   const searchBar = document.getElementById('search-bar');
   searchBar.addEventListener('input', (e) => {
     const input = searchBar.value;
-    searchQuestions(input);
+    search(input);
   });
 }
 // Questions page infinite scroll

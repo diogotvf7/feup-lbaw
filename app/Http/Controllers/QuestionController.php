@@ -257,16 +257,6 @@ class QuestionController extends Controller
         return redirect()->intended('questions')->with('success', 'Question removed successfully!');
     }
 
-    public function search(Request $request)
-    {
-        $searchTerm = $request->searchTerm ? ($request->searchTerm . ':*') : '*';
-        $likeSearchTerm = '%' . $request->searchTerm . '%';
-        $questions = Question::select('questions.*')->whereRaw("search @@ to_tsquery(replace(?, ' ', '<->')) OR search @@ to_tsquery(replace(?, ' ', '|'))", [$searchTerm, $searchTerm])->orderByRaw("title ILIKE ? DESC, ts_rank(search, to_tsquery(replace(?, ' ', '<->'))) DESC, ts_rank(search, to_tsquery(replace(?, ' ', '|'))) DESC", [$likeSearchTerm, $searchTerm, $searchTerm])->get();
-        if ($request->ajax()) {
-            return view('pages.search', ['includeAll' => False, 'questions' => $questions, 'query' => $request->searchTerm])->render();
-        } else return view('pages.search', ['includeAll' => True, 'questions' => $questions, 'query' => $request->searchTerm]);
-    }
-
     public function upvote(Question $question)
     {
         $this->authorize('vote', $question);
