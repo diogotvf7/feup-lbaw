@@ -27,7 +27,7 @@
         // Fix for Firefox autofocus CSS bug
         // See: http://stackoverflow.com/questions/18943276/html-5-autofocus-messes-up-css-loading/18945951#18945951
     </script>
-    <script type="module" src="{{ url('js/app.js') }}" defer></script>
+    <script type="module" src="{{ url('js/app.js') }}"></script>
     <script src="https://js.pusher.com/8.0.1/pusher.min.js"></script>
 
     <script>
