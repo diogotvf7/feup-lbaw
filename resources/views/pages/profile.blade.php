@@ -42,14 +42,14 @@
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} questions</h4>
-                        <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
+                        <div class="d-flex flex-row justify-content-around" style="width: 100%;">
                             <p class="pe-3">Level {{$user->experience}}</p>
                             <p>Kleos {{$user->score}}</p>
                         </div>
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height: 65vh; overflow: scroll;">
+                <div class="card mb-3 w-75" style="max-height: 65vh; overflow: scroll;">
                     <div class="card-body align-items-center flex-column">
                         @if(count($user->questions)=== 0)
                         <h4>User has no questions</h4>
@@ -62,7 +62,7 @@
                         @endforeach
                         @endif
                     </div>
-                </section>
+                </div>
             </div>
         </div>
 
@@ -73,14 +73,14 @@
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} answers</h4>
-                        <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
+                        <div class="d-flex flex-row justify-content-around" style="width: 100%;">
                             <p class="pe-3">Level {{$user->experience}} </p>
                             <p>Kleos {{$user->score}} </p>
                         </div>
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
+                <div class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if (count($user->answers)=== 0)
                         <h4>User has no answers</h4>
@@ -93,7 +93,7 @@
                         @endforeach
                         @endif
                     </div>
-                </section>
+                </div>
             </div>
         </div>
 
@@ -104,14 +104,14 @@
                         <div class="profile-pic">
                         </div>
                         <h4 class="username">{{$user->username}} comments</h4>
-                        <div id="additional-info" class="d-flex flex-row justify-content-around" style="width: 100%;">
+                        <div class="d-flex flex-row justify-content-around" style="width: 100%;">
                             <p class="pe-3">Level {{$user->experience}} </p>
                             <p>Kleos {{$user->score}} </p>
                         </div>
                     </div>
                 </div>
 
-                <section class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
+                <div class="card mb-3 w-75" style="max-height:65vh; overflow: scroll; ">
                     <div class="card-body align-items-center flex-column">
                         @if (count($user->comments)=== 0)
                         <h4>User has no comments</h4>
@@ -124,7 +124,7 @@
                         @endforeach
                         @endif
                     </div>
-                </section>
+                </div>
             </div>
         </div>
     </div>

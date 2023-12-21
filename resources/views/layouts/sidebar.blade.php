@@ -99,8 +99,8 @@ $sort = $request['sort'] ?? null;
                                 @endif
 
                                 <div class="form-group">
-                                    <label for="tag-input" class="form-label">Tags</label>
-                                    <input id="tag-input" type="text" name="tags" class="form-control">
+                                    <label for="tags" class="form-label">Tags</label>
+                                    <input id="tags" type="text" name="tags" class="form-control">
                                 </div>
 
                                 <div class="d-grid my-3">

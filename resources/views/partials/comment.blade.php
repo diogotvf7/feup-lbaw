@@ -3,7 +3,7 @@ $isAuthor = auth()->check() && $comment->user && $comment->user->id === auth()->
 $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
 ?>
 
-<article class="comment {{ $hidden ? 'd-none' : '' }}">
+<div class="comment {{ $hidden ? 'd-none' : '' }}">
     <div class="d-flex">
 
         <form method="POST" action="{{ route('comment/edit') }}" class="flex-grow-1">
@@ -49,4 +49,4 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
         </div>
     </div>
     <hr class="mt-0" />
-</article>
+</div>

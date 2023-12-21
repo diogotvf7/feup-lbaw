@@ -1,5 +1,4 @@
-<article class="d-flex">
-
+<div class="d-flex">
     <div class="flex-grow-1 d-flex flex-column justify-content-between align-items-stretch gap-2 me-5">
         @if ($comment->type === 'QUESTION')
         <div class="flex-grow-1">
@@ -23,4 +22,4 @@
             </div>
         </div>
     </div>
-</article>
+</div>

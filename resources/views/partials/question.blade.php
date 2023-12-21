@@ -63,7 +63,7 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
             </div>
         </form>
     </div>
-    <div class="mx-4" id="comments-container">
+    <div class="mx-4 comments-container">
         <h4>
             {{ $question->comments->count() }}
             @if ($question->comments->count() != 1)
@@ -84,7 +84,7 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
             @endif
         </div>
         @if (Auth()->check())
-        <form id="comment-form" class="d-flex gap-3 align-items-end my-2 d-none" method="POST" action="{{ route('comment/create') }}">
+        <form class="d-flex gap-3 align-items-end my-2 d-none" method="POST" action="{{ route('comment/create') }}">
             {{ csrf_field() }}
             <input type="hidden" name="question_id" value="{{ $question->id }}">
             <textarea id="comment-input" name="body" class="form-control" placeholder="Write your comment here..." maxlength="30000" rows="1"></textarea>
@@ -105,7 +105,7 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
         <div class="d-flex gap-2 align-items-center">
             <p class="text-nowrap m-0">Sorted by:</p>
             <label for="answers-sort" class="form-label mt-4"></label>
-            <select id="answers-sort" class="form-select" value="score">
+            <select id="answers-sort" class="form-select">
                 <option value="votes">Highest score (default)</option>
                 <option value="newest">Date modified (newest first)</option>
                 <option value="oldest">Date created (oldest first)</option>

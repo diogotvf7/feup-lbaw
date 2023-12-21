@@ -4,7 +4,7 @@
         @if($user->name)
         <h5 class="card-subtitle text-muted">{{($user->name)}}</h5>
         @endif
-        <img class="object-fit-cover rounded-circle mt-5 mx-3" src="{{ $user->getProfilePicture() }}" id="profile-picture" style="width: 15dvw; height: 15dvw;"></img>
+        <img class="object-fit-cover rounded-circle mt-5 mx-3" src="{{ $user->getProfilePicture() }}" id="profile-picture" style="width: 15dvw; height: 15dvw;" alt="{{$user->username}}'s profile picture"></img>
     </div>
     <div class="card-body d-flex align-content-around">
         <p class="badge rounded-pill bg-primary me-2">Kleos:&NonBreakingSpace;{{$user->score}}</p>
