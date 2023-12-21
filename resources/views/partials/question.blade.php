@@ -1,7 +1,7 @@
 <?php
-$canInteract = (auth()->check() && $question->user && auth()->user()->id !== $question->user->id);
-$isAuthor = auth()->check() && $question->user && $question->user->id === auth()->user()->id;
-$isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
+    $canInteract = (auth()->check() && $question->user && auth()->user()->id !== $question->user->id);
+    $isAuthor = auth()->check() && $question->user && $question->user->id === auth()->user()->id;
+    $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Admin");
 ?>
 
 <section>
@@ -11,11 +11,11 @@ $isAuthorOrAdmin = $isAuthor || (auth()->check() && auth()->user()->type === "Ad
                 {{ $question->title }}
             </h1>
             <div class="d-flex flex-row align-items-center mb-2">
-                <p class="my-0 me-3">Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by</p>
+                <p class="my-0 me-2">Asked {{ \Carbon\Carbon::parse($question->firstVersion->date)->diffForHumans() }} by</p>
                 @include('partials.userPreview', ['user' => $question->user])
-                <p>
+                <p class="ms-2 m-0">
                     @if ($question->contentVersions()->count() > 1)
-                    Last Edited {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }}
+                    (Last Edited {{ \Carbon\Carbon::parse($question->updatedVersion->date)->diffForHumans() }})
                 </p>
                 @endif
             </div>
