@@ -1,3 +1,8 @@
+<?php 
+    use Illuminate\Support\Facades\Request;
+    $searchTerm = Request::get('searchTerm');
+?>
+
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" data-bs-theme="light">
 

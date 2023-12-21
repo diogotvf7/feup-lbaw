@@ -524,7 +524,7 @@ $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_question
-        AFTER INSERT OR UPDATE ON questions
+        BEFORE INSERT OR UPDATE ON questions
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_question();
 
@@ -546,14 +546,13 @@ BEGIN
             NEW.search = setweight(to_tsvector('english', NEW.name), 'A') || setweight(to_tsvector('english', NEW.description), 'B');
         END IF;
     END IF;
-    
     RETURN NEW;
 END
 $BODY$
 LANGUAGE plpgsql;
 
 CREATE TRIGGER tsvectors_update_tag
-        AFTER INSERT OR UPDATE ON tags
+        BEFORE INSERT OR UPDATE ON tags
         FOR EACH ROW
         EXECUTE PROCEDURE tsvectors_update_tag();
 
